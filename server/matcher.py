@@ -284,9 +284,7 @@ def match_post(
     if _HARD_NEGATIVE.search(haystack):
         # Strong NY phrasing can still win over a hard negative only when it is
         # clearly local (e.g. quoting "New Albany" while talking about Albany, NY).
-        if _STRONG_POSITIVE.search(haystack) and not _HARD_NEGATIVE_BLOCKS_STRONG.search(
-            haystack
-        ):
+        if _STRONG_POSITIVE.search(haystack) and not _HARD_NEGATIVE_BLOCKS_STRONG.search(haystack):
             return MatchResult(True, 'strong_positive_over_negative')
         return MatchResult(False, 'hard_negative')
 
