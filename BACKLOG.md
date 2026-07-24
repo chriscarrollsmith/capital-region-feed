@@ -33,7 +33,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
 ## P0 — Eval dataset & measurement
 
 ### B-001 — Expand eval beyond keyword-biased samples
-- **Status:** todo
+- **Status:** done
 - **Why:** Current `data/eval_cases.json` is small and skewed toward known SkyFeed
   FPs. Perfect scores there do not prove recall for local posts without placenames.
 - **Work:**
