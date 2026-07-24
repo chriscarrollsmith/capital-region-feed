@@ -1,14 +1,15 @@
+from typing import Any
 from unittest.mock import patch
 
 from fastapi.testclient import TestClient
 
 
-def _noop_jetstream(*_args, **_kwargs):
+def _noop_jetstream(*_args: Any, **_kwargs: Any) -> None:
     return None
 
 
 @patch('server.app.run_jetstream', _noop_jetstream)
-def test_healthz():
+def test_healthz() -> None:
     from server.app import app
 
     with TestClient(app) as client:
@@ -18,7 +19,7 @@ def test_healthz():
 
 
 @patch('server.app.run_jetstream', _noop_jetstream)
-def test_describe_feed_generator():
+def test_describe_feed_generator() -> None:
     from server import config
     from server.app import app
 
@@ -31,7 +32,7 @@ def test_describe_feed_generator():
 
 
 @patch('server.app.run_jetstream', _noop_jetstream)
-def test_get_feed_skeleton_unsupported_algorithm():
+def test_get_feed_skeleton_unsupported_algorithm() -> None:
     from server.app import app
 
     with TestClient(app) as client:
@@ -44,7 +45,7 @@ def test_get_feed_skeleton_unsupported_algorithm():
 
 
 @patch('server.app.run_jetstream', _noop_jetstream)
-def test_did_json_for_did_web_hostname():
+def test_did_json_for_did_web_hostname() -> None:
     from server import config
     from server.app import app
 

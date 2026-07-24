@@ -38,19 +38,27 @@ Key files:
 
 ## Local setup
 
+Requires [uv](https://docs.astral.sh/uv/) and Python 3.14+.
+
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
+uv sync
 cp .env.example .env
-# edit HOSTNAME / FEED_URI for local testing if needed
+# edit FEEDGEN_HOSTNAME / FEED_URI for local testing if needed
+```
+
+### Lint, type-check, and test
+
+```bash
+uv run ruff check .
+uv run ruff format .
+uv run ty check
+uv run pytest -q
 ```
 
 ### Eval the matcher (no Bluesky login required)
 
 ```bash
-python scripts/eval_filter.py --verbose
-pytest -q
+uv run python scripts/eval_filter.py --verbose
 ```
 
 Iterate by editing `server/matcher.py` and adding rows to `data/eval_cases.json`.
@@ -58,10 +66,12 @@ Iterate by editing `server/matcher.py` and adding rows to `data/eval_cases.json`
 ### Run the feedgen locally
 
 ```bash
-export HOSTNAME=localhost
-export FEED_URI=at://did:plc:xndplob7sicvv6balxdzh3jk/app.bsky.feed.generator/aaagkkw3yejuk
-export DATABASE_PATH=./feed_database.db
-python -m server
+# Prefer setting these in .env (config load_dotenv overrides the shell)
+# FEEDGEN_HOSTNAME=localhost
+# SERVICE_DID=did:web:localhost
+# FEED_URI=<your feed URI>
+# DATABASE_PATH=./feed_database.db
+uv run python -m server
 ```
 
 Endpoints:
@@ -103,9 +113,7 @@ Yes — you can keep the same public feed URL/subscribers by overwriting the exi
 3. Publish:
 
 ```bash
-# Use the project venv (this environment has no bare `python` / `uv` on PATH)
-.venv/bin/python publish_feed.py
-# or: python3 -m venv .venv && . .venv/bin/activate && pip install -r requirements.txt && python publish_feed.py
+uv run python publish_feed.py
 ```
 
 Note: prefer `FEEDGEN_HOSTNAME` / `SERVICE_DID` in `.env`. Plain `HOSTNAME` can be
@@ -143,10 +151,10 @@ Precision is favored over recall for bare `Albany`.
 
 ## Suggested iteration loop
 
-1. `python scripts/collect_eval_sample.py > /tmp/sample.jsonl`
+1. `uv run python scripts/collect_eval_sample.py > /tmp/sample.jsonl`
 2. Label new misses/false hits into `data/eval_cases.json`
 3. Adjust `server/matcher.py`
-4. `python scripts/eval_filter.py && pytest -q`
+4. `uv run python scripts/eval_filter.py && uv run pytest -q`
 5. `fly deploy`
 
 Optional later: engagement ranking, muted keywords, curated DID lists from Bluesky starter packs.

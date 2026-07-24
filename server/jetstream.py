@@ -4,8 +4,10 @@ from __future__ import annotations
 
 import asyncio
 import json
+import threading
 import time
-from typing import Any, Callable, Optional
+from collections.abc import Callable
+from typing import Any
 from urllib.parse import urlencode
 
 import websockets
@@ -17,14 +19,14 @@ from server.logger import logger
 OnPostEvent = Callable[[dict[str, Any]], None]
 
 
-def _build_url(cursor: Optional[int] = None) -> str:
+def _build_url(cursor: int | None = None) -> str:
     params = [('wantedCollections', 'app.bsky.feed.post')]
     if cursor is not None and cursor > 0:
         params.append(('cursor', str(cursor)))
     return f'{config.JETSTREAM_URL}?{urlencode(params)}'
 
 
-def _get_cursor(service_name: str) -> Optional[int]:
+def _get_cursor(service_name: str) -> int | None:
     state = SubscriptionState.get_or_none(SubscriptionState.service == service_name)
     if state is None:
         SubscriptionState.create(service=service_name, cursor=0)
@@ -38,7 +40,7 @@ def _save_cursor(service_name: str, cursor: int) -> None:
     ).execute()
 
 
-def _parse_post_event(message: dict[str, Any]) -> Optional[dict[str, Any]]:
+def _parse_post_event(message: dict[str, Any]) -> dict[str, Any] | None:
     if message.get('kind') != 'commit':
         return None
 
@@ -67,14 +69,18 @@ def _parse_post_event(message: dict[str, Any]) -> Optional[dict[str, Any]]:
     return event
 
 
-async def _consume(service_name: str, on_event: OnPostEvent, stop_event: Optional[asyncio.Event]) -> None:
+async def _consume(
+    service_name: str, on_event: OnPostEvent, stop_event: asyncio.Event | None
+) -> None:
     backoff = 1
     while stop_event is None or not stop_event.is_set():
         cursor = _get_cursor(service_name)
         url = _build_url(cursor)
         logger.info('connecting to jetstream cursor=%s', cursor)
         try:
-            async with websockets.connect(url, ping_interval=20, ping_timeout=20, max_size=8_000_000) as ws:
+            async with websockets.connect(
+                url, ping_interval=20, ping_timeout=20, max_size=8_000_000
+            ) as ws:
                 backoff = 1
                 last_persist = time.monotonic()
                 latest_cursor = cursor or 0
@@ -106,7 +112,11 @@ async def _consume(service_name: str, on_event: OnPostEvent, stop_event: Optiona
             backoff = min(backoff * 2, 60)
 
 
-def run(service_name: str, on_event: OnPostEvent, stop_event=None) -> None:
+def run(
+    service_name: str,
+    on_event: OnPostEvent,
+    stop_event: threading.Event | None = None,
+) -> None:
     """Blocking entrypoint for a background thread."""
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
@@ -120,8 +130,6 @@ def run(service_name: str, on_event: OnPostEvent, stop_event=None) -> None:
         loop.call_soon_threadsafe(async_stop.set)
 
     if stop_event is not None:
-        import threading
-
         threading.Thread(target=_bridge_stop, daemon=True).start()
 
     try:

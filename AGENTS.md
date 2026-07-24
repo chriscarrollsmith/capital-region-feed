@@ -2,20 +2,22 @@
 
 ## Cursor Cloud specific instructions
 
-Single Python 3.12 service: a self-hosted Bluesky custom feed generator for the
+Single Python 3.14 service: a self-hosted Bluesky custom feed generator for the
 Albany/Capital Region. See `README.md` for the full architecture and command
-reference. Dependencies are installed into a project virtualenv at `.venv`
-(refreshed automatically by the startup update script).
+reference. Dependencies are managed with [uv](https://docs.astral.sh/uv/)
+(`pyproject.toml` + `uv.lock`); the project virtualenv lives at `.venv`.
 
 ### Running / testing / lint
 
-- Always invoke Python through the venv: `.venv/bin/python`, `.venv/bin/pytest`
-  (there is no bare `python`/`uv` on `PATH`; only `python3`/`pip3`).
-- Tests (no network needed): `.venv/bin/pytest -q`
-- Matcher precision/recall eval (no network needed): `.venv/bin/python scripts/eval_filter.py`
-- Run the server (dev): `.venv/bin/python -m server` (uvicorn on `PORT`, default 8080).
-- No linter is configured in the repo despite `.ruff_cache`/`.mypy_cache` entries
-  in `.gitignore`; there is nothing to run for lint.
+- Prefer `uv run …` (or activate `.venv` after `uv sync`).
+- Install/sync: `uv sync`
+- Tests (no network needed): `uv run pytest -q`
+- Matcher precision/recall eval (no network needed):
+  `uv run python scripts/eval_filter.py`
+- Lint/format: `uv run ruff check .` and `uv run ruff format .`
+- Type check: `uv run ty check`
+- Run the server (dev): `uv run python -m server` (uvicorn on `PORT`, default
+  8080).
 
 ### Non-obvious caveats
 

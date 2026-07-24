@@ -2,15 +2,15 @@
 
 from __future__ import annotations
 
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from typing import Any
 
 from server import config
-from server.database import Post, db, prune_old_posts
+from server.database import Post, db, prune_old_posts, utc_now
 from server.logger import logger
 from server.matcher import extract_alt_text, match_post
 
-_last_prune = datetime.utcnow()
+_last_prune = utc_now()
 
 
 def _parse_created_at(value: str | None) -> datetime | None:
@@ -21,7 +21,7 @@ def _parse_created_at(value: str | None) -> datetime | None:
         normalized = value.replace('Z', '+00:00')
         dt = datetime.fromisoformat(normalized)
         if dt.tzinfo is not None:
-            dt = dt.astimezone(timezone.utc).replace(tzinfo=None)
+            dt = dt.astimezone(UTC).replace(tzinfo=None)
         return dt
     except ValueError:
         return None
@@ -30,12 +30,12 @@ def _parse_created_at(value: str | None) -> datetime | None:
 def _is_archived(created_at: datetime | None) -> bool:
     if not created_at:
         return False
-    return datetime.utcnow() - created_at > timedelta(days=1)
+    return utc_now() - created_at > timedelta(days=1)
 
 
 def _maybe_prune() -> None:
     global _last_prune
-    now = datetime.utcnow()
+    now = utc_now()
     if now - _last_prune < timedelta(minutes=30):
         return
     deleted = prune_old_posts()

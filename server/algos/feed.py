@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Optional
+from typing import Any
 
 from server import config
 from server.database import Post
@@ -8,13 +8,9 @@ uri = config.FEED_URI
 CURSOR_EOF = 'eof'
 
 
-def handler(cursor: Optional[str], limit: int) -> dict:
+def handler(cursor: str | None, limit: int) -> dict[str, Any]:
     limit = max(1, min(limit, 100))
-    posts = (
-        Post.select()
-        .order_by(Post.indexed_at.desc(), Post.cid.desc())
-        .limit(limit)
-    )
+    posts = Post.select().order_by(Post.indexed_at.desc(), Post.cid.desc()).limit(limit)
 
     if cursor:
         if cursor == CURSOR_EOF:
@@ -25,8 +21,7 @@ def handler(cursor: Optional[str], limit: int) -> dict:
         indexed_at_ms, cid = cursor_parts
         indexed_at = datetime.fromtimestamp(int(indexed_at_ms) / 1000)
         posts = posts.where(
-            ((Post.indexed_at == indexed_at) & (Post.cid < cid))
-            | (Post.indexed_at < indexed_at)
+            ((Post.indexed_at == indexed_at) & (Post.cid < cid)) | (Post.indexed_at < indexed_at)
         )
 
     post_list = list(posts)
