@@ -8,6 +8,7 @@ primary_region = "ewr"
 [build]
 
 [env]
+  FEEDGEN_HOSTNAME = "capital-region-feed.fly.dev"
   HOSTNAME = "capital-region-feed.fly.dev"
   FEED_URI = "at://did:plc:xndplob7sicvv6balxdzh3jk/app.bsky.feed.generator/aaagkkw3yejuk"
   SERVICE_DID = "did:web:capital-region-feed.fly.dev"

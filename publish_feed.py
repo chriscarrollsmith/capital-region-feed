@@ -14,7 +14,8 @@ import sys
 from atproto import Client, models
 from dotenv import load_dotenv
 
-load_dotenv()
+# Override process env so shell HOSTNAME (e.g. "cursor") cannot beat .env.
+load_dotenv(override=True)
 
 
 def _bool_env(name: str, default: bool = False) -> bool:
@@ -27,7 +28,8 @@ def _bool_env(name: str, default: bool = False) -> bool:
 def main() -> int:
     handle = os.environ.get('HANDLE')
     password = os.environ.get('PASSWORD')
-    hostname = os.environ.get('HOSTNAME')
+    # Prefer FEEDGEN_HOSTNAME; HOSTNAME collides with the OS/shell variable.
+    hostname = os.environ.get('FEEDGEN_HOSTNAME') or os.environ.get('HOSTNAME')
     record_name = os.environ.get('RECORD_NAME', 'aaagkkw3yejuk')
     display_name = os.environ.get('DISPLAY_NAME', 'Albany, NY')
     description = os.environ.get(
@@ -38,10 +40,20 @@ def main() -> int:
     service_did = os.environ.get('SERVICE_DID') or (f'did:web:{hostname}' if hostname else None)
     accepts_interactions = _bool_env('ACCEPTS_INTERACTIONS')
 
+    if hostname in {None, '', 'cursor'} or (service_did or '').endswith(':cursor'):
+        print(
+            'Refusing to publish with hostname/service DID looking like the local shell '
+            f'(hostname={hostname!r}, service_did={service_did!r}). '
+            'Set FEEDGEN_HOSTNAME or SERVICE_DID to your Fly app '
+            '(e.g. capital-region-feed.fly.dev).',
+            file=sys.stderr,
+        )
+        return 1
+
     missing = [n for n, v in {
         'HANDLE': handle,
         'PASSWORD': password,
-        'HOSTNAME': hostname,
+        'FEEDGEN_HOSTNAME/HOSTNAME': hostname,
         'SERVICE_DID': service_did,
         'RECORD_NAME': record_name,
         'DISPLAY_NAME': display_name,
@@ -53,13 +65,9 @@ def main() -> int:
     client = Client()
     client.login(handle, password)
 
-    avatar_blob = None
-    if avatar_path:
-        with open(avatar_path, 'rb') as handle_fp:
-            avatar_blob = client.upload_blob(handle_fp.read()).blob
-
-    # Preserve createdAt when updating an existing record so the feed age stays stable.
+    # Preserve createdAt/avatar when updating an existing record.
     existing_created_at = None
+    existing_avatar = None
     try:
         existing = client.com.atproto.repo.get_record(
             models.ComAtprotoRepoGetRecord.Params(
@@ -72,8 +80,19 @@ def main() -> int:
         existing_created_at = getattr(value, 'created_at', None) or (
             value.get('createdAt') if isinstance(value, dict) else None
         )
+        existing_avatar = getattr(value, 'avatar', None) or (
+            value.get('avatar') if isinstance(value, dict) else None
+        )
     except Exception:  # noqa: BLE001 - first publish has no record yet
         existing_created_at = None
+        existing_avatar = None
+
+    avatar_blob = existing_avatar
+    if avatar_path:
+        with open(avatar_path, 'rb') as handle_fp:
+            avatar_blob = client.upload_blob(handle_fp.read()).blob
+    elif avatar_blob is None:
+        print('Warning: no avatar on existing record and AVATAR_PATH unset; publishing without one.')
 
     response = client.com.atproto.repo.put_record(
         models.ComAtprotoRepoPutRecord.Data(

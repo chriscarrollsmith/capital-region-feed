@@ -103,8 +103,13 @@ Yes — you can keep the same public feed URL/subscribers by overwriting the exi
 3. Publish:
 
 ```bash
-python publish_feed.py
+# Use the project venv (this environment has no bare `python` / `uv` on PATH)
+.venv/bin/python publish_feed.py
+# or: python3 -m venv .venv && . .venv/bin/activate && pip install -r requirements.txt && python publish_feed.py
 ```
+
+Note: prefer `FEEDGEN_HOSTNAME` / `SERVICE_DID` in `.env`. Plain `HOSTNAME` can be
+overridden by the OS/shell variable (e.g. `cursor`), which would publish a bad DID.
 
 That `putRecord`s over:
 

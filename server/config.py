@@ -5,7 +5,8 @@ from dotenv import load_dotenv
 
 from server.logger import logger
 
-load_dotenv()
+# Override process env so a shell HOSTNAME cannot beat .env / Fly config.
+load_dotenv(override=True)
 
 
 def _get_bool_env_var(value: str | None) -> bool:
@@ -26,9 +27,13 @@ def _load_lines(path: Path) -> set[str]:
     return lines
 
 
-HOSTNAME = os.environ.get('HOSTNAME')
-if not HOSTNAME:
-    raise RuntimeError('Set HOSTNAME to your public feedgen hostname (e.g. capital-region-feed.fly.dev).')
+# FEEDGEN_HOSTNAME avoids colliding with the OS/shell HOSTNAME variable.
+HOSTNAME = os.environ.get('FEEDGEN_HOSTNAME') or os.environ.get('HOSTNAME')
+if not HOSTNAME or HOSTNAME == 'cursor':
+    raise RuntimeError(
+        'Set FEEDGEN_HOSTNAME (or HOSTNAME) to your public feedgen hostname '
+        '(e.g. capital-region-feed.fly.dev).'
+    )
 
 SERVICE_DID = os.environ.get('SERVICE_DID') or f'did:web:{HOSTNAME}'
 
