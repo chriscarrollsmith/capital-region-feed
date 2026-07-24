@@ -127,6 +127,26 @@ _NY_CONTEXT = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
+# Hard negatives that always win over an otherwise-strong local phrase
+# (e.g. "capital region" inside "capital region of Madrid").
+_HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
+    r"""
+    (?:
+        albany\s+park
+      | new\s+albany
+      | national\s+capital\s+region
+      | brussels\s+capital\s+region
+      | capital\s+region\s+of\s+(?:
+            madrid|spain|belgium|brussels|paris|france|berlin|germany|
+            tokyo|seoul|beijing|delhi|ottawa|canberra|rome|italy|
+            amsterdam|vienna|warsaw|prague|lisbon|athens|dublin
+          )\b
+      | hauptstadtregion
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
 # Hard negatives: other Albanys / homographs that should never match alone.
 # State abbreviations require a comma/space boundary so we do not trip on
 # English words like "Albany or …" / "Albany in …".
@@ -146,6 +166,13 @@ _HARD_NEGATIVE = re.compile(
           )\b
       | albany\s+road
       | national\s+capital\s+region
+      | brussels\s+capital\s+region
+      | capital\s+region\s+of\s+(?:
+            madrid|spain|belgium|brussels|paris|france|berlin|germany|
+            tokyo|seoul|beijing|delhi|ottawa|canberra|rome|italy|
+            amsterdam|vienna|warsaw|prague|lisbon|athens|dublin
+          )\b
+      | hauptstadtregion
       | jc\s+latham
       | saratoga\s+springs\s*,\s*ut\b
       | saratoga\s+springs\s+ut\b
@@ -257,10 +284,8 @@ def match_post(
     if _HARD_NEGATIVE.search(haystack):
         # Strong NY phrasing can still win over a hard negative only when it is
         # clearly local (e.g. quoting "New Albany" while talking about Albany, NY).
-        if _STRONG_POSITIVE.search(haystack) and not re.search(
-            r'albany\s+park|new\s+albany|national\s+capital\s+region',
-            haystack,
-            re.IGNORECASE,
+        if _STRONG_POSITIVE.search(haystack) and not _HARD_NEGATIVE_BLOCKS_STRONG.search(
+            haystack
         ):
             return MatchResult(True, 'strong_positive_over_negative')
         return MatchResult(False, 'hard_negative')

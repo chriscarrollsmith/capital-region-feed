@@ -233,5 +233,23 @@
     "text": "Albany in upstate is prettier in the fall",
     "expected": true,
     "note": "ensure hard-negative does not treat 'in' as Indiana"
+  },
+  {
+    "id": "fp-capital-region-of-madrid",
+    "text": "State of emergency. Wild fires in southern Europe: Around 90,000 people evacuated. The state of emergency in Spain applies to the capital region of Madrid and the nearby province of Ávila. In France, the Atlantic coast is affected.",
+    "expected": false,
+    "note": "Spanish Comunidad de Madrid, not NY Capital Region"
+  },
+  {
+    "id": "fp-brussels-capital-region",
+    "text": "Transit strike disrupts morning commute across the Brussels Capital Region.",
+    "expected": false,
+    "note": "Belgian region homonym"
+  },
+  {
+    "id": "tp-capital-region-still-matches",
+    "text": "Farmers market season is in full swing across the Capital Region this weekend.",
+    "expected": true,
+    "note": "bare Capital Region remains a local strong positive"
   }
 ]
