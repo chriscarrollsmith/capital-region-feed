@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Publish or update the Bluesky feed generator record.
 
-To cut over the existing SkyFeed Albany feed, keep RECORD_NAME=aaagkkw3yejuk
+To cut over the existing SkyFeed Albany feed, keep RECORD_NAME=[REDACTED]
 and set HOSTNAME/SERVICE_DID to your Fly app. putRecord overwrites the same
 rkey, so the public feed URI stays stable for subscribers.
 """
@@ -30,8 +30,8 @@ def main() -> int:
     password = os.environ.get('PASSWORD')
     # Prefer FEEDGEN_HOSTNAME; HOSTNAME collides with the OS/shell variable.
     hostname = os.environ.get('FEEDGEN_HOSTNAME') or os.environ.get('HOSTNAME')
-    record_name = os.environ.get('RECORD_NAME', 'aaagkkw3yejuk')
-    display_name = os.environ.get('DISPLAY_NAME', 'Albany, NY')
+    record_name = os.environ.get('RECORD_NAME', '[REDACTED]')
+    display_name = os.environ.get('DISPLAY_NAME', '[REDACTED]')
     description = os.environ.get(
         'DESCRIPTION',
         "Posts from and about New York's Capital Region.",
@@ -45,25 +45,40 @@ def main() -> int:
             'Refusing to publish with hostname/service DID looking like the local shell '
             f'(hostname={hostname!r}, service_did={service_did!r}). '
             'Set FEEDGEN_HOSTNAME or SERVICE_DID to your Fly app '
-            '(e.g. capital-region-feed.fly.dev).',
+            '(e.g. [REDACTED]).',
             file=sys.stderr,
         )
         return 1
 
-    missing = [n for n, v in {
-        'HANDLE': handle,
-        'PASSWORD': password,
-        'FEEDGEN_HOSTNAME/HOSTNAME': hostname,
-        'SERVICE_DID': service_did,
-        'RECORD_NAME': record_name,
-        'DISPLAY_NAME': display_name,
-    }.items() if not v]
+    missing = [
+        n
+        for n, v in {
+            'HANDLE': handle,
+            'PASSWORD': password,
+            'FEEDGEN_HOSTNAME/HOSTNAME': hostname,
+            'SERVICE_DID': service_did,
+            'RECORD_NAME': record_name,
+            'DISPLAY_NAME': display_name,
+        }.items()
+        if not v
+    ]
     if missing:
         print(f'Missing required env vars: {", ".join(missing)}', file=sys.stderr)
         return 1
 
+    assert handle is not None
+    assert password is not None
+    assert hostname is not None
+    assert service_did is not None
+    assert record_name is not None
+    assert display_name is not None
+
     client = Client()
     client.login(handle, password)
+    me = client.me
+    if me is None:
+        print('Login succeeded but client profile is unavailable.', file=sys.stderr)
+        return 1
 
     # Preserve createdAt/avatar when updating an existing record.
     existing_created_at = None
@@ -71,7 +86,7 @@ def main() -> int:
     try:
         existing = client.com.atproto.repo.get_record(
             models.ComAtprotoRepoGetRecord.Params(
-                repo=client.me.did,
+                repo=me.did,
                 collection=models.ids.AppBskyFeedGenerator,
                 rkey=record_name,
             )
@@ -92,11 +107,13 @@ def main() -> int:
         with open(avatar_path, 'rb') as handle_fp:
             avatar_blob = client.upload_blob(handle_fp.read()).blob
     elif avatar_blob is None:
-        print('Warning: no avatar on existing record and AVATAR_PATH unset; publishing without one.')
+        print(
+            'Warning: no avatar on existing record and AVATAR_PATH unset; publishing without one.'
+        )
 
     response = client.com.atproto.repo.put_record(
         models.ComAtprotoRepoPutRecord.Data(
-            repo=client.me.did,
+            repo=me.did,
             collection=models.ids.AppBskyFeedGenerator,
             rkey=record_name,
             record=models.AppBskyFeedGenerator.Record(

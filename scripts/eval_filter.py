@@ -48,16 +48,22 @@ def main() -> int:
             tp += 1
         elif result.matched and not expected:
             fp += 1
-            failures.append(f"FP {case['id']}: reason={result.reason} :: {case.get('text', '')[:90]}")
+            failures.append(
+                f'FP {case["id"]}: reason={result.reason} :: {case.get("text", "")[:90]}'
+            )
         elif not result.matched and not expected:
             tn += 1
         else:
             fn += 1
-            failures.append(f"FN {case['id']}: reason={result.reason} :: {case.get('text', '')[:90]}")
+            failures.append(
+                f'FN {case["id"]}: reason={result.reason} :: {case.get("text", "")[:90]}'
+            )
 
         if args.verbose:
             mark = 'OK' if result.matched == expected else 'MISS'
-            print(f"[{mark}] {case['id']} expected={expected} got={result.matched} ({result.reason})")
+            print(
+                f'[{mark}] {case["id"]} expected={expected} got={result.matched} ({result.reason})'
+            )
 
     total = len(cases)
     precision = tp / (tp + fp) if (tp + fp) else 0.0

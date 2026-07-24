@@ -1,7 +1,0 @@
-atproto==0.0.69
-fastapi==0.139.2
-peewee==3.18.1
-python-dotenv==1.1.1
-websockets==15.0.1
-uvicorn==0.51.0
-pytest==8.4.1

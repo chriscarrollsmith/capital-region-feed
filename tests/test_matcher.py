@@ -1,14 +1,12 @@
 import json
 from pathlib import Path
+from typing import Any
 
 import pytest
-
 from server.matcher import extract_alt_text, match_post
 
 CASES = json.loads(
-    (Path(__file__).resolve().parents[1] / 'data' / 'eval_cases.json').read_text(
-        encoding='utf-8'
-    )
+    (Path(__file__).resolve().parents[1] / 'data' / 'eval_cases.json').read_text(encoding='utf-8')
 )
 
 ALLOWLIST_HANDLES = {
@@ -21,7 +19,7 @@ ALLOWLIST_HANDLES = {
 
 
 @pytest.mark.parametrize('case', CASES, ids=[c['id'] for c in CASES])
-def test_eval_case(case):
+def test_eval_case(case: dict[str, Any]) -> None:
     result = match_post(
         case.get('text', ''),
         alt_text=case.get('alt_text', ''),
@@ -30,14 +28,14 @@ def test_eval_case(case):
         allowlist_handles=ALLOWLIST_HANDLES,
     )
     assert result.matched is bool(case['expected']), (
-        f"{case['id']}: expected={case['expected']} got={result.matched} "
-        f"reason={result.reason} note={case.get('note')}"
+        f'{case["id"]}: expected={case["expected"]} got={result.matched} '
+        f'reason={result.reason} note={case.get("note")}'
     )
 
 
-def test_extract_alt_text_from_images():
+def test_extract_alt_text_from_images() -> None:
     embed = {
         '$type': 'app.bsky.embed.images',
-        'images': [{'alt': 'Sunset over Albany, NY', 'image': {}}],
+        'images': [{'alt': 'Sunset over [REDACTED]', 'image': {}}],
     }
-    assert 'Albany, NY' in extract_alt_text(embed)
+    assert '[REDACTED]' in extract_alt_text(embed)

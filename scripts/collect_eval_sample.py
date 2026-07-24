@@ -8,9 +8,7 @@ import json
 import urllib.parse
 import urllib.request
 
-DEFAULT_FEED = (
-    'at://did:plc:xndplob7sicvv6balxdzh3jk/app.bsky.feed.generator/aaagkkw3yejuk'
-)
+DEFAULT_FEED = 'at://did:plc:xndplob7sicvv6balxdzh3jk/app.bsky.feed.generator/aaagkkw3yejuk'  # pragma: allowlist secret
 
 
 def main() -> int:
@@ -19,9 +17,8 @@ def main() -> int:
     parser.add_argument('--limit', type=int, default=50)
     args = parser.parse_args()
 
-    url = (
-        'https://public.api.bsky.app/xrpc/app.bsky.feed.getFeed?'
-        + urllib.parse.urlencode({'feed': args.feed, 'limit': args.limit})
+    url = 'https://public.api.bsky.app/xrpc/app.bsky.feed.getFeed?' + urllib.parse.urlencode(
+        {'feed': args.feed, 'limit': args.limit}
     )
     with urllib.request.urlopen(url, timeout=30) as resp:
         payload = json.loads(resp.read().decode('utf-8'))

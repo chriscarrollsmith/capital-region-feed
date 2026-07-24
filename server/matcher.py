@@ -9,8 +9,8 @@ Designed to fix the main SkyFeed false positives:
 from __future__ import annotations
 
 import re
+from collections.abc import Iterable
 from dataclasses import dataclass
-from typing import Iterable, Optional
 
 
 @dataclass(frozen=True)
@@ -176,7 +176,7 @@ def _normalize(text: str) -> str:
     return re.sub(r'\s+', ' ', text or '').strip()
 
 
-def extract_alt_text(embed: Optional[dict]) -> str:
+def extract_alt_text(embed: object | None) -> str:
     """Pull alt text from common Bluesky embed shapes (dict or SDK-like)."""
     if not embed:
         return ''
@@ -184,15 +184,20 @@ def extract_alt_text(embed: Optional[dict]) -> str:
     chunks: list[str] = []
 
     if isinstance(embed, dict):
-        images = embed.get('images') or []
-        for image in images:
-            if isinstance(image, dict) and image.get('alt'):
-                chunks.append(str(image['alt']))
+        images = embed.get('images')
+        if isinstance(images, list):
+            for image in images:
+                if not isinstance(image, dict):
+                    continue
+                alt = image.get('alt')
+                if alt:
+                    chunks.append(str(alt))
         external = embed.get('external')
         if isinstance(external, dict):
             for key in ('title', 'description'):
-                if external.get(key):
-                    chunks.append(str(external[key]))
+                value = external.get(key)
+                if value:
+                    chunks.append(str(value))
         media = embed.get('media')
         if isinstance(media, dict):
             chunks.append(extract_alt_text(media))
@@ -200,17 +205,19 @@ def extract_alt_text(embed: Optional[dict]) -> str:
         if isinstance(record, dict):
             nested = record.get('record') or record.get('value') or {}
             if isinstance(nested, dict):
-                if nested.get('text'):
-                    chunks.append(str(nested['text']))
+                text = nested.get('text')
+                if text:
+                    chunks.append(str(text))
                 chunks.append(extract_alt_text(nested.get('embed')))
         return ' '.join(chunks)
 
     # SDK model fallbacks
-    images = getattr(embed, 'images', None) or []
-    for image in images:
-        alt = getattr(image, 'alt', None)
-        if alt:
-            chunks.append(str(alt))
+    images = getattr(embed, 'images', None)
+    if isinstance(images, list):
+        for image in images:
+            alt = getattr(image, 'alt', None)
+            if alt:
+                chunks.append(str(alt))
     external = getattr(embed, 'external', None)
     if external is not None:
         for attr in ('title', 'description'):
@@ -220,7 +227,7 @@ def extract_alt_text(embed: Optional[dict]) -> str:
     return ' '.join(chunks)
 
 
-def combine_text(text: str = '', *, alt_text: str = '', langs: Optional[Iterable[str]] = None) -> str:
+def combine_text(text: str = '', *, alt_text: str = '', langs: Iterable[str] | None = None) -> str:
     del langs  # reserved for future language-aware heuristics
     return _normalize(f'{text} {alt_text}')
 
@@ -229,10 +236,10 @@ def match_post(
     text: str,
     *,
     alt_text: str = '',
-    author_did: Optional[str] = None,
-    author_handle: Optional[str] = None,
-    allowlist_dids: Optional[set[str]] = None,
-    allowlist_handles: Optional[set[str]] = None,
+    author_did: str | None = None,
+    author_handle: str | None = None,
+    allowlist_dids: set[str] | None = None,
+    allowlist_handles: set[str] | None = None,
 ) -> MatchResult:
     """Return whether a post belongs in the Capital Region feed."""
     allowlist_dids = allowlist_dids or set()

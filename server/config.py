@@ -28,20 +28,21 @@ def _load_lines(path: Path) -> set[str]:
 
 
 # FEEDGEN_HOSTNAME avoids colliding with the OS/shell HOSTNAME variable.
-HOSTNAME = os.environ.get('FEEDGEN_HOSTNAME') or os.environ.get('HOSTNAME')
-if not HOSTNAME or HOSTNAME == 'cursor':
+_hostname = os.environ.get('FEEDGEN_HOSTNAME') or os.environ.get('HOSTNAME')
+if not _hostname or _hostname == 'cursor':
     raise RuntimeError(
-        'Set FEEDGEN_HOSTNAME (or HOSTNAME) to your public feedgen hostname '
-        '(e.g. capital-region-feed.fly.dev).'
+        'Set FEEDGEN_HOSTNAME (or HOSTNAME) to your public feedgen hostname (e.g. [REDACTED]).'
     )
+HOSTNAME: str = _hostname
 
 SERVICE_DID = os.environ.get('SERVICE_DID') or f'did:web:{HOSTNAME}'
 
-FEED_URI = os.environ.get('FEED_URI')
-if not FEED_URI:
+_feed_uri = os.environ.get('FEED_URI')
+if not _feed_uri:
     raise RuntimeError(
         'Set FEED_URI after publishing (or to the existing SkyFeed URI for cutover testing).'
     )
+FEED_URI: str = _feed_uri
 
 IGNORE_ARCHIVED_POSTS = _get_bool_env_var(os.environ.get('IGNORE_ARCHIVED_POSTS', 'true'))
 IGNORE_REPLY_POSTS = _get_bool_env_var(os.environ.get('IGNORE_REPLY_POSTS', 'true'))

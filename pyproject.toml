@@ -1,0 +1,44 @@
+[project]
+name = "capital-region-feed"
+version = "0.1.0"
+description = "Self-hosted Bluesky custom feed for the Albany/Capital Region"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "atproto",
+    "fastapi",
+    "peewee",
+    "python-dotenv",
+    "uvicorn",
+    "websockets",
+]
+
+[dependency-groups]
+dev = [
+    "httpx",
+    "httpx2>=2.9.1",
+    "pytest",
+    "ruff",
+    "ty",
+]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py314"
+line-length = 100
+src = ["server", "tests", "scripts"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.ruff.format]
+quote-style = "single"
+
+[tool.ty.environment]
+python-version = "3.14"
