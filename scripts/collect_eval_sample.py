@@ -8,7 +8,9 @@ import json
 import urllib.parse
 import urllib.request
 
-DEFAULT_FEED = 'at://did:plc:xndplob7sicvv6balxdzh3jk/app.bsky.feed.generator/aaagkkw3yejuk'  # pragma: allowlist secret
+DEFAULT_FEED = (
+    'at://did:plc:xndplob7sicvv6balxdzh3jk/app.bsky.feed.generator/aaagkkw3yejuk'  # pragma: allowlist secret
+)
 
 
 def main() -> int:
