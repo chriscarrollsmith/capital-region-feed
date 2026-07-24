@@ -1,8 +1,9 @@
-import signal
-import sys
 import threading
+from contextlib import asynccontextmanager
+from typing import Optional
 
-from flask import Flask, jsonify, request
+from fastapi import FastAPI, Query
+from fastapi.responses import JSONResponse, Response
 
 from server import config
 from server.algos import algos
@@ -10,46 +11,49 @@ from server.indexer import handle_event
 from server.jetstream import run as run_jetstream
 from server.logger import logger
 
-app = Flask(__name__)
-
 stream_stop_event = threading.Event()
-stream_thread = threading.Thread(
-    target=run_jetstream,
-    args=(config.SERVICE_DID, handle_event, stream_stop_event),
-    daemon=True,
-)
-stream_thread.start()
+stream_thread: Optional[threading.Thread] = None
 
 
-def _shutdown(*_):
-    logger.info('stopping jetstream...')
-    stream_stop_event.set()
-    sys.exit(0)
+@asynccontextmanager
+async def lifespan(_app: FastAPI):
+    global stream_thread
+    stream_stop_event.clear()
+    stream_thread = threading.Thread(
+        target=run_jetstream,
+        args=(config.SERVICE_DID, handle_event, stream_stop_event),
+        daemon=True,
+    )
+    stream_thread.start()
+    try:
+        yield
+    finally:
+        logger.info('stopping jetstream...')
+        stream_stop_event.set()
 
 
-signal.signal(signal.SIGINT, _shutdown)
-signal.signal(signal.SIGTERM, _shutdown)
+app = FastAPI(title='capital-region-feed', lifespan=lifespan)
 
 
 @app.get('/')
 def index():
-    return jsonify({
+    return {
         'service': 'capital-region-feed',
         'did': config.SERVICE_DID,
         'feed': config.FEED_URI,
-    })
+    }
 
 
 @app.get('/healthz')
 def healthz():
-    return jsonify({'ok': True})
+    return {'ok': True}
 
 
 @app.get('/.well-known/did.json')
 def did_json():
     if not config.SERVICE_DID.endswith(config.HOSTNAME):
-        return '', 404
-    return jsonify({
+        return Response(status_code=404)
+    return {
         '@context': ['https://www.w3.org/ns/did/v1'],
         'id': config.SERVICE_DID,
         'service': [
@@ -59,29 +63,36 @@ def did_json():
                 'serviceEndpoint': f'https://{config.HOSTNAME}',
             }
         ],
-    })
+    }
 
 
 @app.get('/xrpc/app.bsky.feed.describeFeedGenerator')
 def describe_feed_generator():
-    return jsonify({
+    return {
         'did': config.SERVICE_DID,
         'feeds': [{'uri': uri} for uri in algos.keys()],
-    })
+    }
 
 
 @app.get('/xrpc/app.bsky.feed.getFeedSkeleton')
-def get_feed_skeleton():
-    feed = request.args.get('feed')
+def get_feed_skeleton(
+    feed: Optional[str] = None,
+    cursor: Optional[str] = None,
+    limit: int = Query(default=20),
+):
     algo = algos.get(feed)
     if not algo:
-        return jsonify({'error': 'UnsupportedAlgorithm', 'message': 'Unsupported algorithm'}), 400
+        return JSONResponse(
+            {'error': 'UnsupportedAlgorithm', 'message': 'Unsupported algorithm'},
+            status_code=400,
+        )
 
     try:
-        cursor = request.args.get('cursor')
-        limit = request.args.get('limit', default=20, type=int)
         body = algo(cursor, limit)
     except ValueError:
-        return jsonify({'error': 'InvalidRequest', 'message': 'Malformed cursor'}), 400
+        return JSONResponse(
+            {'error': 'InvalidRequest', 'message': 'Malformed cursor'},
+            status_code=400,
+        )
 
-    return jsonify(body)
+    return body
