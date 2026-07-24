@@ -1,0 +1,7 @@
+# Local / Capital Region accounts whose posts are always indexed (non-replies).
+# Handles are matched case-insensitively.
+news10.bsky.social
+timesunion.com
+albany-ny.bsky.social
+cbs6albany.bsky.social
+wrgb.bsky.social

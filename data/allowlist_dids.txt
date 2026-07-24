@@ -1,0 +1,2 @@
+# Optional DID allowlist (one did:plc:... per line).
+# Prefer handles in allowlist_handles.txt unless a handle is unstable.
