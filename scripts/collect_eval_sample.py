@@ -1,23 +1,29 @@
 #!/usr/bin/env python3
-"""Fetch the live SkyFeed Albany feed and print candidate eval rows as JSON lines."""
+"""Fetch a live Bluesky feed and print candidate eval rows as JSON lines."""
 
 from __future__ import annotations
 
 import argparse
 import json
+import os
+import sys
 import urllib.parse
 import urllib.request
-
-DEFAULT_FEED = (
-    'at://did:plc:xndplob7sicvv6balxdzh3jk/app.bsky.feed.generator/aaagkkw3yejuk'  # pragma: allowlist secret
-)
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--feed', default=DEFAULT_FEED)
+    parser.add_argument(
+        '--feed',
+        default=os.environ.get('FEED_URI'),
+        help='Feed URI to sample (default: FEED_URI env)',
+    )
     parser.add_argument('--limit', type=int, default=50)
     args = parser.parse_args()
+
+    if not args.feed:
+        print('Pass --feed or set FEED_URI', file=sys.stderr)
+        return 1
 
     url = 'https://public.api.bsky.app/xrpc/app.bsky.feed.getFeed?' + urllib.parse.urlencode(
         {'feed': args.feed, 'limit': args.limit}

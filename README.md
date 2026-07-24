@@ -69,7 +69,7 @@ Iterate by editing `server/matcher.py` and adding rows to `data/eval_cases.json`
 # Prefer setting these in .env (config load_dotenv overrides the shell)
 # FEEDGEN_HOSTNAME=localhost
 # SERVICE_DID=did:web:localhost
-# FEED_URI=at://did:plc:xndplob7sicvv6balxdzh3jk/app.bsky.feed.generator/aaagkkw3yejuk  # pragma: allowlist secret
+# FEED_URI=<your feed URI>
 # DATABASE_PATH=./feed_database.db
 uv run python -m server
 ```
