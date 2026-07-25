@@ -47,7 +47,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   not only aggregate F1.
 
 ### B-002 — Improve sampling tooling for labeling
-- **Status:** todo
+- **Status:** done ([#9](https://github.com/chriscarrollsmith/capital-region-feed/pull/9))
 - **Depends on:** —
 - **Work:**
   - Extend `scripts/collect_eval_sample.py` (or add siblings) to pull:

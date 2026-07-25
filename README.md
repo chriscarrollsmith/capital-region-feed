@@ -151,10 +151,41 @@ Precision is favored over recall for bare `Albany`.
 
 ## Suggested iteration loop
 
-1. `uv run python scripts/collect_eval_sample.py > /tmp/sample.jsonl`
-2. Label new misses/false hits into `data/eval_cases.json`
-3. Adjust `server/matcher.py`
+Grow the eval set from **authors / near-misses / events**, not only from an
+existing place-name feed:
+
+```bash
+# Local org/media accounts (allowlist) — recall without placenames
+uv run python scripts/collect_eval_sample.py authors --from-allowlist \
+  > /tmp/sample-authors.jsonl
+
+# Ambiguous / off-region homographs that should usually drop
+uv run python scripts/collect_eval_sample.py near-miss \
+  > /tmp/sample-near-miss.jsonl
+
+# Event-like regional announcements
+uv run python scripts/collect_eval_sample.py events \
+  > /tmp/sample-events.jsonl
+
+# Optional: still sample a live custom feed (place-name biased)
+uv run python scripts/collect_eval_sample.py feed --feed "$FEED_URI" \
+  > /tmp/sample-feed.jsonl
+```
+
+1. Set each row’s `expected` to `true` (keep) or `false` (drop). Adjust
+   `signal` / `bucket` / `split` if the suggestions are wrong; rename `id` to a
+   short slug if you prefer.
+2. Append labeled rows (skips unlabeled + duplicate ids):
+
+```bash
+uv run python scripts/append_eval_cases.py --input /tmp/labeled.jsonl
+```
+
+3. Adjust `server/matcher.py` as needed.
 4. `uv run python scripts/eval_filter.py && uv run pytest -q`
 5. `fly deploy`
+
+`collect_eval_sample.py search --query '…'` is available for one-off queries.
+Rows already present in `data/eval_cases.json` are skipped by default.
 
 Optional later: engagement ranking, muted keywords, curated DID lists from Bluesky starter packs.
