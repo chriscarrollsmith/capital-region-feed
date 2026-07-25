@@ -52,7 +52,8 @@ SLOP_PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
         'bizspam',
         re.compile(
             r'call (?:us )?today|free (?:estimate|quote)|'
-            r'serving (?:all of )?(?:albany|the capital)|'
+            r'serving all of albany|'
+            r'(?:hvac|roofing|plumbing|windows?).{0,60}serving|'
             r'company (?:address|phone|email)',
             re.I,
         ),
