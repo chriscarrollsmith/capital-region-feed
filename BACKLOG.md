@@ -117,7 +117,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
 ## P1 — Regional events
 
 ### B-020 — Event-oriented matching cues
-- **Status:** done
+- **Status:** done ([#14](https://github.com/chriscarrollsmith/capital-region-feed/pull/14))
 - **Depends on:** B-001 (event FN cases)
 - **Work:**
   - Identify patterns/signals for upcoming local events: venue names, “at [local
