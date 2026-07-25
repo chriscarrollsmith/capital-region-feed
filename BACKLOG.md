@@ -59,7 +59,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   from an existing place-name feed.
 
 ### B-003 — Rebalance product policy in docs/eval
-- **Status:** todo
+- **Status:** done ([#10](https://github.com/chriscarrollsmith/capital-region-feed/pull/10))
 - **Work:** Update README matching notes and eval expectations so “precision over
   recall for bare Albany” is no longer the sole policy; document the dual FN/FP
   goal and the author/event recall targets.

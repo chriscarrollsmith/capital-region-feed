@@ -33,7 +33,7 @@ Key files:
 | `server/jetstream.py` | Websocket consumer + cursor persistence |
 | `server/indexer.py` | Match → DB writes / deletes |
 | `server/app.py` | XRPC + `did:web` endpoints |
-| `data/eval_cases.json` | Labeled true/false fixtures from live feed noise |
+| `data/eval_cases.json` | Stratified keep/drop fixtures (text, author, event signals) |
 | `publish_feed.py` | Create/update the generator record (cutover) |
 
 ## Local setup
@@ -61,7 +61,9 @@ uv run pytest -q
 uv run python scripts/eval_filter.py --verbose
 ```
 
-Iterate by editing `server/matcher.py` and adding rows to `data/eval_cases.json`.
+Reports stratified precision/recall (by split, signal, and bucket). Iterate by editing
+`server/matcher.py` and adding rows to `data/eval_cases.json`. Use `--strict` to also
+fail on known recall-gap cases (`regression: false`).
 
 ### Run the feedgen locally
 
@@ -134,20 +136,44 @@ with `did:web:capital-region-feed.fly.dev` instead of `did:web:skyfeed.me`.
 
 Re-point the record at SkyFeed (or republish from SkyFeed’s UI) if needed, or temporarily set `SERVICE_DID=did:web:skyfeed.me` only if SkyFeed still hosts a compatible generator for that rkey.
 
-## Matching strategy (v1)
+## Matching policy
 
-**Keep** when text/alt matches:
+The feed optimizes for **both** false positives and false negatives:
 
-- Strong local phrases: `Albany, NY`, `Capital Region`, `Schenectady`, `Niskayuna`, `I-787`, `#AlbanyNY`, `r/Albany`, …
-- Ambiguous towns (`Troy`, `Latham`, `Saratoga Springs`, bare `Albany`, …) **only with** NY / local context
-- Local allowlisted accounts (see `data/allowlist_handles.txt`)
+| Goal | Target |
+| ---- | ------ |
+| Precision | No SkyFeed-style off-region noise (Albany Park, New Albany, DC “Capital Region”, …) |
+| Recall | Local posts should not need to say “Albany” to appear — especially allowlisted authors and regional events |
+
+Bare / ambiguous place names stay precision-gated (NY or other local context required).
+Author allowlists and event/venue cues are the main recall levers for posts without
+placenames. See `BACKLOG.md` for the sequenced work (allowlists → events → classifier).
+
+### Current keep / drop rules (v1)
+
+**Keep** when:
+
+- Text/alt matches strong local phrases in `server/matcher.py` (`_STRONG_POSITIVE`: Capital Region, Schenectady, Niskayuna, I-787, `#AlbanyNY`, `r/Albany`, …)
+- Ambiguous towns (`Troy`, `Latham`, `Saratoga Springs`, bare `Albany`, …) appear **with** NY / local context
+- Author is on the local allowlist (`data/allowlist_handles.txt` / `allowlist_dids.txt`), even with no place words in the text
 
 **Drop** hard negatives:
 
 - Albany Park, New Albany, other state Albanys
 - National Capital Region (DC), JC Latham, French *colonie*, Albany Road, Saratoga Springs UT
 
-Precision is favored over recall for bare `Albany`.
+### Eval expectations
+
+`data/eval_cases.json` is stratified so scores are not only about SkyFeed false positives:
+
+- **signal:** `text` · `author` · `event` — how locality is supposed to arrive
+- **bucket:** e.g. `skyfeed_fp`, `precision_gate`, `local_org_no_placename`, `regional_event`
+- **split:** `dev` (iterate) vs `holdout` (report separately)
+- **regression:** `false` marks known recall gaps (tracked, not CI-failing) until backlog items close them
+
+Judge matcher changes on stratified precision **and** recall (`scripts/eval_filter.py`),
+not aggregate F1 alone. Author-signal and event-signal strata are first-class recall
+targets; `precision_gate` / `skyfeed_fp` must not regress.
 
 ## Suggested iteration loop
 
@@ -188,4 +214,5 @@ uv run python scripts/append_eval_cases.py --input /tmp/labeled.jsonl
 `collect_eval_sample.py search --query '…'` is available for one-off queries.
 Rows already present in `data/eval_cases.json` are skipped by default.
 
-Optional later: engagement ranking, muted keywords, curated DID lists from Bluesky starter packs.
+Optional later (see `BACKLOG.md`): broader allowlists, event/venue cues, hybrid
+classifier, engagement ranking, muted keywords.

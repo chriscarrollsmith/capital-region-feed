@@ -9,7 +9,8 @@ ALL_CASES = json.loads(
     (Path(__file__).resolve().parents[1] / 'data' / 'eval_cases.json').read_text(encoding='utf-8')
 )
 # Gap cases (regression=false) are measured by scripts/eval_filter.py but not
-# asserted here — they document known recall misses for later backlog items.
+# asserted here — they track known author/event recall misses until backlog
+# items close them, without treating precision-gate drops as the only goal.
 CASES = [c for c in ALL_CASES if c.get('regression', True)]
 
 ALLOWLIST_HANDLES = {
