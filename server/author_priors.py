@@ -13,7 +13,8 @@ from datetime import timedelta
 from server import config
 from server.database import AuthorLocalStats, db, utc_now
 
-# Text-earned locality only — not allowlist / soft-prior reasons (avoids loops).
+# Text-earned locality only — not allowlist / soft-prior / classifier reasons
+# (avoids loops where second-stage keeps inflate soft priors).
 _STRONG_MATCH_REASONS = frozenset(
     {
         'strong_positive',

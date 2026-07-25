@@ -21,6 +21,8 @@ Case schema (``data/eval_cases.json``):
   (known recall gaps until author/event backlog items land)
 - ``soft_prior``: if true with ``author_did``, treat that DID as soft-prior eligible
   for this case (earned priors in production come from ``AuthorLocalStats``)
+- Bucket ``ambiguous_classifier`` covers second-stage keeps (neighborhood/micro +
+  event) and precision anchors that must stay dropped
 """
 
 from __future__ import annotations

@@ -136,7 +136,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
 ## P2 — Staged classifier (after rules + data)
 
 ### B-030 — Hybrid pipeline: regex floor + ambiguous-case classifier
-- **Status:** todo
+- **Status:** done ([#15](https://github.com/chriscarrollsmith/capital-region-feed/pull/15))
 - **Depends on:** B-001, B-010
 - **Work:**
   - Keep strong positives / hard negatives as a high-precision regex floor.
@@ -146,6 +146,11 @@ Status: `todo` · `in progress` · `done` · `blocked`
     “allowlist”, “classifier”, …).
 - **Done when:** Ambiguous-bucket recall improves on holdout without regressing
   hard-negative precision.
+- **Notes:** v1 is an in-process linear scorer (`server/classifier.py`) with
+  checked-in weights at `data/models/ambiguous_clf_v1.json`. Soft priors still
+  hard-keep before the classifier; classifier reasons are not strong-match
+  priors. Eval bucket `ambiguous_classifier` covers neighborhood/micro + event
+  keeps and precision anchors.
 
 ### B-031 — Bootstrap labels with an LLM judge (offline only)
 - **Status:** todo

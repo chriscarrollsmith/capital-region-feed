@@ -7,9 +7,10 @@ Rejects the main SkyFeed false positives:
 
 Also aims for recall without placenames via author allowlists, soft author
 priors (earned from repeated strong local matches), and event/venue cues
-(local venue + upcoming-event phrasing). Precision stays strict for ambiguous
-bare names unless a soft prior applies; see README matching policy and
-BACKLOG.md.
+(local venue + upcoming-event phrasing). Ambiguous leftovers and event
+near-misses route to a small linear classifier. Precision stays strict for
+ambiguous bare names unless a soft prior or classifier keep applies; see
+README matching policy and BACKLOG.md.
 """
 
 from __future__ import annotations
@@ -17,6 +18,8 @@ from __future__ import annotations
 import re
 from collections.abc import Iterable
 from dataclasses import dataclass
+
+from server.classifier import ClassifierModel, classify_candidate
 
 
 @dataclass(frozen=True)
@@ -330,6 +333,25 @@ def _match_local_event(haystack: str) -> MatchResult | None:
     return MatchResult(True, f'event_local_venue:{venue}')
 
 
+def _classifier_keep(
+    haystack: str,
+    *,
+    term: str | None,
+    model: ClassifierModel | None,
+) -> MatchResult | None:
+    """Second-stage keep for ambiguous / event-near-miss leftovers."""
+    decision = classify_candidate(
+        haystack,
+        term=term,
+        has_event_cue=bool(_EVENT_CUE.search(haystack)),
+        has_local_venue=bool(_LOCAL_EVENT_VENUE.search(haystack)),
+        model=model,
+    )
+    if decision is None:
+        return None
+    return MatchResult(True, decision.reason)
+
+
 def match_post(
     text: str,
     *,
@@ -339,8 +361,14 @@ def match_post(
     allowlist_dids: set[str] | None = None,
     allowlist_handles: set[str] | None = None,
     soft_prior_dids: set[str] | None = None,
+    classifier_model: ClassifierModel | None = None,
 ) -> MatchResult:
-    """Return whether a post belongs in the Capital Region feed."""
+    """Return whether a post belongs in the Capital Region feed.
+
+    Decision order: allowlist → hard negative / strong regex floor → soft prior
+    → ambiguous-case classifier → drop. ``classifier_model`` is for tests;
+    production uses the checked-in weights in ``data/models/``.
+    """
     allowlist_dids = allowlist_dids or set()
     allowlist_handles = {h.lower() for h in (allowlist_handles or set())}
     soft_prior_dids = soft_prior_dids or set()
@@ -386,18 +414,28 @@ def match_post(
             if _STRONG_POSITIVE.search(haystack):
                 return MatchResult(True, 'albany_with_local_cue')
             prior = _soft_prior_ambiguous(author_did, soft_prior_dids, term)
-            return prior if prior else MatchResult(False, 'bare_albany')
+            if prior:
+                return prior
+            clf = _classifier_keep(haystack, term=term, model=classifier_model)
+            return clf if clf else MatchResult(False, 'bare_albany')
 
         if term == 'colonie':
             # Avoid French "colonie" without local cues (handled above / hard neg).
             if _NY_CONTEXT.search(haystack) or _COLONIE_LOCAL.search(haystack):
                 return MatchResult(True, 'colonie_with_context')
             prior = _soft_prior_ambiguous(author_did, soft_prior_dids, term)
-            return prior if prior else MatchResult(False, 'bare_colonie')
+            if prior:
+                return prior
+            clf = _classifier_keep(haystack, term=term, model=classifier_model)
+            return clf if clf else MatchResult(False, 'bare_colonie')
 
         if _NY_CONTEXT.search(haystack) or _STRONG_POSITIVE.search(haystack):
             return MatchResult(True, f'ambiguous_with_context:{term}')
         prior = _soft_prior_ambiguous(author_did, soft_prior_dids, term)
-        return prior if prior else MatchResult(False, f'ambiguous_no_context:{term}')
+        if prior:
+            return prior
+        clf = _classifier_keep(haystack, term=term, model=classifier_model)
+        return clf if clf else MatchResult(False, f'ambiguous_no_context:{term}')
 
-    return MatchResult(False, 'no_match')
+    clf = _classifier_keep(haystack, term=None, model=classifier_model)
+    return clf if clf else MatchResult(False, 'no_match')
