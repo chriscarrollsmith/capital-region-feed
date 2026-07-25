@@ -83,7 +83,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   placename text is kept in production and covered by eval.
 
 ### B-011 — Curate Capital Region account lists
-- **Status:** done
+- **Status:** done ([#12](https://github.com/chriscarrollsmith/capital-region-feed/pull/12))
 - **Depends on:** B-010 (or can start as data collection in parallel)
 - **Quality bar:** Always-keep allowlisting is for **high signal/noise** Cap
   Region voices. Exclude accounts whose feeds are firehose-volume (tens to
