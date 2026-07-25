@@ -103,10 +103,12 @@ Status: `todo` · `in progress` · `done` · `blocked`
   and exercised by eval cases that have empty/non-local-looking text.
 
 ### B-012 — Soft author priors for ambiguous posts
-- **Status:** todo
+- **Status:** done ([#13](https://github.com/chriscarrollsmith/capital-region-feed/pull/13))
 - **Depends on:** B-010, B-001
 - **Work:** For authors with repeated strong local matches, allow weaker text
   (or no placename) to keep. Start rule-based; leave room for learned weights.
+  v1 unlocks bare ambiguous places only (not hard negatives / not every
+  no-placename post); durable counts live in `AuthorLocalStats`.
 - **Done when:** Eval shows recall gains on local-author posts without a
   measurable spike in off-region FPs.
 

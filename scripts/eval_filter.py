@@ -19,6 +19,8 @@ Case schema (``data/eval_cases.json``):
 - ``split``: ``dev`` (iterate freely) or ``holdout`` (report separately)
 - ``regression``: if false, scored in reports but ignored for exit code / pytest
   (known recall gaps until author/event backlog items land)
+- ``soft_prior``: if true with ``author_did``, treat that DID as soft-prior eligible
+  for this case (earned priors in production come from ``AuthorLocalStats``)
 """
 
 from __future__ import annotations
@@ -94,6 +96,7 @@ def evaluate_cases(
     *,
     allowlist_handles: set[str] | None = None,
     allowlist_dids: set[str] | None = None,
+    soft_prior_dids: set[str] | None = None,
     verbose: bool = False,
 ) -> EvalReport:
     handles = allowlist_handles if allowlist_handles is not None else load_allowlist_handles()
@@ -101,6 +104,9 @@ def evaluate_cases(
     report = EvalReport()
 
     for case in cases:
+        case_soft: set[str] = set(soft_prior_dids or ())
+        if case.get('soft_prior') and case.get('author_did'):
+            case_soft.add(str(case['author_did']))
         result = match_post(
             case.get('text', ''),
             alt_text=case.get('alt_text', ''),
@@ -108,6 +114,7 @@ def evaluate_cases(
             author_handle=case.get('author_handle'),
             allowlist_dids=dids,
             allowlist_handles=handles,
+            soft_prior_dids=case_soft,
         )
         expected = bool(case['expected'])
         predicted = result.matched

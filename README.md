@@ -145,9 +145,11 @@ The feed optimizes for **both** false positives and false negatives:
 | Precision | No SkyFeed-style off-region noise (Albany Park, New Albany, DC “Capital Region”, …) |
 | Recall | Local posts should not need to say “Albany” to appear — especially allowlisted authors and regional events |
 
-Bare / ambiguous place names stay precision-gated (NY or other local context required).
-Author allowlists and event/venue cues are the main recall levers for posts without
-placenames. See `BACKLOG.md` for the sequenced work (allowlists → events → classifier).
+Bare / ambiguous place names stay precision-gated (NY or other local context required),
+unless the author has earned a **soft prior** from repeated strong local text matches.
+Hard allowlists and event/venue cues remain the main recall levers for posts with no
+placenames. See `BACKLOG.md` for sequenced work (allowlists → soft priors → events →
+classifier).
 
 ### Current keep / drop rules (v1)
 
@@ -156,6 +158,7 @@ placenames. See `BACKLOG.md` for the sequenced work (allowlists → events → c
 - Text/alt matches strong local phrases in `server/matcher.py` (`_STRONG_POSITIVE`: Capital Region, Schenectady, Niskayuna, I-787, `#AlbanyNY`, `r/Albany`, …)
 - Ambiguous towns (`Troy`, `Latham`, `Saratoga Springs`, bare `Albany`, …) appear **with** NY / local context
 - Author is on the local allowlist (`data/allowlist_handles.txt` / `allowlist_dids.txt`), even with no place words in the text. Jetstream supplies DIDs only — keep DIDs in sync with `uv run python scripts/resolve_allowlist_dids.py` after editing handles. Allowlisting targets high signal/noise Cap Region voices (not firehose-volume or business-slop accounts); screen candidates with `scripts/screen_allowlist_candidates.py`.
+- Author has a soft prior (`SOFT_PRIOR_MIN_STRONG` strong text matches within `SOFT_PRIOR_WINDOW_DAYS`, tracked in `AuthorLocalStats`) and the post uses a bare ambiguous place name. Soft priors do **not** override hard negatives and do not keep arbitrary no-placename posts (that remains allowlist-only).
 
 **Drop** hard negatives:
 
@@ -214,5 +217,5 @@ uv run python scripts/append_eval_cases.py --input /tmp/labeled.jsonl
 `collect_eval_sample.py search --query '…'` is available for one-off queries.
 Rows already present in `data/eval_cases.json` are skipped by default.
 
-Optional later (see `BACKLOG.md`): broader allowlists, event/venue cues, hybrid
-classifier, engagement ranking, muted keywords.
+Optional later (see `BACKLOG.md`): event/venue cues, hybrid classifier, engagement
+ranking, muted keywords.

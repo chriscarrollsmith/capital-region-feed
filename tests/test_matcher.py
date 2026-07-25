@@ -20,6 +20,9 @@ ALLOWLIST_DIDS = load_allowlist_dids()
 
 @pytest.mark.parametrize('case', CASES, ids=[c['id'] for c in CASES])
 def test_eval_case(case: dict[str, Any]) -> None:
+    soft_prior_dids: set[str] = set()
+    if case.get('soft_prior') and case.get('author_did'):
+        soft_prior_dids.add(str(case['author_did']))
     result = match_post(
         case.get('text', ''),
         alt_text=case.get('alt_text', ''),
@@ -27,11 +30,40 @@ def test_eval_case(case: dict[str, Any]) -> None:
         author_handle=case.get('author_handle'),
         allowlist_dids=ALLOWLIST_DIDS,
         allowlist_handles=ALLOWLIST_HANDLES,
+        soft_prior_dids=soft_prior_dids,
     )
     assert result.matched is bool(case['expected']), (
         f'{case["id"]}: expected={case["expected"]} got={result.matched} '
         f'reason={result.reason} note={case.get("note")}'
     )
+
+
+def test_soft_prior_unlocks_bare_ambiguous_not_hard_negative() -> None:
+    did = 'did:plc:softpriortest0000000000001'
+    priors = {did}
+    keep = match_post(
+        'Dinner in Troy tonight.',
+        author_did=did,
+        soft_prior_dids=priors,
+    )
+    assert keep.matched is True
+    assert keep.reason == 'soft_prior_ambiguous:troy'
+
+    drop = match_post(
+        'Dinner in Troy tonight.',
+        author_did=did,
+        soft_prior_dids=set(),
+    )
+    assert drop.matched is False
+    assert drop.reason == 'ambiguous_no_context:troy'
+
+    blocked = match_post(
+        'Nice day in Albany Park.',
+        author_did=did,
+        soft_prior_dids=priors,
+    )
+    assert blocked.matched is False
+    assert blocked.reason == 'hard_negative'
 
 
 def test_allowlist_did_matches_without_handle_or_placename() -> None:

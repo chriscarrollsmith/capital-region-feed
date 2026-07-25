@@ -5,9 +5,10 @@ Rejects the main SkyFeed false positives:
 - French "colonie", NFL "JC Latham", Saratoga Springs UT
 - Bare town names without NY / local context
 
-Also aims for recall without placenames via author allowlists (and, later,
-event/venue cues). Precision stays strict for ambiguous bare names; see README
-matching policy and BACKLOG.md.
+Also aims for recall without placenames via author allowlists, soft author
+priors (earned from repeated strong local matches), and later event/venue cues.
+Precision stays strict for ambiguous bare names unless a soft prior applies;
+see README matching policy and BACKLOG.md.
 """
 
 from __future__ import annotations
@@ -263,6 +264,17 @@ def combine_text(text: str = '', *, alt_text: str = '', langs: Iterable[str] | N
     return _normalize(f'{text} {alt_text}')
 
 
+def _soft_prior_ambiguous(
+    author_did: str | None,
+    soft_prior_dids: set[str],
+    term: str,
+) -> MatchResult | None:
+    """Keep bare ambiguous places for authors with an earned soft prior."""
+    if author_did and author_did in soft_prior_dids:
+        return MatchResult(True, f'soft_prior_ambiguous:{term}')
+    return None
+
+
 def match_post(
     text: str,
     *,
@@ -271,10 +283,12 @@ def match_post(
     author_handle: str | None = None,
     allowlist_dids: set[str] | None = None,
     allowlist_handles: set[str] | None = None,
+    soft_prior_dids: set[str] | None = None,
 ) -> MatchResult:
     """Return whether a post belongs in the Capital Region feed."""
     allowlist_dids = allowlist_dids or set()
     allowlist_handles = {h.lower() for h in (allowlist_handles or set())}
+    soft_prior_dids = soft_prior_dids or set()
 
     if author_did and author_did in allowlist_dids:
         return MatchResult(True, 'allowlist_did')
@@ -312,16 +326,19 @@ def match_post(
                 return MatchResult(True, 'albany_with_ny_context')
             if _STRONG_POSITIVE.search(haystack):
                 return MatchResult(True, 'albany_with_local_cue')
-            return MatchResult(False, 'bare_albany')
+            prior = _soft_prior_ambiguous(author_did, soft_prior_dids, term)
+            return prior if prior else MatchResult(False, 'bare_albany')
 
         if term == 'colonie':
             # Avoid French "colonie" without local cues (handled above / hard neg).
             if _NY_CONTEXT.search(haystack) or _COLONIE_LOCAL.search(haystack):
                 return MatchResult(True, 'colonie_with_context')
-            return MatchResult(False, 'bare_colonie')
+            prior = _soft_prior_ambiguous(author_did, soft_prior_dids, term)
+            return prior if prior else MatchResult(False, 'bare_colonie')
 
         if _NY_CONTEXT.search(haystack) or _STRONG_POSITIVE.search(haystack):
             return MatchResult(True, f'ambiguous_with_context:{term}')
-        return MatchResult(False, f'ambiguous_no_context:{term}')
+        prior = _soft_prior_ambiguous(author_did, soft_prior_dids, term)
+        return prior if prior else MatchResult(False, f'ambiguous_no_context:{term}')
 
     return MatchResult(False, 'no_match')

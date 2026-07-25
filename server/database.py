@@ -44,9 +44,17 @@ class SubscriptionState(BaseModel):
     cursor = peewee.BigIntegerField()
 
 
+class AuthorLocalStats(BaseModel):
+    """Durable strong-match counts for soft author priors (survives Post prune)."""
+
+    author_did = peewee.CharField(primary_key=True)
+    strong_match_count = peewee.IntegerField(default=0)
+    last_strong_at = peewee.DateTimeField(null=True, index=True)
+
+
 if db.is_closed():
     db.connect()
-    db.create_tables([Post, SubscriptionState])
+    db.create_tables([Post, SubscriptionState, AuthorLocalStats])
 
 
 def prune_old_posts(retention_days: int | None = None) -> int:
