@@ -561,7 +561,6 @@
     "regression": true,
     "note": "allowlisted local radio host; no placename"
   },
-
   {
     "id": "fn-event-proctors-schenectady",
     "text": "This Saturday at Proctors in Schenectady: doors at 6, show at 7:30. Tickets still available.",
@@ -682,5 +681,76 @@
     "split": "holdout",
     "regression": false,
     "note": "venue implies Schenectady without placename; gap until B-020"
+  },
+  {
+    "id": "tp-soft-prior-bare-troy",
+    "text": "Heading to Troy tonight for dinner with friends.",
+    "author_did": "did:plc:softpriorlocal000000000001",
+    "soft_prior": true,
+    "expected": true,
+    "signal": "author",
+    "bucket": "author_soft_prior",
+    "split": "dev",
+    "regression": true,
+    "note": "earned soft prior unlocks bare ambiguous Troy"
+  },
+  {
+    "id": "tp-soft-prior-bare-albany",
+    "text": "Concert in Albany this weekend \u2014 who is going?",
+    "author_did": "did:plc:softpriorlocal000000000001",
+    "soft_prior": true,
+    "expected": true,
+    "signal": "author",
+    "bucket": "author_soft_prior",
+    "split": "holdout",
+    "regression": true,
+    "note": "earned soft prior unlocks bare Albany"
+  },
+  {
+    "id": "tp-soft-prior-bare-latham",
+    "text": "Traffic is a mess near Latham again this morning.",
+    "author_did": "did:plc:softpriorlocal000000000001",
+    "soft_prior": true,
+    "expected": true,
+    "signal": "author",
+    "bucket": "author_soft_prior",
+    "split": "dev",
+    "regression": true,
+    "note": "earned soft prior unlocks bare Latham"
+  },
+  {
+    "id": "tn-no-prior-bare-troy",
+    "text": "Heading to Troy tonight for dinner with friends.",
+    "author_did": "did:plc:nopriorsomeone000000000002",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "same bare Troy text without soft prior must still drop"
+  },
+  {
+    "id": "tn-soft-prior-hard-negative-albany-park",
+    "text": "Walked through Albany Park this afternoon.",
+    "author_did": "did:plc:softpriorlocal000000000001",
+    "soft_prior": true,
+    "expected": false,
+    "signal": "author",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "soft prior must never override Albany Park hard negative"
+  },
+  {
+    "id": "tn-soft-prior-no-placename",
+    "text": "Newsletter is out for subscribers \u2014 thanks for reading!",
+    "author_did": "did:plc:softpriorlocal000000000001",
+    "soft_prior": true,
+    "expected": false,
+    "signal": "author",
+    "bucket": "author_soft_prior",
+    "split": "dev",
+    "regression": true,
+    "note": "v1 soft prior unlocks ambiguous places only, not every post"
   }
 ]

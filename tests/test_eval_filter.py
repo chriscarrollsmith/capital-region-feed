@@ -87,8 +87,13 @@ def test_eval_cases_have_required_strata() -> None:
     assert 'author' in signals
     assert 'event' in signals
     assert 'local_org_no_placename' in buckets
+    assert 'author_soft_prior' in buckets
     assert 'regional_event' in buckets
     assert splits == {'dev', 'holdout'}
+
+    soft_prior_cases = [c for c in cases if c.get('bucket') == 'author_soft_prior']
+    assert soft_prior_cases, 'expected soft-prior eval cases'
+    assert any(c.get('soft_prior') is True and c.get('expected') is True for c in soft_prior_cases)
 
     fn_author = [
         c

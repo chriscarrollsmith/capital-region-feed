@@ -6,6 +6,7 @@ from datetime import UTC, datetime, timedelta
 from typing import Any
 
 from server import config
+from server.author_priors import author_has_soft_prior, is_strong_match_reason, record_strong_match
 from server.database import Post, db, prune_old_posts, utc_now
 from server.logger import logger
 from server.matcher import extract_alt_text, match_post
@@ -69,12 +70,15 @@ def handle_event(event: dict[str, Any]) -> None:
 
     text = record.get('text') or ''
     alt_text = extract_alt_text(record.get('embed'))
+    author_did = event.get('author')
+    soft_prior_dids = {author_did} if author_has_soft_prior(author_did) else set()
     result = match_post(
         text,
         alt_text=alt_text,
-        author_did=event.get('author'),
+        author_did=author_did,
         allowlist_dids=config.ALLOWLIST_DIDS,
         allowlist_handles=config.ALLOWLIST_HANDLES,
+        soft_prior_dids=soft_prior_dids,
     )
     if not result.matched:
         return
@@ -87,12 +91,15 @@ def handle_event(event: dict[str, Any]) -> None:
         Post.insert(
             uri=uri,
             cid=event.get('cid') or '',
-            author_did=event.get('author'),
+            author_did=author_did,
             reply_parent=parent,
             reply_root=root,
             match_reason=result.reason,
             created_at=created_at,
         ).on_conflict_ignore().execute()
+
+    if is_strong_match_reason(result.reason):
+        record_strong_match(author_did)
 
     logger.info('indexed %s reason=%s', uri, result.reason)
     _maybe_prune()
