@@ -1,7 +1,9 @@
 # Local / Capital Region accounts whose posts are always indexed (non-replies).
-# Handles are matched case-insensitively.
+# Handles are matched case-insensitively when available; Jetstream ingest uses
+# DIDs — keep data/allowlist_dids.txt in sync with:
+#   uv run python scripts/resolve_allowlist_dids.py
+#
+# Only include handles that resolve on Bluesky AppView. Grow this list in B-011.
 news10.bsky.social
 timesunion.com
 albany-ny.bsky.social
-cbs6albany.bsky.social
-wrgb.bsky.social

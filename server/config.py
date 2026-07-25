@@ -1,8 +1,8 @@
 import os
-from pathlib import Path
 
 from dotenv import load_dotenv
 
+from server.allowlists import load_allowlist_dids, load_allowlist_handles
 from server.logger import logger
 
 # Override process env so a shell HOSTNAME cannot beat .env / Fly config.
@@ -13,18 +13,6 @@ def _get_bool_env_var(value: str | None) -> bool:
     if value is None:
         return False
     return value.strip().lower() in {'1', 'true', 't', 'yes', 'y'}
-
-
-def _load_lines(path: Path) -> set[str]:
-    if not path.exists():
-        return set()
-    lines: set[str] = set()
-    for raw in path.read_text(encoding='utf-8').splitlines():
-        line = raw.strip()
-        if not line or line.startswith('#'):
-            continue
-        lines.add(line)
-    return lines
 
 
 # FEEDGEN_HOSTNAME avoids colliding with the OS/shell HOSTNAME variable.
@@ -54,9 +42,8 @@ JETSTREAM_URL = os.environ.get(
 )
 PORT = int(os.environ.get('PORT', '8080'))
 
-_DATA_DIR = Path(__file__).resolve().parent.parent / 'data'
-ALLOWLIST_DIDS = _load_lines(_DATA_DIR / 'allowlist_dids.txt')
-ALLOWLIST_HANDLES = {h.lower() for h in _load_lines(_DATA_DIR / 'allowlist_handles.txt')}
+ALLOWLIST_DIDS = load_allowlist_dids()
+ALLOWLIST_HANDLES = load_allowlist_handles()
 
 logger.info(
     'config loaded hostname=%s service_did=%s allowlist_dids=%d allowlist_handles=%d',

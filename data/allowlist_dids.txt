@@ -1,2 +1,11 @@
-# Optional DID allowlist (one did:plc:... per line).
-# Prefer handles in allowlist_handles.txt unless a handle is unstable.
+# DID allowlist for Jetstream ingest (author field is DID-only).
+# Generated from allowlist_handles.txt — re-run:
+#   uv run python scripts/resolve_allowlist_dids.py
+# Do not hand-edit DIDs unless a handle is unstable; prefer updating handles.
+
+# news10.bsky.social
+did:plc:fuz6utfgzwwmap3a2qfod4ud
+# timesunion.com
+did:plc:7pycdzg5nl4effudeyocyiw4
+# albany-ny.bsky.social
+did:plc:fn3nr3wqpkn436j2qy2wbvqt

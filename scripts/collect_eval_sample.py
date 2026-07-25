@@ -29,6 +29,10 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+
+from server.allowlists import load_list_file  # noqa: E402
+
 DEFAULT_API_HOST = 'https://api.bsky.app'
 USER_AGENT = (
     'capital-region-feed-eval/0.1 (+https://github.com/chriscarrollsmith/capital-region-feed)'
@@ -76,19 +80,6 @@ EVENT_CUE_RE = re.compile(
 
 JsonObject = dict[str, Any]
 Fetcher = Callable[[str], JsonObject]
-
-
-def load_list_file(path: Path) -> list[str]:
-    """Load non-empty, non-comment lines from an allowlist-style file."""
-    if not path.is_file():
-        return []
-    values: list[str] = []
-    for raw in path.read_text(encoding='utf-8').splitlines():
-        line = raw.strip()
-        if not line or line.startswith('#'):
-            continue
-        values.append(line)
-    return values
 
 
 def load_existing_ids(path: Path | None) -> set[str]:
