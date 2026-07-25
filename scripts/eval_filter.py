@@ -1,17 +1,186 @@
 #!/usr/bin/env python3
-"""Evaluate matcher precision/recall against labeled fixtures."""
+"""Evaluate matcher precision/recall against labeled fixtures.
+
+Reports aggregate metrics plus stratification by ``bucket`` / ``signal`` and a
+``dev`` vs ``holdout`` split so matcher changes are not judged only on the set
+used while iterating.
+
+Case schema (``data/eval_cases.json``):
+
+- ``id``, ``text``, ``expected`` (bool) — required
+- ``signal``: ``text`` | ``author`` | ``event`` — how the locality cue arrives
+- ``bucket``: reason-oriented stratum (e.g. ``skyfeed_fp``,
+  ``local_org_no_placename``, ``regional_event``)
+- ``split``: ``dev`` (iterate freely) or ``holdout`` (report separately)
+- ``regression``: if false, scored in reports but ignored for exit code / pytest
+"""
 
 from __future__ import annotations
 
 import argparse
 import json
 import sys
+from collections import defaultdict
+from dataclasses import dataclass, field
 from pathlib import Path
+from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from server.matcher import match_post  # noqa: E402
+
+DEFAULT_ALLOWLIST_HANDLES = {
+    'news10.bsky.social',
+    'timesunion.com',
+    'albany-ny.bsky.social',
+    'cbs6albany.bsky.social',
+    'wrgb.bsky.social',
+}
+
+
+@dataclass
+class Confusion:
+    tp: int = 0
+    fp: int = 0
+    tn: int = 0
+    fn: int = 0
+
+    def add(self, *, predicted: bool, expected: bool) -> None:
+        if predicted and expected:
+            self.tp += 1
+        elif predicted and not expected:
+            self.fp += 1
+        elif not predicted and not expected:
+            self.tn += 1
+        else:
+            self.fn += 1
+
+    @property
+    def total(self) -> int:
+        return self.tp + self.fp + self.tn + self.fn
+
+    @property
+    def precision(self) -> float:
+        denom = self.tp + self.fp
+        return self.tp / denom if denom else 0.0
+
+    @property
+    def recall(self) -> float:
+        denom = self.tp + self.fn
+        return self.tp / denom if denom else 0.0
+
+    @property
+    def f1(self) -> float:
+        p, r = self.precision, self.recall
+        return (2 * p * r / (p + r)) if (p + r) else 0.0
+
+    @property
+    def accuracy(self) -> float:
+        return (self.tp + self.tn) / self.total if self.total else 0.0
+
+
+@dataclass
+class EvalReport:
+    overall: Confusion = field(default_factory=Confusion)
+    by_split: dict[str, Confusion] = field(default_factory=lambda: defaultdict(Confusion))
+    by_signal: dict[str, Confusion] = field(default_factory=lambda: defaultdict(Confusion))
+    by_bucket: dict[str, Confusion] = field(default_factory=lambda: defaultdict(Confusion))
+    failures: list[str] = field(default_factory=list)
+    regression_failures: list[str] = field(default_factory=list)
+
+
+def evaluate_cases(
+    cases: list[dict[str, Any]],
+    *,
+    allowlist_handles: set[str] | None = None,
+    verbose: bool = False,
+) -> EvalReport:
+    handles = allowlist_handles if allowlist_handles is not None else DEFAULT_ALLOWLIST_HANDLES
+    report = EvalReport()
+
+    for case in cases:
+        result = match_post(
+            case.get('text', ''),
+            alt_text=case.get('alt_text', ''),
+            author_did=case.get('author_did'),
+            author_handle=case.get('author_handle'),
+            allowlist_handles=handles,
+        )
+        expected = bool(case['expected'])
+        predicted = result.matched
+        signal = str(case.get('signal') or 'text')
+        bucket = str(case.get('bucket') or 'unspecified')
+        split = str(case.get('split') or 'dev')
+        regression = case.get('regression', True)
+        if not isinstance(regression, bool):
+            regression = bool(regression)
+
+        report.overall.add(predicted=predicted, expected=expected)
+        report.by_split[split].add(predicted=predicted, expected=expected)
+        report.by_signal[signal].add(predicted=predicted, expected=expected)
+        report.by_bucket[bucket].add(predicted=predicted, expected=expected)
+
+        ok = predicted == expected
+        if not ok:
+            kind = 'FP' if predicted and not expected else 'FN'
+            line = (
+                f'{kind} {case["id"]} [{split}/{signal}/{bucket}] '
+                f'reason={result.reason} :: {case.get("text", "")[:90]}'
+            )
+            report.failures.append(line)
+            if regression:
+                report.regression_failures.append(line)
+
+        if verbose:
+            mark = 'OK' if ok else 'MISS'
+            gap = '' if regression else ' gap'
+            print(
+                f'[{mark}{gap}] {case["id"]} split={split} signal={signal} '
+                f'bucket={bucket} expected={expected} got={predicted} ({result.reason})'
+            )
+
+    return report
+
+
+def _fmt_rate(value: float, *, defined: bool) -> str:
+    return f'{value:.3f}' if defined else 'n/a'
+
+
+def _fmt_confusion(name: str, c: Confusion) -> str:
+    return (
+        f'{name}: n={c.total} tp={c.tp} fp={c.fp} tn={c.tn} fn={c.fn} '
+        f'precision={_fmt_rate(c.precision, defined=(c.tp + c.fp) > 0)} '
+        f'recall={_fmt_rate(c.recall, defined=(c.tp + c.fn) > 0)} '
+        f'f1={_fmt_rate(c.f1, defined=(c.tp + c.fp) > 0 and (c.tp + c.fn) > 0)} '
+        f'accuracy={c.accuracy:.3f}'
+    )
+
+
+def print_report(report: EvalReport) -> None:
+    print(_fmt_confusion('all', report.overall))
+    print()
+    print('By split:')
+    for key in sorted(report.by_split):
+        print(f'  {_fmt_confusion(key, report.by_split[key])}')
+    print()
+    print('By signal:')
+    for key in sorted(report.by_signal):
+        print(f'  {_fmt_confusion(key, report.by_signal[key])}')
+    print()
+    print('By bucket:')
+    for key in sorted(report.by_bucket):
+        print(f'  {_fmt_confusion(key, report.by_bucket[key])}')
+
+    if report.failures:
+        print('\nFailures:')
+        for line in report.failures:
+            print(f'  - {line}')
+    if report.regression_failures != report.failures:
+        print(
+            f'\nRegression failures: {len(report.regression_failures)} '
+            f'(of {len(report.failures)} total misses; non-regression gaps ignored for exit)'
+        )
 
 
 def main() -> int:
@@ -23,62 +192,20 @@ def main() -> int:
         help='Path to labeled eval JSON',
     )
     parser.add_argument('--verbose', action='store_true')
+    parser.add_argument(
+        '--strict',
+        action='store_true',
+        help='Fail on any miss, including regression=false gap cases',
+    )
     args = parser.parse_args()
 
     cases = json.loads(args.cases.read_text(encoding='utf-8'))
-    tp = fp = tn = fn = 0
-    failures: list[str] = []
+    report = evaluate_cases(cases, verbose=args.verbose)
+    print_report(report)
 
-    for case in cases:
-        result = match_post(
-            case.get('text', ''),
-            alt_text=case.get('alt_text', ''),
-            author_did=case.get('author_did'),
-            author_handle=case.get('author_handle'),
-            allowlist_handles={
-                'news10.bsky.social',
-                'timesunion.com',
-                'albany-ny.bsky.social',
-                'cbs6albany.bsky.social',
-                'wrgb.bsky.social',
-            },
-        )
-        expected = bool(case['expected'])
-        if result.matched and expected:
-            tp += 1
-        elif result.matched and not expected:
-            fp += 1
-            failures.append(
-                f'FP {case["id"]}: reason={result.reason} :: {case.get("text", "")[:90]}'
-            )
-        elif not result.matched and not expected:
-            tn += 1
-        else:
-            fn += 1
-            failures.append(
-                f'FN {case["id"]}: reason={result.reason} :: {case.get("text", "")[:90]}'
-            )
-
-        if args.verbose:
-            mark = 'OK' if result.matched == expected else 'MISS'
-            print(
-                f'[{mark}] {case["id"]} expected={expected} got={result.matched} ({result.reason})'
-            )
-
-    total = len(cases)
-    precision = tp / (tp + fp) if (tp + fp) else 0.0
-    recall = tp / (tp + fn) if (tp + fn) else 0.0
-    f1 = (2 * precision * recall / (precision + recall)) if (precision + recall) else 0.0
-    accuracy = (tp + tn) / total if total else 0.0
-
-    print(f'cases={total} tp={tp} fp={fp} tn={tn} fn={fn}')
-    print(f'precision={precision:.3f} recall={recall:.3f} f1={f1:.3f} accuracy={accuracy:.3f}')
-    if failures:
-        print('\nFailures:')
-        for line in failures:
-            print(f'  - {line}')
-        return 1
-    return 0
+    if args.strict:
+        return 1 if report.failures else 0
+    return 1 if report.regression_failures else 0
 
 
 if __name__ == '__main__':

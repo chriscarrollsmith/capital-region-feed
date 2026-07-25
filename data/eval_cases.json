@@ -3,253 +3,617 @@
     "id": "fp-albany-park-chicago",
     "text": "Court documents reveal new details about the Albany Park standoff earlier this week. Prosecutors say a Chicago man held his partner and daughter hostage.",
     "expected": false,
-    "note": "Chicago Albany Park"
+    "note": "Chicago Albany Park",
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true
   },
   {
     "id": "fp-new-albany-ms",
     "text": "INTERVIEW: Landry Kent of New Albany has been named the 2026 Mississippi Miss Hospitality.",
     "expected": false,
-    "note": "New Albany, Mississippi"
+    "note": "New Albany, Mississippi",
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true
   },
   {
     "id": "tp-schenectady-nun",
     "text": "Sister Maria Rosa Querini, a 91-year-old nun at St. Anthony’s Church in Schenectady, received the 2026 Brenda H. Thomas Good Neighbor Award.",
-    "expected": true
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true
   },
   {
     "id": "tp-capital-region-homelessness",
     "text": "Homelessness falls in NY but Capital Region sees sharp increases. A homeless person’s belongings are seen under I-787.",
-    "expected": true
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true
   },
   {
     "id": "tp-beaches-near-albany",
     "text": "Need a break from the city? These beaches are all within about an hour of Albany, making it easy to plan a sunny day by the water.",
     "author_handle": "albany-ny.bsky.social",
     "expected": true,
-    "note": "allowlisted local account"
+    "note": "allowlisted local account",
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true
   },
   {
     "id": "tp-music-haven-schenectady",
     "text": "Tomorrow! WEXT’s second annual Local 518 Music Fest at #MusicHaven in Schenectady’s Central Park beginning at 2pm!",
-    "expected": true
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true
   },
   {
     "id": "fp-national-capital-region",
     "text": "Terrific overview at today's ACC National Capital Region ROUNDTABLE PRIVACY 101 with Joe O'Murchadha.",
     "expected": false,
-    "note": "DC National Capital Region"
+    "note": "DC National Capital Region",
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true
   },
   {
     "id": "fp-french-colonie",
     "text": "Nous sommes une colonie numérique des États-Unis, épisode 43.",
-    "expected": false
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true
   },
   {
     "id": "tp-colonie-senior-centers",
     "text": "I'm proud to have helped secure the state funding needed to restore and sustain the Colonie Senior Service Centers Transportation Program.",
-    "expected": true
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true
   },
   {
     "id": "fp-jc-latham",
     "text": "The Titans’ biggest JC Latham question has nothing to do with the training camp PUP list",
-    "expected": false
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true
   },
   {
     "id": "fp-albany-unspecified-event",
     "text": "Heading up to Eufuria in Albany! Excited to experience the Black Pawrade",
     "expected": false,
-    "note": "bare Albany without NY context; may be local but too ambiguous for keyword rules"
+    "note": "bare Albany without NY context; may be local but too ambiguous for keyword rules",
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true
   },
   {
     "id": "tp-saratoga-springs-ny",
     "text": "Racing and Gaming Conference at Saratoga to Examine the Rapid Rise of Prediction Markets. SARATOGA SPRINGS, NY: As prediction markets rapidly gain traction",
-    "expected": true
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true
   },
   {
     "id": "fp-saratoga-springs-ut",
     "text": "Client Relationship Consultant 3 -Saratoga Springs UT - Saratoga Springs, UT Job",
-    "expected": false
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true
   },
   {
     "id": "tp-787-saratoga-exit",
     "text": "The Saratoga Springs/Glens Falls exit on 787 is deadlocked. Plan accordingly.",
-    "expected": true
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true
   },
   {
     "id": "tp-colonie-police",
     "text": "Colonie Police Department's Drone Unit helped catch an alleged burglary suspect early Wednesday morning.",
-    "expected": true
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true
   },
   {
     "id": "tp-helderberg-albany-ny",
     "text": "View from the Helderberg Escarpment, west of #AlbanyNY. The grouping of light colored buildings furthest away in the center is the City of Albany.",
-    "expected": true
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true
   },
   {
     "id": "tp-schenectady-ny-art",
     "text": "Some Petunias on our deck railing a few years ago when we lived near Schenectady, N.Y.",
-    "expected": true
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true
   },
   {
     "id": "fp-albany-road-uk",
     "text": "I will know I am finally old when I no longer have the ability to run across two roads before the lights change back at death junction on Albany road.",
-    "expected": false
+    "expected": false,
+    "signal": "text",
+    "bucket": "global_negative",
+    "split": "dev",
+    "regression": true
   },
   {
     "id": "tp-saratoga-casino",
     "text": "Police body-camera footage from a heartbreaking evening at the Saratoga Casino Hotel in June was released Friday morning by the Saratoga Springs Police Department.",
     "expected": true,
-    "note": "Saratoga Springs Police is local enough with strong positive? 'saratoga springs' is ambiguous - needs NY context. 'Saratoga Springs Police Department' - may fail. Label as true desired; matcher should catch via saratoga springs + police local? Actually no NY context. Need to strengthen."
+    "note": "Saratoga Springs Police is local enough with strong positive? 'saratoga springs' is ambiguous - needs NY context. 'Saratoga Springs Police Department' - may fail. Label as true desired; matcher should catch via saratoga springs + police local? Actually no NY context. Need to strengthen.",
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true
   },
   {
     "id": "tp-local518-fest",
     "text": "Local 518 Music Fest Sat. July 25 - Schenectady Central Park",
-    "expected": true
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true
   },
   {
     "id": "fp-new-albany-ceo",
     "text": "Starting to think we should imprison all New Albany CEOs until we figure out what’s going on.",
-    "expected": false
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true
   },
   {
     "id": "fp-halfmoon-game",
     "text": "Shoutout to Spilled! and Halfmoon since the mobile games are constantly pushing everything else back.",
-    "expected": false
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true
   },
   {
     "id": "tp-welcome-capital-region",
     "text": "Proud this morning to welcome two Members of Parliament of the United Kingdom to our Capital Region for a weekend visit.",
-    "expected": true
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true
   },
   {
     "id": "tp-schenectady-pair",
     "text": "Schenectady Pair Arrested After Yonkers Thruway Drug Stop State Police say a traffic stop uncovered suspected fentanyl.",
-    "expected": true
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true
   },
   {
     "id": "fp-halohalfmoon",
     "text": "halohalfmoonhalohalohalohalo",
-    "expected": false
+    "expected": false,
+    "signal": "text",
+    "bucket": "global_negative",
+    "split": "dev",
+    "regression": true
   },
   {
     "id": "fp-albany-historic-carousel-oregon",
     "text": "The nonprofit Albany Historic Carousel and Museum celebrates National Carousel Day on Saturday.",
     "expected": false,
-    "note": "Albany, Oregon museum; bare Albany"
+    "note": "Albany, Oregon museum; bare Albany",
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true
   },
   {
     "id": "fp-french-colonie-vacances",
     "text": "Les minibus transportaient 16 enfants d'une même colonie de vacances qui revenaient du Puy du Fou",
-    "expected": false
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true
   },
   {
     "id": "tp-fireworks-capital-region",
     "text": "Nothing says summer in the Capital Region like a night of fireworks. Find the best fireworks shows in and around Albany and start planning your celebration.",
-    "expected": true
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true
   },
   {
     "id": "tp-chase-scenes-capital-region",
     "text": "Great film, and fun fact- many of the chase scenes were shot here in the Capital Region",
-    "expected": true
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true
   },
   {
     "id": "tp-times-union-capital-region",
     "text": "Homelessness fell statewide but surged across much of the Capital Region, with Columbia-Greene region recording New York’s largest increase.",
     "author_handle": "timesunion.com",
-    "expected": true
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true
   },
   {
     "id": "fp-jc-latham-bust",
     "text": "Titans it’s time to move on from JC Latham. Dudes a bust",
-    "expected": false
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true
   },
   {
     "id": "fp-hashtag-albany-only",
     "text": "Important Developments in Equinox, Inc. Class Action Data Settlement #United_States #Class_Action #Albany #Data_Incident",
     "expected": false,
-    "note": "bare #Albany hashtag without NY"
+    "note": "bare #Albany hashtag without NY",
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true
   },
   {
     "id": "tp-eufuria-albany-capital-center",
     "text": "Registration is open and checking everyone in at the front door to the Albany Capital Center on Eagle Street.",
-    "expected": true
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true
   },
   {
     "id": "tp-niskayuna-diner",
     "text": "The diner received site plan approval from the Niskayuna Planning Board during their July 13 meeting",
-    "expected": true
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true
   },
   {
     "id": "tp-lol-albany-ny",
-    "text": "Lol Albany, NY",
-    "expected": true
+    "text": "Lol Albany NY",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true
   },
   {
     "id": "fp-minnesota-albany-baseball",
     "text": "Legion baseball playoffs: Cold Spring hangs on for 8-7 win over Pierz; Willmar ends Albany’s season",
     "expected": false,
-    "note": "Minnesota Albany"
+    "note": "Minnesota Albany",
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true
   },
   {
     "id": "tp-reddit-albany",
     "text": "Just what this area needs...... /s www.reddit.com/r/Albany/comments/example",
     "expected": true,
-    "note": "r/Albany is the NY subreddit cue; may need explicit support"
+    "note": "r/Albany is the NY subreddit cue; may need explicit support",
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true
   },
   {
     "id": "tp-saratoga-springs-cannabis",
     "text": "FYI: Silly Nice Bubble Hash Restocks at Silver Cannabis Co. Saratoga Springs #stupidDOPE",
     "expected": false,
-    "note": "ambiguous Saratoga Springs without NY; accept drop for precision"
+    "note": "ambiguous Saratoga Springs without NY; accept drop for precision",
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true
   },
   {
     "id": "tp-troy-ny",
     "text": "Coffee crawl this weekend in Troy, NY — starting at the farmers market.",
-    "expected": true
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true
   },
   {
     "id": "fp-troy-michigan",
     "text": "Weekend plans in Troy, Michigan for the art fair.",
-    "expected": false
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true
   },
   {
     "id": "tp-latham-ny",
     "text": "New bookstore opening in Latham, NY next month.",
-    "expected": true
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true
   },
   {
     "id": "old-regex-would-match-latham-player",
     "text": "Scout report on Latham from the draft combine",
-    "expected": false
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true
   },
   {
     "id": "tp-albany-or-troy",
     "text": "Albany or Troy this weekend for dinner?",
     "expected": true,
-    "note": "two local ambiguous places co-occurring"
+    "note": "two local ambiguous places co-occurring",
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true
   },
   {
     "id": "tp-albany-in-upstate-sentence",
     "text": "Albany in upstate is prettier in the fall",
     "expected": true,
-    "note": "ensure hard-negative does not treat 'in' as Indiana"
+    "note": "ensure hard-negative does not treat 'in' as Indiana",
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true
   },
   {
     "id": "fp-capital-region-of-madrid",
     "text": "State of emergency. Wild fires in southern Europe: Around 90,000 people evacuated. The state of emergency in Spain applies to the capital region of Madrid and the nearby province of Ávila. In France, the Atlantic coast is affected.",
     "expected": false,
-    "note": "Spanish Comunidad de Madrid, not NY Capital Region"
+    "note": "Spanish Comunidad de Madrid, not NY Capital Region",
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true
   },
   {
     "id": "fp-brussels-capital-region",
     "text": "Transit strike disrupts morning commute across the Brussels Capital Region.",
     "expected": false,
-    "note": "Belgian region homonym"
+    "note": "Belgian region homonym",
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true
   },
   {
     "id": "tp-capital-region-still-matches",
     "text": "Farmers market season is in full swing across the Capital Region this weekend.",
     "expected": true,
-    "note": "bare Capital Region remains a local strong positive"
+    "note": "bare Capital Region remains a local strong positive",
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true
+  },
+  {
+    "id": "fn-allowlist-timesunion-no-place",
+    "text": "Our morning newsletter is live. Here's what we're watching today.",
+    "author_handle": "timesunion.com",
+    "expected": true,
+    "signal": "author",
+    "bucket": "local_org_no_placename",
+    "split": "dev",
+    "regression": true,
+    "note": "allowlisted local media; no placename in text"
+  },
+  {
+    "id": "fn-allowlist-news10-hiring",
+    "text": "We're looking for a digital producer. Apply via the link in bio.",
+    "author_handle": "news10.bsky.social",
+    "expected": true,
+    "signal": "author",
+    "bucket": "local_org_no_placename",
+    "split": "dev",
+    "regression": true,
+    "note": "allowlisted local TV; no placename"
+  },
+  {
+    "id": "fn-allowlist-cbs6-community",
+    "text": "Send us your photos of tonight's sunset for a chance to be featured.",
+    "author_handle": "cbs6albany.bsky.social",
+    "expected": true,
+    "signal": "author",
+    "bucket": "local_org_no_placename",
+    "split": "holdout",
+    "regression": true,
+    "note": "allowlisted local TV; no placename"
+  },
+  {
+    "id": "fn-allowlist-wrgb-weather-generic",
+    "text": "Mild overnight lows, then a warming trend into the weekend.",
+    "author_handle": "wrgb.bsky.social",
+    "expected": true,
+    "signal": "author",
+    "bucket": "local_org_no_placename",
+    "split": "holdout",
+    "regression": true,
+    "note": "allowlisted local TV weather; no placename"
+  },
+  {
+    "id": "fn-allowlist-albany-ny-promo",
+    "text": "Thanks to everyone who came out last night. See you at the next one.",
+    "author_handle": "albany-ny.bsky.social",
+    "expected": true,
+    "signal": "author",
+    "bucket": "local_org_no_placename",
+    "split": "dev",
+    "regression": true,
+    "note": "allowlisted municipal/local account; no placename"
+  },
+  {
+    "id": "fn-event-proctors-schenectady",
+    "text": "This Saturday at Proctors in Schenectady: doors at 6, show at 7:30. Tickets still available.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "regional event with unique local venue + city"
+  },
+  {
+    "id": "fn-event-spac-saratoga",
+    "text": "SPAC season opener next Friday in Saratoga Springs, NY. Lawn tickets on sale now.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "regional event with NY context"
+  },
+  {
+    "id": "fn-event-mvp-arena-albany",
+    "text": "Concert announced at MVP Arena in Albany NY — September 12. Presale starts Monday.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "regional event with Albany NY"
+  },
+  {
+    "id": "fn-event-troy-farmers-market",
+    "text": "Troy, NY Waterfront Farmers Market is back this Sunday 9am–2pm. Live music at noon.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "regional weekend event with NY context"
+  },
+  {
+    "id": "fn-event-empire-state-plaza",
+    "text": "Free lunchtime concert at the Empire State Plaza this Thursday. Bring a blanket.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "venue is a strong local phrase"
+  },
+  {
+    "id": "neg-jetstream-generic-food",
+    "text": "Just made the best pasta of my life. Recipe in the replies.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "global_negative",
+    "split": "dev",
+    "regression": true,
+    "note": "generic firehose negative; no local signal"
+  },
+  {
+    "id": "neg-jetstream-sports-nba",
+    "text": "What a finish in Game 6. This team never stops.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "global_negative",
+    "split": "holdout",
+    "regression": true,
+    "note": "generic sports firehose negative"
+  },
+  {
+    "id": "neg-jetstream-tech-launch",
+    "text": "Excited to announce our Series B. Huge thanks to the team.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "global_negative",
+    "split": "dev",
+    "regression": true,
+    "note": "generic tech firehose negative"
+  },
+  {
+    "id": "neg-jetstream-travel-paris",
+    "text": "Croissants by the Seine and a long walk through the Marais.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "global_negative",
+    "split": "holdout",
+    "regression": true,
+    "note": "off-region travel; no Capital Region cue"
+  },
+  {
+    "id": "fp-event-albany-parade-bare",
+    "text": "Don't miss the Albany Veterans Day Parade this Saturday downtown!",
+    "expected": false,
+    "signal": "event",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "bare Albany event; could be OR/GA/etc."
+  },
+  {
+    "id": "gap-local-org-unknown-handle-no-place",
+    "text": "Tonight's open mic starts at 8. Come support local musicians!",
+    "author_handle": "some-local-venue.bsky.social",
+    "expected": true,
+    "signal": "author",
+    "bucket": "local_org_no_placename",
+    "split": "dev",
+    "regression": false,
+    "note": "not on allowlist; recall gap until B-011 (excluded from CI)"
+  },
+  {
+    "id": "gap-event-venue-only-proctors",
+    "text": "Tickets on sale for Saturday comedy night at Proctors. Doors at 7.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": false,
+    "note": "venue implies Schenectady without placename; gap until B-020"
   }
 ]
