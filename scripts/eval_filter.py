@@ -34,15 +34,8 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
+from server.allowlists import load_allowlist_dids, load_allowlist_handles  # noqa: E402
 from server.matcher import match_post  # noqa: E402
-
-DEFAULT_ALLOWLIST_HANDLES = {
-    'news10.bsky.social',
-    'timesunion.com',
-    'albany-ny.bsky.social',
-    'cbs6albany.bsky.social',
-    'wrgb.bsky.social',
-}
 
 
 @dataclass
@@ -100,9 +93,11 @@ def evaluate_cases(
     cases: list[dict[str, Any]],
     *,
     allowlist_handles: set[str] | None = None,
+    allowlist_dids: set[str] | None = None,
     verbose: bool = False,
 ) -> EvalReport:
-    handles = allowlist_handles if allowlist_handles is not None else DEFAULT_ALLOWLIST_HANDLES
+    handles = allowlist_handles if allowlist_handles is not None else load_allowlist_handles()
+    dids = allowlist_dids if allowlist_dids is not None else load_allowlist_dids()
     report = EvalReport()
 
     for case in cases:
@@ -111,6 +106,7 @@ def evaluate_cases(
             alt_text=case.get('alt_text', ''),
             author_did=case.get('author_did'),
             author_handle=case.get('author_handle'),
+            allowlist_dids=dids,
             allowlist_handles=handles,
         )
         expected = bool(case['expected'])

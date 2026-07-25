@@ -70,7 +70,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
 ## P1 — Author & identity signals (recall without placenames)
 
 ### B-010 — Wire allowlists into the live indexer path
-- **Status:** todo
+- **Status:** done
 - **Why:** `allowlist_handles.txt` is evaluated in `match_post`, but Jetstream
   ingest typically supplies DIDs only; handle allowlisting is ineffective unless
   handles are resolved or DIDs are listed.

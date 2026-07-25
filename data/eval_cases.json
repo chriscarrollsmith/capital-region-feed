@@ -21,7 +21,7 @@
   },
   {
     "id": "tp-schenectady-nun",
-    "text": "Sister Maria Rosa Querini, a 91-year-old nun at St. Anthony’s Church in Schenectady, received the 2026 Brenda H. Thomas Good Neighbor Award.",
+    "text": "Sister Maria Rosa Querini, a 91-year-old nun at St. Anthony\u2019s Church in Schenectady, received the 2026 Brenda H. Thomas Good Neighbor Award.",
     "expected": true,
     "signal": "text",
     "bucket": "strong_local",
@@ -30,7 +30,7 @@
   },
   {
     "id": "tp-capital-region-homelessness",
-    "text": "Homelessness falls in NY but Capital Region sees sharp increases. A homeless person’s belongings are seen under I-787.",
+    "text": "Homelessness falls in NY but Capital Region sees sharp increases. A homeless person\u2019s belongings are seen under I-787.",
     "expected": true,
     "signal": "text",
     "bucket": "strong_local",
@@ -50,7 +50,7 @@
   },
   {
     "id": "tp-music-haven-schenectady",
-    "text": "Tomorrow! WEXT’s second annual Local 518 Music Fest at #MusicHaven in Schenectady’s Central Park beginning at 2pm!",
+    "text": "Tomorrow! WEXT\u2019s second annual Local 518 Music Fest at #MusicHaven in Schenectady\u2019s Central Park beginning at 2pm!",
     "expected": true,
     "signal": "event",
     "bucket": "regional_event",
@@ -69,7 +69,7 @@
   },
   {
     "id": "fp-french-colonie",
-    "text": "Nous sommes une colonie numérique des États-Unis, épisode 43.",
+    "text": "Nous sommes une colonie num\u00e9rique des \u00c9tats-Unis, \u00e9pisode 43.",
     "expected": false,
     "signal": "text",
     "bucket": "skyfeed_fp",
@@ -87,7 +87,7 @@
   },
   {
     "id": "fp-jc-latham",
-    "text": "The Titans’ biggest JC Latham question has nothing to do with the training camp PUP list",
+    "text": "The Titans\u2019 biggest JC Latham question has nothing to do with the training camp PUP list",
     "expected": false,
     "signal": "text",
     "bucket": "skyfeed_fp",
@@ -188,7 +188,7 @@
   },
   {
     "id": "fp-new-albany-ceo",
-    "text": "Starting to think we should imprison all New Albany CEOs until we figure out what’s going on.",
+    "text": "Starting to think we should imprison all New Albany CEOs until we figure out what\u2019s going on.",
     "expected": false,
     "signal": "text",
     "bucket": "skyfeed_fp",
@@ -243,7 +243,7 @@
   },
   {
     "id": "fp-french-colonie-vacances",
-    "text": "Les minibus transportaient 16 enfants d'une même colonie de vacances qui revenaient du Puy du Fou",
+    "text": "Les minibus transportaient 16 enfants d'une m\u00eame colonie de vacances qui revenaient du Puy du Fou",
     "expected": false,
     "signal": "text",
     "bucket": "skyfeed_fp",
@@ -270,7 +270,7 @@
   },
   {
     "id": "tp-times-union-capital-region",
-    "text": "Homelessness fell statewide but surged across much of the Capital Region, with Columbia-Greene region recording New York’s largest increase.",
+    "text": "Homelessness fell statewide but surged across much of the Capital Region, with Columbia-Greene region recording New York\u2019s largest increase.",
     "author_handle": "timesunion.com",
     "expected": true,
     "signal": "text",
@@ -280,7 +280,7 @@
   },
   {
     "id": "fp-jc-latham-bust",
-    "text": "Titans it’s time to move on from JC Latham. Dudes a bust",
+    "text": "Titans it\u2019s time to move on from JC Latham. Dudes a bust",
     "expected": false,
     "signal": "text",
     "bucket": "skyfeed_fp",
@@ -326,7 +326,7 @@
   },
   {
     "id": "fp-minnesota-albany-baseball",
-    "text": "Legion baseball playoffs: Cold Spring hangs on for 8-7 win over Pierz; Willmar ends Albany’s season",
+    "text": "Legion baseball playoffs: Cold Spring hangs on for 8-7 win over Pierz; Willmar ends Albany\u2019s season",
     "expected": false,
     "note": "Minnesota Albany",
     "signal": "text",
@@ -356,7 +356,7 @@
   },
   {
     "id": "tp-troy-ny",
-    "text": "Coffee crawl this weekend in Troy, NY — starting at the farmers market.",
+    "text": "Coffee crawl this weekend in Troy, NY \u2014 starting at the farmers market.",
     "expected": true,
     "signal": "text",
     "bucket": "strong_local",
@@ -412,7 +412,7 @@
   },
   {
     "id": "fp-capital-region-of-madrid",
-    "text": "State of emergency. Wild fires in southern Europe: Around 90,000 people evacuated. The state of emergency in Spain applies to the capital region of Madrid and the nearby province of Ávila. In France, the Atlantic coast is affected.",
+    "text": "State of emergency. Wild fires in southern Europe: Around 90,000 people evacuated. The state of emergency in Spain applies to the capital region of Madrid and the nearby province of \u00c1vila. In France, the Atlantic coast is affected.",
     "expected": false,
     "note": "Spanish Comunidad de Madrid, not NY Capital Region",
     "signal": "text",
@@ -463,26 +463,26 @@
     "note": "allowlisted local TV; no placename"
   },
   {
-    "id": "fn-allowlist-cbs6-community",
+    "id": "fn-allowlist-did-timesunion-community",
     "text": "Send us your photos of tonight's sunset for a chance to be featured.",
-    "author_handle": "cbs6albany.bsky.social",
+    "author_did": "did:plc:7pycdzg5nl4effudeyocyiw4",
     "expected": true,
     "signal": "author",
     "bucket": "local_org_no_placename",
     "split": "holdout",
     "regression": true,
-    "note": "allowlisted local TV; no placename"
+    "note": "production path: Jetstream DID only; no placename or handle"
   },
   {
-    "id": "fn-allowlist-wrgb-weather-generic",
+    "id": "fn-allowlist-did-news10-weather",
     "text": "Mild overnight lows, then a warming trend into the weekend.",
-    "author_handle": "wrgb.bsky.social",
+    "author_did": "did:plc:fuz6utfgzwwmap3a2qfod4ud",
     "expected": true,
     "signal": "author",
     "bucket": "local_org_no_placename",
     "split": "holdout",
     "regression": true,
-    "note": "allowlisted local TV weather; no placename"
+    "note": "production path: Jetstream DID only; no placename or handle"
   },
   {
     "id": "fn-allowlist-albany-ny-promo",
@@ -517,7 +517,7 @@
   },
   {
     "id": "fn-event-mvp-arena-albany",
-    "text": "Concert announced at MVP Arena in Albany NY — September 12. Presale starts Monday.",
+    "text": "Concert announced at MVP Arena in Albany NY \u2014 September 12. Presale starts Monday.",
     "expected": true,
     "signal": "event",
     "bucket": "regional_event",
@@ -527,7 +527,7 @@
   },
   {
     "id": "fn-event-troy-farmers-market",
-    "text": "Troy, NY Waterfront Farmers Market is back this Sunday 9am–2pm. Live music at noon.",
+    "text": "Troy, NY Waterfront Farmers Market is back this Sunday 9am\u20132pm. Live music at noon.",
     "expected": true,
     "signal": "event",
     "bucket": "regional_event",
