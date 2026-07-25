@@ -673,14 +673,124 @@
     "note": "still-unlisted local venue; recall gap for accounts outside curated allowlist"
   },
   {
-    "id": "gap-event-venue-only-proctors",
+    "id": "fn-event-venue-only-proctors",
     "text": "Tickets on sale for Saturday comedy night at Proctors. Doors at 7.",
     "expected": true,
     "signal": "event",
     "bucket": "regional_event",
     "split": "holdout",
-    "regression": false,
-    "note": "venue implies Schenectady without placename; gap until B-020"
+    "regression": true,
+    "note": "venue implies Schenectady without placename"
+  },
+  {
+    "id": "fn-event-venue-only-spac",
+    "text": "SPAC season lawn tickets go on sale this weekend. Grab yours early.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "SPAC season/lawn cue without Saratoga placename"
+  },
+  {
+    "id": "fn-event-venue-only-mvp-arena",
+    "text": "Presale starts Monday for the September 12 concert at MVP Arena.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "MVP Arena without Albany placename"
+  },
+  {
+    "id": "fn-event-venue-only-music-haven",
+    "text": "Free concert tonight at Music Haven. Bring a chair.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "Music Haven venue-only event"
+  },
+  {
+    "id": "fn-event-venue-only-caffe-lena",
+    "text": "Open mic tomorrow night at Caffe Lena. Sign-up starts at 6.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "Caffe Lena venue-only event"
+  },
+  {
+    "id": "fn-event-venue-only-the-egg",
+    "text": "Tickets still available for Thursday's show at The Egg. Doors at 7.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "at The Egg venue phrasing with event cues"
+  },
+  {
+    "id": "fn-event-venue-only-troy-music-hall",
+    "text": "This Saturday at Troy Music Hall: doors at 6, show at 7:30.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "Troy Music Hall venue cue without NY context"
+  },
+  {
+    "id": "fp-event-offregion-fillmore",
+    "text": "Tickets on sale for Saturday comedy night at The Fillmore. Doors at 7.",
+    "expected": false,
+    "signal": "event",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "off-region venue + event cues must not match"
+  },
+  {
+    "id": "fp-event-offregion-msg",
+    "text": "Concert announced at Madison Square Garden — September 12. Presale starts Monday.",
+    "expected": false,
+    "signal": "event",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "off-region arena event lookalike"
+  },
+  {
+    "id": "fp-event-offregion-fox-atlanta",
+    "text": "This Saturday at the Fox Theatre in Atlanta: doors at 6, show at 7:30.",
+    "expected": false,
+    "signal": "event",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "off-region theatre event lookalike"
+  },
+  {
+    "id": "fp-event-spac-acronym-webinar",
+    "text": "Join our SPAC (Special Access) webinar tomorrow at noon.",
+    "expected": false,
+    "signal": "event",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "bare SPAC acronym without venue phrasing"
+  },
+  {
+    "id": "fp-event-proctors-no-cue",
+    "text": "Proctors is a beautiful historic building downtown.",
+    "expected": false,
+    "signal": "event",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "local venue name without event phrasing should not match"
   },
   {
     "id": "tp-soft-prior-bare-troy",

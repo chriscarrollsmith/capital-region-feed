@@ -117,7 +117,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
 ## P1 — Regional events
 
 ### B-020 — Event-oriented matching cues
-- **Status:** todo
+- **Status:** done
 - **Depends on:** B-001 (event FN cases)
 - **Work:**
   - Identify patterns/signals for upcoming local events: venue names, “at [local
@@ -127,6 +127,9 @@ Status: `todo` · `in progress` · `done` · `blocked`
   - Add dedicated eval cases for true events and off-region event lookalikes.
 - **Done when:** Representative Capital Region event posts match even when the
   only locality signal is venue/org/author, and off-region events still drop.
+- **Notes:** v1 is regex heuristics (`_EVENT_CUE` + `_LOCAL_EVENT_VENUE` →
+  `event_local_venue:*`). Ticket/link domains deferred until ingest exposes URL
+  fields beyond text/alt. Classifier routing left for B-030.
 
 ---
 

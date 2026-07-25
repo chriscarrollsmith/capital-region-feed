@@ -6,9 +6,10 @@ Rejects the main SkyFeed false positives:
 - Bare town names without NY / local context
 
 Also aims for recall without placenames via author allowlists, soft author
-priors (earned from repeated strong local matches), and later event/venue cues.
-Precision stays strict for ambiguous bare names unless a soft prior applies;
-see README matching policy and BACKLOG.md.
+priors (earned from repeated strong local matches), and event/venue cues
+(local venue + upcoming-event phrasing). Precision stays strict for ambiguous
+bare names unless a soft prior applies; see README matching policy and
+BACKLOG.md.
 """
 
 from __future__ import annotations
@@ -203,6 +204,49 @@ _COLONIE_LOCAL = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
+# Upcoming-event phrasing. Alone this never keeps a post; it only unlocks
+# high-confidence local venues below (not bare Albany / ambiguous towns).
+_EVENT_CUE = re.compile(
+    r"""
+    \b(?:
+        tonight|tomorrow|this\s+weekend|this\s+saturday|this\s+sunday|
+        next\s+(?:friday|saturday|sunday|week)|
+        doors(?:\s+at|\s+open)?|tickets?|presale|save\s+the\s+date|join\s+us|
+        open\s+mic|festival|concert|comedy\s+night|show\s+starts|
+        \d{1,2}:\d{2}\s*(?:am|pm)|(?<!\d)\d{1,2}\s*(?:am|pm)\b|
+        january|february|march|april|june|july|august|september|
+        october|november|december
+    )\b
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Venues that strongly imply Capital Region locality even without a city name.
+# Prefer distinctive names; keep SPAC / The Egg narrow to avoid acronym/food FPs.
+_LOCAL_EVENT_VENUE = re.compile(
+    r"""
+    (?:
+        \bproctors?\b
+      | saratoga\s+performing\s+arts\s+center
+      | \bat\s+spac\b
+      | \bspac\s+(?:season|lawn|amphitheatre|amphitheater|presents)
+      | mvp\s+arena
+      | music\s+haven
+      | troy\s+savings\s+bank\s+music\s+hall
+      | troy\s+music\s+hall
+      | cohoes\s+music\s+hall
+      | caffe?\s+lena
+      | \bat\s+the\s+egg\b
+      | albany\s+palace\s+(?:theatre|theater)
+      | palace\s+(?:theatre|theater)\s+(?:albany|in\s+albany)
+      | capital\s+repertory
+      | \bcap\s+rep\b
+      | albany\s+civic\s+(?:theater|theatre)
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
 
 def _normalize(text: str) -> str:
     return re.sub(r'\s+', ' ', text or '').strip()
@@ -275,6 +319,17 @@ def _soft_prior_ambiguous(
     return None
 
 
+def _match_local_event(haystack: str) -> MatchResult | None:
+    """Keep regional events when a local venue appears with event phrasing."""
+    if not _EVENT_CUE.search(haystack):
+        return None
+    match = _LOCAL_EVENT_VENUE.search(haystack)
+    if not match:
+        return None
+    venue = re.sub(r'\s+', ' ', match.group(0).lower())
+    return MatchResult(True, f'event_local_venue:{venue}')
+
+
 def match_post(
     text: str,
     *,
@@ -311,6 +366,10 @@ def match_post(
 
     if _COLONIE_LOCAL.search(haystack):
         return MatchResult(True, 'colonie_local')
+
+    event_match = _match_local_event(haystack)
+    if event_match is not None:
+        return event_match
 
     ambiguous_hits = _AMBIGUOUS_PLACE.findall(haystack)
     if ambiguous_hits:
