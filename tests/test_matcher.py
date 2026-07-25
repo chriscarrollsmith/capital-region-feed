@@ -80,6 +80,25 @@ def test_allowlist_did_matches_without_handle_or_placename() -> None:
     assert result.reason == 'allowlist_did'
 
 
+def test_event_local_venue_requires_cue_and_venue() -> None:
+    keep = match_post('Tickets on sale for Saturday comedy night at Proctors. Doors at 7.')
+    assert keep.matched is True
+    assert keep.reason.startswith('event_local_venue:')
+
+    no_cue = match_post('Proctors is a beautiful historic building downtown.')
+    assert no_cue.matched is False
+
+    off_region = match_post(
+        'Tickets on sale for Saturday comedy night at The Fillmore. Doors at 7.'
+    )
+    assert off_region.matched is False
+
+    bare_albany_event = match_post(
+        "Don't miss the Albany Veterans Day Parade this Saturday downtown!"
+    )
+    assert bare_albany_event.matched is False
+
+
 def test_extract_alt_text_from_images() -> None:
     embed = {
         '$type': 'app.bsky.embed.images',

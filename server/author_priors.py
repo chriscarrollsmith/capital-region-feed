@@ -32,7 +32,7 @@ def is_strong_match_reason(reason: str | None) -> bool:
         return False
     if reason in _STRONG_MATCH_REASONS:
         return True
-    return reason.startswith('ambiguous_with_context:')
+    return reason.startswith('ambiguous_with_context:') or reason.startswith('event_local_venue:')
 
 
 def author_has_soft_prior(author_did: str | None) -> bool:

@@ -159,6 +159,7 @@ classifier).
 - Ambiguous towns (`Troy`, `Latham`, `Saratoga Springs`, bare `Albany`, …) appear **with** NY / local context
 - Author is on the local allowlist (`data/allowlist_handles.txt` / `allowlist_dids.txt`), even with no place words in the text. Jetstream supplies DIDs only — keep DIDs in sync with `uv run python scripts/resolve_allowlist_dids.py` after editing handles. Allowlisting targets high signal/noise Cap Region voices (not firehose-volume or business-slop accounts); screen candidates with `scripts/screen_allowlist_candidates.py`.
 - Author has a soft prior (`SOFT_PRIOR_MIN_STRONG` strong text matches within `SOFT_PRIOR_WINDOW_DAYS`, tracked in `AuthorLocalStats`) and the post uses a bare ambiguous place name. Soft priors do **not** override hard negatives and do not keep arbitrary no-placename posts (that remains allowlist-only).
+- Text has upcoming-event phrasing (`tonight`, `tickets`, `this weekend`, …) **and** a high-confidence Capital Region venue (`Proctors`, `MVP Arena`, `SPAC season/lawn`, `Music Haven`, `at The Egg`, …). Event cues alone never keep bare `Albany` or other ambiguous towns; off-region venues stay dropped.
 
 **Drop** hard negatives:
 
@@ -217,5 +218,5 @@ uv run python scripts/append_eval_cases.py --input /tmp/labeled.jsonl
 `collect_eval_sample.py search --query '…'` is available for one-off queries.
 Rows already present in `data/eval_cases.json` are skipped by default.
 
-Optional later (see `BACKLOG.md`): event/venue cues, hybrid classifier, engagement
-ranking, muted keywords.
+Optional later (see `BACKLOG.md`): hybrid classifier, engagement ranking, muted
+keywords.
