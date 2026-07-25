@@ -496,6 +496,73 @@
     "note": "allowlisted municipal/local account; no placename"
   },
   {
+    "id": "fn-allowlist-dgazette-no-place",
+    "text": "Housing task force recommendations land with city leaders this week.",
+    "author_handle": "dgazette.bsky.social",
+    "expected": true,
+    "signal": "author",
+    "bucket": "local_org_no_placename",
+    "split": "dev",
+    "regression": true,
+    "note": "allowlisted Schenectady paper; no placename in text"
+  },
+  {
+    "id": "fn-allowlist-did-wnyt-brief",
+    "text": "Investigators are reviewing overnight vandalism; more details at 6.",
+    "author_did": "did:plc:wdssbrxji4hmcgl3pfr5ym5r",
+    "expected": true,
+    "signal": "author",
+    "bucket": "local_org_no_placename",
+    "split": "holdout",
+    "regression": true,
+    "note": "allowlisted WNYT via DID only; no placename"
+  },
+  {
+    "id": "fn-allowlist-library-no-place",
+    "text": "Story time moved indoors today. All ages welcome at 10:30.",
+    "author_handle": "albanynylibrary.bsky.social",
+    "expected": true,
+    "signal": "author",
+    "bucket": "local_org_no_placename",
+    "split": "dev",
+    "regression": true,
+    "note": "allowlisted library; no placename"
+  },
+  {
+    "id": "fn-allowlist-did-clashbooks-drop",
+    "text": "Preorders are open for our next horror paperback. Cover reveal soon.",
+    "author_did": "did:plc:zr5apo4f5sijwm2aip2pclvb",
+    "expected": true,
+    "signal": "author",
+    "bucket": "local_org_no_placename",
+    "split": "holdout",
+    "regression": true,
+    "note": "allowlisted Troy press via DID; no placename"
+  },
+  {
+    "id": "fn-allowlist-cafe-euphoria-no-place",
+    "text": "Brunch specials are up on the board. Come say hi.",
+    "author_handle": "cafeeuphoria.bsky.social",
+    "expected": true,
+    "signal": "author",
+    "bucket": "local_org_no_placename",
+    "split": "dev",
+    "regression": true,
+    "note": "allowlisted Troy cafe; no placename"
+  },
+  {
+    "id": "fn-allowlist-wext-dave-no-place",
+    "text": "Set times are posted. Bring a chair and hang for the afternoon.",
+    "author_handle": "wextdave.bsky.social",
+    "expected": true,
+    "signal": "author",
+    "bucket": "local_org_no_placename",
+    "split": "holdout",
+    "regression": true,
+    "note": "allowlisted local radio host; no placename"
+  },
+
+  {
     "id": "fn-event-proctors-schenectady",
     "text": "This Saturday at Proctors in Schenectady: doors at 6, show at 7:30. Tickets still available.",
     "expected": true,
@@ -604,7 +671,7 @@
     "bucket": "local_org_no_placename",
     "split": "dev",
     "regression": false,
-    "note": "not on allowlist; recall gap until B-011 (excluded from CI)"
+    "note": "still-unlisted local venue; recall gap for accounts outside curated allowlist"
   },
   {
     "id": "gap-event-venue-only-proctors",

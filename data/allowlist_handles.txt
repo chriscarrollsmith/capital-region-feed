@@ -1,9 +1,59 @@
-# Local / Capital Region accounts whose posts are always indexed (non-replies).
+# Local / Capital Region accounts whose non-reply posts are always indexed.
 # Handles are matched case-insensitively when available; Jetstream ingest uses
 # DIDs — keep data/allowlist_dids.txt in sync with:
 #   uv run python scripts/resolve_allowlist_dids.py
 #
-# Only include handles that resolve on Bluesky AppView. Grow this list in B-011.
+# Curation bar (B-011): prefer high signal/noise. Exclude accounts that
+# typically post at firehose volume (~tens–hundreds/day), look non-human /
+# templated, or read as generic business-slop. Prefer Cap Region media,
+# civic/elected, institutions, venues, and local orgs/creators whose recent
+# posts are mostly human-written and regionally relevant.
+# Screen candidates with:
+#   uv run python scripts/screen_allowlist_candidates.py --from-file …
+#
+# Only include handles that resolve on Bluesky AppView.
+
+# --- Local media ---
 news10.bsky.social
 timesunion.com
 albany-ny.bsky.social
+wnyt.bsky.social
+dgazette.bsky.social
+dailygazettesports.bsky.social
+wextradio.bsky.social
+
+# --- Journalists / hosts (Cap Region beat or local media) ---
+caseyseiler.bsky.social
+danclarkreports.bsky.social
+bystevencook.bsky.social
+bymichaelkelly.bsky.social
+rickmarshall.com
+wextdave.bsky.social
+sarbetter.bsky.social
+
+# --- Civic / elected (Cap Region districts) ---
+albanynycouncil.bsky.social
+amromero109.bsky.social
+philsteck.bsky.social
+reppaultonko.bsky.social
+kathymsheehan.bsky.social
+
+# --- Institutions, culture, community ---
+albanynylibrary.bsky.social
+albanycivictheater.bsky.social
+albany.edu
+ualbanynews.bsky.social
+unioncollege.bsky.social
+clashbooks.bsky.social
+cafeeuphoria.bsky.social
+botanicabooks.bsky.social
+northshirebooks.bsky.social
+ceceswool.bsky.social
+capitaldistrictdsa.org
+troyindivisible.bsky.social
+indivisible12084.bsky.social
+indivisible-adk.bsky.social
+crp-crny.bsky.social
+albanyguild.bsky.social
+nokings-albany.bsky.social
+fromstarlight.bsky.social

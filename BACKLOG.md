@@ -83,14 +83,22 @@ Status: `todo` · `in progress` · `done` · `blocked`
   placename text is kept in production and covered by eval.
 
 ### B-011 — Curate Capital Region account lists
-- **Status:** todo
+- **Status:** done
 - **Depends on:** B-010 (or can start as data collection in parallel)
+- **Quality bar:** Always-keep allowlisting is for **high signal/noise** Cap
+  Region voices. Exclude accounts whose feeds are firehose-volume (tens to
+  hundreds of posts/day), mostly non-human / templated, or generic
+  business-slop. Prefer media, civic/elected, institutions, venues, and local
+  orgs/creators with human-written, regionally relevant posts. Selection is an
+  agent curation pass (`scripts/screen_allowlist_candidates.py` + feed skim);
+  human feedback can reinforce later, but is not required to land candidates.
 - **Work:**
   - Grow allowlists beyond local TV/newspaper handles to businesses, clubs,
     nonprofits, venues, municipal accounts, and relevant influencers.
   - Prefer starter packs / community lists where available; store as data files
     under `data/` with clear provenance comments.
   - Define tiers if needed (always-keep vs soft-prior).
+  - Re-screen periodically; drop accounts that drift into volume/slop.
 - **Done when:** A non-trivial curated set of local orgs/creators is checked in
   and exercised by eval cases that have empty/non-local-looking text.
 
