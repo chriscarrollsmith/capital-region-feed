@@ -155,7 +155,7 @@ placenames. See `BACKLOG.md` for the sequenced work (allowlists → events → c
 
 - Text/alt matches strong local phrases in `server/matcher.py` (`_STRONG_POSITIVE`: Capital Region, Schenectady, Niskayuna, I-787, `#AlbanyNY`, `r/Albany`, …)
 - Ambiguous towns (`Troy`, `Latham`, `Saratoga Springs`, bare `Albany`, …) appear **with** NY / local context
-- Author is on the local allowlist (`data/allowlist_handles.txt` / `allowlist_dids.txt`), even with no place words in the text. Jetstream supplies DIDs only — keep DIDs in sync with `uv run python scripts/resolve_allowlist_dids.py` after editing handles.
+- Author is on the local allowlist (`data/allowlist_handles.txt` / `allowlist_dids.txt`), even with no place words in the text. Jetstream supplies DIDs only — keep DIDs in sync with `uv run python scripts/resolve_allowlist_dids.py` after editing handles. Allowlisting targets high signal/noise Cap Region voices (not firehose-volume or business-slop accounts); screen candidates with `scripts/screen_allowlist_candidates.py`.
 
 **Drop** hard negatives:
 

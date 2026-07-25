@@ -9,3 +9,71 @@ did:plc:fuz6utfgzwwmap3a2qfod4ud
 did:plc:7pycdzg5nl4effudeyocyiw4
 # albany-ny.bsky.social
 did:plc:fn3nr3wqpkn436j2qy2wbvqt
+# wnyt.bsky.social
+did:plc:wdssbrxji4hmcgl3pfr5ym5r
+# dgazette.bsky.social
+did:plc:zucvgm5i7epjiukk2vj4z6hd
+# dailygazettesports.bsky.social
+did:plc:g6smabvtmb7e2iesd4orh5l5
+# wextradio.bsky.social
+did:plc:njlxeyxdq422o6g4gzm7mjfi
+# caseyseiler.bsky.social
+did:plc:7u4r5aut7mt2ni5vjsqxbkfa
+# danclarkreports.bsky.social
+did:plc:ctxlwtkdl4tkbkk4uzi2rd7g
+# bystevencook.bsky.social
+did:plc:3rta4xv6d3wged7gi6qhwlfe
+# bymichaelkelly.bsky.social
+did:plc:cnto3frorrgu2vddni4k2b3v
+# rickmarshall.com
+did:plc:e6risp43zdws2syfppjsmqo2
+# wextdave.bsky.social
+did:plc:dzheerxrkmxthx4cn3qnyk6a
+# sarbetter.bsky.social
+did:plc:vy6esylbhhl6ssc2go75gvhg
+# albanynycouncil.bsky.social
+did:plc:5xtrt6jmgumhhualtfkj4l5h
+# amromero109.bsky.social
+did:plc:qknbsuemkwuecozgcinrfzks
+# philsteck.bsky.social
+did:plc:yaxkhkrvid5r44fc5nmsvsun
+# reppaultonko.bsky.social
+did:plc:uxhiwzsufuauabejcw775a2l
+# kathymsheehan.bsky.social
+did:plc:clcz35h3lkv7wclix6j3stvg
+# albanynylibrary.bsky.social
+did:plc:l2vx6ai3nikkx66ongypg5iz
+# albanycivictheater.bsky.social
+did:plc:4ci36irlcmzvowverovm2bvp
+# albany.edu
+did:plc:evfpldfbv7qlz3wnclxfzsuf
+# ualbanynews.bsky.social
+did:plc:teevxwvbvg4za6qbh2e2wnnw
+# unioncollege.bsky.social
+did:plc:xnn2yqn5w3lglk3vdc23ete3
+# clashbooks.bsky.social
+did:plc:zr5apo4f5sijwm2aip2pclvb
+# cafeeuphoria.bsky.social
+did:plc:zoxv6x3km2e7fre5p7kcgz2k
+# botanicabooks.bsky.social
+did:plc:nonhmvcoqfr3nrizdql7jetg
+# northshirebooks.bsky.social
+did:plc:swu7roy2sofsolhcy3gvdfb4
+# ceceswool.bsky.social
+did:plc:k6fyjokqodxixtobdbhwq3le
+# capitaldistrictdsa.org
+did:plc:longjbl6dpovzsy7zdaom63z
+# troyindivisible.bsky.social
+did:plc:3q6ltsgbvuefhx6aansxhjns
+# indivisible12084.bsky.social
+did:plc:7mmrowrdoicmd4ibukoj36b7
+# indivisible-adk.bsky.social
+did:plc:wo2pcefdympoqpx4cn2r6njm
+# crp-crny.bsky.social
+did:plc:5sgbt2y7cav265s2ms675liz
+# albanyguild.bsky.social
+did:plc:xx77hqmihoiwg6rbs3qjzjdw
+# nokings-albany.bsky.social
+did:plc:rvt3uwqgsdmkqsbwcuip5tyk
+# fromstarlight.bsky.social
+did:plc:cozvqa5kxcma4nqecqto7y2x
