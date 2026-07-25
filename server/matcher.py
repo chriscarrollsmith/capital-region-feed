@@ -1,9 +1,13 @@
 """Capital Region post matcher.
 
-Designed to fix the main SkyFeed false positives:
+Rejects the main SkyFeed false positives:
 - Albany Park (Chicago), New Albany (MS/IN), other U.S. Albanys
 - French "colonie", NFL "JC Latham", Saratoga Springs UT
 - Bare town names without NY / local context
+
+Also aims for recall without placenames via author allowlists (and, later,
+event/venue cues). Precision stays strict for ambiguous bare names; see README
+matching policy and BACKLOG.md.
 """
 
 from __future__ import annotations

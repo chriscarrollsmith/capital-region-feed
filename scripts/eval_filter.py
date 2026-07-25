@@ -1,9 +1,14 @@
 #!/usr/bin/env python3
 """Evaluate matcher precision/recall against labeled fixtures.
 
+Product policy (see README / BACKLOG.md): optimize for **both** false positives
+and false negatives. SkyFeed-style off-region noise must stay out, but local
+voices and regional events should match even without placenames.
+
 Reports aggregate metrics plus stratification by ``bucket`` / ``signal`` and a
 ``dev`` vs ``holdout`` split so matcher changes are not judged only on the set
-used while iterating.
+used while iterating. Prefer reading author- and event-signal recall alongside
+``skyfeed_fp`` / ``precision_gate`` precision — not aggregate F1 alone.
 
 Case schema (``data/eval_cases.json``):
 
@@ -13,6 +18,7 @@ Case schema (``data/eval_cases.json``):
   ``local_org_no_placename``, ``regional_event``)
 - ``split``: ``dev`` (iterate freely) or ``holdout`` (report separately)
 - ``regression``: if false, scored in reports but ignored for exit code / pytest
+  (known recall gaps until author/event backlog items land)
 """
 
 from __future__ import annotations
