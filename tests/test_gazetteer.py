@@ -27,6 +27,22 @@ def test_match_post_entity_other_and_local() -> None:
     assert local.reason == 'entity_local:niskayuna_ny'
 
 
+def test_albany_county_wyoming_not_capital_region() -> None:
+    contiguous = match_post('Road work begins in Albany County, WY next month.')
+    assert contiguous.matched is False
+    assert contiguous.reason == 'entity_other:albany_county_wy'
+
+    hashtags = match_post(
+        'Albany County is backing a major road project with Wyo Silver. '
+        '#AlbanyCounty #WY #InfrastructureImprovement'
+    )
+    assert hashtags.matched is False
+    assert hashtags.reason == 'entity_other:albany_county_wy'
+
+    ny = match_post('Albany County executives meet downtown tomorrow. #AlbanyNY')
+    assert ny.matched is True
+
+
 def test_load_gazetteer_rejects_unknown_region(tmp_path: Path) -> None:
     path = tmp_path / 'bad.json'
     path.write_text(

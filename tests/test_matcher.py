@@ -101,6 +101,33 @@ def test_event_local_venue_requires_cue_and_venue() -> None:
     assert bare_albany_event.matched is False
 
 
+def test_hash_518_and_new_scotland_precision() -> None:
+    """Bare #518 / New Scotland phrasing must not over-keep off-region posts."""
+    assert match_post('Union Pacific West: #518 Per Metra realtime data.').matched is False
+    assert match_post('Food truck Friday in the lot — come hang #518ny').matched is True
+    assert match_post('Local 518 Music Fest this Saturday.').matched is True
+
+    assert match_post('a new voice for a new Scotland radio schedule').matched is False
+    assert (
+        match_post(
+            'Watch this',
+            alt_text='Smoker with Blue White TShirt, New Scotland Shirt; music video',
+        ).matched
+        is False
+    )
+    assert match_post('Town board meets in New Scotland, NY on Tuesday.').matched is True
+
+    # Upstate NY alone is broader than the Capital Region.
+    assert (
+        match_post(
+            'So relieved they backed down.',
+            alt_text='After backlash, Upstate NY school district pauses robot plan',
+        ).matched
+        is False
+    )
+    assert match_post('Albany in upstate is prettier in the fall').matched is True
+
+
 def test_named_cap_region_events_and_nyc_context() -> None:
     eufuria = match_post("I'll be suiting and hanging out at Eufuria in Albany this weekend.")
     assert eufuria.matched is True
