@@ -238,6 +238,24 @@ uv run python scripts/append_eval_cases.py --input /tmp/labeled.jsonl
 `collect_eval_sample.py search --query '…'` is available for one-off queries.
 Rows already present in `data/eval_cases.json` are skipped by default.
 
+### Audit / purge stale indexed posts
+
+Indexed rows keep their URI until Jetstream delete or the retention prune.
+After matcher changes, rematch what is still being served:
+
+```bash
+# Subscribers' view (AppView getFeed)
+uv run python scripts/audit_indexed_feed.py --source feed --feed "$FEED_URI" --limit 100
+
+# Full SQLite index (copy from Fly first; see scripts/audit_indexed_feed.py)
+uv run python scripts/audit_indexed_feed.py --source db \
+  --database ./feed_database.db --apply-soft-priors --jsonl /tmp/audit.jsonl
+
+# Delete would-drop URIs from that database file
+uv run python scripts/audit_indexed_feed.py --source db \
+  --database ./feed_database.db --apply-soft-priors --purge
+```
+
 Ranking among matches: set `RANKING_MODE` to `indexed` (default), `created`
 (author time), or `engagement` (likes + 2×reposts, updated from Jetstream
 like/repost commits). Optional `MUTED_KEYWORDS` (comma-separated) skips indexing

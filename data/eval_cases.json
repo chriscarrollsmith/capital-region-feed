@@ -1387,5 +1387,27 @@
     "author_handle": "wnyt.bsky.social",
     "author_did": "did:plc:wdssbrxji4hmcgl3pfr5ym5r",
     "note": "llm deepseek-v4-pro + human confirm"
+  },
+  {
+    "id": "fp-albany-ga-cbs-sunday-morning-listings",
+    "text": "\"Sunday Morning\" show times – CBS News  Stations carrying CBS News' \"Sunday Morning\": CITY - STATION - AIR TIME Abilene, TX - KTAB - 8 a.m.Albany, GA - WSWG - 9 a.m.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "live stale-index FP: Albany, GA TV listing must stay entity_other / drop"
+  },
+  {
+    "id": "fp-madrid-hauptstadtregion-german-alt",
+    "text": "State of emergency. Wild fires in southern Europe: Around 90,000 people evacuated. The state of emergency in Spain applies to the capital region of Madrid and the nearby province of Ávila.",
+    "alt_text": "Waldbrände in Südeuropa: Rund 90.000 Menschen evakuiert Der Notstand in Spanien gilt für die Hauptstadtregion Madrid und die nahe gelegene Provinz Ávila.",
+    "langs": ["de"],
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "live stale-index FP: German Hauptstadtregion alt must not keep as Cap Region"
   }
 ]

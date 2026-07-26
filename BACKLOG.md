@@ -229,6 +229,25 @@ Status: `todo` · `in progress` · `done` · `blocked`
 
 ---
 
+## P2 — Indexed feed hygiene
+
+### B-052 — Audit & purge posts that no longer match
+- **Status:** in progress
+- **Why:** SQLite stores URI metadata only; matcher/gazetteer/allowlist changes do
+  not revisit indexed rows. Stale keeps (e.g. Troy Jackson + “New York Times”
+  masthead before #20, Albany GA listings, off-region “capital region” copy)
+  keep appearing in `getFeedSkeleton` until the 7-day prune.
+- **Work:**
+  - Add `scripts/audit_indexed_feed.py` to hydrate AppView `getFeed` / DB URIs,
+    rematch with production allowlists (+ optional soft priors), and optionally
+    `--purge` would-drop rows.
+  - Run against the Fly volume DB and delete stale URIs.
+  - Add eval anchors for live stale FPs caught in the audit.
+- **Done when:** Tooling is documented; prod index has no rematch would-drops
+  from the audit pass; eval covers the FP shapes that were lingering.
+
+---
+
 ## Suggested sequencing
 
 ```text
@@ -251,6 +270,9 @@ B-050              bare-Albany named-event / NYC-context recall
         │
         ▼
 B-051              venue/org allowlist growth (close remaining author FN)
+        │
+        ▼
+B-052              audit/purge indexed posts after matcher changes
 ```
 
 ## Out of scope (for now)
