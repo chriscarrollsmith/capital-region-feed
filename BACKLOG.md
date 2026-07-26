@@ -209,6 +209,24 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Eval keeps those bare-Albany event/local cases with precision
   still 1.000 on `precision_gate` / `skyfeed_fp` (including Veterans Day parade).
 
+### B-051 — Grow venue/org allowlist coverage for no-placename local posts
+- **Status:** done ([#18](https://github.com/chriscarrollsmith/capital-region-feed/pull/18))
+- **Depends on:** B-011, B-050 (remaining tracked FN)
+- **Why:** After B-050, the only scored recall gap was
+  `gap-local-org-unknown-handle-no-place` — generic venue posts with no
+  placename stay allowlist-only by design. Cap Region theatre, radio, film
+  clubs, bookstores, and beat journalists still underrepresented on the list.
+- **Work:**
+  - Screen follow-graph candidates from existing local media/org seeds
+    (`scripts/screen_allowlist_candidates.py`); keep high signal/noise only.
+  - Add venue/arts/community orgs and Cap Region beat journalists/hosts;
+    sync DIDs via `scripts/resolve_allowlist_dids.py`.
+  - Replace the synthetic unlisted-venue gap with regression cases for real
+    allowlisted venues (handle + DID paths).
+- **Done when:** Eval recall is 1.000 with no `regression: false` gaps; new
+  venue/org no-placename cases keep; precision stays 1.000 on
+  `precision_gate` / `skyfeed_fp`.
+
 ---
 
 ## Suggested sequencing
@@ -230,6 +248,9 @@ B-032/B-040/B-041  optional disambiguation, ranking, langs
         │
         ▼
 B-050              bare-Albany named-event / NYC-context recall
+        │
+        ▼
+B-051              venue/org allowlist growth (close remaining author FN)
 ```
 
 ## Out of scope (for now)

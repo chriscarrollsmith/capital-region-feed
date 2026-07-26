@@ -662,15 +662,59 @@
     "note": "bare Albany event; could be OR/GA/etc."
   },
   {
-    "id": "gap-local-org-unknown-handle-no-place",
+    "id": "fn-allowlist-harbinger-open-mic",
     "text": "Tonight's open mic starts at 8. Come support local musicians!",
-    "author_handle": "some-local-venue.bsky.social",
+    "author_handle": "harbingertheatre.bsky.social",
     "expected": true,
     "signal": "author",
     "bucket": "local_org_no_placename",
     "split": "dev",
-    "regression": false,
-    "note": "still-unlisted local venue; recall gap for accounts outside curated allowlist"
+    "regression": true,
+    "note": "allowlisted Cap Region theatre; no placename (closes former gap-local-org-unknown-handle-no-place)"
+  },
+  {
+    "id": "fn-allowlist-did-salon-salvage-reading",
+    "text": "Next reading is upstairs at 7. Bring a poem or just listen.",
+    "author_did": "did:plc:pkdpitoprjhrdxvbdfhsyq6i",
+    "expected": true,
+    "signal": "author",
+    "bucket": "local_org_no_placename",
+    "split": "holdout",
+    "regression": true,
+    "note": "allowlisted Troy poetry series via DID; no placename"
+  },
+  {
+    "id": "fn-allowlist-wamc-no-place",
+    "text": "Morning Roundtable starts at 10. Call in with your questions.",
+    "author_handle": "wamc.org",
+    "expected": true,
+    "signal": "author",
+    "bucket": "local_org_no_placename",
+    "split": "dev",
+    "regression": true,
+    "note": "allowlisted regional public radio; no placename"
+  },
+  {
+    "id": "fn-allowlist-did-society-of-ghouls",
+    "text": "Doors at 6 for the double feature. Snacks in the lobby.",
+    "author_did": "did:plc:ysyi4urcfifuetdrwid2kkc7",
+    "expected": true,
+    "signal": "author",
+    "bucket": "local_org_no_placename",
+    "split": "holdout",
+    "regression": true,
+    "note": "allowlisted Albany film club via DID; no placename"
+  },
+  {
+    "id": "fn-allowlist-goldenleaf-no-place",
+    "text": "New arrivals are on the front table. Ask us for recommendations.",
+    "author_handle": "goldenleafbooks.bsky.social",
+    "expected": true,
+    "signal": "author",
+    "bucket": "local_org_no_placename",
+    "split": "dev",
+    "regression": true,
+    "note": "allowlisted Capital Region bookstore; no placename"
   },
   {
     "id": "fn-event-venue-only-proctors",
