@@ -103,11 +103,12 @@ _STRONG_POSITIVE = re.compile(
 # Ambiguous place names that need NY / Capital Region context.
 # Includes Cap Region micro-toponyms that collide with personal names,
 # other U.S./world places, or common phrases (e.g. "green islands").
+# ``troy`` ignores email local-parts (``troy@…``).
 _AMBIGUOUS_PLACE = re.compile(
     r"""
     (?:
         \balbany\b
-      | \btroy\b
+      | \btroy\b(?!@)
       | \blatham\b
       | \bmalta\b
       | \bscotia\b
@@ -133,11 +134,24 @@ _AMBIGUOUS_PLACE = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
+# Collision micro-toponyms: do not unlock multi_local_places by pairing with
+# another ambiguous token alone (e.g. #Saratoga + #DelMar racing hashtags).
+_MULTI_LOCAL_EXCLUDED = frozenset(
+    {
+        'delmar',
+        'ravena',
+        'altamont',
+        'sand lake',
+        'green island',
+    }
+)
+
 # "New York Times/Post/…" mastheads are national media names, not place context.
+# Also reject abbreviated ``ny times`` (including NBSP variants via ``\s``).
 _NY_CONTEXT = re.compile(
     r"""
     (?:
-        \bny\b
+        \bny\b(?!\s*times\b)
       | \bnyc\b
       | new\s+york(?!\s+(?:
             times|post|daily\s+news|magazine|observer|herald|metro|sun
@@ -193,6 +207,10 @@ _HARD_NEGATIVE = re.compile(
       | albany\s+road
       # California city / racetrack (not Delmar, NY).
       | \bdel\s+mar\b
+      # Street name elsewhere (e.g. Rochester) — not the Town of Delmar.
+      | delmar\s+st(?:reet)?\b
+      # National politician, not Troy NY.
+      | \btroy\s+jackson\b
       | national\s+capital\s+region
       | brussels\s+capital\s+region
       | capital\s+region\s+of\s+(?:
@@ -492,10 +510,13 @@ def match_post(
     if ambiguous_hits:
         # Normalize to compare distinct place tokens (e.g. Albany + Troy).
         distinct = {re.sub(r'\s+', ' ', h.lower()) for h in ambiguous_hits}
-        if len(distinct) >= 2:
+        multi_eligible = {name for name in distinct if name not in _MULTI_LOCAL_EXCLUDED}
+        if len(multi_eligible) >= 2:
             return MatchResult(True, 'multi_local_places')
 
-        term = next(iter(distinct))
+        # Prefer a non-collision token when several ambiguous names appear but
+        # multi-local did not fire (e.g. Saratoga + DelMar racing tags).
+        term = sorted(distinct, key=lambda name: (name in _MULTI_LOCAL_EXCLUDED, name))[0]
         # Bare "albany" is the noisiest token; require NY/local context.
         if term == 'albany':
             if _NY_CONTEXT.search(haystack):

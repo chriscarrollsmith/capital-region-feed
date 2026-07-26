@@ -1553,5 +1553,55 @@
     "split": "holdout",
     "regression": true,
     "note": "band name Altamont, not the Albany County hamlet"
+  },
+  {
+    "id": "fp-saratoga-delmar-racing-hashtags",
+    "text": "#horseracing #saratoga #saratogaracecourse #delmar #delmarthoroughbredclub",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "national racing circuit tags; DelMar must not unlock multi_local with Saratoga"
+  },
+  {
+    "id": "fp-ny-times-abbrev-troy-jackson",
+    "text": "After Democratic Shake-Up, Susan Collins Holds Enormous Cash Edge in Maine – ny times. Troy Jackson secures the Democratic nomination.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "abbreviated ny times is not NY place context; Troy Jackson is a person"
+  },
+  {
+    "id": "fp-delmar-st-rochester-ny",
+    "text": "76 Delmar St Rochester, NY Single-family home Assessed $46,800",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "Delmar Street in Rochester is not the Town of Delmar"
+  },
+  {
+    "id": "fp-troy-email-local-part",
+    "text": "Thanks to my friend in Mount Sinai, New York. Order your custom oil painting today -- email troy@troycap.com.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "email local-part troy@ must not count as Troy NY"
+  },
+  {
+    "id": "tp-multi-local-albany-troy",
+    "text": "Day trip from Albany to Troy for the farmers market.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "two core ambiguous places still unlock multi_local_places"
   }
 ]
