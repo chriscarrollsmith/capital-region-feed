@@ -128,6 +128,31 @@ def test_extract_alt_text_from_images() -> None:
     assert 'Hudson' in extract_alt_text(embed)
 
 
+def test_new_york_times_masthead_is_not_ny_context_for_troy() -> None:
+    """Person-name Troy + NYT masthead in link-card text must not keep."""
+    embed = {
+        '$type': 'app.bsky.embed.external',
+        'external': {
+            'title': 'Democrats pick new Senate candidate in Maine',
+            'description': (
+                'Troy Jackson Picked to Replace Platner as Democratic Nominee '
+                'in Maine Senate Race  The New York Times'
+            ),
+        },
+    }
+    alt = extract_alt_text(embed)
+    result = match_post(
+        'Democrats pick new Senate candidate in Maine - Google News',
+        alt_text=alt,
+        langs=['en'],
+    )
+    assert result.matched is False
+    assert result.reason == 'ambiguous_no_context:troy'
+
+    keep = match_post('Dinner in Troy, New York tonight.', langs=['en'])
+    assert keep.matched is True
+
+
 def test_lang_gate_drops_french_colonie_not_english_local() -> None:
     fr = match_post(
         'La colonie organise une sortie demain matin.',

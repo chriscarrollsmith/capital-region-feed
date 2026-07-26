@@ -662,6 +662,28 @@
     "note": "bare Albany event; could be OR/GA/etc."
   },
   {
+    "id": "fp-troy-jackson-maine-nyt-embed",
+    "text": "Democrats pick new Senate candidate in Maine in aftermath of Platner debacle - The Washington Post - Google News\n\n#democrats #politics",
+    "alt_text": "Democrats pick new Senate candidate in Maine in aftermath of Platner debacle - The Washington Post\nTroy Jackson Picked to Replace Platner as Democratic Nominee in Maine Senate Race  The New York Times\nMaine Democrats pick Troy Jackson as their Senate nominee at an unusual party convention  CNN",
+    "author_handle": "onpolitics.news",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "live FP: person named Troy + New York Times masthead in link-card alt must not count as Cap Region Troy+NY"
+  },
+  {
+    "id": "fp-troy-jackson-maine-nyt-text",
+    "text": "Troy Jackson wins the Maine Senate nod, according to the New York Times.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "person named Troy + newspaper masthead is not Cap Region context"
+  },
+  {
     "id": "fn-allowlist-harbinger-open-mic",
     "text": "Tonight's open mic starts at 8. Come support local musicians!",
     "author_handle": "harbingertheatre.bsky.social",

@@ -127,12 +127,15 @@ _AMBIGUOUS_PLACE = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
+# "New York Times/Post/…" mastheads are national media names, not place context.
 _NY_CONTEXT = re.compile(
     r"""
     (?:
         \bny\b
       | \bnyc\b
-      | new\s+york
+      | new\s+york(?!\s+(?:
+            times|post|daily\s+news|magazine|observer|herald|metro|sun
+          )\b)
       | upstate
       | capital\s+(?:region|district)
       | \#ny\b
