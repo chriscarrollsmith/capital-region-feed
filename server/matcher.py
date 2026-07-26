@@ -49,13 +49,10 @@ _STRONG_POSITIVE = re.compile(
       | niskayuna
       | watervliet
       | \bcohoes\b
-      | \bdelmar\b
       | \bmenands\b
       | loudonville
       | slingerlands
       | voorheesville
-      | \bravena\b
-      | \baltamont\b
       | schaghticoke
       | hoosick\s+falls
       | wynantskill
@@ -65,13 +62,11 @@ _STRONG_POSITIVE = re.compile(
       | \bdelanson\b
       | east\s+greenbush
       | north\s+greenbush
-      | green\s+island
       | mechanicville
       | burnt\s+hills
       | ballston\s+spa
       | clifton\s+park
       | new\s+scotland
-      | sand\s+lake
       | averill\s+park
       | boght\s+corners
       | newtonville
@@ -102,6 +97,8 @@ _STRONG_POSITIVE = re.compile(
 )
 
 # Ambiguous place names that need NY / Capital Region context.
+# Includes Cap Region micro-toponyms that collide with personal names,
+# other U.S./world places, or common phrases (e.g. "green islands").
 _AMBIGUOUS_PLACE = re.compile(
     r"""
     (?:
@@ -122,6 +119,11 @@ _AMBIGUOUS_PLACE = re.compile(
       | saratoga\s+springs
       | \bsaratoga\b
       | round\s+lake
+      | \bdelmar\b
+      | \bravena\b
+      | \baltamont\b
+      | sand\s+lake\b
+      | green\s+island\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -185,6 +187,8 @@ _HARD_NEGATIVE = re.compile(
             kentucky|indiana|ohio|wyoming|illinois|wisconsin|vermont
           )\b
       | albany\s+road
+      # California city / racetrack (not Delmar, NY).
+      | \bdel\s+mar\b
       | national\s+capital\s+region
       | brussels\s+capital\s+region
       | capital\s+region\s+of\s+(?:
@@ -266,8 +270,25 @@ def _normalize(text: str) -> str:
     return re.sub(r'\s+', ' ', text or '').strip()
 
 
+# Link-card / quote bodies can be full articles; matching on the whole blob
+# pulls buried tour-stop footnotes (e.g. "Albany, New York" in a Chicago review).
+_EMBED_TEXT_MAX = 320
+
+
+def _clip_embed_text(value: object, *, max_len: int = _EMBED_TEXT_MAX) -> str:
+    text = str(value or '').strip()
+    if len(text) <= max_len:
+        return text
+    return text[:max_len].rstrip()
+
+
 def extract_alt_text(embed: object | None) -> str:
-    """Pull alt text from common Bluesky embed shapes (dict or SDK-like)."""
+    """Pull alt text from common Bluesky embed shapes (dict or SDK-like).
+
+    External descriptions and quoted record text are length-capped so deep
+    article body does not dominate matching. Titles and image alts are kept
+    in full when short, and clipped at the same cap when longer.
+    """
     if not embed:
         return ''
 
@@ -281,13 +302,15 @@ def extract_alt_text(embed: object | None) -> str:
                     continue
                 alt = image.get('alt')
                 if alt:
-                    chunks.append(str(alt))
+                    chunks.append(_clip_embed_text(alt))
         external = embed.get('external')
         if isinstance(external, dict):
-            for key in ('title', 'description'):
-                value = external.get(key)
-                if value:
-                    chunks.append(str(value))
+            title = external.get('title')
+            if title:
+                chunks.append(_clip_embed_text(title))
+            description = external.get('description')
+            if description:
+                chunks.append(_clip_embed_text(description))
         media = embed.get('media')
         if isinstance(media, dict):
             chunks.append(extract_alt_text(media))
@@ -297,9 +320,9 @@ def extract_alt_text(embed: object | None) -> str:
             if isinstance(nested, dict):
                 text = nested.get('text')
                 if text:
-                    chunks.append(str(text))
+                    chunks.append(_clip_embed_text(text))
                 chunks.append(extract_alt_text(nested.get('embed')))
-        return ' '.join(chunks)
+        return ' '.join(chunk for chunk in chunks if chunk)
 
     # SDK model fallbacks
     images = getattr(embed, 'images', None)
@@ -307,14 +330,16 @@ def extract_alt_text(embed: object | None) -> str:
         for image in images:
             alt = getattr(image, 'alt', None)
             if alt:
-                chunks.append(str(alt))
+                chunks.append(_clip_embed_text(alt))
     external = getattr(embed, 'external', None)
     if external is not None:
-        for attr in ('title', 'description'):
-            value = getattr(external, attr, None)
-            if value:
-                chunks.append(str(value))
-    return ' '.join(chunks)
+        title = getattr(external, 'title', None)
+        if title:
+            chunks.append(_clip_embed_text(title))
+        description = getattr(external, 'description', None)
+        if description:
+            chunks.append(_clip_embed_text(description))
+    return ' '.join(chunk for chunk in chunks if chunk)
 
 
 def combine_text(text: str = '', *, alt_text: str = '', langs: Iterable[str] | None = None) -> str:
