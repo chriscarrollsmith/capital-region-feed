@@ -254,7 +254,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
 ---
 
 ### B-053 — Daily feed audit: collision micros, #518, New Scotland, Upstate NY, Albany County WY
-- **Status:** in progress (this PR)
+- **Status:** done ([#23](https://github.com/chriscarrollsmith/capital-region-feed/pull/23))
 - **Why:** 2026-07-26 live feed still kept off-region posts after #22: Metra `#518`,
   "a new Scotland" / New Scotland Shirt, bare Upstate NY (Syracuse), Central Ave /
   Lincoln Park / 14th→4th Street classifier micros, and Albany County WY near-misses.
