@@ -1,0 +1,20 @@
+{
+  "version": "ambiguous_clf_v1",
+  "threshold": 1.0,
+  "description": "Linear scorer for ambiguous / event-near-miss candidates after the regex floor. Tuned so local micro-signals (+ event/place cues) keep while bare Albany events and venue-without-cue still drop.",
+  "weights": {
+    "bias": -0.5,
+    "has_event_cue": 0.2,
+    "has_local_venue": 0.1,
+    "has_ambiguous": -0.2,
+    "is_bare_albany": -0.4,
+    "is_bare_troy": -0.1,
+    "local_micro": 1.0,
+    "local_micro_count": 0.2,
+    "event_and_micro": 1.2,
+    "ambiguous_and_micro": 0.8,
+    "event_and_ambiguous": 0.1,
+    "venue_without_event": -1.5,
+    "albany_event_no_micro": -1.2
+  }
+}

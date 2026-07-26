@@ -26,6 +26,7 @@ def test_is_strong_match_reason() -> None:
     assert is_strong_match_reason('event_local_venue:proctors')
     assert not is_strong_match_reason('allowlist_did')
     assert not is_strong_match_reason('soft_prior_ambiguous:troy')
+    assert not is_strong_match_reason('classifier:local_micro')
     assert not is_strong_match_reason('bare_albany')
 
 

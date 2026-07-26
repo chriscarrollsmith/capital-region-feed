@@ -862,5 +862,85 @@
     "split": "dev",
     "regression": true,
     "note": "v1 soft prior unlocks ambiguous places only, not every post"
+  },
+  {
+    "id": "tp-clf-pine-hills-block-party",
+    "text": "Pine Hills block party this Saturday \u2014 bring a dish!",
+    "expected": true,
+    "signal": "event",
+    "bucket": "ambiguous_classifier",
+    "split": "holdout",
+    "regression": true,
+    "note": "local neighborhood + event cue; classifier keep without placename"
+  },
+  {
+    "id": "tp-clf-lark-street-albany-show",
+    "text": "Show on Lark Street in Albany tonight. Doors at 8.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "ambiguous_classifier",
+    "split": "dev",
+    "regression": true,
+    "note": "bare Albany unlocked by Lark Street micro-signal + event cue"
+  },
+  {
+    "id": "tp-clf-river-street-open-mic",
+    "text": "Open mic tomorrow on River Street \u2014 sign-ups start at 6.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "ambiguous_classifier",
+    "split": "holdout",
+    "regression": true,
+    "note": "Troy corridor micro-signal + event cue without town name"
+  },
+  {
+    "id": "tp-clf-crossgates-holiday-hours",
+    "text": "Tonight at Crossgates \u2014 holiday hours extended until 9pm.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "ambiguous_classifier",
+    "split": "dev",
+    "regression": true,
+    "note": "local mall landmark + event/time cue"
+  },
+  {
+    "id": "tp-clf-center-square-porchfest",
+    "text": "Center Square Porchfest is this weekend. Maps at noon.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "ambiguous_classifier",
+    "split": "holdout",
+    "regression": true,
+    "note": "neighborhood festival without city placename"
+  },
+  {
+    "id": "tn-clf-pine-hills-casual",
+    "text": "Walked around Pine Hills this afternoon.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "dev",
+    "regression": true,
+    "note": "local micro alone without event/ambiguous support should still drop"
+  },
+  {
+    "id": "tn-clf-main-street-tonight-generic",
+    "text": "Show on Main Street tonight. Doors at 8.",
+    "expected": false,
+    "signal": "event",
+    "bucket": "ambiguous_classifier",
+    "split": "holdout",
+    "regression": true,
+    "note": "generic Main Street + event must not match without Cap Region cue"
+  },
+  {
+    "id": "tn-clf-fillmore-still-drops",
+    "text": "Tickets on sale for Saturday comedy night at The Fillmore. Doors at 7.",
+    "expected": false,
+    "signal": "event",
+    "bucket": "ambiguous_classifier",
+    "split": "dev",
+    "regression": true,
+    "note": "off-region venue lookalike remains a precision anchor for classifier path"
   }
 ]

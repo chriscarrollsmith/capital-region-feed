@@ -146,10 +146,10 @@ The feed optimizes for **both** false positives and false negatives:
 | Recall | Local posts should not need to say “Albany” to appear — especially allowlisted authors and regional events |
 
 Bare / ambiguous place names stay precision-gated (NY or other local context required),
-unless the author has earned a **soft prior** from repeated strong local text matches.
-Hard allowlists and event/venue cues remain the main recall levers for posts with no
-placenames. See `BACKLOG.md` for sequenced work (allowlists → soft priors → events →
-classifier).
+unless the author has earned a **soft prior** from repeated strong local text matches
+or the second-stage classifier keeps a neighborhood/micro + event combination.
+Hard allowlists and event/venue cues remain primary recall levers for posts with no
+placenames. See `BACKLOG.md` for sequenced follow-ons (LLM label bootstrap, ranking).
 
 ### Current keep / drop rules (v1)
 
@@ -160,6 +160,7 @@ classifier).
 - Author is on the local allowlist (`data/allowlist_handles.txt` / `allowlist_dids.txt`), even with no place words in the text. Jetstream supplies DIDs only — keep DIDs in sync with `uv run python scripts/resolve_allowlist_dids.py` after editing handles. Allowlisting targets high signal/noise Cap Region voices (not firehose-volume or business-slop accounts); screen candidates with `scripts/screen_allowlist_candidates.py`.
 - Author has a soft prior (`SOFT_PRIOR_MIN_STRONG` strong text matches within `SOFT_PRIOR_WINDOW_DAYS`, tracked in `AuthorLocalStats`) and the post uses a bare ambiguous place name. Soft priors do **not** override hard negatives and do not keep arbitrary no-placename posts (that remains allowlist-only).
 - Text has upcoming-event phrasing (`tonight`, `tickets`, `this weekend`, …) **and** a high-confidence Capital Region venue (`Proctors`, `MVP Arena`, `SPAC season/lawn`, `Music Haven`, `at The Egg`, …). Event cues alone never keep bare `Albany` or other ambiguous towns; off-region venues stay dropped.
+- After the regex floor, the ambiguous-case classifier (`server/classifier.py`, weights in `data/models/ambiguous_clf_v1.json`) keeps posts with Capital Region neighborhood/landmark micro-signals plus event (or place) cues — reason `classifier:…`. Hard negatives never reach this stage; bare Albany events without micro-signals still drop.
 
 **Drop** hard negatives:
 
@@ -171,7 +172,8 @@ classifier).
 `data/eval_cases.json` is stratified so scores are not only about SkyFeed false positives:
 
 - **signal:** `text` · `author` · `event` — how locality is supposed to arrive
-- **bucket:** e.g. `skyfeed_fp`, `precision_gate`, `local_org_no_placename`, `regional_event`
+- **bucket:** e.g. `skyfeed_fp`, `precision_gate`, `local_org_no_placename`,
+  `regional_event`, `ambiguous_classifier`
 - **split:** `dev` (iterate) vs `holdout` (report separately)
 - **regression:** `false` marks known recall gaps (tracked, not CI-failing) until backlog items close them
 
@@ -218,5 +220,5 @@ uv run python scripts/append_eval_cases.py --input /tmp/labeled.jsonl
 `collect_eval_sample.py search --query '…'` is available for one-off queries.
 Rows already present in `data/eval_cases.json` are skipped by default.
 
-Optional later (see `BACKLOG.md`): hybrid classifier, engagement ranking, muted
+Optional later (see `BACKLOG.md`): LLM label bootstrap, engagement ranking, muted
 keywords.
