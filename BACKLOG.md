@@ -253,6 +253,23 @@ Status: `todo` · `in progress` · `done` · `blocked`
 
 ---
 
+### B-053 — Daily feed audit: collision micros, #518, New Scotland, Upstate NY, Albany County WY
+- **Status:** in progress (this PR)
+- **Why:** 2026-07-26 live feed still kept off-region posts after #22: Metra `#518`,
+  "a new Scotland" / New Scotland Shirt, bare Upstate NY (Syracuse), Central Ave /
+  Lincoln Park / 14th→4th Street classifier micros, and Albany County WY near-misses.
+- **Work:**
+  - Narrow strong positives (`#518ny`/`#518area`, New Scotland + NY/town; drop bare
+    `upstate ny` as strong).
+  - Gate collision micros on Cap Region hints; fix `4th Street` digit lookbehind;
+    require `doors at/open` for event cues.
+  - Gazetteer + matcher conflict for Albany County Wyoming.
+  - Grow eval with today's FP/TP anchors.
+- **Done when:** Today's audited FPs drop; eval precision/recall stay 1.000; unit
+  tests cover the new gates.
+
+---
+
 ## Suggested sequencing
 
 ```text
@@ -278,6 +295,9 @@ B-051              venue/org allowlist growth (close remaining author FN)
         │
         ▼
 B-052              audit/purge indexed posts after matcher changes
+        │
+        ▼
+B-053              daily feed audit FP gates (micros / #518 / WY)
 ```
 
 ## Out of scope (for now)
