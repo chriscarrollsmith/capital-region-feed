@@ -1387,5 +1387,171 @@
     "author_handle": "wnyt.bsky.social",
     "author_did": "did:plc:wdssbrxji4hmcgl3pfr5ym5r",
     "note": "llm deepseek-v4-pro + human confirm"
+  },
+  {
+    "id": "fp-albany-ga-cbs-sunday-morning-listings",
+    "text": "\"Sunday Morning\" show times – CBS News  Stations carrying CBS News' \"Sunday Morning\": CITY - STATION - AIR TIME Abilene, TX - KTAB - 8 a.m.Albany, GA - WSWG - 9 a.m.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "live stale-index FP: Albany, GA TV listing must stay entity_other / drop"
+  },
+  {
+    "id": "fp-madrid-hauptstadtregion-german-alt",
+    "text": "State of emergency. Wild fires in southern Europe: Around 90,000 people evacuated. The state of emergency in Spain applies to the capital region of Madrid and the nearby province of Ávila.",
+    "alt_text": "Waldbrände in Südeuropa: Rund 90.000 Menschen evakuiert Der Notstand in Spanien gilt für die Hauptstadtregion Madrid und die nahe gelegene Provinz Ávila.",
+    "langs": ["de"],
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "live stale-index FP: German Hauptstadtregion alt must not keep as Cap Region"
+  },
+  {
+    "id": "fp-green-islands-scenic-plural",
+    "text": "Christopher Nolan's The Odyssey: why a 3,000-year-old story still captivates us.",
+    "alt_text": "Cover image featuring a scenic view of the sea with lush, green islands under a partly cloudy sky.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "live FP: plural green islands must not match Green Island, NY"
+  },
+  {
+    "id": "fp-green-island-jersey-channel-islands",
+    "text": "Black-headed gulls on the Jersey shore, along St Clement's Bay near Green Island.\n\n#birds #jersey #gulls",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "live FP: Channel Islands Green Island, not Green Island NY"
+  },
+  {
+    "id": "fp-sand-lake-wyoming-mesonet",
+    "text": "At 1:00 PM MDT, 10 SSW Arlington [Carbon Co, WY] Mesonet reports Rain of 0.30 Inch. Mesonet station SNLW4 Sand Lake. #wywx Link",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "live FP: Wyoming Sand Lake station, not Sand Lake NY"
+  },
+  {
+    "id": "fp-delmar-hamlin-personal-name",
+    "text": "Fun to see the script in action.",
+    "alt_text": "that do have some neurological damage. Delmar Hamlin was the exception, 1% get back",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "live FP: personal name Delmar, not Delmar NY"
+  },
+  {
+    "id": "fp-del-mar-racetrack-hashtag",
+    "text": "#DelMar 7/25/26 Race 10 - Bing Crosby #  Projected Odds 1   3.6 2   5.6",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "live FP: Del Mar CA racing hashtag, not Delmar NY"
+  },
+  {
+    "id": "fp-del-mar-two-word-hard-negative",
+    "text": "Post time from Del Mar this afternoon.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "spaced Del Mar is the CA track/city"
+  },
+  {
+    "id": "fp-lady-ravena-personal-name",
+    "text": "Come see Me next week in Edinburgh. Also offering appointments with My vanilla friend at £300ph.",
+    "alt_text": "Edinburgh Appointments - Lady Ravena Rates:1 hour £200",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "live FP: Lady Ravena personal/brand name, not Ravena NY"
+  },
+  {
+    "id": "fp-long-embed-chicago-review-no-local-cue",
+    "text": "",
+    "alt_text": "Review: Benson Boone is a Wanted Man — but who is he really? It took approximately 13-and-a-half-minutes for a backflip on Friday night at the Chicago Theatre. The crowd in Illinois was roaring for the Midwest dates on the Wanted Man Tour.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "live FP shape after embed description cap: Chicago review link-card without a local cue must drop (capping itself is unit-tested)"
+  },
+  {
+    "id": "tp-green-island-ny-context",
+    "text": "Town board meets in Green Island, NY on Tuesday.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "demoted micro-toponym still keeps with NY context"
+  },
+  {
+    "id": "tp-sand-lake-ny-context",
+    "text": "Storm damage reported in Sand Lake, New York overnight.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "Sand Lake NY with state context remains a keep"
+  },
+  {
+    "id": "tp-delmar-ny-context",
+    "text": "New cafe opening on Delaware Ave in Delmar, NY next month.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "Delmar NY with state context remains a keep"
+  },
+  {
+    "id": "tp-ravena-ny-context",
+    "text": "Ravena-Coeymans-Selkirk schools closed for snow day across the Capital Region.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "Ravena with Capital Region context; also coeymans remains strong"
+  },
+  {
+    "id": "tp-altamont-based-local-band",
+    "text": "On September 18, Altamont-based musical duo The Parlor releases their new album.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "Cap Region Altamont cue; bare Altamont alone must still drop"
+  },
+  {
+    "id": "fp-lords-of-altamont-band",
+    "text": "Now playing: \"What's Your Bag\" by The Lords of Altamont",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "band name Altamont, not the Albany County hamlet"
   }
 ]
