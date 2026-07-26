@@ -232,7 +232,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
 ## P2 — Indexed feed hygiene
 
 ### B-052 — Audit & purge posts that no longer match
-- **Status:** in progress
+- **Status:** done ([#21](https://github.com/chriscarrollsmith/capital-region-feed/pull/21))
 - **Why:** SQLite stores URI metadata only; matcher/gazetteer/allowlist changes do
   not revisit indexed rows. Stale keeps (e.g. Troy Jackson + “New York Times”
   masthead before #20, Albany GA listings, off-region “capital region” copy)
@@ -245,6 +245,8 @@ Status: `todo` · `in progress` · `done` · `blocked`
   - Add eval anchors for live stale FPs caught in the audit.
 - **Done when:** Tooling is documented; prod index has no rematch would-drops
   from the audit pass; eval covers the FP shapes that were lingering.
+- **Notes:** First pass purged 12/186 prod rows (9 Troy Jackson masthead FPs,
+  Albany GA listing, Madrid/`Hauptstadtregion`, 1 not_found).
 
 ---
 
