@@ -31,6 +31,24 @@ did:plc:e6risp43zdws2syfppjsmqo2
 did:plc:dzheerxrkmxthx4cn3qnyk6a
 # sarbetter.bsky.social
 did:plc:vy6esylbhhl6ssc2go75gvhg
+# patricktine.bsky.social
+did:plc:3mgdzve73cwqpdoofvdwv5a2
+# tyleramcneil.bsky.social
+did:plc:6yfrbwh6u3qkn4uqcz33b5te
+# grantashley.bsky.social
+did:plc:hjwmuocl36u6j7rmlo3ituxk
+# adamshinder.bsky.social
+did:plc:lqtboa7qgsvomiz2gg26kakt
+# kyracola.bsky.social
+did:plc:bpkaomjzrltiwiqcbidfn5ht
+# slapointewx.bsky.social
+did:plc:zhxdj3grtwfoi4hrvhognveb
+# akreportshere.bsky.social
+did:plc:dfdlvpkcicuegnnq4zozxrfl
+# apg1.bsky.social
+did:plc:wot2ue6d4nkjonuohc6zdmsa
+# radiodarwin.bsky.social
+did:plc:pab72zniotqqkhhxybtrp7xd
 # albanynycouncil.bsky.social
 did:plc:5xtrt6jmgumhhualtfkj4l5h
 # amromero109.bsky.social
@@ -61,6 +79,8 @@ did:plc:nonhmvcoqfr3nrizdql7jetg
 did:plc:swu7roy2sofsolhcy3gvdfb4
 # ceceswool.bsky.social
 did:plc:k6fyjokqodxixtobdbhwq3le
+# goldenleafbooks.bsky.social
+did:plc:nfuicd6q5tubsjvbfawmhose
 # capitaldistrictdsa.org
 did:plc:longjbl6dpovzsy7zdaom63z
 # troyindivisible.bsky.social
@@ -69,6 +89,8 @@ did:plc:3q6ltsgbvuefhx6aansxhjns
 did:plc:7mmrowrdoicmd4ibukoj36b7
 # indivisible-adk.bsky.social
 did:plc:wo2pcefdympoqpx4cn2r6njm
+# indivisiblealbany.org
+did:plc:wjsuxxoftbcgp5z7ljxglnpe
 # crp-crny.bsky.social
 did:plc:5sgbt2y7cav265s2ms675liz
 # albanyguild.bsky.social
@@ -77,3 +99,25 @@ did:plc:xx77hqmihoiwg6rbs3qjzjdw
 did:plc:rvt3uwqgsdmkqsbwcuip5tyk
 # fromstarlight.bsky.social
 did:plc:cozvqa5kxcma4nqecqto7y2x
+# wamc.org
+did:plc:47uakj6bpkbzctu62frckopc
+# harbingertheatre.bsky.social
+did:plc:lhdrozdm4mcgyqybd4tmu45u
+# societyofghouls.bsky.social
+did:plc:ysyi4urcfifuetdrwid2kkc7
+# salon-salvage.bsky.social
+did:plc:pkdpitoprjhrdxvbdfhsyq6i
+# troystorypod.bsky.social
+did:plc:32xwcrpk2ftn4adzpdon6tb6
+# albanylawglc.bsky.social
+did:plc:4spogs4voxp7xh4imar4gosj
+# albanyffm.bsky.social
+did:plc:5y7sqeqkv6gnw3neu2bvghf5
+# renslibrary.bsky.social
+did:plc:5fo3y4r2y5c5gz7r5vryftif
+# opma.bsky.social
+did:plc:direlcbk42u6mvmecmwj5rvr
+# cooperscavegames.bsky.social
+did:plc:uctf5y6ovo3svbxkmtcvnwby
+# historianchris.bsky.social
+did:plc:uno3bg3dauu4tylt5knrqxbj
