@@ -210,7 +210,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   still 1.000 on `precision_gate` / `skyfeed_fp` (including Veterans Day parade).
 
 ### B-051 — Grow venue/org allowlist coverage for no-placename local posts
-- **Status:** done
+- **Status:** done ([#18](https://github.com/chriscarrollsmith/capital-region-feed/pull/18))
 - **Depends on:** B-011, B-050 (remaining tracked FN)
 - **Why:** After B-050, the only scored recall gap was
   `gap-local-org-unknown-handle-no-place` — generic venue posts with no
