@@ -21,6 +21,8 @@ Case schema (``data/eval_cases.json``):
   (known recall gaps until author/event backlog items land)
 - ``soft_prior``: if true with ``author_did``, treat that DID as soft-prior eligible
   for this case (earned priors in production come from ``AuthorLocalStats``)
+- ``langs``: optional Bluesky language tags (e.g. ``["fr"]``) for language-aware
+  heuristics
 - Bucket ``ambiguous_classifier`` covers second-stage keeps (neighborhood/micro +
   event) and precision anchors that must stay dropped
 """
@@ -109,9 +111,11 @@ def evaluate_cases(
         case_soft: set[str] = set(soft_prior_dids or ())
         if case.get('soft_prior') and case.get('author_did'):
             case_soft.add(str(case['author_did']))
+        langs = case.get('langs')
         result = match_post(
             case.get('text', ''),
             alt_text=case.get('alt_text', ''),
+            langs=langs if isinstance(langs, list) else None,
             author_did=case.get('author_did'),
             author_handle=case.get('author_handle'),
             allowlist_dids=dids,

@@ -106,7 +106,8 @@ def post_to_candidate(
     record = post.get('record') or {}
     author = post.get('author') or {}
     text = str(record.get('text') or '')
-    return {
+    langs = record.get('langs') if isinstance(record.get('langs'), list) else None
+    candidate: dict[str, Any] = {
         'id': str(post.get('uri') or ''),
         'text': text,
         'author_handle': author.get('handle'),
@@ -118,6 +119,9 @@ def post_to_candidate(
         'regression': True,
         'note': f'label me: true=keep, false=drop | source={source}',
     }
+    if langs:
+        candidate['langs'] = langs
+    return candidate
 
 
 def extract_posts_from_feed_payload(

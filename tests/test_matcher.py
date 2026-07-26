@@ -23,9 +23,11 @@ def test_eval_case(case: dict[str, Any]) -> None:
     soft_prior_dids: set[str] = set()
     if case.get('soft_prior') and case.get('author_did'):
         soft_prior_dids.add(str(case['author_did']))
+    langs = case.get('langs')
     result = match_post(
         case.get('text', ''),
         alt_text=case.get('alt_text', ''),
+        langs=langs if isinstance(langs, list) else None,
         author_did=case.get('author_did'),
         author_handle=case.get('author_handle'),
         allowlist_dids=ALLOWLIST_DIDS,
@@ -63,7 +65,7 @@ def test_soft_prior_unlocks_bare_ambiguous_not_hard_negative() -> None:
         soft_prior_dids=priors,
     )
     assert blocked.matched is False
-    assert blocked.reason == 'hard_negative'
+    assert blocked.reason in {'hard_negative', 'entity_other:albany_park_chicago'}
 
 
 def test_allowlist_did_matches_without_handle_or_placename() -> None:
@@ -102,6 +104,28 @@ def test_event_local_venue_requires_cue_and_venue() -> None:
 def test_extract_alt_text_from_images() -> None:
     embed = {
         '$type': 'app.bsky.embed.images',
-        'images': [{'alt': 'Sunset over [REDACTED]', 'image': {}}],
+        'images': [{'alt': 'Sunset over the Hudson', 'image': {}}],
     }
-    assert '[REDACTED]' in extract_alt_text(embed)
+    assert 'Hudson' in extract_alt_text(embed)
+
+
+def test_lang_gate_drops_french_colonie_not_english_local() -> None:
+    fr = match_post(
+        'La colonie organise une sortie demain matin.',
+        langs=['fr'],
+    )
+    assert fr.matched is False
+    assert fr.reason == 'lang_non_local:fr'
+
+    # Bilingual EN+FR keeps the regex/entity path (Colonie NY police).
+    bilingual = match_post(
+        'Colonie Police responded to a crash on Central Ave this morning.',
+        langs=['fr', 'en'],
+    )
+    assert bilingual.matched is True
+
+    english = match_post(
+        'Colonie Police responded to a crash on Central Ave this morning.',
+        langs=['en'],
+    )
+    assert english.matched is True

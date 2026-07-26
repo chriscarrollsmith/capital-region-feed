@@ -92,6 +92,11 @@ def normalize_case(
         value = row.get(key)
         if value is not None and value != '':
             case[key] = value
+    langs = row.get('langs')
+    if isinstance(langs, list) and langs:
+        case['langs'] = [str(item) for item in langs if item is not None and item != '']
+    if row.get('soft_prior') is True:
+        case['soft_prior'] = True
     return case
 
 

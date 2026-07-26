@@ -12,7 +12,8 @@ def utc_now() -> datetime:
 
 
 _db_path = Path(config.DATABASE_PATH)
-_db_path.parent.mkdir(parents=True, exist_ok=True)
+if str(_db_path) != ':memory:':
+    _db_path.parent.mkdir(parents=True, exist_ok=True)
 
 db = peewee.SqliteDatabase(
     str(_db_path),
@@ -37,6 +38,8 @@ class Post(BaseModel):
     match_reason = peewee.CharField(null=True, default=None)
     created_at = peewee.DateTimeField(null=True, index=True)
     indexed_at = peewee.DateTimeField(default=utc_now, index=True)
+    like_count = peewee.IntegerField(default=0)
+    repost_count = peewee.IntegerField(default=0)
 
 
 class SubscriptionState(BaseModel):
@@ -52,9 +55,20 @@ class AuthorLocalStats(BaseModel):
     last_strong_at = peewee.DateTimeField(null=True, index=True)
 
 
+def _ensure_columns() -> None:
+    """Add columns introduced after the initial schema (SQLite has no auto-migrate)."""
+    rows = db.execute_sql('PRAGMA table_info("post")').fetchall()
+    columns = {row[1] for row in rows}
+    if 'like_count' not in columns:
+        db.execute_sql('ALTER TABLE "post" ADD COLUMN like_count INTEGER DEFAULT 0 NOT NULL')
+    if 'repost_count' not in columns:
+        db.execute_sql('ALTER TABLE "post" ADD COLUMN repost_count INTEGER DEFAULT 0 NOT NULL')
+
+
 if db.is_closed():
     db.connect()
     db.create_tables([Post, SubscriptionState, AuthorLocalStats])
+    _ensure_columns()
 
 
 def prune_old_posts(retention_days: int | None = None) -> int:

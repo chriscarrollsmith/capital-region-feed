@@ -754,7 +754,7 @@
   },
   {
     "id": "fp-event-offregion-msg",
-    "text": "Concert announced at Madison Square Garden — September 12. Presale starts Monday.",
+    "text": "Concert announced at Madison Square Garden \u2014 September 12. Presale starts Monday.",
     "expected": false,
     "signal": "event",
     "bucket": "precision_gate",
@@ -942,5 +942,384 @@
     "split": "dev",
     "regression": true,
     "note": "off-region venue lookalike remains a precision anchor for classifier path"
+  },
+  {
+    "id": "fp-french-colonie-lang-fr",
+    "text": "La colonie organise une sortie demain matin.",
+    "expected": false,
+    "note": "French colonie with langs=fr; language gate / entity path",
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "langs": [
+      "fr"
+    ]
+  },
+  {
+    "id": "tp-colonie-ny-lang-en",
+    "text": "Colonie Police responded to a crash on Central Ave this morning.",
+    "expected": true,
+    "note": "English local Colonie must keep with langs=en",
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "langs": [
+      "en"
+    ]
+  },
+  {
+    "id": "fp-entity-albany-park",
+    "text": "Street festival vibes in Albany Park this weekend \u2014 come through.",
+    "expected": false,
+    "note": "Gazetteer other-region entity (Chicago)",
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true
+  },
+  {
+    "id": "tp-entity-niskayuna",
+    "text": "Niskayuna library board meets Thursday.",
+    "expected": true,
+    "note": "Gazetteer capital_ny entity",
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true
+  },
+  {
+    "id": "at://did:plc:uk5bbcyh46ekdmago3mdoiwk/app.bsky.feed.post/3mrive4vmk224",
+    "text": "If I lived in New York City, I'd be in that park as often as I could be there! I'm from Albany..",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "author_handle": "euclido.bsky.social",
+    "author_did": "did:plc:uk5bbcyh46ekdmago3mdoiwk",
+    "note": "llm deepseek-v4-pro + human confirm",
+    "langs": [
+      "en"
+    ]
+  },
+  {
+    "id": "at://did:plc:7pycdzg5nl4effudeyocyiw4/app.bsky.feed.post/3mriuirmpog2f",
+    "text": "Held from 4 to 7 p.m. Thursdays from mid-to-late August through October, the market will be run by the owner of the Washington Park Farmers Market.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "author_handle": "timesunion.com",
+    "author_did": "did:plc:7pycdzg5nl4effudeyocyiw4",
+    "note": "llm deepseek-v4-pro + human confirm"
+  },
+  {
+    "id": "at://did:plc:olls5wtbnd72obnc7mpskbvm/app.bsky.feed.post/3mripbmnrx22e",
+    "text": "7 NW Albany [Albany Co, WY] Mesonet reports Rain of 0.30 Inch at 1:00 PM MDT -- Mesonet station CINW4 Cinnabar Park.\r\nat Sat, 25 Jul 2026 20:10:12 +0000 via IEMbot\r\nAdditional Details Here.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "author_handle": "cys.nws-bot.us",
+    "author_did": "did:plc:olls5wtbnd72obnc7mpskbvm",
+    "note": "llm deepseek-v4-pro + human confirm",
+    "langs": [
+      "en"
+    ]
+  },
+  {
+    "id": "at://did:plc:avf2r4bh6vm2yfiyjtvsphaq/app.bsky.feed.post/3mrip4one7d2s",
+    "text": "Tentacle Difficulties: Lespecial Delivers a Crushing Victory Lap at Official Alive at 5 After Party in Albany",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": false,
+    "author_handle": "nystatemusic.bsky.social",
+    "author_did": "did:plc:avf2r4bh6vm2yfiyjtvsphaq",
+    "note": "llm deepseek-v4-pro + human confirm; regression=false until matcher recalls bare-Albany event/local cases"
+  },
+  {
+    "id": "at://did:plc:cf2yh7biwon3rlz37db3g4ch/app.bsky.feed.post/3mriz4x6ivk23",
+    "text": "I\u2019m about to tell \u2018em in Albany, New York.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "author_handle": "paulapoundstone.bsky.social",
+    "author_did": "did:plc:cf2yh7biwon3rlz37db3g4ch",
+    "note": "llm deepseek-v4-pro + human confirm",
+    "langs": [
+      "en"
+    ]
+  },
+  {
+    "id": "at://did:plc:t3cdmuggt6xacodh4f4qtgqq/app.bsky.feed.post/3mriyfkykvp2c",
+    "text": "On July 26, 1788, New York became the 11th state of the USA. Famous for New York City, the Statue of Liberty, Broadway, and beautiful parks, it is a popular place to visit. The New York State Museum in Albany shares the state\u2019s rich history and culture.\n\n#RouteTripUSA",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "author_handle": "routetripusa.bsky.social",
+    "author_did": "did:plc:t3cdmuggt6xacodh4f4qtgqq",
+    "note": "llm deepseek-v4-pro + human confirm",
+    "langs": [
+      "en-us"
+    ]
+  },
+  {
+    "id": "at://did:plc:fuz6utfgzwwmap3a2qfod4ud/app.bsky.feed.post/3mrixtofl3x27",
+    "text": "#ICYMI: Federal prosecutors fired back at New York this week, asking an Albany federal court to block state regulations on agents from U.S. Customs and Immigration Enforcement.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "author_handle": "news10.bsky.social",
+    "author_did": "did:plc:fuz6utfgzwwmap3a2qfod4ud",
+    "note": "llm deepseek-v4-pro + human confirm"
+  },
+  {
+    "id": "at://did:plc:bm3s6owtkhcpunxmsovidfhd/app.bsky.feed.post/3mripuq3tts2s",
+    "text": "there are so many arguments of strict constructionism.\n\nThe Four Horsemen vs. the FDR New Dealers is the preeminent example: the sky did not fall.\n\nThe key distinction here is Mamdani is a mayor of the world\u2019s economics capital.\n\nThey\u2019ve never went bankrupt in Albany: NYC almost did in the \u201870s. \ud83e\uddd0\ud83e\uddd0\ud83e\uddd0",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": false,
+    "author_handle": "darrylbrownjr.bsky.social",
+    "author_did": "did:plc:bm3s6owtkhcpunxmsovidfhd",
+    "note": "llm deepseek-v4-pro + human confirm; regression=false until matcher recalls bare-Albany event/local cases",
+    "langs": [
+      "en"
+    ]
+  },
+  {
+    "id": "at://did:plc:lqik2sra2dgux2l64a3otsuw/app.bsky.feed.post/3mrhmsl3pjs27",
+    "text": "Goons who threatened Indian girls and women at protest being treated like royals by cops to politicians \ud83d\ude47\ud83c\udffb\u200d\u2640\ufe0f while innocent civilians at peaceful protests have CRPF, latthis and tear gas \ud83d\udc81\ud83c\udffb\u200d\u2640\ufe0f here cops are their bodyguards incase they are stopped from violence \ud83d\udc81\ud83c\udffb\u200d\u2640\ufe0f\n\nwww.instagram.com/reel/DbNSptE...",
+    "expected": false,
+    "signal": "text",
+    "bucket": "global_negative",
+    "split": "holdout",
+    "regression": true,
+    "author_handle": "maanvee.bsky.social",
+    "author_did": "did:plc:lqik2sra2dgux2l64a3otsuw",
+    "note": "llm deepseek-v4-pro + human confirm",
+    "langs": [
+      "en"
+    ]
+  },
+  {
+    "id": "at://did:plc:pn57ik4fjcbkxoaknvmb4zo5/app.bsky.feed.post/3mrd2pk2ads2g",
+    "text": "EUFURIA! \ud83e\udd29\ud83d\udc3e\ud83d\udc95\n-\nWho will be in the Capital Region this weekend? I won\u2019t be attending this con, but make sure to come tell my assistant that you said hi (and to ask about my cardboard cut out \ud83e\udd23)!!",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "author_handle": "cosmellcosplay.bsky.social",
+    "author_did": "did:plc:pn57ik4fjcbkxoaknvmb4zo5",
+    "note": "llm deepseek-v4-pro + human confirm; text sanitized to avoid env secret collision"
+  },
+  {
+    "id": "at://did:plc:bwqhw4tgudad2hyzr4acxcrx/app.bsky.feed.post/3mrcq5pv2f223",
+    "text": "This weekend, New York's capital is going to be in for a treat.  @eufuria.org is starting up in Albany, ready to kick off their \"Black Paw-rade\" this year!  I'm currently having breakfast as I'm posting this and will be on my way once I've eaten!",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "author_handle": "polarwildcat.bsky.social",
+    "author_did": "did:plc:bwqhw4tgudad2hyzr4acxcrx",
+    "note": "llm deepseek-v4-pro + human confirm",
+    "langs": [
+      "en"
+    ]
+  },
+  {
+    "id": "at://did:plc:fmtw7ykc5h4yg3akmdmwcoqf/app.bsky.feed.post/3mr6q6rg4bs2t",
+    "text": "I\u2019ll be suiting and hanging out at Eufuria in Albany this weekend. Feel free to ask for photos!\n\n#Eufuria #Eufuria26 #fursuit",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": false,
+    "author_handle": "thegaypossum.bsky.social",
+    "author_did": "did:plc:fmtw7ykc5h4yg3akmdmwcoqf",
+    "note": "llm deepseek-v4-pro + human confirm; regression=false until matcher recalls bare-Albany event/local cases"
+  },
+  {
+    "id": "at://did:plc:fuz6utfgzwwmap3a2qfod4ud/app.bsky.feed.post/3mqozbsvwjg2r",
+    "text": "Empire State Plaza Convention Center has something dark and filled with horrors planned this weekend. https://www.news10.com/news/albany-county/gothic-market-coming-to-empire-state-plaza-in-albany/\u00a0 ",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "author_handle": "news10.bsky.social",
+    "author_did": "did:plc:fuz6utfgzwwmap3a2qfod4ud",
+    "note": "llm deepseek-v4-pro + human confirm"
+  },
+  {
+    "id": "at://did:plc:b7kdsp6a5pjyfg2o35zgoxbp/app.bsky.feed.post/3mqoybtpfhk2n",
+    "text": "probably won't be painting this weekend because the Albany New York post office hasn't scanned the paint i bought a week ago lol",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "author_handle": "rhena.bsky.social",
+    "author_did": "did:plc:b7kdsp6a5pjyfg2o35zgoxbp",
+    "note": "llm deepseek-v4-pro + human confirm",
+    "langs": [
+      "en"
+    ]
+  },
+  {
+    "id": "at://did:plc:jxe57jskj4ucvmvjcd5ojyq6/app.bsky.feed.post/3mowazwuvjk2f",
+    "text": "\ud83d\udca1 The iconic GE sign is shining again over Schenectady! Celebrating its 100th anniversary tonight was especially meaningful \u2014 my dad came to this county, worked here for 30+ years. A symbol of innovation, opportunity, generations who helped build the Electric City \u2728 @GEVernova",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "author_handle": "angelosantabarbara.bsky.social",
+    "author_did": "did:plc:jxe57jskj4ucvmvjcd5ojyq6",
+    "note": "llm deepseek-v4-pro + human confirm",
+    "langs": [
+      "en"
+    ]
+  },
+  {
+    "id": "at://did:plc:xwp6gcmfyjxvzqh5e5w2t5uj/app.bsky.feed.post/3moq7b67m4226",
+    "text": "Gonna go check out The Wood Brothers in downtown Schenectady tonight. Looks like it'll be perfect weather for standing around in a parking lot enjoying some jams.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "author_handle": "barcodetontos.bsky.social",
+    "author_did": "did:plc:xwp6gcmfyjxvzqh5e5w2t5uj",
+    "note": "llm deepseek-v4-pro + human confirm",
+    "langs": [
+      "en"
+    ]
+  },
+  {
+    "id": "at://did:plc:rwwffrdsbcz6e5w23qgdeswk/app.bsky.feed.post/3mocdaagluk2t",
+    "text": "They\u2019re partying in Schenectady tonight* as Union\u2019s own lifts the Stanley Cup 12 years after winning a natty\n\n* - no they\u2019re not; they got work tomorrow",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "author_handle": "camdencottage.bsky.social",
+    "author_did": "did:plc:rwwffrdsbcz6e5w23qgdeswk",
+    "note": "llm deepseek-v4-pro + human confirm",
+    "langs": [
+      "en"
+    ]
+  },
+  {
+    "id": "at://did:plc:fuz6utfgzwwmap3a2qfod4ud/app.bsky.feed.post/3mrizj7bczi2w",
+    "text": "#ICYMI: New York Attorney General Letitia James secured a $417,697 settlement on Tuesday for renters who lived in poor conditions at an apartment complex in Newburgh.",
+    "expected": true,
+    "signal": "author",
+    "bucket": "local_org_no_placename",
+    "split": "holdout",
+    "regression": true,
+    "author_handle": "news10.bsky.social",
+    "author_did": "did:plc:fuz6utfgzwwmap3a2qfod4ud",
+    "note": "llm deepseek-v4-pro + human confirm"
+  },
+  {
+    "id": "at://did:plc:fuz6utfgzwwmap3a2qfod4ud/app.bsky.feed.post/3mriw625cnq2f",
+    "text": "#ICYMI: A federal judge issued an order on Monday stopping media conglomerates Paramount Skydance and Warner Brothers Discovery from completing a $110 billion merger.",
+    "expected": true,
+    "signal": "author",
+    "bucket": "local_org_no_placename",
+    "split": "dev",
+    "regression": true,
+    "author_handle": "news10.bsky.social",
+    "author_did": "did:plc:fuz6utfgzwwmap3a2qfod4ud",
+    "note": "llm deepseek-v4-pro + human confirm"
+  },
+  {
+    "id": "at://did:plc:7pycdzg5nl4effudeyocyiw4/app.bsky.feed.post/3mrizjgr5ol2i",
+    "text": "The man was airlifted to Westchester Medical Center and was listed as being in stable condition.",
+    "expected": true,
+    "signal": "author",
+    "bucket": "local_org_no_placename",
+    "split": "dev",
+    "regression": true,
+    "author_handle": "timesunion.com",
+    "author_did": "did:plc:7pycdzg5nl4effudeyocyiw4",
+    "note": "llm deepseek-v4-pro + human confirm"
+  },
+  {
+    "id": "at://did:plc:7pycdzg5nl4effudeyocyiw4/app.bsky.feed.post/3mriphpbkl42i",
+    "text": "Eric Gratta is one of many new farmers in the Hudson Valley. But finding land and funding has proved far harder than growing vegetables.",
+    "expected": true,
+    "signal": "author",
+    "bucket": "local_org_no_placename",
+    "split": "holdout",
+    "regression": true,
+    "author_handle": "timesunion.com",
+    "author_did": "did:plc:7pycdzg5nl4effudeyocyiw4",
+    "note": "llm deepseek-v4-pro + human confirm"
+  },
+  {
+    "id": "at://did:plc:fn3nr3wqpkn436j2qy2wbvqt/app.bsky.feed.post/3mriduchzzv2m",
+    "text": "\ud83c\udfb8 Rock the Block is bringing live music, local vendors, food, and plenty of downtown energy to Albany. Grab your friends and make a night of it! \ud83c\udf89 \u27a1\ufe0f Learn more. ",
+    "expected": true,
+    "signal": "author",
+    "bucket": "local_org_no_placename",
+    "split": "dev",
+    "regression": true,
+    "author_handle": "albany-ny.bsky.social",
+    "author_did": "did:plc:fn3nr3wqpkn436j2qy2wbvqt",
+    "note": "llm deepseek-v4-pro + human confirm"
+  },
+  {
+    "id": "at://did:plc:fn3nr3wqpkn436j2qy2wbvqt/app.bsky.feed.post/3mrhzs6kfpp2y",
+    "text": "\ud83c\udfa1 Nothing says summer like fair food, live music, and carnival rides. Discover local and regional fairs near Albany that are worth adding to your calendar. \ud83c\udfa0 \u27a1\ufe0f Check out the list. ",
+    "expected": true,
+    "signal": "author",
+    "bucket": "local_org_no_placename",
+    "split": "dev",
+    "regression": true,
+    "author_handle": "albany-ny.bsky.social",
+    "author_did": "did:plc:fn3nr3wqpkn436j2qy2wbvqt",
+    "note": "llm deepseek-v4-pro + human confirm"
+  },
+  {
+    "id": "at://did:plc:fn3nr3wqpkn436j2qy2wbvqt/app.bsky.feed.post/3mrht3hpp2i2n",
+    "text": "\ud83e\udd7e Ready to explore Albany on two feet or two wheels? From scenic trails to easygoing paths, these hike and bike spots make it simple to get outside and enjoy the Capital Region. \ud83d\udeb4 \u27a1\ufe0f Check out the list. ",
+    "expected": true,
+    "signal": "author",
+    "bucket": "local_org_no_placename",
+    "split": "holdout",
+    "regression": true,
+    "author_handle": "albany-ny.bsky.social",
+    "author_did": "did:plc:fn3nr3wqpkn436j2qy2wbvqt",
+    "note": "llm deepseek-v4-pro + human confirm"
+  },
+  {
+    "id": "at://did:plc:wdssbrxji4hmcgl3pfr5ym5r/app.bsky.feed.post/3mrfpypjrvj27",
+    "text": "#BREAKING: The basketball superstar made the announcement on social media Friday, saying it will be his \u201clast decision\u201d and that it comes after he strongly considered retirement. MORE AT: wnyt.com",
+    "expected": true,
+    "signal": "author",
+    "bucket": "local_org_no_placename",
+    "split": "dev",
+    "regression": true,
+    "author_handle": "wnyt.bsky.social",
+    "author_did": "did:plc:wdssbrxji4hmcgl3pfr5ym5r",
+    "note": "llm deepseek-v4-pro + human confirm"
   }
 ]
