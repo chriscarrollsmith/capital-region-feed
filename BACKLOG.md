@@ -193,7 +193,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
 ## P1 — Bare-Albany recall (post-backlog)
 
 ### B-050 — Close bare-Albany recall gaps without loosening precision gates
-- **Status:** done
+- **Status:** done ([#17](https://github.com/chriscarrollsmith/capital-region-feed/pull/17))
 - **Why:** After B-031 labeling, three live/human-confirmed keeps still miss as
   `bare_albany` (`regression: false`): Alive at 5 After Party, Albany+NYC
   politics contrast, and Eufuria in Albany. Generic “Albany this weekend”
