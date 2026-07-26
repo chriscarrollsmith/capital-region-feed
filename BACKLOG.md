@@ -246,7 +246,10 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Tooling is documented; prod index has no rematch would-drops
   from the audit pass; eval covers the FP shapes that were lingering.
 - **Notes:** First pass purged 12/186 prod rows (9 Troy Jackson masthead FPs,
-  Albany GA listing, Madrid/`Hauptstadtregion`, 1 not_found).
+  Albany GA listing, Madrid/`Hauptstadtregion`, 1 not_found). Follow-up: rematch
+  alone misses active FPs — demoted collision micro-toponyms (delmar/ravena/
+  altamont/sand lake/green island) to ambiguous, hard-negative spaced Del Mar,
+  and capped embed description/quote text; re-purged prod after that fix.
 
 ---
 
