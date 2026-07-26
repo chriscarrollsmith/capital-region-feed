@@ -30,6 +30,8 @@ def test_normalize_case_applies_defaults_and_optional_fields() -> None:
             'expected': True,
             'author_handle': 'timesunion.com',
             'note': 'no placename',
+            'langs': ['en'],
+            'soft_prior': True,
         },
         default_signal='author',
         default_bucket='local_org_no_placename',
@@ -46,6 +48,8 @@ def test_normalize_case_applies_defaults_and_optional_fields() -> None:
         'regression': False,
         'author_handle': 'timesunion.com',
         'note': 'no placename',
+        'langs': ['en'],
+        'soft_prior': True,
     }
 
 

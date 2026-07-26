@@ -7,9 +7,11 @@ Rejects the main SkyFeed false positives:
 
 Also aims for recall without placenames via author allowlists, soft author
 priors (earned from repeated strong local matches), and event/venue cues
-(local venue + upcoming-event phrasing). Ambiguous leftovers and event
-near-misses route to a small linear classifier. Precision stays strict for
-ambiguous bare names unless a soft prior or classifier keep applies; see
+(local venue + upcoming-event phrasing). A checked-in gazetteer resolves
+known place homographs to Capital Region vs other-region entities. Jetstream
+``langs`` can drop French *colonie* without NY cues. Ambiguous leftovers and
+event near-misses route to a small linear classifier. Precision stays strict
+for ambiguous bare names unless a soft prior or classifier keep applies; see
 README matching policy and BACKLOG.md.
 """
 
@@ -20,6 +22,7 @@ from collections.abc import Iterable
 from dataclasses import dataclass
 
 from server.classifier import ClassifierModel, classify_candidate
+from server.gazetteer import Gazetteer, default_gazetteer
 
 
 @dataclass(frozen=True)
@@ -307,8 +310,41 @@ def extract_alt_text(embed: object | None) -> str:
 
 
 def combine_text(text: str = '', *, alt_text: str = '', langs: Iterable[str] | None = None) -> str:
-    del langs  # reserved for future language-aware heuristics
+    del langs  # language tags are applied in match_post, not folded into text
     return _normalize(f'{text} {alt_text}')
+
+
+def _normalize_langs(langs: Iterable[str] | None) -> list[str]:
+    if not langs:
+        return []
+    out: list[str] = []
+    for lang in langs:
+        token = str(lang or '').strip().lower().replace('_', '-')
+        if token:
+            out.append(token)
+    return out
+
+
+def _has_lang_prefix(langs: list[str], prefix: str) -> bool:
+    return any(lang == prefix or lang.startswith(f'{prefix}-') for lang in langs)
+
+
+def _lang_non_local_colonie(haystack: str, langs: list[str]) -> MatchResult | None:
+    """Drop French *colonie* when langs say fr and there is no NY/local cue."""
+    if not _has_lang_prefix(langs, 'fr'):
+        return None
+    # Bilingual posts that also declare English keep the regex path.
+    if _has_lang_prefix(langs, 'en'):
+        return None
+    if not re.search(r'\bcolonie\b', haystack, flags=re.IGNORECASE):
+        return None
+    if (
+        _COLONIE_LOCAL.search(haystack)
+        or _NY_CONTEXT.search(haystack)
+        or _STRONG_POSITIVE.search(haystack)
+    ):
+        return None
+    return MatchResult(False, 'lang_non_local:fr')
 
 
 def _soft_prior_ambiguous(
@@ -356,31 +392,44 @@ def match_post(
     text: str,
     *,
     alt_text: str = '',
+    langs: Iterable[str] | None = None,
     author_did: str | None = None,
     author_handle: str | None = None,
     allowlist_dids: set[str] | None = None,
     allowlist_handles: set[str] | None = None,
     soft_prior_dids: set[str] | None = None,
     classifier_model: ClassifierModel | None = None,
+    gazetteer: Gazetteer | None = None,
 ) -> MatchResult:
     """Return whether a post belongs in the Capital Region feed.
 
-    Decision order: allowlist → hard negative / strong regex floor → soft prior
-    → ambiguous-case classifier → drop. ``classifier_model`` is for tests;
-    production uses the checked-in weights in ``data/models/``.
+    Decision order: allowlist → language gate → gazetteer other-region → hard
+    negative / gazetteer local / strong regex floor → soft prior →
+    ambiguous-case classifier → drop. ``classifier_model`` / ``gazetteer`` are
+    for tests; production uses checked-in weights and ``data/gazetteer/``.
     """
     allowlist_dids = allowlist_dids or set()
     allowlist_handles = {h.lower() for h in (allowlist_handles or set())}
     soft_prior_dids = soft_prior_dids or set()
+    places = gazetteer if gazetteer is not None else default_gazetteer()
+    lang_tags = _normalize_langs(langs)
 
     if author_did and author_did in allowlist_dids:
         return MatchResult(True, 'allowlist_did')
     if author_handle and author_handle.lower() in allowlist_handles:
         return MatchResult(True, 'allowlist_handle')
 
-    haystack = combine_text(text, alt_text=alt_text)
+    haystack = combine_text(text, alt_text=alt_text, langs=lang_tags)
     if not haystack:
         return MatchResult(False, 'empty')
+
+    lang_drop = _lang_non_local_colonie(haystack, lang_tags)
+    if lang_drop is not None:
+        return lang_drop
+
+    entity = places.lookup(haystack)
+    if entity is not None and entity.region == 'other':
+        return MatchResult(False, f'entity_other:{entity.entity_id}')
 
     if _HARD_NEGATIVE.search(haystack):
         # Strong NY phrasing can still win over a hard negative only when it is
@@ -388,6 +437,9 @@ def match_post(
         if _STRONG_POSITIVE.search(haystack) and not _HARD_NEGATIVE_BLOCKS_STRONG.search(haystack):
             return MatchResult(True, 'strong_positive_over_negative')
         return MatchResult(False, 'hard_negative')
+
+    if entity is not None and entity.region == 'capital_ny':
+        return MatchResult(True, f'entity_local:{entity.entity_id}')
 
     if _STRONG_POSITIVE.search(haystack):
         return MatchResult(True, 'strong_positive')

@@ -1,0 +1,186 @@
+{
+  "version": 1,
+  "notes": "Surface-form → geo entity map for Capital Region disambiguation (B-032). Longest match wins. Bare 'albany' is intentionally absent as a local entity — it stays in the ambiguous regex path.",
+  "entities": [
+    {
+      "id": "albany_park_chicago",
+      "region": "other",
+      "surfaces": ["albany park"]
+    },
+    {
+      "id": "new_albany",
+      "region": "other",
+      "surfaces": ["new albany"]
+    },
+    {
+      "id": "albany_oregon",
+      "region": "other",
+      "surfaces": ["albany, or", "albany, oregon", "albany oregon"]
+    },
+    {
+      "id": "albany_california",
+      "region": "other",
+      "surfaces": ["albany, ca", "albany, california", "albany california"]
+    },
+    {
+      "id": "albany_georgia",
+      "region": "other",
+      "surfaces": ["albany, ga", "albany, georgia", "albany georgia"]
+    },
+    {
+      "id": "albany_texas",
+      "region": "other",
+      "surfaces": ["albany, tx", "albany, texas", "albany texas"]
+    },
+    {
+      "id": "albany_minnesota",
+      "region": "other",
+      "surfaces": ["albany, mn", "albany, minnesota", "albany minnesota"]
+    },
+    {
+      "id": "albany_missouri",
+      "region": "other",
+      "surfaces": ["albany, mo", "albany, missouri", "albany missouri"]
+    },
+    {
+      "id": "albany_kentucky",
+      "region": "other",
+      "surfaces": ["albany, ky", "albany, kentucky", "albany kentucky"]
+    },
+    {
+      "id": "albany_indiana",
+      "region": "other",
+      "surfaces": ["albany, in", "albany, indiana", "albany indiana"]
+    },
+    {
+      "id": "albany_ohio",
+      "region": "other",
+      "surfaces": ["albany, oh", "albany, ohio", "albany ohio"]
+    },
+    {
+      "id": "albany_wyoming",
+      "region": "other",
+      "surfaces": ["albany, wy", "albany, wyoming", "albany wyoming"]
+    },
+    {
+      "id": "albany_illinois",
+      "region": "other",
+      "surfaces": ["albany, il", "albany, illinois", "albany illinois"]
+    },
+    {
+      "id": "albany_wisconsin",
+      "region": "other",
+      "surfaces": ["albany, wi", "albany, wisconsin", "albany wisconsin"]
+    },
+    {
+      "id": "albany_vermont",
+      "region": "other",
+      "surfaces": ["albany, vt", "albany, vermont", "albany vermont"]
+    },
+    {
+      "id": "albany_road",
+      "region": "other",
+      "surfaces": ["albany road"]
+    },
+    {
+      "id": "national_capital_region",
+      "region": "other",
+      "surfaces": ["national capital region"]
+    },
+    {
+      "id": "brussels_capital_region",
+      "region": "other",
+      "surfaces": ["brussels capital region", "hauptstadtregion"]
+    },
+    {
+      "id": "saratoga_springs_ut",
+      "region": "other",
+      "surfaces": ["saratoga springs, ut", "saratoga springs ut"]
+    },
+    {
+      "id": "jc_latham",
+      "region": "other",
+      "surfaces": ["jc latham"]
+    },
+    {
+      "id": "french_colonie",
+      "region": "other",
+      "surfaces": [
+        "colonie de vacances",
+        "colonie numérique",
+        "colonie numerique",
+        "une colonie",
+        "même colonie",
+        "meme colonie"
+      ]
+    },
+    {
+      "id": "albany_county_ny",
+      "region": "capital_ny",
+      "surfaces": ["albany county"]
+    },
+    {
+      "id": "rensselaer_county_ny",
+      "region": "capital_ny",
+      "surfaces": ["rensselaer county"]
+    },
+    {
+      "id": "schenectady_county_ny",
+      "region": "capital_ny",
+      "surfaces": ["schenectady county"]
+    },
+    {
+      "id": "saratoga_county_ny",
+      "region": "capital_ny",
+      "surfaces": ["saratoga county"]
+    },
+    {
+      "id": "schenectady_ny",
+      "region": "capital_ny",
+      "surfaces": ["schenectady"]
+    },
+    {
+      "id": "guilderland_ny",
+      "region": "capital_ny",
+      "surfaces": ["guilderland"]
+    },
+    {
+      "id": "niskayuna_ny",
+      "region": "capital_ny",
+      "surfaces": ["niskayuna"]
+    },
+    {
+      "id": "watervliet_ny",
+      "region": "capital_ny",
+      "surfaces": ["watervliet"]
+    },
+    {
+      "id": "cohoes_ny",
+      "region": "capital_ny",
+      "surfaces": ["cohoes"]
+    },
+    {
+      "id": "empire_state_plaza",
+      "region": "capital_ny",
+      "surfaces": ["empire state plaza"]
+    },
+    {
+      "id": "university_at_albany",
+      "region": "capital_ny",
+      "surfaces": ["university at albany", "ualbany", "suny albany"]
+    },
+    {
+      "id": "town_of_colonie_ny",
+      "region": "capital_ny",
+      "surfaces": [
+        "town of colonie",
+        "colonie, ny",
+        "colonie ny",
+        "colonie police",
+        "colonie center",
+        "colonie senior",
+        "colonie senior service"
+      ]
+    }
+  ]
+}

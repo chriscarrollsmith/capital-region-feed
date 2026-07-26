@@ -45,7 +45,32 @@ def _maybe_prune() -> None:
         logger.info('pruned %s old posts', deleted)
 
 
+def _is_muted(text: str, alt_text: str) -> bool:
+    if not config.MUTED_KEYWORDS:
+        return False
+    haystack = f'{text} {alt_text}'.lower()
+    return any(keyword in haystack for keyword in config.MUTED_KEYWORDS)
+
+
+def handle_engagement_event(event: dict[str, Any]) -> None:
+    """Increment like/repost counts when engagement targets an indexed post."""
+    operation = event.get('operation')
+    subject_uri = event.get('subject_uri')
+    kind = event.get('engagement')
+    if operation != 'create' or not subject_uri or kind not in {'like', 'repost'}:
+        return
+
+    field = Post.like_count if kind == 'like' else Post.repost_count
+    updated = Post.update({field: field + 1}).where(Post.uri == subject_uri).execute()
+    if updated:
+        logger.debug('engagement %s +1 for %s', kind, subject_uri)
+
+
 def handle_event(event: dict[str, Any]) -> None:
+    if event.get('engagement'):
+        handle_engagement_event(event)
+        return
+
     operation = event.get('operation')
     uri = event.get('uri')
     if not uri or not operation:
@@ -70,11 +95,19 @@ def handle_event(event: dict[str, Any]) -> None:
 
     text = record.get('text') or ''
     alt_text = extract_alt_text(record.get('embed'))
+    if _is_muted(text, alt_text):
+        logger.debug('muted %s', uri)
+        return
+
+    langs = record.get('langs') or []
+    if not isinstance(langs, list):
+        langs = []
     author_did = event.get('author')
     soft_prior_dids = {author_did} if author_has_soft_prior(author_did) else set()
     result = match_post(
         text,
         alt_text=alt_text,
+        langs=langs,
         author_did=author_did,
         allowlist_dids=config.ALLOWLIST_DIDS,
         allowlist_handles=config.ALLOWLIST_HANDLES,
@@ -96,6 +129,8 @@ def handle_event(event: dict[str, Any]) -> None:
             reply_root=root,
             match_reason=result.reason,
             created_at=created_at,
+            like_count=0,
+            repost_count=0,
         ).on_conflict_ignore().execute()
 
     if is_strong_match_reason(result.reason):

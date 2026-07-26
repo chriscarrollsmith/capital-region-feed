@@ -754,7 +754,7 @@
   },
   {
     "id": "fp-event-offregion-msg",
-    "text": "Concert announced at Madison Square Garden — September 12. Presale starts Monday.",
+    "text": "Concert announced at Madison Square Garden \u2014 September 12. Presale starts Monday.",
     "expected": false,
     "signal": "event",
     "bucket": "precision_gate",
@@ -942,5 +942,51 @@
     "split": "dev",
     "regression": true,
     "note": "off-region venue lookalike remains a precision anchor for classifier path"
+  },
+  {
+    "id": "fp-french-colonie-lang-fr",
+    "text": "La colonie organise une sortie demain matin.",
+    "expected": false,
+    "note": "French colonie with langs=fr; language gate / entity path",
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "langs": [
+      "fr"
+    ]
+  },
+  {
+    "id": "tp-colonie-ny-lang-en",
+    "text": "Colonie Police responded to a crash on Central Ave this morning.",
+    "expected": true,
+    "note": "English local Colonie must keep with langs=en",
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "langs": [
+      "en"
+    ]
+  },
+  {
+    "id": "fp-entity-albany-park",
+    "text": "Street festival vibes in Albany Park this weekend \u2014 come through.",
+    "expected": false,
+    "note": "Gazetteer other-region entity (Chicago)",
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true
+  },
+  {
+    "id": "tp-entity-niskayuna",
+    "text": "Niskayuna library board meets Thursday.",
+    "expected": true,
+    "note": "Gazetteer capital_ny entity",
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true
   }
 ]

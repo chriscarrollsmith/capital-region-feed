@@ -149,7 +149,9 @@ Bare / ambiguous place names stay precision-gated (NY or other local context req
 unless the author has earned a **soft prior** from repeated strong local text matches
 or the second-stage classifier keeps a neighborhood/micro + event combination.
 Hard allowlists and event/venue cues remain primary recall levers for posts with no
-placenames. See `BACKLOG.md` for sequenced follow-ons (LLM label bootstrap, ranking).
+placenames. Homographs also resolve via the checked-in gazetteer
+(`data/gazetteer/places.json`). Optional feed ranking and muted keywords are
+configured with `RANKING_MODE` / `MUTED_KEYWORDS`.
 
 ### Current keep / drop rules (v1)
 
@@ -161,11 +163,13 @@ placenames. See `BACKLOG.md` for sequenced follow-ons (LLM label bootstrap, rank
 - Author has a soft prior (`SOFT_PRIOR_MIN_STRONG` strong text matches within `SOFT_PRIOR_WINDOW_DAYS`, tracked in `AuthorLocalStats`) and the post uses a bare ambiguous place name. Soft priors do **not** override hard negatives and do not keep arbitrary no-placename posts (that remains allowlist-only).
 - Text has upcoming-event phrasing (`tonight`, `tickets`, `this weekend`, …) **and** a high-confidence Capital Region venue (`Proctors`, `MVP Arena`, `SPAC season/lawn`, `Music Haven`, `at The Egg`, …). Event cues alone never keep bare `Albany` or other ambiguous towns; off-region venues stay dropped.
 - After the regex floor, the ambiguous-case classifier (`server/classifier.py`, weights in `data/models/ambiguous_clf_v1.json`) keeps posts with Capital Region neighborhood/landmark micro-signals plus event (or place) cues — reason `classifier:…`. Hard negatives never reach this stage; bare Albany events without micro-signals still drop.
+- Gazetteer local entities (`entity_local:…`) keep distinctive Capital Region places/counties; other-region entities drop earlier as `entity_other:…`.
 
-**Drop** hard negatives:
+**Drop** hard negatives / non-local entities:
 
 - Albany Park, New Albany, other state Albanys
 - National Capital Region (DC), JC Latham, French *colonie*, Albany Road, Saratoga Springs UT
+- French-only `langs` posts with bare *colonie* and no NY cues (`lang_non_local:fr`)
 
 ### Eval expectations
 
@@ -204,21 +208,32 @@ uv run python scripts/collect_eval_sample.py feed --feed "$FEED_URI" \
   > /tmp/sample-feed.jsonl
 ```
 
-1. Set each row’s `expected` to `true` (keep) or `false` (drop). Adjust
+1. Optionally propose labels offline with an LLM (human confirmation still
+   required — do not append blindly):
+
+```bash
+export OPENAI_API_KEY=…
+uv run python scripts/llm_label_judge.py --input /tmp/sample-near-miss.jsonl   --output /tmp/proposed.jsonl
+# edit /tmp/proposed.jsonl, keep only rows you confirm
+```
+
+2. Set each row’s `expected` to `true` (keep) or `false` (drop). Adjust
    `signal` / `bucket` / `split` if the suggestions are wrong; rename `id` to a
    short slug if you prefer.
-2. Append labeled rows (skips unlabeled + duplicate ids):
+3. Append labeled rows (skips unlabeled + duplicate ids):
 
 ```bash
 uv run python scripts/append_eval_cases.py --input /tmp/labeled.jsonl
 ```
 
-3. Adjust `server/matcher.py` as needed.
-4. `uv run python scripts/eval_filter.py && uv run pytest -q`
-5. `fly deploy`
+4. Adjust `server/matcher.py` as needed.
+5. `uv run python scripts/eval_filter.py && uv run pytest -q`
+6. `fly deploy`
 
 `collect_eval_sample.py search --query '…'` is available for one-off queries.
 Rows already present in `data/eval_cases.json` are skipped by default.
 
-Optional later (see `BACKLOG.md`): LLM label bootstrap, engagement ranking, muted
-keywords.
+Ranking among matches: set `RANKING_MODE` to `indexed` (default), `created`
+(author time), or `engagement` (likes + 2×reposts, updated from Jetstream
+like/repost commits). Optional `MUTED_KEYWORDS` (comma-separated) skips indexing
+posts that contain those substrings.

@@ -45,17 +45,28 @@ JETSTREAM_URL = os.environ.get(
     'wss://jetstream2.us-east.bsky.network/subscribe',
 )
 PORT = int(os.environ.get('PORT', '8080'))
+RANKING_MODE = os.environ.get('RANKING_MODE', 'indexed').strip().lower()
+if RANKING_MODE not in {'indexed', 'created', 'engagement'}:
+    raise RuntimeError(
+        f'RANKING_MODE must be indexed, created, or engagement (got {RANKING_MODE!r})'
+    )
+# Comma-separated substrings; matched posts containing any are not indexed.
+MUTED_KEYWORDS = tuple(
+    part.strip().lower() for part in os.environ.get('MUTED_KEYWORDS', '').split(',') if part.strip()
+)
 
 ALLOWLIST_DIDS = load_allowlist_dids()
 ALLOWLIST_HANDLES = load_allowlist_handles()
 
 logger.info(
     'config loaded hostname=%s service_did=%s allowlist_dids=%d allowlist_handles=%d '
-    'soft_prior_min=%d soft_prior_window_days=%d',
+    'soft_prior_min=%d soft_prior_window_days=%d ranking_mode=%s muted_keywords=%d',
     HOSTNAME,
     SERVICE_DID,
     len(ALLOWLIST_DIDS),
     len(ALLOWLIST_HANDLES),
     SOFT_PRIOR_MIN_STRONG,
     SOFT_PRIOR_WINDOW_DAYS,
+    RANKING_MODE,
+    len(MUTED_KEYWORDS),
 )

@@ -1,4 +1,4 @@
-"""Jetstream JSON subscriber for app.bsky.feed.post."""
+"""Jetstream JSON subscriber for posts plus like/repost engagement."""
 
 from __future__ import annotations
 
@@ -18,9 +18,15 @@ from server.logger import logger
 
 OnPostEvent = Callable[[dict[str, Any]], None]
 
+_WANTED_COLLECTIONS = (
+    'app.bsky.feed.post',
+    'app.bsky.feed.like',
+    'app.bsky.feed.repost',
+)
+
 
 def _build_url(cursor: int | None = None) -> str:
-    params = [('wantedCollections', 'app.bsky.feed.post')]
+    params = [('wantedCollections', collection) for collection in _WANTED_COLLECTIONS]
     if cursor is not None and cursor > 0:
         params.append(('cursor', str(cursor)))
     return f'{config.JETSTREAM_URL}?{urlencode(params)}'
@@ -45,28 +51,45 @@ def _parse_post_event(message: dict[str, Any]) -> dict[str, Any] | None:
         return None
 
     commit = message.get('commit') or {}
-    if commit.get('collection') != 'app.bsky.feed.post':
-        return None
-
+    collection = commit.get('collection')
     did = message.get('did')
     rkey = commit.get('rkey')
     operation = commit.get('operation')
-    if not did or not rkey or not operation:
+    if not did or not rkey or not operation or not collection:
         return None
 
-    uri = f'at://{did}/app.bsky.feed.post/{rkey}'
-    event: dict[str, Any] = {
-        'operation': operation,
-        'uri': uri,
-        'cid': commit.get('cid'),
-        'author': did,
-        'time_us': message.get('time_us'),
-    }
+    if collection == 'app.bsky.feed.post':
+        uri = f'at://{did}/app.bsky.feed.post/{rkey}'
+        event: dict[str, Any] = {
+            'operation': operation,
+            'uri': uri,
+            'cid': commit.get('cid'),
+            'author': did,
+            'time_us': message.get('time_us'),
+        }
+        if operation == 'create':
+            event['record'] = commit.get('record') or {}
+        return event
 
-    if operation == 'create':
+    if collection in {'app.bsky.feed.like', 'app.bsky.feed.repost'}:
+        if operation != 'create':
+            return None
         record = commit.get('record') or {}
-        event['record'] = record
-    return event
+        subject = record.get('subject') or {}
+        subject_uri = subject.get('uri')
+        if not subject_uri:
+            return None
+        kind = 'like' if collection.endswith('.like') else 'repost'
+        return {
+            'operation': operation,
+            'engagement': kind,
+            'subject_uri': subject_uri,
+            'author': did,
+            'uri': f'at://{did}/{collection}/{rkey}',
+            'time_us': message.get('time_us'),
+        }
+
+    return None
 
 
 async def _consume(

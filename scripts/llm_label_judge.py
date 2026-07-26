@@ -1,0 +1,322 @@
+#!/usr/bin/env python3
+"""Offline LLM judge: propose keep/drop labels for unlabeled eval candidates.
+
+Reads JSONL from ``scripts/collect_eval_sample.py`` (``expected: null``), calls an
+LLM API to propose ``expected`` + rationale, and writes JSONL for **human
+review**. Never writes ``data/eval_cases.json`` — humans confirm, then:
+
+    uv run python scripts/append_eval_cases.py --input /tmp/confirmed.jsonl
+
+Requires ``OPENAI_API_KEY`` (or ``--api-key``). No live LLM in the feed path.
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import sys
+import urllib.error
+import urllib.request
+from collections.abc import Callable
+from pathlib import Path
+from typing import Any
+
+ROOT = Path(__file__).resolve().parents[1]
+
+JsonObject = dict[str, Any]
+JudgeFn = Callable[[JsonObject], JsonObject]
+
+DEFAULT_MODEL = 'gpt-4o-mini'
+DEFAULT_API_URL = 'https://api.openai.com/v1/chat/completions'
+
+SYSTEM_PROMPT = """\
+You label Bluesky posts for a New York Capital Region (Albany / Troy /
+Schenectady / Saratoga) custom feed.
+
+Return JSON only: {"expected": true|false, "rationale": "<short reason>",
+"confidence": "high"|"medium"|"low"}.
+
+Keep (expected=true) when the post is about the NY Capital Region, from a
+clearly local org/voice, or announces a Capital Region event/venue — even if
+the text never says "Albany".
+
+Drop (expected=false) for off-region homographs and noise:
+- Albany Park (Chicago), New Albany (IN/MS/…), other U.S. Albanys
+- National / Brussels / foreign "capital region"
+- French "colonie" (colonie numérique, colonie de vacances, une colonie)
+- JC Latham (NFL), Saratoga Springs UT, Albany Road (street name elsewhere)
+- Bare ambiguous town names with no NY/local context and no local author signal
+
+Prefer precision on skyfeed-style false positives; prefer recall for local
+authors and regional events. If unsure, set confidence to low and lean drop
+for bare placenames, lean keep only when author/venue strongly implies Cap Region.
+"""
+
+
+def read_jsonl(path: Path | None) -> list[JsonObject]:
+    if path is None:
+        raw = sys.stdin.read()
+    else:
+        raw = path.read_text(encoding='utf-8')
+    rows: list[JsonObject] = []
+    for line_no, line in enumerate(raw.splitlines(), start=1):
+        text = line.strip()
+        if not text or text.startswith('#'):
+            continue
+        try:
+            payload = json.loads(text)
+        except json.JSONDecodeError as exc:
+            raise ValueError(f'invalid JSON on line {line_no}: {exc}') from exc
+        if not isinstance(payload, dict):
+            raise ValueError(f'line {line_no} must be a JSON object')
+        rows.append(payload)
+    return rows
+
+
+def _candidate_user_message(row: JsonObject) -> str:
+    parts = [
+        f'id: {row.get("id")}',
+        f'text: {row.get("text")}',
+        f'signal_hint: {row.get("signal")}',
+        f'bucket_hint: {row.get("bucket")}',
+    ]
+    if row.get('author_handle'):
+        parts.append(f'author_handle: {row["author_handle"]}')
+    if row.get('author_did'):
+        parts.append(f'author_did: {row["author_did"]}')
+    if row.get('langs'):
+        parts.append(f'langs: {row["langs"]}')
+    if row.get('note'):
+        parts.append(f'collector_note: {row["note"]}')
+    return '\n'.join(parts)
+
+
+def parse_judge_response(content: str) -> JsonObject:
+    text = content.strip()
+    if text.startswith('```'):
+        lines = text.splitlines()
+        # Drop opening/closing fences.
+        if lines and lines[0].startswith('```'):
+            lines = lines[1:]
+        if lines and lines[-1].strip() == '```':
+            lines = lines[:-1]
+        text = '\n'.join(lines).strip()
+    payload = json.loads(text)
+    if not isinstance(payload, dict):
+        raise ValueError('judge response must be a JSON object')
+    expected = payload.get('expected')
+    if not isinstance(expected, bool):
+        raise ValueError(f'expected must be a boolean, got {expected!r}')
+    rationale = str(payload.get('rationale') or '').strip()
+    confidence = str(payload.get('confidence') or 'medium').strip().lower()
+    if confidence not in {'high', 'medium', 'low'}:
+        confidence = 'medium'
+    return {
+        'expected': expected,
+        'rationale': rationale,
+        'confidence': confidence,
+    }
+
+
+def openai_chat_judge(
+    row: JsonObject,
+    *,
+    api_key: str,
+    model: str,
+    api_url: str,
+    timeout: float = 60.0,
+) -> JsonObject:
+    body = {
+        'model': model,
+        'temperature': 0,
+        'response_format': {'type': 'json_object'},
+        'messages': [
+            {'role': 'system', 'content': SYSTEM_PROMPT},
+            {'role': 'user', 'content': _candidate_user_message(row)},
+        ],
+    }
+    request = urllib.request.Request(
+        api_url,
+        data=json.dumps(body).encode('utf-8'),
+        headers={
+            'Authorization': f'Bearer {api_key}',
+            'Content-Type': 'application/json',
+            'User-Agent': 'capital-region-feed-llm-label/0.1',
+        },
+        method='POST',
+    )
+    try:
+        with urllib.request.urlopen(request, timeout=timeout) as response:
+            payload = json.loads(response.read().decode('utf-8'))
+    except urllib.error.HTTPError as exc:
+        detail = exc.read().decode('utf-8', errors='replace')
+        raise RuntimeError(f'LLM API HTTP {exc.code}: {detail[:400]}') from exc
+
+    try:
+        content = payload['choices'][0]['message']['content']
+    except (KeyError, IndexError, TypeError) as exc:
+        raise RuntimeError(f'unexpected LLM response shape: {payload!r}') from exc
+    return parse_judge_response(str(content))
+
+
+def apply_proposal(row: JsonObject, proposal: JsonObject) -> JsonObject:
+    """Attach LLM proposal fields; leave human confirmation as the gate."""
+    out = dict(row)
+    out['expected'] = proposal['expected']
+    out['proposed_by'] = 'llm'
+    out['proposed_expected'] = proposal['expected']
+    out['proposed_confidence'] = proposal['confidence']
+    rationale = proposal.get('rationale') or ''
+    prior_note = str(row.get('note') or '').strip()
+    llm_note = (
+        f'llm propose expected={proposal["expected"]} ({proposal["confidence"]}): {rationale}'
+    )
+    out['note'] = f'{prior_note} | {llm_note}'.strip(' |') if prior_note else llm_note
+    out['needs_human_confirm'] = True
+    return out
+
+
+def judge_rows(
+    rows: list[JsonObject],
+    *,
+    judge: JudgeFn,
+    only_unlabeled: bool = True,
+    skip_errors: bool = False,
+) -> tuple[list[JsonObject], dict[str, int]]:
+    stats = {
+        'proposed': 0,
+        'skipped_labeled': 0,
+        'skipped_empty': 0,
+        'errors': 0,
+    }
+    out: list[JsonObject] = []
+    for row in rows:
+        if only_unlabeled and row.get('expected') is not None:
+            stats['skipped_labeled'] += 1
+            continue
+        text = row.get('text')
+        if not isinstance(text, str) or not str(row.get('id') or '').strip():
+            stats['skipped_empty'] += 1
+            continue
+        try:
+            proposal = judge(row)
+            out.append(apply_proposal(row, proposal))
+            stats['proposed'] += 1
+        except (ValueError, RuntimeError, json.JSONDecodeError) as exc:
+            stats['errors'] += 1
+            if not skip_errors:
+                raise RuntimeError(f'judge failed for {row.get("id")!r}: {exc}') from exc
+            err_row = dict(row)
+            err_row['proposed_by'] = 'llm'
+            err_row['needs_human_confirm'] = True
+            err_row['note'] = f'{row.get("note") or ""} | llm error: {exc}'.strip(' |')
+            out.append(err_row)
+    return out, stats
+
+
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        '--input',
+        type=Path,
+        help='Unlabeled JSONL (default: stdin)',
+    )
+    parser.add_argument(
+        '--output',
+        type=Path,
+        help='Write proposed JSONL here (default: stdout)',
+    )
+    parser.add_argument(
+        '--api-key',
+        default=os.environ.get('OPENAI_API_KEY', ''),
+        help='API key (default: OPENAI_API_KEY)',
+    )
+    parser.add_argument('--model', default=DEFAULT_MODEL)
+    parser.add_argument('--api-url', default=DEFAULT_API_URL)
+    parser.add_argument(
+        '--include-labeled',
+        action='store_true',
+        help='Also re-judge rows that already have expected set',
+    )
+    parser.add_argument(
+        '--skip-errors',
+        action='store_true',
+        help='Keep going when a single row fails; mark note with error',
+    )
+    parser.add_argument(
+        '--limit',
+        type=int,
+        default=0,
+        help='Max unlabeled rows to judge (0 = all)',
+    )
+    return parser
+
+
+def main(argv: list[str] | None = None, *, judge: JudgeFn | None = None) -> int:
+    parser = build_parser()
+    args = parser.parse_args(argv)
+
+    try:
+        rows = read_jsonl(args.input)
+    except ValueError as exc:
+        print(f'error: {exc}', file=sys.stderr)
+        return 1
+
+    if args.limit and args.limit > 0:
+        selected: list[JsonObject] = []
+        for row in rows:
+            if row.get('expected') is not None and not args.include_labeled:
+                continue
+            selected.append(row)
+            if len(selected) >= args.limit:
+                break
+        rows = selected
+
+    if judge is None:
+        if not args.api_key:
+            print('error: set OPENAI_API_KEY or pass --api-key', file=sys.stderr)
+            return 1
+
+        def judge(row: JsonObject) -> JsonObject:
+            return openai_chat_judge(
+                row,
+                api_key=args.api_key,
+                model=args.model,
+                api_url=args.api_url,
+            )
+
+    try:
+        proposed, stats = judge_rows(
+            rows,
+            judge=judge,
+            only_unlabeled=not args.include_labeled,
+            skip_errors=args.skip_errors,
+        )
+    except RuntimeError as exc:
+        print(f'error: {exc}', file=sys.stderr)
+        return 1
+
+    lines = ''.join(json.dumps(row, ensure_ascii=False) + '\n' for row in proposed)
+    if args.output is None:
+        sys.stdout.write(lines)
+    else:
+        args.output.write_text(lines, encoding='utf-8')
+
+    print(
+        f'proposed={stats["proposed"]} '
+        f'skipped_labeled={stats["skipped_labeled"]} '
+        f'skipped_empty={stats["skipped_empty"]} '
+        f'errors={stats["errors"]}',
+        file=sys.stderr,
+    )
+    print(
+        'Review proposals, then append only human-confirmed rows with '
+        'scripts/append_eval_cases.py (do not trust LLM labels blindly).',
+        file=sys.stderr,
+    )
+    return 0
+
+
+if __name__ == '__main__':
+    raise SystemExit(main())

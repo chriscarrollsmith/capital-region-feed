@@ -81,7 +81,7 @@ def test_match_post_soft_prior_still_beats_classifier_path() -> None:
 def test_match_post_hard_negative_never_reaches_classifier() -> None:
     result = match_post('Nice day in Albany Park near Lark Street tonight.')
     assert result.matched is False
-    assert result.reason == 'hard_negative'
+    assert result.reason in {'hard_negative', 'entity_other:albany_park_chicago'}
 
 
 def test_injected_model_can_force_drop() -> None:

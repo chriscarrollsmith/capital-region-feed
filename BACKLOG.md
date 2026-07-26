@@ -153,36 +153,40 @@ Status: `todo` · `in progress` · `done` · `blocked`
   keeps and precision anchors.
 
 ### B-031 — Bootstrap labels with an LLM judge (offline only)
-- **Status:** todo
+- **Status:** done
 - **Depends on:** B-002
 - **Work:** Use an LLM offline to propose labels/rationales for unlabeled
   samples; humans confirm before cases enter the scored eval set. Do not require
   a live LLM in the feed path.
 - **Done when:** Labeling throughput improves and the human-confirmed set grows
   materially.
+- **Notes:** `scripts/llm_label_judge.py` proposes JSONL labels via the OpenAI chat API (`OPENAI_API_KEY`). Output always sets `needs_human_confirm`; `append_eval_cases.py` remains the only path into `eval_cases.json`.
 
 ### B-032 — Entity / gazetteer disambiguation (optional track)
-- **Status:** todo
+- **Status:** done
 - **Work:** Resolve place strings to geo entities; keep Capital Region hits,
   drop Albany Park / New Albany / etc. more systematically than negative regex.
 - **Done when:** Homograph FPs are covered by entity identity rather than
   one-off patterns—or the approach is rejected with notes.
+- **Notes:** Checked-in gazetteer at `data/gazetteer/places.json` with longest surface match; reasons `entity_other:*` / `entity_local:*`. Hard-negative regex remains as a safety floor. Bare `albany` stays on the ambiguous path.
 
 ---
 
 ## P3 — Ranking & feed UX (post-matching)
 
 ### B-040 — Engagement / recency ranking among matches
-- **Status:** todo
+- **Status:** done
 - **Why:** Orthogonal to match quality, but useful once recall rises.
 - **Work:** Optional ranking among indexed posts (likes/reposts/recency);
   muted keywords; per-user preferences later if needed.
+- **Notes:** `RANKING_MODE=indexed|created|engagement`. Jetstream also subscribes to like/repost commits and increments counts for indexed URIs. `MUTED_KEYWORDS` drops matching posts at index time. Per-user prefs deferred.
 
 ### B-041 — Language-aware heuristics
-- **Status:** todo
+- **Status:** done
 - **Work:** Use Jetstream `langs` (already reserved in matcher) and simple
   language cues to reduce non-local FPs (e.g. French *colonie*) without harming
   English local recall.
+- **Notes:** `langs` threaded through indexer / `match_post` / eval. French-only `colonie` without NY cues → `lang_non_local:fr`; bilingual `en`+`fr` and Colonie NY keeps stay on the regex/entity path.
 
 ---
 
