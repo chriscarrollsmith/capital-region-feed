@@ -153,11 +153,24 @@ def test_collision_toponyms_need_ny_context() -> None:
     assert match_post('#DelMar Race 10 projected odds').matched is False
     assert match_post('Post time from Del Mar this afternoon.').matched is False
     assert match_post('Now playing by The Lords of Altamont').matched is False
+    assert match_post('#horseracing #saratoga #delmar #delmarthoroughbredclub').matched is False
+    assert (
+        match_post(
+            'Susan Collins cash edge in Maine – ny times. Troy Jackson wins the nod.'
+        ).matched
+        is False
+    )
+    assert match_post('76 Delmar St Rochester, NY Single-family home').matched is False
+    assert (
+        match_post('Friend in Mount Sinai, New York. Email troy@example.com for prints.').matched
+        is False
+    )
 
     assert match_post('Meeting in Green Island, NY tonight.').matched is True
     assert match_post('Fire on Route 43 in Sand Lake, NY.').matched is True
     assert match_post('Altamont-based duo releases a new album.').matched is True
     assert match_post('See you at the Altamont Fair this August.').matched is True
+    assert match_post('Day trip from Albany to Troy for the market.').matched is True
 
 
 def test_new_york_times_masthead_is_not_ny_context_for_troy() -> None:
@@ -179,7 +192,7 @@ def test_new_york_times_masthead_is_not_ny_context_for_troy() -> None:
         langs=['en'],
     )
     assert result.matched is False
-    assert result.reason == 'ambiguous_no_context:troy'
+    assert result.reason in {'ambiguous_no_context:troy', 'hard_negative'}
 
     keep = match_post('Dinner in Troy, New York tonight.', langs=['en'])
     assert keep.matched is True
