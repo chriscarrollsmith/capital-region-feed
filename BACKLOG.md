@@ -160,7 +160,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   a live LLM in the feed path.
 - **Done when:** Labeling throughput improves and the human-confirmed set grows
   materially.
-- **Notes:** `scripts/llm_label_judge.py` proposes JSONL labels via the OpenAI chat API (`OPENAI_API_KEY`). Output always sets `needs_human_confirm`; `append_eval_cases.py` remains the only path into `eval_cases.json`.
+- **Notes:** `scripts/llm_label_judge.py` proposes JSONL labels via DeepSeek by default (`DEEPSEEK_API_KEY`, `deepseek-v4-pro`, `https://api.deepseek.com/v1/chat/completions`; OpenAI fallback). Output always sets `needs_human_confirm`; `append_eval_cases.py` remains the only path into `eval_cases.json`.
 
 ### B-032 — Entity / gazetteer disambiguation (optional track)
 - **Status:** done

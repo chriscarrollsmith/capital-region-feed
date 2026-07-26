@@ -2,12 +2,16 @@
 """Offline LLM judge: propose keep/drop labels for unlabeled eval candidates.
 
 Reads JSONL from ``scripts/collect_eval_sample.py`` (``expected: null``), calls an
-LLM API to propose ``expected`` + rationale, and writes JSONL for **human
-review**. Never writes ``data/eval_cases.json`` — humans confirm, then:
+OpenAI-compatible chat API to propose ``expected`` + rationale, and writes JSONL
+for **human review**. Never writes ``data/eval_cases.json`` — humans confirm,
+then:
 
     uv run python scripts/append_eval_cases.py --input /tmp/confirmed.jsonl
 
-Requires ``OPENAI_API_KEY`` (or ``--api-key``). No live LLM in the feed path.
+Defaults to DeepSeek (``DEEPSEEK_API_KEY``, ``deepseek-v4-pro``,
+``https://api.deepseek.com/v1/chat/completions``). Falls back to
+``OPENAI_API_KEY`` + OpenAI URL if DeepSeek is unset. No live LLM in the feed
+path.
 """
 
 from __future__ import annotations
@@ -22,13 +26,19 @@ from collections.abc import Callable
 from pathlib import Path
 from typing import Any
 
+from dotenv import load_dotenv
+
 ROOT = Path(__file__).resolve().parents[1]
+# Prefer repo .env values (same pattern as server/config.py).
+load_dotenv(ROOT / '.env', override=True)
 
 JsonObject = dict[str, Any]
 JudgeFn = Callable[[JsonObject], JsonObject]
 
-DEFAULT_MODEL = 'gpt-4o-mini'
-DEFAULT_API_URL = 'https://api.openai.com/v1/chat/completions'
+DEFAULT_DEEPSEEK_MODEL = 'deepseek-v4-pro'
+DEFAULT_DEEPSEEK_API_URL = 'https://api.deepseek.com/v1/chat/completions'
+DEFAULT_OPENAI_MODEL = 'gpt-4o-mini'
+DEFAULT_OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions'
 
 SYSTEM_PROMPT = """\
 You label Bluesky posts for a New York Capital Region (Albany / Troy /
@@ -52,6 +62,38 @@ Prefer precision on skyfeed-style false positives; prefer recall for local
 authors and regional events. If unsure, set confidence to low and lean drop
 for bare placenames, lean keep only when author/venue strongly implies Cap Region.
 """
+
+
+def resolve_api_defaults(
+    *,
+    api_key: str | None = None,
+    model: str | None = None,
+    api_url: str | None = None,
+) -> tuple[str, str, str]:
+    """Pick DeepSeek by default; fall back to OpenAI when only that key is set."""
+    deepseek_key = os.environ.get('DEEPSEEK_API_KEY', '').strip()
+    openai_key = os.environ.get('OPENAI_API_KEY', '').strip()
+
+    if api_key:
+        key = api_key
+        # Explicit key: keep caller model/url, else DeepSeek defaults.
+        resolved_model = model or DEFAULT_DEEPSEEK_MODEL
+        resolved_url = api_url or DEFAULT_DEEPSEEK_API_URL
+        return key, resolved_model, resolved_url
+
+    if deepseek_key:
+        return (
+            deepseek_key,
+            model or DEFAULT_DEEPSEEK_MODEL,
+            api_url or DEFAULT_DEEPSEEK_API_URL,
+        )
+    if openai_key:
+        return (
+            openai_key,
+            model or DEFAULT_OPENAI_MODEL,
+            api_url or DEFAULT_OPENAI_API_URL,
+        )
+    return '', model or DEFAULT_DEEPSEEK_MODEL, api_url or DEFAULT_DEEPSEEK_API_URL
 
 
 def read_jsonl(path: Path | None) -> list[JsonObject]:
@@ -102,6 +144,12 @@ def parse_judge_response(content: str) -> JsonObject:
         if lines and lines[-1].strip() == '```':
             lines = lines[:-1]
         text = '\n'.join(lines).strip()
+    # Some models wrap JSON in prose; take the outermost object if needed.
+    if not text.startswith('{'):
+        start = text.find('{')
+        end = text.rfind('}')
+        if start >= 0 and end > start:
+            text = text[start : end + 1]
     payload = json.loads(text)
     if not isinstance(payload, dict):
         raise ValueError('judge response must be a JSON object')
@@ -119,23 +167,24 @@ def parse_judge_response(content: str) -> JsonObject:
     }
 
 
-def openai_chat_judge(
+def chat_completions_judge(
     row: JsonObject,
     *,
     api_key: str,
     model: str,
     api_url: str,
-    timeout: float = 60.0,
+    timeout: float = 120.0,
 ) -> JsonObject:
-    body = {
+    body: JsonObject = {
         'model': model,
         'temperature': 0,
-        'response_format': {'type': 'json_object'},
         'messages': [
             {'role': 'system', 'content': SYSTEM_PROMPT},
             {'role': 'user', 'content': _candidate_user_message(row)},
         ],
     }
+    # DeepSeek V4 supports OpenAI-style JSON mode; keep it when available.
+    body['response_format'] = {'type': 'json_object'}
     request = urllib.request.Request(
         api_url,
         data=json.dumps(body).encode('utf-8'),
@@ -154,10 +203,20 @@ def openai_chat_judge(
         raise RuntimeError(f'LLM API HTTP {exc.code}: {detail[:400]}') from exc
 
     try:
-        content = payload['choices'][0]['message']['content']
+        message = payload['choices'][0]['message']
+        content = message.get('content')
+        # Reasoning models may leave content empty and put text elsewhere.
+        if content is None or content == '':
+            content = message.get('reasoning_content') or message.get('reasoning')
     except (KeyError, IndexError, TypeError) as exc:
         raise RuntimeError(f'unexpected LLM response shape: {payload!r}') from exc
+    if content is None or content == '':
+        raise RuntimeError(f'empty LLM message content: {payload!r}')
     return parse_judge_response(str(content))
+
+
+# Backward-compatible alias used by older call sites / docs.
+openai_chat_judge = chat_completions_judge
 
 
 def apply_proposal(row: JsonObject, proposal: JsonObject) -> JsonObject:
@@ -229,11 +288,19 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         '--api-key',
-        default=os.environ.get('OPENAI_API_KEY', ''),
-        help='API key (default: OPENAI_API_KEY)',
+        default='',
+        help='API key (default: DEEPSEEK_API_KEY, else OPENAI_API_KEY)',
     )
-    parser.add_argument('--model', default=DEFAULT_MODEL)
-    parser.add_argument('--api-url', default=DEFAULT_API_URL)
+    parser.add_argument(
+        '--model',
+        default='',
+        help=f'Model id (default: {DEFAULT_DEEPSEEK_MODEL} with DeepSeek)',
+    )
+    parser.add_argument(
+        '--api-url',
+        default='',
+        help=f'Chat completions URL (default: {DEFAULT_DEEPSEEK_API_URL})',
+    )
     parser.add_argument(
         '--include-labeled',
         action='store_true',
@@ -274,16 +341,25 @@ def main(argv: list[str] | None = None, *, judge: JudgeFn | None = None) -> int:
         rows = selected
 
     if judge is None:
-        if not args.api_key:
-            print('error: set OPENAI_API_KEY or pass --api-key', file=sys.stderr)
+        api_key, model, api_url = resolve_api_defaults(
+            api_key=args.api_key or None,
+            model=args.model or None,
+            api_url=args.api_url or None,
+        )
+        if not api_key:
+            print(
+                'error: set DEEPSEEK_API_KEY (preferred) or OPENAI_API_KEY, or pass --api-key',
+                file=sys.stderr,
+            )
             return 1
+        print(f'using model={model} api_url={api_url}', file=sys.stderr)
 
         def judge(row: JsonObject) -> JsonObject:
-            return openai_chat_judge(
+            return chat_completions_judge(
                 row,
-                api_key=args.api_key,
-                model=args.model,
-                api_url=args.api_url,
+                api_key=api_key,
+                model=model,
+                api_url=api_url,
             )
 
     try:

@@ -212,8 +212,9 @@ uv run python scripts/collect_eval_sample.py feed --feed "$FEED_URI" \
    required — do not append blindly):
 
 ```bash
-export OPENAI_API_KEY=…
-uv run python scripts/llm_label_judge.py --input /tmp/sample-near-miss.jsonl   --output /tmp/proposed.jsonl
+# Defaults: DEEPSEEK_API_KEY + deepseek-v4-pro @ api.deepseek.com
+uv run python scripts/llm_label_judge.py --input /tmp/sample-near-miss.jsonl \
+  --output /tmp/proposed.jsonl
 # edit /tmp/proposed.jsonl, keep only rows you confirm
 ```
 
