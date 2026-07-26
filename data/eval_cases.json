@@ -95,12 +95,12 @@
     "regression": true
   },
   {
-    "id": "fp-albany-unspecified-event",
+    "id": "tp-eufuria-black-pawrade",
     "text": "Heading up to Eufuria in Albany! Excited to experience the Black Pawrade",
-    "expected": false,
-    "note": "bare Albany without NY context; may be local but too ambiguous for keyword rules",
-    "signal": "text",
-    "bucket": "precision_gate",
+    "expected": true,
+    "note": "Eufuria / Black Pawrade are Cap Region–specific named events (B-050); was precision_gate under older keyword-only policy",
+    "signal": "event",
+    "bucket": "regional_event",
     "split": "dev",
     "regression": true
   },
@@ -1038,10 +1038,10 @@
     "signal": "text",
     "bucket": "strong_local",
     "split": "dev",
-    "regression": false,
+    "regression": true,
     "author_handle": "nystatemusic.bsky.social",
     "author_did": "did:plc:avf2r4bh6vm2yfiyjtvsphaq",
-    "note": "llm deepseek-v4-pro + human confirm; regression=false until matcher recalls bare-Albany event/local cases"
+    "note": "llm deepseek-v4-pro + human confirm; kept via Alive at 5 After Party named-event cue (B-050)"
   },
   {
     "id": "at://did:plc:cf2yh7biwon3rlz37db3g4ch/app.bsky.feed.post/3mriz4x6ivk23",
@@ -1092,10 +1092,10 @@
     "signal": "text",
     "bucket": "strong_local",
     "split": "dev",
-    "regression": false,
+    "regression": true,
     "author_handle": "darrylbrownjr.bsky.social",
     "author_did": "did:plc:bm3s6owtkhcpunxmsovidfhd",
-    "note": "llm deepseek-v4-pro + human confirm; regression=false until matcher recalls bare-Albany event/local cases",
+    "note": "llm deepseek-v4-pro + human confirm; Albany + NYC counts as NY context (B-050)",
     "langs": [
       "en"
     ]
@@ -1149,10 +1149,10 @@
     "signal": "event",
     "bucket": "regional_event",
     "split": "holdout",
-    "regression": false,
+    "regression": true,
     "author_handle": "thegaypossum.bsky.social",
     "author_did": "did:plc:fmtw7ykc5h4yg3akmdmwcoqf",
-    "note": "llm deepseek-v4-pro + human confirm; regression=false until matcher recalls bare-Albany event/local cases"
+    "note": "llm deepseek-v4-pro + human confirm; kept via Eufuria named-event cue (B-050)"
   },
   {
     "id": "at://did:plc:fuz6utfgzwwmap3a2qfod4ud/app.bsky.feed.post/3mqozbsvwjg2r",

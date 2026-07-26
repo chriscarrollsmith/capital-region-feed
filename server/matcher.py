@@ -92,6 +92,10 @@ _STRONG_POSITIVE = re.compile(
       | saratoga\s+springs\s+police
       | saratoga\s+casino
       | times\s+union\b
+      # Distinctive Cap Region named events (not bare "Albany this weekend").
+      | \beufuria\b
+      | black\s+paw-?rade
+      | alive\s+at\s+5\s+after\s+party
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -127,6 +131,7 @@ _NY_CONTEXT = re.compile(
     r"""
     (?:
         \bny\b
+      | \bnyc\b
       | new\s+york
       | upstate
       | capital\s+(?:region|district)

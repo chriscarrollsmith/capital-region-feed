@@ -190,6 +190,27 @@ Status: `todo` · `in progress` · `done` · `blocked`
 
 ---
 
+## P1 — Bare-Albany recall (post-backlog)
+
+### B-050 — Close bare-Albany recall gaps without loosening precision gates
+- **Status:** done
+- **Why:** After B-031 labeling, three live/human-confirmed keeps still miss as
+  `bare_albany` (`regression: false`): Alive at 5 After Party, Albany+NYC
+  politics contrast, and Eufuria in Albany. Generic “Albany this weekend”
+  / Veterans Day parade cases must stay dropped.
+- **Work:**
+  - Treat distinctive Cap Region named events (`Eufuria`, `Black Pawrade`,
+    `Alive at 5 After Party`) as strong positives.
+  - Treat `\bnyc\b` as NY context for bare Albany (same role as `NY` / `New York`).
+  - Flip the outdated `fp-albany-unspecified-event` Eufuria precision-gate case
+    to a true positive under the dual FN/FP policy.
+  - Promote the three `regression: false` bare-Albany cases to regression once
+    they keep; leave `gap-local-org-unknown-handle-no-place` for allowlist work.
+- **Done when:** Eval keeps those bare-Albany event/local cases with precision
+  still 1.000 on `precision_gate` / `skyfeed_fp` (including Veterans Day parade).
+
+---
+
 ## Suggested sequencing
 
 ```text
@@ -206,6 +227,9 @@ B-030/B-031        hybrid classifier + label bootstrap
         │
         ▼
 B-032/B-040/B-041  optional disambiguation, ranking, langs
+        │
+        ▼
+B-050              bare-Albany named-event / NYC-context recall
 ```
 
 ## Out of scope (for now)

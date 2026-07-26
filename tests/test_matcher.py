@@ -101,6 +101,25 @@ def test_event_local_venue_requires_cue_and_venue() -> None:
     assert bare_albany_event.matched is False
 
 
+def test_named_cap_region_events_and_nyc_context() -> None:
+    eufuria = match_post("I'll be suiting and hanging out at Eufuria in Albany this weekend.")
+    assert eufuria.matched is True
+    assert eufuria.reason == 'strong_positive'
+
+    alive = match_post('Official Alive at 5 After Party in Albany with Lespecial.')
+    assert alive.matched is True
+    assert alive.reason == 'strong_positive'
+
+    nyc_context = match_post("They've never went bankrupt in Albany: NYC almost did in the '70s.")
+    assert nyc_context.matched is True
+    assert nyc_context.reason == 'albany_with_ny_context'
+
+    # Generic bare-Albany events still drop (precision gate).
+    generic = match_post('See you in Albany this weekend!')
+    assert generic.matched is False
+    assert generic.reason == 'bare_albany'
+
+
 def test_extract_alt_text_from_images() -> None:
     embed = {
         '$type': 'app.bsky.embed.images',
