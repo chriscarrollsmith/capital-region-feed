@@ -21,7 +21,7 @@
   },
   {
     "id": "tp-schenectady-nun",
-    "text": "Sister Maria Rosa Querini, a 91-year-old nun at St. Anthony\u2019s Church in Schenectady, received the 2026 Brenda H. Thomas Good Neighbor Award.",
+    "text": "Sister Maria Rosa Querini, a 91-year-old nun at St. Anthony’s Church in Schenectady, received the 2026 Brenda H. Thomas Good Neighbor Award.",
     "expected": true,
     "signal": "text",
     "bucket": "strong_local",
@@ -30,7 +30,7 @@
   },
   {
     "id": "tp-capital-region-homelessness",
-    "text": "Homelessness falls in NY but Capital Region sees sharp increases. A homeless person\u2019s belongings are seen under I-787.",
+    "text": "Homelessness falls in NY but Capital Region sees sharp increases. A homeless person’s belongings are seen under I-787.",
     "expected": true,
     "signal": "text",
     "bucket": "strong_local",
@@ -50,7 +50,7 @@
   },
   {
     "id": "tp-music-haven-schenectady",
-    "text": "Tomorrow! WEXT\u2019s second annual Local 518 Music Fest at #MusicHaven in Schenectady\u2019s Central Park beginning at 2pm!",
+    "text": "Tomorrow! WEXT’s second annual Local 518 Music Fest at #MusicHaven in Schenectady’s Central Park beginning at 2pm!",
     "expected": true,
     "signal": "event",
     "bucket": "regional_event",
@@ -69,7 +69,7 @@
   },
   {
     "id": "fp-french-colonie",
-    "text": "Nous sommes une colonie num\u00e9rique des \u00c9tats-Unis, \u00e9pisode 43.",
+    "text": "Nous sommes une colonie numérique des États-Unis, épisode 43.",
     "expected": false,
     "signal": "text",
     "bucket": "skyfeed_fp",
@@ -87,7 +87,7 @@
   },
   {
     "id": "fp-jc-latham",
-    "text": "The Titans\u2019 biggest JC Latham question has nothing to do with the training camp PUP list",
+    "text": "The Titans’ biggest JC Latham question has nothing to do with the training camp PUP list",
     "expected": false,
     "signal": "text",
     "bucket": "skyfeed_fp",
@@ -188,7 +188,7 @@
   },
   {
     "id": "fp-new-albany-ceo",
-    "text": "Starting to think we should imprison all New Albany CEOs until we figure out what\u2019s going on.",
+    "text": "Starting to think we should imprison all New Albany CEOs until we figure out what’s going on.",
     "expected": false,
     "signal": "text",
     "bucket": "skyfeed_fp",
@@ -243,7 +243,7 @@
   },
   {
     "id": "fp-french-colonie-vacances",
-    "text": "Les minibus transportaient 16 enfants d'une m\u00eame colonie de vacances qui revenaient du Puy du Fou",
+    "text": "Les minibus transportaient 16 enfants d'une même colonie de vacances qui revenaient du Puy du Fou",
     "expected": false,
     "signal": "text",
     "bucket": "skyfeed_fp",
@@ -270,7 +270,7 @@
   },
   {
     "id": "tp-times-union-capital-region",
-    "text": "Homelessness fell statewide but surged across much of the Capital Region, with Columbia-Greene region recording New York\u2019s largest increase.",
+    "text": "Homelessness fell statewide but surged across much of the Capital Region, with Columbia-Greene region recording New York’s largest increase.",
     "author_handle": "timesunion.com",
     "expected": true,
     "signal": "text",
@@ -280,7 +280,7 @@
   },
   {
     "id": "fp-jc-latham-bust",
-    "text": "Titans it\u2019s time to move on from JC Latham. Dudes a bust",
+    "text": "Titans it’s time to move on from JC Latham. Dudes a bust",
     "expected": false,
     "signal": "text",
     "bucket": "skyfeed_fp",
@@ -326,7 +326,7 @@
   },
   {
     "id": "fp-minnesota-albany-baseball",
-    "text": "Legion baseball playoffs: Cold Spring hangs on for 8-7 win over Pierz; Willmar ends Albany\u2019s season",
+    "text": "Legion baseball playoffs: Cold Spring hangs on for 8-7 win over Pierz; Willmar ends Albany’s season",
     "expected": false,
     "note": "Minnesota Albany",
     "signal": "text",
@@ -356,7 +356,7 @@
   },
   {
     "id": "tp-troy-ny",
-    "text": "Coffee crawl this weekend in Troy, NY \u2014 starting at the farmers market.",
+    "text": "Coffee crawl this weekend in Troy, NY — starting at the farmers market.",
     "expected": true,
     "signal": "text",
     "bucket": "strong_local",
@@ -412,7 +412,7 @@
   },
   {
     "id": "fp-capital-region-of-madrid",
-    "text": "State of emergency. Wild fires in southern Europe: Around 90,000 people evacuated. The state of emergency in Spain applies to the capital region of Madrid and the nearby province of \u00c1vila. In France, the Atlantic coast is affected.",
+    "text": "State of emergency. Wild fires in southern Europe: Around 90,000 people evacuated. The state of emergency in Spain applies to the capital region of Madrid and the nearby province of Ávila. In France, the Atlantic coast is affected.",
     "expected": false,
     "note": "Spanish Comunidad de Madrid, not NY Capital Region",
     "signal": "text",
@@ -583,7 +583,7 @@
   },
   {
     "id": "fn-event-mvp-arena-albany",
-    "text": "Concert announced at MVP Arena in Albany NY \u2014 September 12. Presale starts Monday.",
+    "text": "Concert announced at MVP Arena in Albany NY — September 12. Presale starts Monday.",
     "expected": true,
     "signal": "event",
     "bucket": "regional_event",
@@ -593,7 +593,7 @@
   },
   {
     "id": "fn-event-troy-farmers-market",
-    "text": "Troy, NY Waterfront Farmers Market is back this Sunday 9am\u20132pm. Live music at noon.",
+    "text": "Troy, NY Waterfront Farmers Market is back this Sunday 9am–2pm. Live music at noon.",
     "expected": true,
     "signal": "event",
     "bucket": "regional_event",
@@ -820,7 +820,7 @@
   },
   {
     "id": "fp-event-offregion-msg",
-    "text": "Concert announced at Madison Square Garden \u2014 September 12. Presale starts Monday.",
+    "text": "Concert announced at Madison Square Garden — September 12. Presale starts Monday.",
     "expected": false,
     "signal": "event",
     "bucket": "precision_gate",
@@ -872,7 +872,7 @@
   },
   {
     "id": "tp-soft-prior-bare-albany",
-    "text": "Concert in Albany this weekend \u2014 who is going?",
+    "text": "Concert in Albany this weekend — who is going?",
     "author_did": "did:plc:softpriorlocal000000000001",
     "soft_prior": true,
     "expected": true,
@@ -919,7 +919,7 @@
   },
   {
     "id": "tn-soft-prior-no-placename",
-    "text": "Newsletter is out for subscribers \u2014 thanks for reading!",
+    "text": "Newsletter is out for subscribers — thanks for reading!",
     "author_did": "did:plc:softpriorlocal000000000001",
     "soft_prior": true,
     "expected": false,
@@ -931,7 +931,7 @@
   },
   {
     "id": "tp-clf-pine-hills-block-party",
-    "text": "Pine Hills block party this Saturday \u2014 bring a dish!",
+    "text": "Pine Hills block party this Saturday — bring a dish!",
     "expected": true,
     "signal": "event",
     "bucket": "ambiguous_classifier",
@@ -951,7 +951,7 @@
   },
   {
     "id": "tp-clf-river-street-open-mic",
-    "text": "Open mic tomorrow on River Street \u2014 sign-ups start at 6.",
+    "text": "Open mic tomorrow on River Street — sign-ups start at 6.",
     "expected": true,
     "signal": "event",
     "bucket": "ambiguous_classifier",
@@ -961,7 +961,7 @@
   },
   {
     "id": "tp-clf-crossgates-holiday-hours",
-    "text": "Tonight at Crossgates \u2014 holiday hours extended until 9pm.",
+    "text": "Tonight at Crossgates — holiday hours extended until 9pm.",
     "expected": true,
     "signal": "event",
     "bucket": "ambiguous_classifier",
@@ -1037,7 +1037,7 @@
   },
   {
     "id": "fp-entity-albany-park",
-    "text": "Street festival vibes in Albany Park this weekend \u2014 come through.",
+    "text": "Street festival vibes in Albany Park this weekend — come through.",
     "expected": false,
     "note": "Gazetteer other-region entity (Chicago)",
     "signal": "text",
@@ -1111,7 +1111,7 @@
   },
   {
     "id": "at://did:plc:cf2yh7biwon3rlz37db3g4ch/app.bsky.feed.post/3mriz4x6ivk23",
-    "text": "I\u2019m about to tell \u2018em in Albany, New York.",
+    "text": "I’m about to tell ‘em in Albany, New York.",
     "expected": true,
     "signal": "text",
     "bucket": "strong_local",
@@ -1126,7 +1126,7 @@
   },
   {
     "id": "at://did:plc:t3cdmuggt6xacodh4f4qtgqq/app.bsky.feed.post/3mriyfkykvp2c",
-    "text": "On July 26, 1788, New York became the 11th state of the USA. Famous for New York City, the Statue of Liberty, Broadway, and beautiful parks, it is a popular place to visit. The New York State Museum in Albany shares the state\u2019s rich history and culture.\n\n#RouteTripUSA",
+    "text": "On July 26, 1788, New York became the 11th state of the USA. Famous for New York City, the Statue of Liberty, Broadway, and beautiful parks, it is a popular place to visit. The New York State Museum in Albany shares the state’s rich history and culture.\n\n#RouteTripUSA",
     "expected": true,
     "signal": "text",
     "bucket": "strong_local",
@@ -1153,7 +1153,7 @@
   },
   {
     "id": "at://did:plc:bm3s6owtkhcpunxmsovidfhd/app.bsky.feed.post/3mripuq3tts2s",
-    "text": "there are so many arguments of strict constructionism.\n\nThe Four Horsemen vs. the FDR New Dealers is the preeminent example: the sky did not fall.\n\nThe key distinction here is Mamdani is a mayor of the world\u2019s economics capital.\n\nThey\u2019ve never went bankrupt in Albany: NYC almost did in the \u201870s. \ud83e\uddd0\ud83e\uddd0\ud83e\uddd0",
+    "text": "there are so many arguments of strict constructionism.\n\nThe Four Horsemen vs. the FDR New Dealers is the preeminent example: the sky did not fall.\n\nThe key distinction here is Mamdani is a mayor of the world’s economics capital.\n\nThey’ve never went bankrupt in Albany: NYC almost did in the ‘70s. 🧐🧐🧐",
     "expected": true,
     "signal": "text",
     "bucket": "strong_local",
@@ -1168,7 +1168,7 @@
   },
   {
     "id": "at://did:plc:lqik2sra2dgux2l64a3otsuw/app.bsky.feed.post/3mrhmsl3pjs27",
-    "text": "Goons who threatened Indian girls and women at protest being treated like royals by cops to politicians \ud83d\ude47\ud83c\udffb\u200d\u2640\ufe0f while innocent civilians at peaceful protests have CRPF, latthis and tear gas \ud83d\udc81\ud83c\udffb\u200d\u2640\ufe0f here cops are their bodyguards incase they are stopped from violence \ud83d\udc81\ud83c\udffb\u200d\u2640\ufe0f\n\nwww.instagram.com/reel/DbNSptE...",
+    "text": "Goons who threatened Indian girls and women at protest being treated like royals by cops to politicians 🙇🏻‍♀️ while innocent civilians at peaceful protests have CRPF, latthis and tear gas 💁🏻‍♀️ here cops are their bodyguards incase they are stopped from violence 💁🏻‍♀️\n\nwww.instagram.com/reel/DbNSptE...",
     "expected": false,
     "signal": "text",
     "bucket": "global_negative",
@@ -1183,7 +1183,7 @@
   },
   {
     "id": "at://did:plc:pn57ik4fjcbkxoaknvmb4zo5/app.bsky.feed.post/3mrd2pk2ads2g",
-    "text": "EUFURIA! \ud83e\udd29\ud83d\udc3e\ud83d\udc95\n-\nWho will be in the Capital Region this weekend? I won\u2019t be attending this con, but make sure to come tell my assistant that you said hi (and to ask about my cardboard cut out \ud83e\udd23)!!",
+    "text": "EUFURIA! 🤩🐾💕\n-\nWho will be in the Capital Region this weekend? I won’t be attending this con, but make sure to come tell my assistant that you said hi (and to ask about my cardboard cut out 🤣)!!",
     "expected": true,
     "signal": "event",
     "bucket": "regional_event",
@@ -1210,7 +1210,7 @@
   },
   {
     "id": "at://did:plc:fmtw7ykc5h4yg3akmdmwcoqf/app.bsky.feed.post/3mr6q6rg4bs2t",
-    "text": "I\u2019ll be suiting and hanging out at Eufuria in Albany this weekend. Feel free to ask for photos!\n\n#Eufuria #Eufuria26 #fursuit",
+    "text": "I’ll be suiting and hanging out at Eufuria in Albany this weekend. Feel free to ask for photos!\n\n#Eufuria #Eufuria26 #fursuit",
     "expected": true,
     "signal": "event",
     "bucket": "regional_event",
@@ -1222,7 +1222,7 @@
   },
   {
     "id": "at://did:plc:fuz6utfgzwwmap3a2qfod4ud/app.bsky.feed.post/3mqozbsvwjg2r",
-    "text": "Empire State Plaza Convention Center has something dark and filled with horrors planned this weekend. https://www.news10.com/news/albany-county/gothic-market-coming-to-empire-state-plaza-in-albany/\u00a0 ",
+    "text": "Empire State Plaza Convention Center has something dark and filled with horrors planned this weekend. https://www.news10.com/news/albany-county/gothic-market-coming-to-empire-state-plaza-in-albany/  ",
     "expected": true,
     "signal": "event",
     "bucket": "regional_event",
@@ -1249,7 +1249,7 @@
   },
   {
     "id": "at://did:plc:jxe57jskj4ucvmvjcd5ojyq6/app.bsky.feed.post/3mowazwuvjk2f",
-    "text": "\ud83d\udca1 The iconic GE sign is shining again over Schenectady! Celebrating its 100th anniversary tonight was especially meaningful \u2014 my dad came to this county, worked here for 30+ years. A symbol of innovation, opportunity, generations who helped build the Electric City \u2728 @GEVernova",
+    "text": "💡 The iconic GE sign is shining again over Schenectady! Celebrating its 100th anniversary tonight was especially meaningful — my dad came to this county, worked here for 30+ years. A symbol of innovation, opportunity, generations who helped build the Electric City ✨ @GEVernova",
     "expected": true,
     "signal": "event",
     "bucket": "regional_event",
@@ -1279,7 +1279,7 @@
   },
   {
     "id": "at://did:plc:rwwffrdsbcz6e5w23qgdeswk/app.bsky.feed.post/3mocdaagluk2t",
-    "text": "They\u2019re partying in Schenectady tonight* as Union\u2019s own lifts the Stanley Cup 12 years after winning a natty\n\n* - no they\u2019re not; they got work tomorrow",
+    "text": "They’re partying in Schenectady tonight* as Union’s own lifts the Stanley Cup 12 years after winning a natty\n\n* - no they’re not; they got work tomorrow",
     "expected": true,
     "signal": "event",
     "bucket": "regional_event",
@@ -1342,7 +1342,7 @@
   },
   {
     "id": "at://did:plc:fn3nr3wqpkn436j2qy2wbvqt/app.bsky.feed.post/3mriduchzzv2m",
-    "text": "\ud83c\udfb8 Rock the Block is bringing live music, local vendors, food, and plenty of downtown energy to Albany. Grab your friends and make a night of it! \ud83c\udf89 \u27a1\ufe0f Learn more. ",
+    "text": "🎸 Rock the Block is bringing live music, local vendors, food, and plenty of downtown energy to Albany. Grab your friends and make a night of it! 🎉 ➡️ Learn more. ",
     "expected": true,
     "signal": "author",
     "bucket": "local_org_no_placename",
@@ -1354,7 +1354,7 @@
   },
   {
     "id": "at://did:plc:fn3nr3wqpkn436j2qy2wbvqt/app.bsky.feed.post/3mrhzs6kfpp2y",
-    "text": "\ud83c\udfa1 Nothing says summer like fair food, live music, and carnival rides. Discover local and regional fairs near Albany that are worth adding to your calendar. \ud83c\udfa0 \u27a1\ufe0f Check out the list. ",
+    "text": "🎡 Nothing says summer like fair food, live music, and carnival rides. Discover local and regional fairs near Albany that are worth adding to your calendar. 🎠 ➡️ Check out the list. ",
     "expected": true,
     "signal": "author",
     "bucket": "local_org_no_placename",
@@ -1366,7 +1366,7 @@
   },
   {
     "id": "at://did:plc:fn3nr3wqpkn436j2qy2wbvqt/app.bsky.feed.post/3mrht3hpp2i2n",
-    "text": "\ud83e\udd7e Ready to explore Albany on two feet or two wheels? From scenic trails to easygoing paths, these hike and bike spots make it simple to get outside and enjoy the Capital Region. \ud83d\udeb4 \u27a1\ufe0f Check out the list. ",
+    "text": "🥾 Ready to explore Albany on two feet or two wheels? From scenic trails to easygoing paths, these hike and bike spots make it simple to get outside and enjoy the Capital Region. 🚴 ➡️ Check out the list. ",
     "expected": true,
     "signal": "author",
     "bucket": "local_org_no_placename",
@@ -1378,7 +1378,7 @@
   },
   {
     "id": "at://did:plc:wdssbrxji4hmcgl3pfr5ym5r/app.bsky.feed.post/3mrfpypjrvj27",
-    "text": "#BREAKING: The basketball superstar made the announcement on social media Friday, saying it will be his \u201clast decision\u201d and that it comes after he strongly considered retirement. MORE AT: wnyt.com",
+    "text": "#BREAKING: The basketball superstar made the announcement on social media Friday, saying it will be his “last decision” and that it comes after he strongly considered retirement. MORE AT: wnyt.com",
     "expected": true,
     "signal": "author",
     "bucket": "local_org_no_placename",
@@ -1402,7 +1402,9 @@
     "id": "fp-madrid-hauptstadtregion-german-alt",
     "text": "State of emergency. Wild fires in southern Europe: Around 90,000 people evacuated. The state of emergency in Spain applies to the capital region of Madrid and the nearby province of Ávila.",
     "alt_text": "Waldbrände in Südeuropa: Rund 90.000 Menschen evakuiert Der Notstand in Spanien gilt für die Hauptstadtregion Madrid und die nahe gelegene Provinz Ávila.",
-    "langs": ["de"],
+    "langs": [
+      "de"
+    ],
     "expected": false,
     "signal": "text",
     "bucket": "precision_gate",
@@ -1603,5 +1605,221 @@
     "split": "dev",
     "regression": true,
     "note": "two core ambiguous places still unlock multi_local_places"
+  },
+  {
+    "id": "fp-metra-hash-518-train-number",
+    "text": "🚆 Metra · past hour\n\n🐌 Delays\n\n15–29 min\n• BNSF: #2035\n• Union Pacific North: #834\n• Union Pacific West: #518\n\nPer Metra realtime data.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-07-26 feed FP: bare #518 must not keep Metra train numbers"
+  },
+  {
+    "id": "fp-new-scotland-shirt-youtube",
+    "text": "www.youtube.com/watch?v=KrDc...",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "Smoker, of Great, Cigar, with Blue White TShirt, New Scotland Shirt; and Music :\" Dr. Zhivago \". YouTube video by Adolfo Mateo",
+    "note": "2026-07-26 feed FP: New Scotland Shirt is not the Town of New Scotland"
+  },
+  {
+    "id": "fp-a-new-scotland-radio-schedule",
+    "text": "INDY LIVE RADIO - a new voice for a new Scotland Today's schedule, Sun 26 Jul 2026 View the full schedule",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-07-26 feed FP: 'a new Scotland' must not match New Scotland NY"
+  },
+  {
+    "id": "fp-upstate-ny-syracuse-robot-classroom",
+    "text": "So relieved they backed down on this.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "After backlash, Upstate NY school district pauses plan to add humanoid robot to classroom The $57,590 investment in an AI teaching assistant sparked intense community debate.",
+    "note": "2026-07-26 feed FP: bare Upstate NY (Syracuse.com) is broader than Cap Region"
+  },
+  {
+    "id": "fp-central-ave-hackensack-forum",
+    "text": "Please attend the forum entitled “The Attack On Voting Rights And The War On Black People,” on Thursday, August 6, 2026, 7:00pm at Logan Family Life Center, 274 Central Avenue, Hackensack, NJ.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-07-26 feed FP: Central Avenue + datetime outside Cap Region"
+  },
+  {
+    "id": "fp-34th-street-minneapolis-gallery",
+    "text": "SNAKPAK Studio and Gallery (and Free Museum) 3704 East 34th Street Minneapolis, Minn 55406 Hours: Friday 10 am - 3 pm Saturday 10 am - 3 pm Sunday 10 am - 3 pm Solving Yesterday’s Problems Tomorrow",
+    "expected": false,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-07-26 feed FP: 34th Street must not substring-match 4th Street micro"
+  },
+  {
+    "id": "fp-14th-street-nw-dc-crime",
+    "text": "Assault With Dangerous Weapon Reported on 14th Street NW. Reported July 24 at 10:13 PM near 5800 - 5898 Block Of 14Th Street Nw.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-07-26 feed FP: 14th Street NW DC via 4th Street substring + time cue"
+  },
+  {
+    "id": "fp-central-ave-li-traffic-cam",
+    "text": "NY878 at Central Avenue 🕒 6:10 AM - 6:13 AM ET (8x speed) 🌡️ 59°F | Clear  📍: 40.610543,-73.743211",
+    "expected": false,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-07-26 feed FP: Long Island Central Avenue traffic cam"
+  },
+  {
+    "id": "fp-4th-street-guyana-kingdom-hall",
+    "text": "🇬🇾 - Kingdom Hall of Jehovah's Witnesses, 4th Street, Bartica East Central, Guyana #Guyana #PlacesOfWorship",
+    "expected": false,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "A zoomed out map with a pin at Kingdom Hall of Jehovah's Witnesses, 4th Street, Bartica East Central, Guyana A partially zoomed out map with a pin at Kingdom Hall of Jehovah's Witnesses, 4th Street, Bartica East Central, Guyana A map showing Bartica East Central with a pin at Kingdom Hall of Jehovah's Witnesses, 4th Street",
+    "note": "2026-07-26 feed FP: repeated 4th Street alts without Cap Region hint"
+  },
+  {
+    "id": "fp-lincoln-park-chicago-karaoke",
+    "text": "NO OTHER VERSION OF ME I WOULD RATHER BE TONIGHT at the Arrogant Frog Bar for karaoke from 8pm to midnight! #ChicagoKaraoke The Arrogant Frog Bar Lincoln Park, 1365 W Fullerton Ave, Chicago, IL 60614",
+    "expected": false,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-07-26 feed FP: Chicago Lincoln Park is not Albany Lincoln Park"
+  },
+  {
+    "id": "fp-nyc-doors-14th-street-photography",
+    "text": "7th Avenue between West 13th Street and West 14th Street. Even numbers #NYC #NewYorkCity #doors #photography",
+    "expected": false,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "A 1976 black-and-white photo of a doorway in New York.",
+    "note": "2026-07-26 feed FP: NYC doorway photo; bare 'doors' + 14th→4th substring"
+  },
+  {
+    "id": "tp-central-ave-albany-crash",
+    "text": "Crash on Central Avenue in Albany this morning around 8:15am. Expect delays.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "dev",
+    "regression": true,
+    "note": "collision micro Central Ave still keeps with Albany hint + time"
+  },
+  {
+    "id": "tp-new-scotland-ny-town-board",
+    "text": "Town board meets in New Scotland, NY on Tuesday evening.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "narrowed New Scotland strong positive still keeps with NY"
+  },
+  {
+    "id": "tp-hash-518ny-area-tag",
+    "text": "Food truck Friday in the lot — come hang #518ny",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "#518ny remains a Cap Region strong positive after bare #518 demotion"
+  },
+  {
+    "id": "tp-eufuria-con-recap-no-city",
+    "text": "eufuria was so fun :) got to actually go with a friend this year",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-07-26 live keep: Cap Region named event without city placename"
+  },
+  {
+    "id": "tp-latham-capital-region-dispensary",
+    "text": "ICYMI: Green Leaf Wellness Dispensary in Latham Restocks Silly Nice Vapes for the Weekend",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "Green Leaf Wellness Co. in Latham is heading into the weekend with fresh inventory, giving Capital Region shoppers another opportunity.",
+    "note": "2026-07-26 live keep: Latham + Capital Region in link card"
+  },
+  {
+    "id": "tp-troy-ny-frear-park-hike",
+    "text": "Hiking the OBSCURE Piscawankill Trail in Frear Park | Troy, NY",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-07-26 live keep: Troy NY trail post"
+  },
+  {
+    "id": "tn-upstate-ny-photo-no-cap-region",
+    "text": "May your #Stunday be bright as meadow flowers. #BloomScrolling",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "A field of poppies and more and a fence behind in upstate NY.",
+    "note": "2026-07-26 feed: generic upstate NY photo alt is not Cap Region enough"
+  },
+  {
+    "id": "fp-albany-county-wy-infrastructure",
+    "text": "Albany County is taking a bold step to enhance public safety and local jobs by backing a major road improvement project with Wyo Silver, but questions about funding and long-term benefits loom large.\n\n#AlbanyCounty #WY #InfrastructureImprovement #CitizenPortal",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-07-26 near-miss FP: Albany County Wyoming must not keep as albany_county_ny"
+  },
+  {
+    "id": "fp-albany-county-wy-contiguous",
+    "text": "Road work begins in Albany County, WY next month.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "contiguous Albany County WY gazetteer other-region"
+  },
+  {
+    "id": "tp-albany-county-ny-executives",
+    "text": "Albany County executives meet downtown tomorrow. #AlbanyNY",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "NY Albany County still keeps with state context"
   }
 ]

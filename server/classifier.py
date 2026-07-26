@@ -18,7 +18,7 @@ from typing import Any
 # Distinctive Capital Region neighborhoods / corridors / landmarks that are
 # weaker than ``_STRONG_POSITIVE`` alone but useful when combined with event or
 # place cues. Kept out of the regex floor so offhand mentions stay droppable.
-_LOCAL_MICRO = re.compile(
+_DISTINCTIVE_LOCAL_MICRO = re.compile(
     r"""
     (?:
         lark\s+street
@@ -29,13 +29,8 @@ _LOCAL_MICRO = re.compile(
       | crossgates(?:\s+mall)?
       | stuyvesant\s+plaza
       | river\s+street
-      | (?:fourth|4th)\s+street
-      | central\s+(?:avenue|ave)\b
-      | delaware\s+(?:avenue|ave)\b
-      | western\s+(?:avenue|ave)\b
       | new\s+scotland\s+(?:avenue|ave|road|rd)\b
       | empire\s+state\s+plaza
-        | lincoln\s+park
       | buckingham\s+lake
       | normanskill
       | thrifty\s+shopper
@@ -43,6 +38,64 @@ _LOCAL_MICRO = re.compile(
     """,
     re.IGNORECASE | re.VERBOSE,
 )
+
+# Common street/park names that exist nationwide. Only count as local micro
+# when a Capital Region hint is also present (avoids Hackensack Central Ave,
+# Chicago Lincoln Park, "14th"/"34th" substring traps, Guyana 4th Street, …).
+_COLLISION_LOCAL_MICRO = re.compile(
+    r"""
+    (?:
+        (?<!\d)(?:fourth|4th)\s+street
+      | central\s+(?:avenue|ave)\b
+      | delaware\s+(?:avenue|ave)\b
+      | western\s+(?:avenue|ave)\b
+      | lincoln\s+park
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Cap Region anchors that unlock collision micros. Intentionally narrower than
+# matcher ``_NY_CONTEXT`` (bare NYC / "New York" alone must not qualify).
+_CAP_REGION_HINT = re.compile(
+    r"""
+    (?:
+        capital\s+(?:region|district)
+      | \balbany\b
+      | \btroy\b(?!@)
+      | schenectady
+      | \bcolonie\b
+      | guilderland
+      | niskayuna
+      | watervliet
+      | \bcohoes\b
+      | \blatham\b
+      | \bdelmar\b
+      | clifton\s+park
+      | loudonville
+      | \bualbany\b
+      | local\s*518
+      | \#518(?:ny|area)?\b
+      | \#albanyny\b
+      | times\s+union\b
+      | rensselaer
+      | \bsaratoga\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Back-compat alias for tests / callers that imported ``_LOCAL_MICRO``.
+_LOCAL_MICRO = _DISTINCTIVE_LOCAL_MICRO
+
+
+def _local_micro_hits(haystack: str) -> list[str]:
+    """Return micro-signal hits eligible for classifier features."""
+    hits = list(_DISTINCTIVE_LOCAL_MICRO.findall(haystack))
+    if _CAP_REGION_HINT.search(haystack):
+        hits.extend(_COLLISION_LOCAL_MICRO.findall(haystack))
+    return hits
+
 
 _DEFAULT_MODEL_PATH = (
     Path(__file__).resolve().parents[1] / 'data' / 'models' / 'ambiguous_clf_v1.json'
@@ -79,7 +132,7 @@ def extract_features(
     has_local_venue: bool,
 ) -> dict[str, float]:
     """Build the sparse feature vector for an ambiguous / near-miss candidate."""
-    micro_hits = _LOCAL_MICRO.findall(haystack)
+    micro_hits = _local_micro_hits(haystack)
     local_micro_count = float(min(len(micro_hits), 3))
     local_micro = 1.0 if micro_hits else 0.0
     has_ambiguous = 1.0 if term else 0.0

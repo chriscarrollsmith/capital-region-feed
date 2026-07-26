@@ -41,6 +41,31 @@ def test_classify_keeps_local_micro_event() -> None:
     assert decision.reason == 'classifier:local_micro'
 
 
+def test_collision_micros_need_cap_region_hint() -> None:
+    """Central Ave / Lincoln Park / 4th Street alone must not keep off-region posts."""
+    assert (
+        match_post(
+            'Forum Thursday August 6, 2026, 7:00pm at 274 Central Avenue, Hackensack, NJ'
+        ).matched
+        is False
+    )
+    assert match_post('TONIGHT karaoke at Lincoln Park, Chicago, IL 8pm').matched is False
+    assert (
+        match_post('Gallery at 3704 East 34th Street Minneapolis Hours Friday 10 am').matched
+        is False
+    )
+    assert match_post('Assault on 14th Street NW July 24 at 10:13 PM').matched is False
+    assert (
+        match_post('7th Avenue between West 13th Street and West 14th Street. #doors').matched
+        is False
+    )
+
+    # Collision micro still unlocks with an Albany / Cap Region hint.
+    keep = match_post('Crash on Central Avenue in Albany this morning around 8:15am.')
+    assert keep.matched is True
+    assert keep.reason.startswith('classifier:')
+
+
 def test_classify_drops_bare_albany_event_without_micro() -> None:
     decision = classify_candidate(
         "Don't miss the Albany Veterans Day Parade this Saturday downtown!",

@@ -66,7 +66,6 @@ _STRONG_POSITIVE = re.compile(
       | burnt\s+hills
       | ballston\s+spa
       | clifton\s+park
-      | new\s+scotland
       | averill\s+park
       | boght\s+corners
       | newtonville
@@ -84,13 +83,15 @@ _STRONG_POSITIVE = re.compile(
       | \bi-?787\b
       | \bon\s+787\b
       | local\s*518
-      | \#518\b
-      | upstate\s+ny
+      # Prefer #518ny / #518area — bare #518 collides with train/jersey numbers.
+      | \#518(?:ny|area)\b
       | reddit\.com/r/albany\b
       | \br/albany\b
       | saratoga\s+springs\s+police
       | saratoga\s+casino
       | times\s+union\b
+      # Town of New Scotland — not "a new Scotland" / "New Scotland Shirt".
+      | new\s+scotland(?:\s*,?\s*ny\b|\s+town\b)
       # Distinctive Cap Region named events (not bare "Albany this weekend").
       | \beufuria\b
       | black\s+paw-?rade
@@ -160,6 +161,7 @@ _NY_CONTEXT = re.compile(
       | capital\s+(?:region|district)
       | \#ny\b
       | \#upstateny\b
+      | upstate\s+ny\b
       | hudson\s+valley
       | \#albanyny\b
     )
@@ -251,7 +253,8 @@ _EVENT_CUE = re.compile(
     \b(?:
         tonight|tomorrow|this\s+weekend|this\s+saturday|this\s+sunday|
         next\s+(?:friday|saturday|sunday|week)|
-        doors(?:\s+at|\s+open)?|tickets?|presale|save\s+the\s+date|join\s+us|
+        # Require "doors at/open" — bare "doors" matches doorway photography.
+        doors(?:\s+at|\s+open)|tickets?|presale|save\s+the\s+date|join\s+us|
         open\s+mic|festival|concert|comedy\s+night|show\s+starts|
         \d{1,2}:\d{2}\s*(?:am|pm)|(?<!\d)\d{1,2}\s*(?:am|pm)\b|
         january|february|march|april|june|july|august|september|
@@ -384,6 +387,28 @@ def _has_lang_prefix(langs: list[str], prefix: str) -> bool:
     return any(lang == prefix or lang.startswith(f'{prefix}-') for lang in langs)
 
 
+_ALBANY_COUNTY_WY = re.compile(
+    r"""
+    (?:
+        albany\s+county(?:\s*,)?\s*(?:wy|wyoming)\b
+      | albany\s+county[\s\S]{0,240}(?:\bwyoming\b|\#wy\b)
+      | (?:\#wy\b|\bwyoming\b)[\s\S]{0,240}albany\s+county
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+
+def _albany_county_wy_conflict(haystack: str) -> bool:
+    """True when Albany County cues point at Wyoming, not NY."""
+    if not _ALBANY_COUNTY_WY.search(haystack):
+        return False
+    # Explicit NY state context wins (comparison posts, etc.).
+    if re.search(r'\b(?:ny|new\s+york)\b', haystack, flags=re.IGNORECASE):
+        return False
+    return True
+
+
 def _lang_non_local_colonie(haystack: str, langs: list[str]) -> MatchResult | None:
     """Drop French *colonie* when langs say fr and there is no NY/local cue."""
     if not _has_lang_prefix(langs, 'fr'):
@@ -494,9 +519,14 @@ def match_post(
         return MatchResult(False, 'hard_negative')
 
     if entity is not None and entity.region == 'capital_ny':
+        if entity.entity_id == 'albany_county_ny' and _albany_county_wy_conflict(haystack):
+            return MatchResult(False, 'entity_other:albany_county_wy')
         return MatchResult(True, f'entity_local:{entity.entity_id}')
 
     if _STRONG_POSITIVE.search(haystack):
+        # Bare "Albany County" is also a strong token; still drop WY-tagged posts.
+        if _albany_county_wy_conflict(haystack):
+            return MatchResult(False, 'entity_other:albany_county_wy')
         return MatchResult(True, 'strong_positive')
 
     if _COLONIE_LOCAL.search(haystack):

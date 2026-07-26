@@ -63,6 +63,17 @@
       "surfaces": ["albany, wy", "albany, wyoming", "albany wyoming"]
     },
     {
+      "id": "albany_county_wy",
+      "region": "other",
+      "surfaces": [
+        "albany county, wy",
+        "albany county wy",
+        "albany county, wyoming",
+        "albany county wyoming"
+      ],
+      "notes": "Wyoming county; hashtag-only WY cues are handled in matcher._albany_county_wy_conflict"
+    },
+    {
       "id": "albany_illinois",
       "region": "other",
       "surfaces": ["albany, il", "albany, illinois", "albany illinois"]
