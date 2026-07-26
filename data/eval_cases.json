@@ -1533,5 +1533,25 @@
     "split": "dev",
     "regression": true,
     "note": "Ravena with Capital Region context; also coeymans remains strong"
+  },
+  {
+    "id": "tp-altamont-based-local-band",
+    "text": "On September 18, Altamont-based musical duo The Parlor releases their new album.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "Cap Region Altamont cue; bare Altamont alone must still drop"
+  },
+  {
+    "id": "fp-lords-of-altamont-band",
+    "text": "Now playing: \"What's Your Bag\" by The Lords of Altamont",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "band name Altamont, not the Albany County hamlet"
   }
 ]

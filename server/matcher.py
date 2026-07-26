@@ -72,6 +72,10 @@ _STRONG_POSITIVE = re.compile(
       | newtonville
       | \bcoeymans\b
       | helderberg
+      # Cap Region Altamont cues only — bare "Altamont" stays ambiguous (CA festival / band names).
+      | \baltamont-based\b
+      | altamont\s+fair
+      | altamont(?:\s*,)?\s*ny\b
       | empire\s+state\s+plaza
       | albany\s+capital\s+center
       | university\s+at\s+albany

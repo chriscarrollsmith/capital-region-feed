@@ -152,9 +152,12 @@ def test_collision_toponyms_need_ny_context() -> None:
     assert match_post('lush, green islands under a cloudy sky').matched is False
     assert match_post('#DelMar Race 10 projected odds').matched is False
     assert match_post('Post time from Del Mar this afternoon.').matched is False
+    assert match_post('Now playing by The Lords of Altamont').matched is False
 
     assert match_post('Meeting in Green Island, NY tonight.').matched is True
     assert match_post('Fire on Route 43 in Sand Lake, NY.').matched is True
+    assert match_post('Altamont-based duo releases a new album.').matched is True
+    assert match_post('See you at the Altamont Fair this August.').matched is True
 
 
 def test_new_york_times_masthead_is_not_ny_context_for_troy() -> None:
