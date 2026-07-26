@@ -85,7 +85,11 @@ Endpoints:
 
 ## Deploy on Fly.io
 
-Prereqs: [flyctl](https://fly.io/docs/flyctl/install/) logged in (`fly auth login`).
+Merges to `main` deploy automatically via GitHub Actions (`.github/workflows/ci.yml`)
+after CI checks pass, using the repo secret `FLY_API_TOKEN`.
+
+For first-time setup or a manual deploy, use [flyctl](https://fly.io/docs/flyctl/install/)
+(`fly auth login`):
 
 ```bash
 fly apps create capital-region-feed   # once; or rename app/hostname in fly.toml
@@ -229,7 +233,7 @@ uv run python scripts/append_eval_cases.py --input /tmp/labeled.jsonl
 
 4. Adjust `server/matcher.py` as needed.
 5. `uv run python scripts/eval_filter.py && uv run pytest -q`
-6. `fly deploy`
+6. Merge to `main` (CI deploys to Fly) or `fly deploy` manually
 
 `collect_eval_sample.py search --query '…'` is available for one-off queries.
 Rows already present in `data/eval_cases.json` are skipped by default.
