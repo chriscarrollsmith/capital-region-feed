@@ -1821,5 +1821,130 @@
     "split": "dev",
     "regression": true,
     "note": "NY Albany County still keeps with state context"
+  },
+  {
+    "id": "fp-center-square-wire-illinois-november",
+    "text": "GOP makes political push in House races amid lawmaker controversies",
+    "expected": false,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "GOP makes political push in House races amid lawmaker controversies (The Center Square) – Months out from the upcoming general election in November, a number of races for the Illinois House of Representatives are gaining momentum",
+    "note": "2026-07-27 audit: The Center Square wire + month cue is not Albany Center Square"
+  },
+  {
+    "id": "tp-center-square-porchfest-noon-maps",
+    "text": "Center Square Porchfest is this weekend. Maps at noon on Lark.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "ambiguous_classifier",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-07-27 audit: TP counterpart for Center Square neighborhood festival"
+  },
+  {
+    "id": "fp-capital-regional-chile-spanish",
+    "text": "De verdad no entiendo.... durante el estallido en cada capital regional estaba copada por pacos. En todo Chile habia un numero impresionante de pacos por todos lados.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-07-27 audit: Spanish capital regional must not match capital region"
+  },
+  {
+    "id": "tp-capital-region-hudson-valley-freeze",
+    "text": "USDA grants New York disaster declaration after spring freeze. Farms across the state, including in the Capital Region and Hudson Valley, will be able to apply for emergency loans.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-07-27 audit: NY Capital Region + Hudson Valley keep"
+  },
+  {
+    "id": "fp-canadian-capital-region-imax",
+    "text": "The footnote to this article should be that the capital region does have a 70mm IMAX screen, but its closed because the museum of history is useless. #CanadianInnovation",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Q&A: How The Odyssey new IMAX cameras were designed in Canada | BetaKit IMAX Theatres global president says the Canadian film company wants to redesign its projection technology next.",
+    "note": "2026-07-27 audit: Ottawa/Canada capital region + Canadian cues"
+  },
+  {
+    "id": "tp-capital-region-port-exports-canada",
+    "text": "Capital Region exporters shipped goods to Canada through the Port of Albany (#AlbanyNY) this quarter.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-07-27 audit: NY Cap Region keep even when Canada is mentioned"
+  },
+  {
+    "id": "fp-handle-albany-nyc-tld-national-share",
+    "text": "Share, share, share @portlanddsa.bsky.social @twincitiesdsa.org @socialists.nyc @demsocialists.bsky.social #pdx #nokings @indivisible-oregon.bsky.social @nokings-albany.bsky.social",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-07-27 audit: albany/nyc only inside @handles must not keep"
+  },
+  {
+    "id": "tp-eufuria-from-handle-mention",
+    "text": "Made it back home from @eufuria.org in the afternoon without issue. Now that everything is unpacked I need to clean my suits.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-07-27 audit: @eufuria.org handle-only strong positive still keeps"
+  },
+  {
+    "id": "tp-route-20-cannabis-albany-ny-card",
+    "text": "Silly Nice Diamond Powder Lands at Route 20 Cannabis in Albany",
+    "expected": true,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Silly Nice Diamond Powder Lands at Route 20 Cannabis in Albany Albany-area cannabis consumers searching for one of New York most distinctive concentrates now have a new destination at 2028 Western Avenue.",
+    "note": "2026-07-27 audit: bare Albany + New York in link card is Cap Region TP"
+  },
+  {
+    "id": "tp-troy-ny-ithaca-drive-map-alt",
+    "text": "honestly embarrassing.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "Google Maps screenshot depicting a 3 hour 17 minute driving route from Troy, NY to Ithaca, NY",
+    "note": "2026-07-27 audit: Troy NY in image alt with NY context"
+  },
+  {
+    "id": "fp-capital-regional-mexico-city-style",
+    "text": "Reportes desde cada capital regional confirman retrasos en el transporte publico esta manana.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-07-27 audit: additional Spanish capital regional FP shape"
+  },
+  {
+    "id": "tn-center-square-wire-no-event",
+    "text": "Opinion: lawmakers need oversight",
+    "expected": false,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "(The Center Square) – A number of races for the Illinois House of Representatives are gaining attention statewide",
+    "note": "2026-07-27 audit: wire byline alone never keeps"
   }
 ]

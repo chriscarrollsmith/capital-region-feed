@@ -187,6 +187,14 @@ def test_handle_mentions_do_not_supply_albany_or_nyc_context() -> None:
     assert eufuria.matched is True
     assert eufuria.reason == 'strong_positive'
 
+    # Stripping mentions must not turn troy@email into a bare Troy place hit.
+    assert (
+        match_post(
+            'Thanks to my friend in Mount Sinai, New York. Order today — email troy@example.com'
+        ).matched
+        is False
+    )
+
 
 def test_extract_alt_text_from_images() -> None:
     embed = {

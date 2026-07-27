@@ -173,7 +173,9 @@ _NY_CONTEXT = re.compile(
 
 # @handles can embed place-like tokens (nokings-albany, socialists.nyc) that
 # must not unlock ambiguous-place keeps. Strong positives still see full text.
-_HANDLE_MENTION = re.compile(r'@[\w.-]+', flags=re.UNICODE)
+# Require a non-word char before @ so email local-parts (troy@example.com) stay
+# intact for the ``troy(?!@)`` ambiguous-place guard.
+_HANDLE_MENTION = re.compile(r'(?<![\w.])@[\w.-]+', flags=re.UNICODE)
 
 # Hard negatives that always win over an otherwise-strong local phrase
 # (e.g. "capital region" inside "capital region of Madrid").
