@@ -269,7 +269,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   tests cover the new gates.
 
 ### B-054 — Daily feed audit: Center Square wire, capital regional, Canadian CR, handle NYC
-- **Status:** in_progress
+- **Status:** done ([#24](https://github.com/chriscarrollsmith/capital-region-feed/pull/24))
 - **Why:** 2026-07-27 live feed (39 UTC posts) kept off-region noise after #23:
   Illinois House syndication via `(The Center Square)` + November event cue
   (`classifier:local_micro`), Spanish `capital regional` matching `capital region`,
