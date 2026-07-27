@@ -38,7 +38,8 @@ _STRONG_POSITIVE = re.compile(
         albany\s*,?\s*(?:ny|new\s+york)
       | \#albanyny\b
       | \#albany_ny\b
-      | (?:new\s+york(?:'s)?\s+)?capital\s+(?:region|district)
+      # Word-boundary after region/district — "capital regional" (ES/LatAm) is not NY.
+      | (?:new\s+york(?:'s)?\s+)?capital\s+(?:region|district)\b
       | greater\s+albany
       | albany\s+county
       | rensselaer\s+county
@@ -153,12 +154,13 @@ _NY_CONTEXT = re.compile(
     r"""
     (?:
         \bny\b(?!\s*times\b)
-      | \bnyc\b
+      # Reject handle TLDs like @socialists.nyc (dot before nyc).
+      | (?<!\.)\bnyc\b
       | new\s+york(?!\s+(?:
             times|post|daily\s+news|magazine|observer|herald|metro|sun
           )\b)
       | upstate
-      | capital\s+(?:region|district)
+      | capital\s+(?:region|district)\b
       | \#ny\b
       | \#upstateny\b
       | upstate\s+ny\b
@@ -169,6 +171,10 @@ _NY_CONTEXT = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
+# @handles can embed place-like tokens (nokings-albany, socialists.nyc) that
+# must not unlock ambiguous-place keeps. Strong positives still see full text.
+_HANDLE_MENTION = re.compile(r'@[\w.-]+', flags=re.UNICODE)
+
 # Hard negatives that always win over an otherwise-strong local phrase
 # (e.g. "capital region" inside "capital region of Madrid").
 _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
@@ -178,12 +184,31 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
       | new\s+albany
       | national\s+capital\s+region
       | brussels\s+capital\s+region
+      | canadian\s+capital\s+region
       | capital\s+region\s+of\s+(?:
             madrid|spain|belgium|brussels|paris|france|berlin|germany|
             tokyo|seoul|beijing|delhi|ottawa|canberra|rome|italy|
-            amsterdam|vienna|warsaw|prague|lisbon|athens|dublin
+            amsterdam|vienna|warsaw|prague|lisbon|athens|dublin|
+            canada
           )\b
       | hauptstadtregion
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Ottawa / Canada "capital region" co-occurring with Canadian cues (not NY).
+_CANADIAN_CAPITAL_REGION = re.compile(
+    r"""
+    (?:
+        canadian\s+capital\s+region
+      | capital\s+region\s+of\s+(?:canada|ottawa)\b
+      | capital\s+region\b[\s\S]{0,160}(?:
+            \bcanada\b|\bcanadian\b|\bottawa\b|\#canadian\w*
+          )
+      | (?:
+            \bcanada\b|\bcanadian\b|\bottawa\b|\#canadian\w*
+          )[\s\S]{0,160}capital\s+region\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -215,10 +240,12 @@ _HARD_NEGATIVE = re.compile(
       | \btroy\s+jackson\b
       | national\s+capital\s+region
       | brussels\s+capital\s+region
+      | canadian\s+capital\s+region
       | capital\s+region\s+of\s+(?:
             madrid|spain|belgium|brussels|paris|france|berlin|germany|
             tokyo|seoul|beijing|delhi|ottawa|canberra|rome|italy|
-            amsterdam|vienna|warsaw|prague|lisbon|athens|dublin
+            amsterdam|vienna|warsaw|prague|lisbon|athens|dublin|
+            canada
           )\b
       | hauptstadtregion
       | jc\s+latham
@@ -409,6 +436,34 @@ def _albany_county_wy_conflict(haystack: str) -> bool:
     return True
 
 
+def _canadian_capital_region_conflict(haystack: str) -> bool:
+    """True when 'capital region' refers to Ottawa/Canada, not NY."""
+    if not _CANADIAN_CAPITAL_REGION.search(haystack):
+        return False
+    # Explicit NY Cap Region context wins over Canadian co-mentions.
+    if re.search(
+        r"""
+        (?:
+            \b(?:ny|new\s+york)\b
+          | hudson\s+valley
+          | \#albanyny\b
+          | albany\s*,?\s*(?:ny|new\s+york)
+          | schenectady
+          | \btroy\b(?!@)
+        )
+        """,
+        haystack,
+        flags=re.IGNORECASE | re.VERBOSE,
+    ):
+        return False
+    return True
+
+
+def _haystack_without_handles(haystack: str) -> str:
+    """Strip @mentions so handle tokens cannot supply place/NY context."""
+    return _HANDLE_MENTION.sub(' ', haystack)
+
+
 def _lang_non_local_colonie(haystack: str, langs: list[str]) -> MatchResult | None:
     """Drop French *colonie* when langs say fr and there is no NY/local cue."""
     if not _has_lang_prefix(langs, 'fr'):
@@ -527,6 +582,8 @@ def match_post(
         # Bare "Albany County" is also a strong token; still drop WY-tagged posts.
         if _albany_county_wy_conflict(haystack):
             return MatchResult(False, 'entity_other:albany_county_wy')
+        if _canadian_capital_region_conflict(haystack):
+            return MatchResult(False, 'hard_negative:canadian_capital_region')
         return MatchResult(True, 'strong_positive')
 
     if _COLONIE_LOCAL.search(haystack):
@@ -536,7 +593,9 @@ def match_post(
     if event_match is not None:
         return event_match
 
-    ambiguous_hits = _AMBIGUOUS_PLACE.findall(haystack)
+    # Place / NY-context from body text only — not @handle tokens.
+    place_haystack = _haystack_without_handles(haystack)
+    ambiguous_hits = _AMBIGUOUS_PLACE.findall(place_haystack)
     if ambiguous_hits:
         # Normalize to compare distinct place tokens (e.g. Albany + Troy).
         distinct = {re.sub(r'\s+', ' ', h.lower()) for h in ambiguous_hits}
@@ -549,7 +608,7 @@ def match_post(
         term = sorted(distinct, key=lambda name: (name in _MULTI_LOCAL_EXCLUDED, name))[0]
         # Bare "albany" is the noisiest token; require NY/local context.
         if term == 'albany':
-            if _NY_CONTEXT.search(haystack):
+            if _NY_CONTEXT.search(place_haystack):
                 return MatchResult(True, 'albany_with_ny_context')
             if _STRONG_POSITIVE.search(haystack):
                 return MatchResult(True, 'albany_with_local_cue')
@@ -561,7 +620,7 @@ def match_post(
 
         if term == 'colonie':
             # Avoid French "colonie" without local cues (handled above / hard neg).
-            if _NY_CONTEXT.search(haystack) or _COLONIE_LOCAL.search(haystack):
+            if _NY_CONTEXT.search(place_haystack) or _COLONIE_LOCAL.search(haystack):
                 return MatchResult(True, 'colonie_with_context')
             prior = _soft_prior_ambiguous(author_did, soft_prior_dids, term)
             if prior:
@@ -569,7 +628,7 @@ def match_post(
             clf = _classifier_keep(haystack, term=term, model=classifier_model)
             return clf if clf else MatchResult(False, 'bare_colonie')
 
-        if _NY_CONTEXT.search(haystack) or _STRONG_POSITIVE.search(haystack):
+        if _NY_CONTEXT.search(place_haystack) or _STRONG_POSITIVE.search(haystack):
             return MatchResult(True, f'ambiguous_with_context:{term}')
         prior = _soft_prior_ambiguous(author_did, soft_prior_dids, term)
         if prior:

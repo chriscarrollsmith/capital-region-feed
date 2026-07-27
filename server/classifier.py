@@ -60,7 +60,7 @@ _COLLISION_LOCAL_MICRO = re.compile(
 _CAP_REGION_HINT = re.compile(
     r"""
     (?:
-        capital\s+(?:region|district)
+        capital\s+(?:region|district)\b
       | \balbany\b
       | \btroy\b(?!@)
       | schenectady
@@ -85,15 +85,20 @@ _CAP_REGION_HINT = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
+# News wire "(The Center Square)" — not Albany's Center Square neighborhood.
+_CENTER_SQUARE_WIRE = re.compile(r'\(\s*the\s+center\s+square\s*\)', re.IGNORECASE)
+
 # Back-compat alias for tests / callers that imported ``_LOCAL_MICRO``.
 _LOCAL_MICRO = _DISTINCTIVE_LOCAL_MICRO
 
 
 def _local_micro_hits(haystack: str) -> list[str]:
     """Return micro-signal hits eligible for classifier features."""
-    hits = list(_DISTINCTIVE_LOCAL_MICRO.findall(haystack))
-    if _CAP_REGION_HINT.search(haystack):
-        hits.extend(_COLLISION_LOCAL_MICRO.findall(haystack))
+    # Scrub wire bylines before matching so they cannot unlock event+micro keeps.
+    scan = _CENTER_SQUARE_WIRE.sub(' ', haystack)
+    hits = list(_DISTINCTIVE_LOCAL_MICRO.findall(scan))
+    if _CAP_REGION_HINT.search(scan):
+        hits.extend(_COLLISION_LOCAL_MICRO.findall(scan))
     return hits
 
 
