@@ -147,6 +147,55 @@ def test_named_cap_region_events_and_nyc_context() -> None:
     assert generic.reason == 'bare_albany'
 
 
+def test_capital_regional_spanish_is_not_strong_positive() -> None:
+    """Spanish 'capital regional' must not match capital region\\b."""
+    result = match_post(
+        'durante el estallido en cada capital regional estaba copada por pacos. '
+        'En todo Chile había un número impresionante de pacos.'
+    )
+    assert result.matched is False
+
+
+def test_canadian_capital_region_is_hard_negative() -> None:
+    result = match_post(
+        'The footnote is that the capital region does have a 70mm IMAX screen, '
+        'but the museum of history is useless. #CanadianInnovation',
+        alt_text=(
+            'Q&A: How The Odyssey new IMAX cameras were designed in Canada | BetaKit '
+            'IMAX Theatres global president says the Canadian film company wants to redesign.'
+        ),
+    )
+    assert result.matched is False
+
+    # NY Capital Region + Canada mention in passing can still keep.
+    keep = match_post(
+        'Capital Region exporters shipped goods to Canada through the Port of Albany (#AlbanyNY).'
+    )
+    assert keep.matched is True
+
+
+def test_handle_mentions_do_not_supply_albany_or_nyc_context() -> None:
+    """@…albany… plus @….nyc must not keep a Portland/national share post."""
+    result = match_post(
+        'Share, share, share @portlanddsa.bsky.social @socialists.nyc '
+        '#pdx #nokings @indivisible-oregon.bsky.social @nokings-albany.bsky.social'
+    )
+    assert result.matched is False
+
+    # @eufuria.org remains a strong-positive path (full haystack).
+    eufuria = match_post('Made it back home from @eufuria.org without issue.')
+    assert eufuria.matched is True
+    assert eufuria.reason == 'strong_positive'
+
+    # Stripping mentions must not turn troy@email into a bare Troy place hit.
+    assert (
+        match_post(
+            'Thanks to my friend in Mount Sinai, New York. Order today — email troy@example.com'
+        ).matched
+        is False
+    )
+
+
 def test_extract_alt_text_from_images() -> None:
     embed = {
         '$type': 'app.bsky.embed.images',

@@ -66,6 +66,26 @@ def test_collision_micros_need_cap_region_hint() -> None:
     assert keep.reason.startswith('classifier:')
 
 
+def test_center_square_wire_byline_is_not_local_micro() -> None:
+    """The Center Square news wire must not unlock November/event + micro keeps."""
+    alt = (
+        'GOP makes political push in House races amid lawmaker controversies '
+        '(The Center Square) – Months out from the upcoming general election in '
+        'November, a number of races for the Illinois House of Representatives '
+        'are gaining momentum'
+    )
+    result = match_post(
+        'GOP makes political push in House races amid lawmaker controversies',
+        alt_text=alt,
+    )
+    assert result.matched is False
+
+    # Real Albany Center Square neighborhood + event cue still keeps.
+    porch = match_post('Center Square Porchfest is this weekend. Maps at noon.')
+    assert porch.matched is True
+    assert porch.reason == 'classifier:local_micro'
+
+
 def test_classify_drops_bare_albany_event_without_micro() -> None:
     decision = classify_candidate(
         "Don't miss the Albany Veterans Day Parade this Saturday downtown!",
