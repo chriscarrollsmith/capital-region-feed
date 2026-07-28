@@ -283,6 +283,27 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Today's audited FPs drop; eval precision/recall stay 1.000; unit
   tests cover the new gates.
 
+### B-055 — Daily feed audit: BC/Denmark/MS capital region, Brunswick/Scotia, WI Troy, Washington Park AZ, Saratoga venues
+- **Status:** in progress
+- **Why:** 2026-07-28 audit of last-24h feed (~142 posts) found active FPs after #24:
+  Victoria BC CFAX “capital region” (`#yyj`/`#BCpoli`), Copenhagen “Capital Region Of
+  Denmark” jobs, Mississippi “Capital Region Bureau”, New Brunswick/Nova Scotia
+  `multi_local_places` via Brunswick+Scotia, Wisconsin East Troy+Waterford `#wiwx`,
+  bare Washington Park AZ (`classifier:local_micro`), and University of Galway cards
+  with a New York world mention. Rematch also dropped true Saratoga Race Course /
+  SPAC tourism posts (`ambiguous_no_context:saratoga`).
+- **Work:**
+  - Expand Canadian capital-region conflict to BC cues; hard-negative Denmark /
+    Mississippi bureau phrases.
+  - Lookbehind so Nova Scotia / New Brunswick do not unlock Scotia/Brunswick.
+  - Gate WI East Troy+Waterford multi-local; Galway Ireland conflict.
+  - Move bare Washington Park to collision micros; keep farmers-market distinctive.
+  - Strong-positive Saratoga Race Course / SPAC / Oklahoma Training Track; allowlist
+    Saratoga tourism handles.
+  - Grow eval with 2026-07-28 FP/TP anchors (+14 cases).
+- **Done when:** Audited FPs drop; Saratoga venue FNs keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ---
 
 ## Suggested sequencing
