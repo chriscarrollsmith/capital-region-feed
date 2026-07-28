@@ -167,11 +167,84 @@ def test_canadian_capital_region_is_hard_negative() -> None:
     )
     assert result.matched is False
 
+    # Victoria BC / #yyj talk-radio "capital region" is not NY.
+    bc = match_post('Zooming out for a birds-eye view of capital region politics. #yyj #BCpoli')
+    assert bc.matched is False
+
     # NY Capital Region + Canada mention in passing can still keep.
     keep = match_post(
         'Capital Region exporters shipped goods to Canada through the Port of Albany (#AlbanyNY).'
     )
     assert keep.matched is True
+
+
+def test_other_capital_region_phrases_are_hard_negatives() -> None:
+    assert (
+        match_post(
+            'Sporty Group is hiring in Copenhagen, Capital Region Of Denmark, Denmark'
+        ).matched
+        is False
+    )
+    assert (
+        match_post(
+            'Grace Marion in our Capital Region Bureau and '
+            'Jaylin Smith as our Delta Bureau reporter.'
+        ).matched
+        is False
+    )
+
+
+def test_new_brunswick_nova_scotia_not_multi_local() -> None:
+    assert (
+        match_post(
+            'Police watchdog in New Brunswick and Nova Scotia is hiring an Indigenous investigator.'
+        ).matched
+        is False
+    )
+    # Town of Scotia / Brunswick NY still keep with NY context.
+    assert match_post('Town board meets in Scotia, NY tonight.').matched is True
+    assert match_post('Brunswick, NY planning board agenda posted.').matched is True
+
+
+def test_wisconsin_east_troy_waterford_not_multi_local() -> None:
+    assert (
+        match_post(
+            'Severe Thunderstorm Near E Troy Moving E. Locations Impacted Include '
+            'E Troy, Wind Lake, Rochester, Waterford North, Troy Center. #wiwx'
+        ).matched
+        is False
+    )
+    # Cap Region Troy + Waterford still keep.
+    assert match_post('Drive from Troy to Waterford for the farmers market.').matched is True
+
+
+def test_galway_ireland_not_town_of_galway() -> None:
+    assert (
+        match_post(
+            'Protecting human rights in New York and around the world as well.',
+            alt_text="University of Galway's online publication Cois Coiribe.",
+        ).matched
+        is False
+    )
+    assert match_post('Town of Galway, NY board meets Thursday.').matched is True
+
+
+def test_saratoga_race_course_and_spac_are_strong_positives() -> None:
+    assert match_post('What to wear to Saratoga Race Course this August.').matched is True
+    assert (
+        match_post(
+            'SPAC is where unforgettable moments happen.',
+            alt_text='Saratoga Performing Arts Center (SPAC): A Music Hotspot',
+        ).matched
+        is True
+    )
+    assert (
+        match_post(
+            'Best view of morning works.',
+            alt_text="Whitney Viewing Stand at Saratoga's Oklahoma Training Track",
+        ).matched
+        is True
+    )
 
 
 def test_handle_mentions_do_not_supply_albany_or_nyc_context() -> None:
