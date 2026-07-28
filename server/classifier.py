@@ -24,7 +24,8 @@ _DISTINCTIVE_LOCAL_MICRO = re.compile(
         lark\s+street
       | pine\s+hills
       | center\s+square
-      | washington\s+park
+      # Distinctive Albany market name — bare "Washington Park" is nationwide.
+      | washington\s+park\s+farmers\s+market
       | corning\s+preserve
       | crossgates(?:\s+mall)?
       | stuyvesant\s+plaza
@@ -50,6 +51,7 @@ _COLLISION_LOCAL_MICRO = re.compile(
       | delaware\s+(?:avenue|ave)\b
       | western\s+(?:avenue|ave)\b
       | lincoln\s+park
+      | washington\s+park
     )
     """,
     re.IGNORECASE | re.VERBOSE,

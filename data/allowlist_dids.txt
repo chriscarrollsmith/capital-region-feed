@@ -121,3 +121,7 @@ did:plc:direlcbk42u6mvmecmwj5rvr
 did:plc:uctf5y6ovo3svbxkmtcvnwby
 # historianchris.bsky.social
 did:plc:uno3bg3dauu4tylt5knrqxbj
+# saratogany.bsky.social
+did:plc:jd3vfe3kw7fwo457lhu5c3ij
+# saratogaracetrack.bsky.social
+did:plc:lvjiw2ikbjskdrelz7hj6keh

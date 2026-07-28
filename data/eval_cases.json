@@ -1946,5 +1946,148 @@
     "regression": true,
     "alt_text": "(The Center Square) – A number of races for the Illinois House of Representatives are gaining attention statewide",
     "note": "2026-07-27 audit: wire byline alone never keeps"
+  },
+  {
+    "id": "fp-bc-capital-region-yyj",
+    "text": "Zooming out for a birds-eye view of capital region politics: tent cities, community safety, and more. Listeners call and text in. #yyj #BCpoli",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-07-28 audit: Victoria BC CFAX capital region + #yyj/#BCpoli"
+  },
+  {
+    "id": "fp-capital-region-of-denmark-jobs",
+    "text": "Sporty Group is #hiring a Senior Games Data Analyst! Copenhagen, Capital Region Of Denmark, Denmark #jobalert",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-07-28 audit: EU job board Capital Region Of Denmark"
+  },
+  {
+    "id": "fp-mississippi-capital-region-bureau",
+    "text": "Amy joins a growing team of bureau reporters across the state, with Grace Marion in our Capital Region Bureau and Jaylin Smith as our Delta Bureau reporter.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-07-28 audit: Mississippi Free Press Capital Region Bureau"
+  },
+  {
+    "id": "fp-new-brunswick-nova-scotia-multi-local",
+    "text": "Police watchdog in New Brunswick and Nova Scotia is hiring an Indigenous investigator to build trust in police oversight.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-07-28 audit: New Brunswick + Nova Scotia must not unlock multi_local via Brunswick/Scotia"
+  },
+  {
+    "id": "fp-wiwx-east-troy-waterford",
+    "text": "Severe Thunderstorm Near E Troy Moving E At 45 MPH. Locations Impacted Include E Troy, Wind Lake, Rochester, Waterford North, Potter Lake, Troy Center. #wiwx",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-07-28 audit: Wisconsin East Troy + Waterford weather"
+  },
+  {
+    "id": "fp-washington-park-arizona",
+    "text": "Washington Park, Arizona Pop: 153 https://en.wikipedia.org/wiki/Washington_Park,_Arizona",
+    "expected": false,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-07-28 audit: bare Washington Park census place (AZ)"
+  },
+  {
+    "id": "fp-university-of-galway-ny-mention",
+    "text": "Protecting the County Mayo Swift bird and human rights in New York and around the world as well.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Mary Robinson: Trailblazer for Global Justice — Cois Coiribe is University of Galway's online publication.",
+    "note": "2026-07-28 audit: University of Galway card + New York world mention"
+  },
+  {
+    "id": "tp-saratoga-race-course-dress-code",
+    "text": "Wondering what to wear to Saratoga Race Course? From classic race-day style to helpful dress code tips, this guide has everything you need.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-07-28 audit: Saratoga Race Course strong positive (FN counterpart)"
+  },
+  {
+    "id": "tp-spac-saratoga-performing-arts",
+    "text": "SPAC is where unforgettable Saratoga moments happen all season long.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "Saratoga Performing Arts Center (SPAC): A Music Hotspot Learn about facilities and upcoming performances.",
+    "note": "2026-07-28 audit: SPAC full name strong positive (FN counterpart)"
+  },
+  {
+    "id": "tp-oklahoma-training-track-whitney",
+    "text": "Looking for one of the best views before race day? The Whitney Viewing Stand offers a premium morning experience.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Whitney Viewing Stand at Saratoga's Oklahoma Training Track was unveiled in 2013.",
+    "note": "2026-07-28 audit: Oklahoma Training Track strong positive"
+  },
+  {
+    "id": "tp-washington-park-albany-picnic",
+    "text": "Picnic in Washington Park in downtown #AlbanyNY this Saturday afternoon near the lake.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-07-28 audit: Washington Park + Cap Region hint still keeps"
+  },
+  {
+    "id": "tp-washington-park-farmers-market-weekend",
+    "text": "Washington Park Farmers Market is this weekend — arrive before 10 am for the best produce.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-07-28 audit: distinctive farmers-market micro still keeps"
+  },
+  {
+    "id": "tp-scotia-ny-town-board",
+    "text": "Town board meets in Scotia, NY tonight to discuss the park renovation.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-07-28 audit: Town of Scotia NY still keeps after Nova Scotia lookbehind"
+  },
+  {
+    "id": "tp-troy-waterford-ny-drive",
+    "text": "Drive from Troy to Waterford for the farmers market this morning.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-07-28 audit: Cap Region Troy+Waterford multi_local still keeps"
   }
 ]

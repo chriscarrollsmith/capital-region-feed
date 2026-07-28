@@ -90,6 +90,10 @@ _STRONG_POSITIVE = re.compile(
       | \br/albany\b
       | saratoga\s+springs\s+police
       | saratoga\s+casino
+      | saratoga\s+race\s+course
+      | saratoga\s+performing\s+arts\s+center
+      # Saratoga Race Course training facility (tourism / race-day copy).
+      | oklahoma\s+training\s+track
       | times\s+union\b
       # Town of New Scotland — not "a new Scotland" / "New Scotland Shirt".
       | new\s+scotland(?:\s*,?\s*ny\b|\s+town\b)
@@ -113,10 +117,11 @@ _AMBIGUOUS_PLACE = re.compile(
       | \btroy\b(?!@)
       | \blatham\b
       | \bmalta\b
-      | \bscotia\b
+      # Town of Scotia — not the province inside "Nova Scotia".
+      | (?<!nova\s)\bscotia\b
       | \bbethlehem\b
-      | \bbrunswick\b
-      | \bcharlton\b
+      # Town of Brunswick — not the province inside "New Brunswick".
+      | (?<!new\s)\bbrunswick\b
       | \bgalway\b
       | \bstillwater\b
       | \bwaterford\b
@@ -187,11 +192,13 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
       | national\s+capital\s+region
       | brussels\s+capital\s+region
       | canadian\s+capital\s+region
+      # Other-state / non-NY newsroom jargon (e.g. Jackson MS bureau).
+      | capital\s+region\s+bureau\b
       | capital\s+region\s+of\s+(?:
             madrid|spain|belgium|brussels|paris|france|berlin|germany|
             tokyo|seoul|beijing|delhi|ottawa|canberra|rome|italy|
             amsterdam|vienna|warsaw|prague|lisbon|athens|dublin|
-            canada
+            canada|denmark|copenhagen|mississippi
           )\b
       | hauptstadtregion
     )
@@ -199,18 +206,49 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
-# Ottawa / Canada "capital region" co-occurring with Canadian cues (not NY).
+# Canadian "capital region" cues (Ottawa national, Victoria BC / #yyj).
+_CANADIAN_GEO_CUE = (
+    r'\bcanada\b|\bcanadian\b|\bottawa\b|\#canadian\w*|'
+    r'\#yyj\b|\#bcpoli\b|british\s+columbia|\blangford\b|'
+    r'victoria(?:\s*,?\s*bc\b)'
+)
+
+# Ottawa / Canada / BC "capital region" co-occurring with Canadian cues (not NY).
 _CANADIAN_CAPITAL_REGION = re.compile(
-    r"""
+    rf"""
     (?:
         canadian\s+capital\s+region
       | capital\s+region\s+of\s+(?:canada|ottawa)\b
-      | capital\s+region\b[\s\S]{0,160}(?:
-            \bcanada\b|\bcanadian\b|\bottawa\b|\#canadian\w*
-          )
-      | (?:
-            \bcanada\b|\bcanadian\b|\bottawa\b|\#canadian\w*
-          )[\s\S]{0,160}capital\s+region\b
+      | capital\s+region\b[\s\S]{{0,160}}(?:{_CANADIAN_GEO_CUE})
+      | (?:{_CANADIAN_GEO_CUE})[\s\S]{{0,160}}capital\s+region\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Wisconsin East Troy / Waterford weather (and similar) must not unlock
+# multi_local_places via Cap Region town-name collisions.
+_WI_TROY_WATERFORD = re.compile(
+    r"""
+    (?:
+        \#wiwx\b
+      | \bwisconsin\b
+      | \beast\s+troy\b
+      | \be\s+troy\b
+      | troy\s+center\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Galway Ireland (university / county) co-mentioned with New York world news.
+_GALWAY_IRELAND = re.compile(
+    r"""
+    (?:
+        university\s+of\s+galway
+      | galway\s*,?\s*ireland\b
+      | county\s+mayo\b
+      | cois\s+coiribe
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -243,11 +281,12 @@ _HARD_NEGATIVE = re.compile(
       | national\s+capital\s+region
       | brussels\s+capital\s+region
       | canadian\s+capital\s+region
+      | capital\s+region\s+bureau\b
       | capital\s+region\s+of\s+(?:
             madrid|spain|belgium|brussels|paris|france|berlin|germany|
             tokyo|seoul|beijing|delhi|ottawa|canberra|rome|italy|
             amsterdam|vienna|warsaw|prague|lisbon|athens|dublin|
-            canada
+            canada|denmark|copenhagen|mississippi
           )\b
       | hauptstadtregion
       | jc\s+latham
@@ -257,6 +296,8 @@ _HARD_NEGATIVE = re.compile(
       | colonie\s+num[eé]rique
       | une\s+colonie
       | m[eê]me\s+colonie
+      | university\s+of\s+galway
+      | galway\s*,?\s*ireland\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -439,7 +480,7 @@ def _albany_county_wy_conflict(haystack: str) -> bool:
 
 
 def _canadian_capital_region_conflict(haystack: str) -> bool:
-    """True when 'capital region' refers to Ottawa/Canada, not NY."""
+    """True when 'capital region' refers to Ottawa/Canada/BC, not NY."""
     if not _CANADIAN_CAPITAL_REGION.search(haystack):
         return False
     # Explicit NY Cap Region context wins over Canadian co-mentions.
@@ -457,6 +498,28 @@ def _canadian_capital_region_conflict(haystack: str) -> bool:
         haystack,
         flags=re.IGNORECASE | re.VERBOSE,
     ):
+        return False
+    return True
+
+
+def _wi_troy_waterford_conflict(haystack: str, distinct: set[str]) -> bool:
+    """True when Troy+Waterford (etc.) are Wisconsin East Troy weather, not NY."""
+    if not ({'troy', 'waterford'} & distinct):
+        return False
+    if not _WI_TROY_WATERFORD.search(haystack):
+        return False
+    if _NY_CONTEXT.search(haystack) or _STRONG_POSITIVE.search(haystack):
+        return False
+    return True
+
+
+def _galway_ireland_conflict(haystack: str) -> bool:
+    """True when Galway refers to Ireland, not the Town of Galway NY."""
+    if not re.search(r'\bgalway\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not _GALWAY_IRELAND.search(haystack):
+        return False
+    if re.search(r'galway\s*,?\s*ny\b|town\s+of\s+galway', haystack, flags=re.IGNORECASE):
         return False
     return True
 
@@ -601,8 +664,12 @@ def match_post(
     if ambiguous_hits:
         # Normalize to compare distinct place tokens (e.g. Albany + Troy).
         distinct = {re.sub(r'\s+', ' ', h.lower()) for h in ambiguous_hits}
+        if _galway_ireland_conflict(haystack) and distinct <= {'galway'}:
+            return MatchResult(False, 'hard_negative:galway_ireland')
         multi_eligible = {name for name in distinct if name not in _MULTI_LOCAL_EXCLUDED}
         if len(multi_eligible) >= 2:
+            if _wi_troy_waterford_conflict(haystack, multi_eligible):
+                return MatchResult(False, 'hard_negative:wi_troy_waterford')
             return MatchResult(True, 'multi_local_places')
 
         # Prefer a non-collision token when several ambiguous names appear but
@@ -629,6 +696,9 @@ def match_post(
                 return prior
             clf = _classifier_keep(haystack, term=term, model=classifier_model)
             return clf if clf else MatchResult(False, 'bare_colonie')
+
+        if term == 'galway' and _galway_ireland_conflict(haystack):
+            return MatchResult(False, 'hard_negative:galway_ireland')
 
         if _NY_CONTEXT.search(place_haystack) or _STRONG_POSITIVE.search(haystack):
             return MatchResult(True, f'ambiguous_with_context:{term}')

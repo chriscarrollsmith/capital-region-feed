@@ -65,6 +65,17 @@ def test_collision_micros_need_cap_region_hint() -> None:
     assert keep.matched is True
     assert keep.reason.startswith('classifier:')
 
+    # Bare Washington Park (AZ census place) must not keep; Albany park needs a hint.
+    assert match_post('Washington Park, Arizona Pop: 153').matched is False
+    assert (
+        match_post('Picnic in Washington Park in Albany this Saturday afternoon.').matched is True
+    )
+    # Distinctive farmers-market name still keeps without an extra city token.
+    assert (
+        match_post('Washington Park Farmers Market is this weekend — arrive before 10 am.').matched
+        is True
+    )
+
 
 def test_center_square_wire_byline_is_not_local_micro() -> None:
     """The Center Square news wire must not unlock November/event + micro keeps."""
