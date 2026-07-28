@@ -284,7 +284,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   tests cover the new gates.
 
 ### B-055 — Daily feed audit: BC/Denmark/MS capital region, Brunswick/Scotia, WI Troy, Washington Park AZ, Saratoga venues
-- **Status:** in progress
+- **Status:** done ([#25](https://github.com/chriscarrollsmith/capital-region-feed/pull/25))
 - **Why:** 2026-07-28 audit of last-24h feed (~142 posts) found active FPs after #24:
   Victoria BC CFAX “capital region” (`#yyj`/`#BCpoli`), Copenhagen “Capital Region Of
   Denmark” jobs, Mississippi “Capital Region Bureau”, New Brunswick/Nova Scotia
