@@ -21,7 +21,8 @@ from typing import Any
 _DISTINCTIVE_LOCAL_MICRO = re.compile(
     r"""
     (?:
-        lark\s+street
+        # Word-boundary: "lark street" must not match inside "Clark Street".
+        \blark\s+street
       | pine\s+hills
       | center\s+square
       # Distinctive Albany market name — bare "Washington Park" is nationwide.

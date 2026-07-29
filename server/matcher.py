@@ -94,6 +94,9 @@ _STRONG_POSITIVE = re.compile(
       | saratoga\s+performing\s+arts\s+center
       # Saratoga Race Course training facility (tourism / race-day copy).
       | oklahoma\s+training\s+track
+      # Hashtag #SPAC next to Saratoga (avoid bare SPAC / financial SPACs).
+      | \#spac\b[\s\S]{0,200}\bsaratoga\b
+      | \bsaratoga\b[\s\S]{0,200}\#spac\b
       | times\s+union\b
       # Town of New Scotland — not "a new Scotland" / "New Scotland Shirt".
       | new\s+scotland(?:\s*,?\s*ny\b|\s+town\b)
@@ -241,14 +244,29 @@ _WI_TROY_WATERFORD = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
-# Galway Ireland (university / county) co-mentioned with New York world news.
+# Galway Ireland (university / county / League of Ireland clubs).
 _GALWAY_IRELAND = re.compile(
     r"""
     (?:
         university\s+of\s+galway
       | galway\s*,?\s*ireland\b
+      | galway\s+united\b
+      | galway\s+fc\b
+      | league\s+of\s+ireland
       | county\s+mayo\b
       | cois\s+coiribe
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Bethlehem, Pennsylvania (SteelStacks / Lehigh Valley) — not Town of Bethlehem NY.
+_BETHLEHEM_PA = re.compile(
+    r"""
+    (?:
+        bethlehem\s*,?\s*(?:pa|pennsylvania)\b
+      | bethlehem[\s\S]{0,160}\b(?:pa|pennsylvania|philly|philadelphia)\b
+      | \b(?:pa|pennsylvania|philly|philadelphia)\b[\s\S]{0,160}bethlehem
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -298,6 +316,9 @@ _HARD_NEGATIVE = re.compile(
       | m[eê]me\s+colonie
       | university\s+of\s+galway
       | galway\s*,?\s*ireland\b
+      | galway\s+united\b
+      | galway\s+fc\b
+      | league\s+of\s+ireland
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -339,7 +360,8 @@ _EVENT_CUE = re.compile(
 _LOCAL_EVENT_VENUE = re.compile(
     r"""
     (?:
-        \bproctors?\b
+        # Schenectady's Proctors theatre — not the surname "Proctor".
+        \bproctors\b
       | saratoga\s+performing\s+arts\s+center
       | \bat\s+spac\b
       | \bspac\s+(?:season|lawn|amphitheatre|amphitheater|presents)
@@ -461,8 +483,9 @@ _ALBANY_COUNTY_WY = re.compile(
     r"""
     (?:
         albany\s+county(?:\s*,)?\s*(?:wy|wyoming)\b
-      | albany\s+county[\s\S]{0,240}(?:\bwyoming\b|\#wy\b)
-      | (?:\#wy\b|\bwyoming\b)[\s\S]{0,240}albany\s+county
+      # NWS bots tag state as [WY]; Laramie Valley is WY-only context.
+      | albany\s+county[\s\S]{0,240}(?:\bwyoming\b|\#wy\b|\[wy\]|\blaramie\b)
+      | (?:\#wy\b|\bwyoming\b|\[wy\]|\blaramie\b)[\s\S]{0,240}albany\s+county
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -520,6 +543,21 @@ def _galway_ireland_conflict(haystack: str) -> bool:
     if not _GALWAY_IRELAND.search(haystack):
         return False
     if re.search(r'galway\s*,?\s*ny\b|town\s+of\s+galway', haystack, flags=re.IGNORECASE):
+        return False
+    return True
+
+
+def _bethlehem_pa_conflict(haystack: str) -> bool:
+    """True when Bethlehem refers to Pennsylvania, not Town of Bethlehem NY."""
+    if not re.search(r'\bbethlehem\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not _BETHLEHEM_PA.search(haystack):
+        return False
+    if re.search(
+        r'bethlehem\s*,?\s*ny\b|town\s+of\s+bethlehem',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
         return False
     return True
 
@@ -664,7 +702,8 @@ def match_post(
     if ambiguous_hits:
         # Normalize to compare distinct place tokens (e.g. Albany + Troy).
         distinct = {re.sub(r'\s+', ' ', h.lower()) for h in ambiguous_hits}
-        if _galway_ireland_conflict(haystack) and distinct <= {'galway'}:
+        # Ireland Galway (+ Waterford FC scorelines) must not unlock multi-local.
+        if _galway_ireland_conflict(haystack) and distinct <= {'galway', 'waterford'}:
             return MatchResult(False, 'hard_negative:galway_ireland')
         multi_eligible = {name for name in distinct if name not in _MULTI_LOCAL_EXCLUDED}
         if len(multi_eligible) >= 2:
@@ -699,6 +738,9 @@ def match_post(
 
         if term == 'galway' and _galway_ireland_conflict(haystack):
             return MatchResult(False, 'hard_negative:galway_ireland')
+
+        if term == 'bethlehem' and _bethlehem_pa_conflict(haystack):
+            return MatchResult(False, 'hard_negative:bethlehem_pa')
 
         if _NY_CONTEXT.search(place_haystack) or _STRONG_POSITIVE.search(haystack):
             return MatchResult(True, f'ambiguous_with_context:{term}')

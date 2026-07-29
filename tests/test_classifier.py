@@ -123,6 +123,18 @@ def test_match_post_classifier_reason_for_lark_street() -> None:
     assert result.reason == 'classifier:ambiguous:albany'
 
 
+def test_clark_street_does_not_match_lark_street_micro() -> None:
+    """Substring 'lark street' inside 'Clark Street' must not unlock classifier."""
+    result = match_post(
+        'FFS I absolutely hate what Clark Street has become #Chicago #Wrigleyville',
+        alt_text=(
+            'Clark Street Live September 26 & 27 2026. Watch out partner, '
+            "there's a new music festival in town."
+        ),
+    )
+    assert result.matched is False
+
+
 def test_match_post_soft_prior_still_beats_classifier_path() -> None:
     did = 'did:plc:softpriortest0000000000001'
     result = match_post(
