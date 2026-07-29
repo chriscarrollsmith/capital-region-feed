@@ -305,7 +305,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-056 — Daily feed audit: Bethlehem PA, Galway United, Albany County WY bracket, Clark/Lark, Proctor
-- **Status:** in progress
+- **Status:** done ([#26](https://github.com/chriscarrollsmith/capital-region-feed/pull/26))
 - **Why:** 2026-07-29 audit of last-24h feed (63 posts) found active FPs after #25:
   Bethlehem PA tour dates unlocked by NYC context, League of Ireland
   `Galway United` + Waterford scorelines via `multi_local_places`, Cheyenne NWS
