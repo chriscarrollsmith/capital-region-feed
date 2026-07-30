@@ -229,6 +229,34 @@ def test_galway_ireland_not_town_of_galway() -> None:
     assert match_post('Town of Galway, NY board meets Thursday.').matched is True
 
 
+def test_galway_united_waterford_not_multi_local() -> None:
+    ireland = 'Galway United 0-0 Waterford\n\nGalway United:\n-\n\nWaterford:\n-'
+    assert match_post(ireland).matched is False
+    assert match_post('Drive from Galway to Waterford for the farmers market.').matched is True
+
+
+def test_bethlehem_pa_not_town_of_bethlehem_ny() -> None:
+    assert (
+        match_post(
+            'Two shows in PA and one in NYC.\n\nFri 8/21 - Bethlehem, PA\n'
+            'Sat 8/22 - Philly, PA\nSun 8/23 - Brooklyn, NY'
+        ).matched
+        is False
+    )
+    assert match_post('Town of Bethlehem, NY board meeting tonight.').matched is True
+
+
+def test_proctors_theatre_not_surname_proctor() -> None:
+    assert (
+        match_post(
+            'Join us for Deep Dives on space exploration this September.',
+            alt_text='A conversation with Mary Robinette Kowal and Dr. Sian Proctor.',
+        ).matched
+        is False
+    )
+    assert match_post('Comedy night at Proctors this Saturday — tickets on sale.').matched is True
+
+
 def test_saratoga_race_course_and_spac_are_strong_positives() -> None:
     assert match_post('What to wear to Saratoga Race Course this August.').matched is True
     assert (
@@ -242,6 +270,13 @@ def test_saratoga_race_course_and_spac_are_strong_positives() -> None:
         match_post(
             'Best view of morning works.',
             alt_text="Whitney Viewing Stand at Saratoga's Oklahoma Training Track",
+        ).matched
+        is True
+    )
+    assert (
+        match_post(
+            "This weekend marks the band's 50th show at #SPAC. "
+            'Thanks for coming to Saratoga year after year.'
         ).matched
         is True
     )

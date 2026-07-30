@@ -304,6 +304,24 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Saratoga venue FNs keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-056 — Daily feed audit: Bethlehem PA, Galway United, Albany County WY bracket, Clark/Lark, Proctor
+- **Status:** done ([#26](https://github.com/chriscarrollsmith/capital-region-feed/pull/26))
+- **Why:** 2026-07-29 audit of last-24h feed (63 posts) found active FPs after #25:
+  Bethlehem PA tour dates unlocked by NYC context, League of Ireland
+  `Galway United` + Waterford scorelines via `multi_local_places`, Cheyenne NWS
+  Albany County alerts tagged `[WY]` / Laramie (prior WY gate missed brackets),
+  Chicago Clark Street via `lark street` substring micro, and Dr. Sian Proctor
+  matching `\bproctors?\b` venue. Rematch also surfaced `#SPAC` + Saratoga as a
+  recall gap versus full “Saratoga Performing Arts Center” phrasing.
+- **Work:**
+  - Bethlehem PA conflict helper; expand Galway Ireland to United/FC + Waterford.
+  - Albany County WY conflict accepts `[WY]` and Laramie.
+  - Word-boundary `\blark street`; require `\bproctors\b` (theatre), not surname.
+  - Strong-positive `#spac` co-occurring with Saratoga.
+  - Grow eval with 2026-07-29 FP/TP anchors.
+- **Done when:** Audited FPs drop; `#SPAC`+Saratoga keeps; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ---
 
 ## Suggested sequencing

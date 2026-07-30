@@ -39,6 +39,13 @@ def test_albany_county_wyoming_not_capital_region() -> None:
     assert hashtags.matched is False
     assert hashtags.reason == 'entity_other:albany_county_wy'
 
+    nws_bracket = match_post(
+        'CYS issues A THUNDERSTORM WILL IMPACT SOUTHEASTERN ALBANY COUNTY '
+        'THROUGH 830 AM MDT for Laramie Valley, South Laramie Range [WY]'
+    )
+    assert nws_bracket.matched is False
+    assert nws_bracket.reason == 'entity_other:albany_county_wy'
+
     ny = match_post('Albany County executives meet downtown tomorrow. #AlbanyNY')
     assert ny.matched is True
 

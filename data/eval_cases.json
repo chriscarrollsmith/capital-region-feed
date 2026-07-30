@@ -2089,5 +2089,127 @@
     "split": "dev",
     "regression": true,
     "note": "2026-07-28 audit: Cap Region Troy+Waterford multi_local still keeps"
+  },
+  {
+    "id": "fp-bethlehem-pa-diy-tour",
+    "text": "Hello! We are playing 3 shows on the east coast next month. Two in PA and one in NYC.\n\nFri 8/21 - Bethlehem, PA\nSat 8/22 - Philly, PA\nSun 8/23 - Brooklyn, NY",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-07-29 audit: Bethlehem PA tour stop unlocked by NYC context"
+  },
+  {
+    "id": "tp-bethlehem-ny-town-board",
+    "text": "Town of Bethlehem, NY board meeting tonight at town hall.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-07-29 audit: Town of Bethlehem NY still keeps after PA gate"
+  },
+  {
+    "id": "fp-galway-united-waterford-score",
+    "text": "Galway United 0-0 Waterford\n\nGalway United:\n-\n\nWaterford:\n-",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-07-29 audit: League of Ireland Galway United + Waterford multi_local"
+  },
+  {
+    "id": "tp-galway-waterford-ny-drive",
+    "text": "Drive from Galway to Waterford for the farmers market this morning.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-07-29 audit: Cap Region Galway+Waterford multi_local still keeps"
+  },
+  {
+    "id": "fp-albany-county-wy-laramie-bracket",
+    "text": "CYS issues A THUNDERSTORM WILL IMPACT SOUTHEASTERN ALBANY COUNTY THROUGH 830 AM MDT for Laramie Valley, South Laramie Range [WY]",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-07-29 audit: NWS CYS Albany County WY with [WY]/Laramie cues"
+  },
+  {
+    "id": "fp-clark-street-chicago-wrigleyville",
+    "text": "FFS I absolutely hate what Clark Street has become #Chicago #Wrigleyville",
+    "expected": false,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "Clark Street Live September 26 & 27 2026. Watch out partner, there's a new music festival in town.",
+    "note": "2026-07-29 audit: Clark Street must not substring-match Lark Street micro"
+  },
+  {
+    "id": "tp-lark-street-albany-doors",
+    "text": "Show on Lark Street downtown #AlbanyNY tonight. Doors at 8.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-07-29 audit: Lark Street micro still keeps with Cap Region cue"
+  },
+  {
+    "id": "fp-dr-sian-proctor-space-panel",
+    "text": "Join us for Deep Dives on space exploration this September.",
+    "expected": false,
+    "signal": "event",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "A conversation with Mary Robinette Kowal and Dr. Sian Proctor, moderated by K Wilson.",
+    "note": "2026-07-29 audit: surname Proctor must not match Proctors venue"
+  },
+  {
+    "id": "tp-proctors-comedy-saturday",
+    "text": "Comedy night at Proctors this Saturday — tickets on sale.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-07-29 audit: Proctors theatre event cue still keeps"
+  },
+  {
+    "id": "fp-malta-europe-job-board",
+    "text": "Italent Plus is #hiring a It Manager!\n\n🌎 Malta, Europe\n⏰ onsite\n\n#jobalert #jobsearch",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-07-29 audit: Malta Europe job board (indexed before ambiguous drop)"
+  },
+  {
+    "id": "tp-spac-hashtag-saratoga-weekend",
+    "text": "This weekend marks the band's 50th show at #SPAC. Thanks for coming to Saratoga year after year.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-07-29 audit: #SPAC + Saratoga strong positive (FN counterpart)"
+  },
+  {
+    "id": "tp-shake-shack-capital-region",
+    "text": "Okay so apparently the Capital Region is getting TWO Shake Shacks near Guilderland.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-07-29 audit: Capital Region strong positive still keeps"
   }
 ]
