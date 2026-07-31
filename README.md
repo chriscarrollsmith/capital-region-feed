@@ -238,6 +238,38 @@ uv run python scripts/append_eval_cases.py --input /tmp/labeled.jsonl
 `collect_eval_sample.py search --query '…'` is available for one-off queries.
 Rows already present in `data/eval_cases.json` are skipped by default.
 
+### Backfill a Jetstream gap
+
+When the live consumer skips a lagged cursor (or otherwise misses a window),
+rebuild matches from AppView without rewinding Jetstream:
+
+```bash
+# Preview (no writes)
+uv run python scripts/backfill_gap.py \
+  --since 2026-07-30T16:00:00Z --until 2026-07-31T15:35:00Z \
+  --source both --database ./feed_database.db --dry-run
+
+# Write matches (allowlist authors + searchPosts); safe to re-run
+uv run python scripts/backfill_gap.py \
+  --since 2026-07-30T16:00:00Z --until 2026-07-31T15:35:00Z \
+  --source both --database ./feed_database.db
+```
+
+On Fly, point `--database` at `/data/feed_database.db` (e.g. via `fly ssh console`).
+This does not modify `SubscriptionState`. Allowlist author feeds work from Fly;
+`searchPosts` is often **403 from datacenter IPs**, so collect search hits on a
+normal network and index them on the machine:
+
+```bash
+uv run python scripts/backfill_gap.py \
+  --since … --until … --source search --database :memory: \
+  --dump-jsonl /tmp/gap-search.jsonl --dry-run
+fly ssh sftp shell -a capital-region-feed   # put /tmp/gap-search.jsonl
+fly ssh console -a capital-region-feed -C \
+  "python /app/scripts/backfill_gap.py --since … --until … \
+   --from-jsonl /tmp/gap-search.jsonl --database /data/feed_database.db"
+```
+
 ### Audit / purge stale indexed posts
 
 Indexed rows keep their URI until Jetstream delete or the retention prune.

@@ -16,6 +16,7 @@ RUN uv sync --frozen --no-dev --no-install-project
 
 COPY server ./server
 COPY data ./data
+COPY scripts ./scripts
 COPY publish_feed.py .
 
 RUN mkdir -p /data
