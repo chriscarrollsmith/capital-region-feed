@@ -12,16 +12,27 @@ def utc_now() -> datetime:
 
 
 _db_path = Path(config.DATABASE_PATH)
-if str(_db_path) != ':memory:':
+_is_memory = str(_db_path) == ':memory:'
+if not _is_memory:
     _db_path.parent.mkdir(parents=True, exist_ok=True)
 
-db = peewee.SqliteDatabase(
-    str(_db_path),
-    pragmas={
-        'journal_mode': 'wal',
-        'synchronous': 'normal',
-    },
-)
+if _is_memory:
+    # Plain ":memory:" is per-connection. FastAPI runs sync routes (e.g.
+    # /healthz) on worker threads, so share one in-memory DB across them.
+    # Keep at least one connection open (see connect() below) or SQLite
+    # discards the shared database when the last connection closes.
+    db = peewee.SqliteDatabase(
+        'file:capital_region_feed?mode=memory&cache=shared',
+        uri=True,
+    )
+else:
+    db = peewee.SqliteDatabase(
+        str(_db_path),
+        pragmas={
+            'journal_mode': 'wal',
+            'synchronous': 'normal',
+        },
+    )
 
 
 class BaseModel(peewee.Model):
