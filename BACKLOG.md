@@ -322,6 +322,24 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; `#SPAC`+Saratoga keeps; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+
+### B-057 — Daily feed audit: troy weight, MD capital region, SPAC Springs, Museum of Racing, New Albany bus
+- **Status:** in progress
+- **Why:** 2026-07-30 audit of last-day feed (34 posts; feed quiet after ~11:00 UTC) found active FPs after #26:
+  antique "10.8 troy" + NYC kept as Troy NY, and Maryland "capital region" listings for
+  Montgomery / Prince George's counties via bare `capital region` strong positive. Rematch
+  also dropped true Cap Region posts: Saratoga Springs Performing Arts Center, National
+  Museum of Racing, racing "debut at Saratoga", and Empire State Plaza coverage blocked by
+  hard-negative `New Albany Bus Station`.
+- **Work:**
+  - Exclude troy weight (`troy oz` / digit-bounded `troy`) from ambiguous Troy place hits.
+  - MD/DC capital-region conflict helper (Prince George's / Maryland / DMV cues).
+  - Strong-positive SPAC with optional Springs; Museum of Racing; debut at Saratoga.
+  - `new albany` hard-negative exception for bus station/terminal/depot.
+  - Grow eval with 2026-07-30 FP/TP anchors.
+- **Done when:** Audited FPs drop; Saratoga/Empire State Plaza FNs keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ---
 
 ## Suggested sequencing
