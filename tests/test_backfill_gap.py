@@ -208,6 +208,20 @@ def test_process_event_indexes_and_preserves_created_order(tmp_path) -> None:
     assert process_event(event, dry_run=False, indexed_at_mode='created') == 'exists'
 
 
+def test_jsonl_roundtrip(tmp_path) -> None:
+    from scripts.backfill_gap import dump_posts_jsonl, load_posts_jsonl
+
+    posts = [
+        {
+            'uri': 'at://did:plc:x/app.bsky.feed.post/1',
+            'record': {'text': 'hi', 'createdAt': '2026-07-30T18:00:00Z'},
+        }
+    ]
+    path = tmp_path / 'posts.jsonl'
+    assert dump_posts_jsonl(path, posts) == 1
+    assert load_posts_jsonl(path) == posts
+
+
 def test_process_event_dry_run_does_not_write(tmp_path) -> None:
     from scripts.backfill_gap import bind_database, process_event, uri_exists
 

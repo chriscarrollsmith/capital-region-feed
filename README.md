@@ -256,8 +256,19 @@ uv run python scripts/backfill_gap.py \
 ```
 
 On Fly, point `--database` at `/data/feed_database.db` (e.g. via `fly ssh console`).
-This does not modify `SubscriptionState`. Coverage is AppView-complete for
-allowlisted authors and best-effort for placename search hits.
+This does not modify `SubscriptionState`. Allowlist author feeds work from Fly;
+`searchPosts` is often **403 from datacenter IPs**, so collect search hits on a
+normal network and index them on the machine:
+
+```bash
+uv run python scripts/backfill_gap.py \
+  --since … --until … --source search --database :memory: \
+  --dump-jsonl /tmp/gap-search.jsonl --dry-run
+fly ssh sftp shell -a capital-region-feed   # put /tmp/gap-search.jsonl
+fly ssh console -a capital-region-feed -C \
+  "python /app/scripts/backfill_gap.py --since … --until … \
+   --from-jsonl /tmp/gap-search.jsonl --database /data/feed_database.db"
+```
 
 ### Audit / purge stale indexed posts
 

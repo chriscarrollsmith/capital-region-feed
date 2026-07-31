@@ -397,6 +397,31 @@ def collect_posts(
     return list(by_uri.values())
 
 
+def load_posts_jsonl(path: Path) -> list[JsonObject]:
+    posts: list[JsonObject] = []
+    with path.open(encoding='utf-8') as handle:
+        for line_no, line in enumerate(handle, start=1):
+            text = line.strip()
+            if not text:
+                continue
+            try:
+                row = json.loads(text)
+            except json.JSONDecodeError as exc:
+                raise ValueError(f'{path}:{line_no}: invalid JSON') from exc
+            if isinstance(row, dict):
+                posts.append(row)
+    return posts
+
+
+def dump_posts_jsonl(path: Path, posts: Iterable[JsonObject]) -> int:
+    count = 0
+    with path.open('w', encoding='utf-8') as handle:
+        for post in posts:
+            handle.write(json.dumps(post, ensure_ascii=False) + '\n')
+            count += 1
+    return count
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -443,6 +468,18 @@ def build_parser() -> argparse.ArgumentParser:
         default=[],
         help='Extra searchPosts query (repeatable); replaces defaults if any given',
     )
+    parser.add_argument(
+        '--dump-jsonl',
+        type=Path,
+        default=None,
+        help='Write fetched AppView posts as JSONL (for offline indexing elsewhere)',
+    )
+    parser.add_argument(
+        '--from-jsonl',
+        type=Path,
+        default=None,
+        help='Index posts from JSONL instead of calling AppView (skips --source fetch)',
+    )
     return parser
 
 
@@ -477,19 +514,26 @@ def main(argv: list[str] | None = None) -> int:
         f'source={args.source} dry_run={args.dry_run} database={db_path}',
         file=sys.stderr,
     )
-    if args.source in {'authors', 'both'}:
-        print(f'allowlist actors: {len(actors)}', file=sys.stderr)
 
-    posts = collect_posts(
-        source=args.source,
-        since=since,
-        until=until,
-        api_host=args.api_host,
-        fetcher=default_fetcher,
-        search_queries=queries,
-        actors=actors,
-    )
-    print(f'candidates: {len(posts)}', file=sys.stderr)
+    if args.from_jsonl is not None:
+        posts = load_posts_jsonl(args.from_jsonl)
+        print(f'loaded jsonl: {len(posts)} from {args.from_jsonl}', file=sys.stderr)
+    else:
+        if args.source in {'authors', 'both'}:
+            print(f'allowlist actors: {len(actors)}', file=sys.stderr)
+        posts = collect_posts(
+            source=args.source,
+            since=since,
+            until=until,
+            api_host=args.api_host,
+            fetcher=default_fetcher,
+            search_queries=queries,
+            actors=actors,
+        )
+        print(f'candidates: {len(posts)}', file=sys.stderr)
+        if args.dump_jsonl is not None:
+            n = dump_posts_jsonl(args.dump_jsonl, posts)
+            print(f'wrote jsonl: {n} -> {args.dump_jsonl}', file=sys.stderr)
 
     counts = {
         'indexed': 0,
