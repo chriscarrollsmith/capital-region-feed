@@ -238,6 +238,27 @@ uv run python scripts/append_eval_cases.py --input /tmp/labeled.jsonl
 `collect_eval_sample.py search --query '…'` is available for one-off queries.
 Rows already present in `data/eval_cases.json` are skipped by default.
 
+### Backfill a Jetstream gap
+
+When the live consumer skips a lagged cursor (or otherwise misses a window),
+rebuild matches from AppView without rewinding Jetstream:
+
+```bash
+# Preview (no writes)
+uv run python scripts/backfill_gap.py \
+  --since 2026-07-30T16:00:00Z --until 2026-07-31T15:35:00Z \
+  --source both --database ./feed_database.db --dry-run
+
+# Write matches (allowlist authors + searchPosts); safe to re-run
+uv run python scripts/backfill_gap.py \
+  --since 2026-07-30T16:00:00Z --until 2026-07-31T15:35:00Z \
+  --source both --database ./feed_database.db
+```
+
+On Fly, point `--database` at `/data/feed_database.db` (e.g. via `fly ssh console`).
+This does not modify `SubscriptionState`. Coverage is AppView-complete for
+allowlisted authors and best-effort for placename search hits.
+
 ### Audit / purge stale indexed posts
 
 Indexed rows keep their URI until Jetstream delete or the retention prune.
