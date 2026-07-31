@@ -91,9 +91,13 @@ _STRONG_POSITIVE = re.compile(
       | saratoga\s+springs\s+police
       | saratoga\s+casino
       | saratoga\s+race\s+course
-      | saratoga\s+performing\s+arts\s+center
+      # Common phrasing inserts "Springs" before Performing Arts Center.
+      | saratoga(?:\s+springs)?\s+performing\s+arts\s+center
       # Saratoga Race Course training facility (tourism / race-day copy).
       | oklahoma\s+training\s+track
+      | national\s+museum\s+of\s+racing
+      # Horse-racing debut copy often omits "Race Course".
+      | debut\s+at\s+saratoga\b
       # Hashtag #SPAC next to Saratoga (avoid bare SPAC / financial SPACs).
       | \#spac\b[\s\S]{0,200}\bsaratoga\b
       | \bsaratoga\b[\s\S]{0,200}\#spac\b
@@ -112,12 +116,12 @@ _STRONG_POSITIVE = re.compile(
 # Ambiguous place names that need NY / Capital Region context.
 # Includes Cap Region micro-toponyms that collide with personal names,
 # other U.S./world places, or common phrases (e.g. "green islands").
-# ``troy`` ignores email local-parts (``troy@…``).
+# ``troy`` ignores email local-parts (``troy@…``) and troy weight (oz / "10.8 troy").
 _AMBIGUOUS_PLACE = re.compile(
     r"""
     (?:
         \balbany\b
-      | \btroy\b(?!@)
+      | (?<!\d\s)\btroy\b(?!@)(?!\s*(?:oz|ounces?|ozt|weight)\b)
       | \blatham\b
       | \bmalta\b
       # Town of Scotia — not the province inside "Nova Scotia".
@@ -187,11 +191,12 @@ _HANDLE_MENTION = re.compile(r'(?<![\w.])@[\w.-]+', flags=re.UNICODE)
 
 # Hard negatives that always win over an otherwise-strong local phrase
 # (e.g. "capital region" inside "capital region of Madrid").
+# "New Albany Bus Station" is Albany NY's proposed terminal, not New Albany IN/MS.
 _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
     r"""
     (?:
         albany\s+park
-      | new\s+albany
+      | new\s+albany(?!\s+bus\s+(?:station|terminal|depot))
       | national\s+capital\s+region
       | brussels\s+capital\s+region
       | canadian\s+capital\s+region
@@ -224,6 +229,26 @@ _CANADIAN_CAPITAL_REGION = re.compile(
       | capital\s+region\s+of\s+(?:canada|ottawa)\b
       | capital\s+region\b[\s\S]{{0,160}}(?:{_CANADIAN_GEO_CUE})
       | (?:{_CANADIAN_GEO_CUE})[\s\S]{{0,160}}capital\s+region\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Maryland / DC-metro "capital region" (Prince George's, MoCo MD tourism, etc.).
+# Avoid bare "montgomery county" — NYS Montgomery County appears in ALY weather.
+_MD_DC_GEO_CUE = (
+    # AppView cards often use a curly apostrophe in "George's".
+    r"prince\s+george['\u2019]?s|\bmaryland\b|\#md(?:wx|politics|gov)\b|"
+    r'washington(?:\s*,?\s*d\.?c\.?\b)|(?<![\w.])dc\s+metro\b|'
+    r'\bdmv\b|silver\s+spring|\bbethesda\b|\brockville\b'
+)
+
+# MD/DC "capital region" co-occurring with Maryland / Prince George's cues (not NY).
+_MD_DC_CAPITAL_REGION = re.compile(
+    rf"""
+    (?:
+        capital\s+region\b[\s\S]{{0,160}}(?:{_MD_DC_GEO_CUE})
+      | (?:{_MD_DC_GEO_CUE})[\s\S]{{0,160}}capital\s+region\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -279,7 +304,8 @@ _HARD_NEGATIVE = re.compile(
     r"""
     (?:
         albany\s+park
-      | new\s+albany
+      # "New Albany Bus Station" is Albany NY's proposed terminal, not New Albany IN/MS.
+      | new\s+albany(?!\s+bus\s+(?:station|terminal|depot))
       | albany\s*,\s*(?:
             or|oregon|ca|california|ga|georgia|tx|texas|
             mn|minnesota|mo|missouri|ky|kentucky|in|indiana|oh|ohio|
@@ -362,9 +388,10 @@ _LOCAL_EVENT_VENUE = re.compile(
     (?:
         # Schenectady's Proctors theatre — not the surname "Proctor".
         \bproctors\b
-      | saratoga\s+performing\s+arts\s+center
+      | saratoga(?:\s+springs)?\s+performing\s+arts\s+center
       | \bat\s+spac\b
       | \bspac\s+(?:season|lawn|amphitheatre|amphitheater|presents)
+      | national\s+museum\s+of\s+racing
       | mvp\s+arena
       | music\s+haven
       | troy\s+savings\s+bank\s+music\s+hall
@@ -502,27 +529,40 @@ def _albany_county_wy_conflict(haystack: str) -> bool:
     return True
 
 
+def _ny_capital_region_context(haystack: str) -> bool:
+    """True when haystack has explicit NY Cap Region anchors."""
+    return (
+        re.search(
+            r"""
+            (?:
+                \b(?:ny|new\s+york)\b
+              | hudson\s+valley
+              | \#albanyny\b
+              | albany\s*,?\s*(?:ny|new\s+york)
+              | schenectady
+              | (?<!\d\s)\btroy\b(?!@)(?!\s*(?:oz|ounces?|ozt|weight)\b)
+            )
+            """,
+            haystack,
+            flags=re.IGNORECASE | re.VERBOSE,
+        )
+        is not None
+    )
+
+
 def _canadian_capital_region_conflict(haystack: str) -> bool:
     """True when 'capital region' refers to Ottawa/Canada/BC, not NY."""
     if not _CANADIAN_CAPITAL_REGION.search(haystack):
         return False
     # Explicit NY Cap Region context wins over Canadian co-mentions.
-    if re.search(
-        r"""
-        (?:
-            \b(?:ny|new\s+york)\b
-          | hudson\s+valley
-          | \#albanyny\b
-          | albany\s*,?\s*(?:ny|new\s+york)
-          | schenectady
-          | \btroy\b(?!@)
-        )
-        """,
-        haystack,
-        flags=re.IGNORECASE | re.VERBOSE,
-    ):
+    return not _ny_capital_region_context(haystack)
+
+
+def _md_dc_capital_region_conflict(haystack: str) -> bool:
+    """True when 'capital region' refers to MD/DC metro, not NY."""
+    if not _MD_DC_CAPITAL_REGION.search(haystack):
         return False
-    return True
+    return not _ny_capital_region_context(haystack)
 
 
 def _wi_troy_waterford_conflict(haystack: str, distinct: set[str]) -> bool:
@@ -687,6 +727,8 @@ def match_post(
             return MatchResult(False, 'entity_other:albany_county_wy')
         if _canadian_capital_region_conflict(haystack):
             return MatchResult(False, 'hard_negative:canadian_capital_region')
+        if _md_dc_capital_region_conflict(haystack):
+            return MatchResult(False, 'hard_negative:md_dc_capital_region')
         return MatchResult(True, 'strong_positive')
 
     if _COLONIE_LOCAL.search(haystack):

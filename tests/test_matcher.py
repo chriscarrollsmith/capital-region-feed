@@ -178,6 +178,57 @@ def test_canadian_capital_region_is_hard_negative() -> None:
     assert keep.matched is True
 
 
+def test_md_dc_capital_region_is_hard_negative() -> None:
+    md = match_post(
+        '7 things to do in the capital region, from Karol G to wine and jazz',
+        alt_text=(
+            "Things to do across Montgomery and Prince George's counties this week "
+            'include festivals showcasing books, wine and jazz.'
+        ),
+    )
+    assert md.matched is False
+    assert md.reason == 'hard_negative:md_dc_capital_region'
+
+    # Curly apostrophe as seen in AppView external descriptions.
+    curly = match_post(
+        '7 things to do in the capital region, from Karol G to wine and jazz',
+        alt_text=(
+            'Things to do across Montgomery and Prince George\u2019s counties this week '
+            'include festivals showcasing books, wine and jazz.'
+        ),
+    )
+    assert curly.matched is False
+
+    # NY Capital Region keeps even if Maryland is mentioned in passing.
+    keep = match_post(
+        'Capital Region students visited museums in Maryland before returning to #AlbanyNY.'
+    )
+    assert keep.matched is True
+
+
+def test_troy_weight_is_not_troy_ny() -> None:
+    assert (
+        match_post(
+            'Silver ecclesiastical chalice with Nelson & Nelson, NYC',
+            alt_text='Very good condition. Weight: 10.8 troy. French and Dutch import marks.',
+        ).matched
+        is False
+    )
+    assert match_post('Antique spoon listed at 2 troy ounces — shipping from NYC.').matched is False
+    # Real Troy NY + NYC still keeps.
+    assert match_post('Heading from Troy to NYC for the weekend show.').matched is True
+
+
+def test_new_albany_bus_station_does_not_block_empire_state_plaza() -> None:
+    result = match_post(
+        "Could the Empire State Plaza play host to Albany's next bus terminal?",
+        alt_text="State Says 'Not So Fast' On New Albany Bus Station - Streetsblog Empire State",
+    )
+    assert result.matched is True
+    # True New Albany IN/MS still drops.
+    assert match_post('Weekend plans in New Albany, Indiana.').matched is False
+
+
 def test_other_capital_region_phrases_are_hard_negatives() -> None:
     assert (
         match_post(
@@ -268,6 +319,13 @@ def test_saratoga_race_course_and_spac_are_strong_positives() -> None:
     )
     assert (
         match_post(
+            'this week’s grateful deadcast visits saratoga springs ’85',
+            alt_text='Grateful Dead at Saratoga Springs Performing Arts Center',
+        ).matched
+        is True
+    )
+    assert (
+        match_post(
             'Best view of morning works.',
             alt_text="Whitney Viewing Stand at Saratoga's Oklahoma Training Track",
         ).matched
@@ -280,6 +338,13 @@ def test_saratoga_race_course_and_spac_are_strong_positives() -> None:
         ).matched
         is True
     )
+    assert (
+        match_post(
+            'Casino Night at the National Museum of Racing and Hall of Fame in Saratoga Springs.'
+        ).matched
+        is True
+    )
+    assert match_post('The filly is expected to make her debut at Saratoga.').matched is True
 
 
 def test_handle_mentions_do_not_supply_albany_or_nyc_context() -> None:
