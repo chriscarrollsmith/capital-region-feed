@@ -4,13 +4,49 @@ from __future__ import annotations
 
 import time
 
-from server.jetstream import _parse_post_event, cursor_lag_seconds
+import pytest
+from server.database import SubscriptionState, db
+from server.jetstream import (
+    _SKIP_TO_LIVE_LAG_S,
+    _parse_post_event,
+    cursor_lag_seconds,
+    maybe_skip_cursor_to_live,
+)
+
+
+@pytest.fixture(autouse=True)
+def _jetstream_tables() -> None:
+    db.create_tables([SubscriptionState])
 
 
 def test_cursor_lag_seconds_from_explicit_cursor() -> None:
     now_us = 1_700_000_000_000_000
     cursor = now_us - 90_000_000  # 90s behind
     assert cursor_lag_seconds(cursor, now_us=now_us) == 90.0
+
+
+def test_maybe_skip_cursor_to_live_clears_deep_lag() -> None:
+    service = 'did:web:test-skip-live'
+    now_us = 1_700_000_000_000_000
+    deep_cursor = now_us - int((_SKIP_TO_LIVE_LAG_S + 60) * 1_000_000)
+    SubscriptionState.delete().where(SubscriptionState.service == service).execute()
+    SubscriptionState.create(service=service, cursor=deep_cursor)
+
+    assert maybe_skip_cursor_to_live(service, deep_cursor, now_us=now_us) is None
+    state = SubscriptionState.get(SubscriptionState.service == service)
+    assert int(state.cursor) == 0
+
+
+def test_maybe_skip_cursor_to_live_keeps_modest_lag() -> None:
+    service = 'did:web:test-keep-cursor'
+    now_us = 1_700_000_000_000_000
+    modest_cursor = now_us - 60_000_000  # 60s
+    SubscriptionState.delete().where(SubscriptionState.service == service).execute()
+    SubscriptionState.create(service=service, cursor=modest_cursor)
+
+    assert maybe_skip_cursor_to_live(service, modest_cursor, now_us=now_us) == modest_cursor
+    state = SubscriptionState.get(SubscriptionState.service == service)
+    assert int(state.cursor) == modest_cursor
 
 
 def test_parse_skips_engagement_when_catching_up() -> None:

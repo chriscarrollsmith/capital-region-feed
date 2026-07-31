@@ -28,10 +28,15 @@ _WANTED_COLLECTIONS = (
 # catch-up stays on the asyncio event loop's happy path (websocket pings).
 _ENGAGEMENT_CATCHUP_LAG_US = 120 * 1_000_000
 
+# Multi-hour replay on a single shared CPU holds the GIL in matcher work long
+# enough that websocket ping/pong starves and the AppView fails did:web
+# resolution. Prefer a small gap over a wedged consumer.
+_SKIP_TO_LIVE_LAG_S = 15 * 60
+
 # websockets keepalive: pings need the event loop free. Sync SQLite/matcher work
 # must not run on the loop or ping_timeout fires during firehose catch-up.
 _PING_INTERVAL_S = 20
-_PING_TIMEOUT_S = 60
+_PING_TIMEOUT_S = 120
 
 
 def _build_url(cursor: int | None = None) -> str:
@@ -55,6 +60,11 @@ def _save_cursor(service_name: str, cursor: int) -> None:
     ).execute()
 
 
+def _clear_cursor(service_name: str) -> None:
+    """Forget the saved cursor so the next connect joins the live stream."""
+    SubscriptionState.update(cursor=0).where(SubscriptionState.service == service_name).execute()
+
+
 def cursor_lag_seconds(
     cursor: int | None = None,
     *,
@@ -74,6 +84,30 @@ def cursor_lag_seconds(
         return None
     now = int(time.time() * 1_000_000) if now_us is None else now_us
     return max(0.0, (now - cursor) / 1_000_000)
+
+
+def maybe_skip_cursor_to_live(
+    service_name: str,
+    cursor: int | None,
+    *,
+    now_us: int | None = None,
+    skip_after_s: float = _SKIP_TO_LIVE_LAG_S,
+) -> int | None:
+    """Clear a deeply lagged cursor so Jetstream reconnects at the live tip.
+
+    Returns the cursor to use for the next connect (``None`` means live).
+    """
+    lag_s = cursor_lag_seconds(cursor, now_us=now_us)
+    if cursor is None or lag_s is None or lag_s <= skip_after_s:
+        return cursor
+    logger.warning(
+        'jetstream cursor lag_s=%.1f exceeds %.0fs; skipping to live '
+        '(accepting a gap rather than wedging keepalive/did:web)',
+        lag_s,
+        skip_after_s,
+    )
+    _clear_cursor(service_name)
+    return None
 
 
 def _parse_post_event(
@@ -132,7 +166,7 @@ async def _consume(
     backoff = 1
     loop = asyncio.get_running_loop()
     while stop_event is None or not stop_event.is_set():
-        cursor = _get_cursor(service_name)
+        cursor = maybe_skip_cursor_to_live(service_name, _get_cursor(service_name))
         url = _build_url(cursor)
         lag_s = cursor_lag_seconds(cursor)
         logger.info(
@@ -178,6 +212,10 @@ async def _consume(
                     if event is not None:
                         # Keep ping/pong on the event loop; Peewee + matcher are sync.
                         await loop.run_in_executor(None, on_event, event)
+                        # Brief yield so the event loop can process websocket
+                        # ping/pong between GIL-heavy matcher calls.
+                        if skipping_engagement:
+                            await asyncio.sleep(0)
 
                     now = time.monotonic()
                     if latest_cursor and now - last_persist >= 5:
