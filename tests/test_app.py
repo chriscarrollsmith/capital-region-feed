@@ -1,24 +1,32 @@
 from typing import Any
 from unittest.mock import patch
 
+import pytest
 from fastapi.testclient import TestClient
+from server.database import AuthorLocalStats, Post, SubscriptionState, db
 
 
 def _noop_jetstream(*_args: Any, **_kwargs: Any) -> None:
     return None
 
 
+@pytest.fixture(autouse=True)
+def _app_tables() -> None:
+    db.create_tables([Post, SubscriptionState, AuthorLocalStats])
+
+
 @patch('server.app.run_jetstream', _noop_jetstream)
 def test_healthz() -> None:
     from server.app import app
 
+    SubscriptionState.delete().execute()
     with TestClient(app) as client:
         response = client.get('/healthz')
     assert response.status_code == 200
     body = response.json()
     assert body['ok'] is True
     # No subscription cursor in the test DB → lag fields omitted.
-    assert 'jetstream_lag_s' not in body or isinstance(body['jetstream_lag_s'], (int, float))
+    assert 'jetstream_lag_s' not in body
 
 
 @patch('server.app.run_jetstream', _noop_jetstream)
@@ -27,7 +35,6 @@ def test_healthz_reports_jetstream_lag() -> None:
 
     from server import config
     from server.app import app
-    from server.database import SubscriptionState
 
     SubscriptionState.delete().execute()
     # ~1 hour behind live.
