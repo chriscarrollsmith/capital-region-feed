@@ -28,10 +28,24 @@ def _parse_created_at(value: str | None) -> datetime | None:
         return None
 
 
-def _is_archived(created_at: datetime | None) -> bool:
+def _is_archived(created_at: datetime | None, *, reference: datetime | None = None) -> bool:
+    """True when created_at is more than one day before ``reference``.
+
+    ``reference`` defaults to wall clock. During Jetstream catch-up, pass the
+    event's ``time_us`` so a lagged consumer does not drop the backlog as
+    soon as wall-clock age crosses 24h.
+    """
     if not created_at:
         return False
-    return utc_now() - created_at > timedelta(days=1)
+    ref = reference if reference is not None else utc_now()
+    return ref - created_at > timedelta(days=1)
+
+
+def _event_reference_time(event: dict[str, Any]) -> datetime | None:
+    time_us = event.get('time_us')
+    if not isinstance(time_us, int) or time_us <= 0:
+        return None
+    return datetime.fromtimestamp(time_us / 1_000_000, tz=UTC).replace(tzinfo=None)
 
 
 def _maybe_prune() -> None:
@@ -90,7 +104,9 @@ def handle_event(event: dict[str, Any]) -> None:
         return
 
     created_at = _parse_created_at(record.get('createdAt'))
-    if config.IGNORE_ARCHIVED_POSTS and _is_archived(created_at):
+    if config.IGNORE_ARCHIVED_POSTS and _is_archived(
+        created_at, reference=_event_reference_time(event)
+    ):
         return
 
     text = record.get('text') or ''

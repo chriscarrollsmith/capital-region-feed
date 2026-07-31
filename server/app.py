@@ -9,6 +9,7 @@ from fastapi.responses import JSONResponse, Response
 from server import config
 from server.algos import algos
 from server.indexer import handle_event
+from server.jetstream import cursor_lag_seconds
 from server.jetstream import run as run_jetstream
 from server.logger import logger
 
@@ -46,8 +47,15 @@ def index() -> dict[str, str]:
 
 
 @app.get('/healthz')
-def healthz() -> dict[str, bool]:
-    return {'ok': True}
+def healthz() -> dict[str, Any]:
+    lag_s = cursor_lag_seconds(service_name=config.SERVICE_DID)
+    body: dict[str, Any] = {'ok': True}
+    if lag_s is not None:
+        body['jetstream_lag_s'] = round(lag_s, 1)
+        # Soft signal for operators / uptime monitors — HTTP stays 200 so Fly
+        # health checks do not flap during brief reconnects.
+        body['jetstream_ok'] = lag_s < 300
+    return body
 
 
 @app.get('/.well-known/did.json', response_model=None)

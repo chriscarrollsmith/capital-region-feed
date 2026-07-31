@@ -322,6 +322,42 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; `#SPAC`+Saratoga keeps; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+
+### B-057 — Daily feed audit: troy weight, MD capital region, SPAC Springs, Museum of Racing, New Albany bus
+- **Status:** done ([#28](https://github.com/chriscarrollsmith/capital-region-feed/pull/28))
+- **Why:** 2026-07-30 audit of last-day feed (34 posts; feed quiet after ~11:00 UTC) found active FPs after #26:
+  antique "10.8 troy" + NYC kept as Troy NY, and Maryland "capital region" listings for
+  Montgomery / Prince George's counties via bare `capital region` strong positive. Rematch
+  also dropped true Cap Region posts: Saratoga Springs Performing Arts Center, National
+  Museum of Racing, racing "debut at Saratoga", and Empire State Plaza coverage blocked by
+  hard-negative `New Albany Bus Station`.
+- **Work:**
+  - Exclude troy weight (`troy oz` / digit-bounded `troy`) from ambiguous Troy place hits.
+  - MD/DC capital-region conflict helper (Prince George's / Maryland / DMV cues).
+  - Strong-positive SPAC with optional Springs; Museum of Racing; debut at Saratoga.
+  - `new albany` hard-negative exception for bus station/terminal/depot.
+  - Grow eval with 2026-07-30 FP/TP anchors.
+- **Done when:** Audited FPs drop; Saratoga/Empire State Plaza FNs keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
+---
+
+### B-058 — Jetstream catch-up keepalive wedge (quiet feed)
+- **Status:** in progress
+- **Why:** From ~2026-07-30T16:30Z the Fly machine stayed healthy (`/healthz` 200) while
+  Jetstream looped on `keepalive ping timeout` about once a minute. Cursor lagged ~24h
+  behind live; AppView served stale SQLite rows. Sync `handle_event` (matcher + Peewee)
+  ran on the asyncio loop that also services websocket pings; during catch-up the
+  like/repost firehose starved pings. `IGNORE_ARCHIVED_POSTS` used wall-clock age, so a
+  ≥24h lag would also drop the backlog as it aged out.
+- **Work:**
+  - Run `on_event` / cursor persists in a thread executor; raise `ping_timeout`.
+  - Pause like/repost handling when stream lag > 2 minutes.
+  - Archive check relative to event `time_us` during catch-up.
+  - `/healthz` reports `jetstream_lag_s` / `jetstream_ok` (HTTP still 200).
+- **Done when:** Deployed consumer survives multi-hour catch-up without ping-timeout
+  loops; lag drains toward live; healthz exposes lag.
+
 ---
 
 ## Suggested sequencing

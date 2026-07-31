@@ -86,3 +86,37 @@ def test_handle_event_records_strong_match_and_soft_prior_keeps_bare(isolated_db
     handle_event(bare)
     row = Post.get(Post.uri == bare['uri'])
     assert row.match_reason == 'soft_prior_ambiguous:troy'
+
+
+def test_handle_event_archived_uses_event_time_not_wall_clock(isolated_db: None) -> None:
+    """Catch-up must not drop posts that were fresh at firehose time_us."""
+    from datetime import timedelta
+
+    from server import config
+    from server.indexer import handle_event
+
+    author = sorted(config.ALLOWLIST_DIDS)[0]
+    # Created ~30h before wall clock, but event time_us is only 2h after createdAt.
+    created = datetime.now(UTC) - timedelta(hours=30)
+    event_time = created + timedelta(hours=2)
+    event = {
+        'operation': 'create',
+        'uri': f'at://{author}/app.bsky.feed.post/catchup1',
+        'cid': 'bafytestcid',
+        'author': author,
+        'time_us': int(event_time.timestamp() * 1_000_000),
+        'record': {
+            '$type': 'app.bsky.feed.post',
+            'text': 'Catch-up local bulletin for subscribers.',
+            'createdAt': created.isoformat().replace('+00:00', 'Z'),
+        },
+    }
+    handle_event(event)
+    assert Post.select().where(Post.uri == event['uri']).count() == 1
+
+    # Same createdAt with a live-tail time_us (wall-aligned) is archived.
+    live = dict(event)
+    live['uri'] = f'at://{author}/app.bsky.feed.post/catchup2'
+    live['time_us'] = int(datetime.now(UTC).timestamp() * 1_000_000)
+    handle_event(live)
+    assert Post.select().where(Post.uri == live['uri']).count() == 0
