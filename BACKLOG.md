@@ -324,7 +324,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
 
 
 ### B-057 — Daily feed audit: troy weight, MD capital region, SPAC Springs, Museum of Racing, New Albany bus
-- **Status:** in progress
+- **Status:** done ([#28](https://github.com/chriscarrollsmith/capital-region-feed/pull/28))
 - **Why:** 2026-07-30 audit of last-day feed (34 posts; feed quiet after ~11:00 UTC) found active FPs after #26:
   antique "10.8 troy" + NYC kept as Troy NY, and Maryland "capital region" listings for
   Montgomery / Prince George's counties via bare `capital region` strong positive. Rematch
