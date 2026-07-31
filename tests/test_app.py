@@ -15,7 +15,34 @@ def test_healthz() -> None:
     with TestClient(app) as client:
         response = client.get('/healthz')
     assert response.status_code == 200
-    assert response.json() == {'ok': True}
+    body = response.json()
+    assert body['ok'] is True
+    # No subscription cursor in the test DB → lag fields omitted.
+    assert 'jetstream_lag_s' not in body or isinstance(body['jetstream_lag_s'], (int, float))
+
+
+@patch('server.app.run_jetstream', _noop_jetstream)
+def test_healthz_reports_jetstream_lag() -> None:
+    import time
+
+    from server import config
+    from server.app import app
+    from server.database import SubscriptionState
+
+    SubscriptionState.delete().execute()
+    # ~1 hour behind live.
+    SubscriptionState.create(
+        service=config.SERVICE_DID,
+        cursor=int(time.time() * 1_000_000) - 3_600_000_000,
+    )
+    with TestClient(app) as client:
+        response = client.get('/healthz')
+    assert response.status_code == 200
+    body = response.json()
+    assert body['ok'] is True
+    assert body['jetstream_ok'] is False
+    assert body['jetstream_lag_s'] >= 3500
+    SubscriptionState.delete().execute()
 
 
 @patch('server.app.run_jetstream', _noop_jetstream)
