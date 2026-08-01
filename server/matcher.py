@@ -35,7 +35,7 @@ class MatchResult:
 _STRONG_POSITIVE = re.compile(
     r"""
     (?:
-        albany\s*,?\s*(?:ny|new\s+york)
+        albany\s*,?\s*(?:ny|n\.y\.|new\s+york)
       | \#albanyny\b
       | \#albany_ny\b
       # Word-boundary after region/district — "capital regional" (ES/LatAm) is not NY.
@@ -66,8 +66,12 @@ _STRONG_POSITIVE = re.compile(
       | mechanicville
       | burnt\s+hills
       | ballston\s+spa
+      # Cap Region Clifton Park — UK cricket ground gated in conflict helper.
       | clifton\s+park
       | averill\s+park
+      # Wire datelines often use "N.Y." with periods.
+      | saratoga\s+springs\s*,?\s*(?:ny|n\.y\.|new\s+york)
+      | (?<!\d\s)(?<![\w.])troy(?![\w@.-])\s*,?\s*(?:ny|n\.y\.|new\s+york)
       | boght\s+corners
       | newtonville
       | \bcoeymans\b
@@ -116,12 +120,15 @@ _STRONG_POSITIVE = re.compile(
 # Ambiguous place names that need NY / Capital Region context.
 # Includes Cap Region micro-toponyms that collide with personal names,
 # other U.S./world places, or common phrases (e.g. "green islands").
-# ``troy`` ignores email local-parts (``troy@…``) and troy weight (oz / "10.8 troy").
+# ``troy`` ignores email local-parts (``troy@…``), hyphenated names/domains
+# (``troy-caperton``), and troy weight (oz / "10.8 troy").
+_TROY_PLACE = r'(?<!\d\s)(?<![\w.])troy(?![\w@.-])(?!\s*(?:oz|ounces?|ozt|weight)\b)'
+
 _AMBIGUOUS_PLACE = re.compile(
-    r"""
+    rf"""
     (?:
         \balbany\b
-      | (?<!\d\s)\btroy\b(?!@)(?!\s*(?:oz|ounces?|ozt|weight)\b)
+      | {_TROY_PLACE}
       | \blatham\b
       | \bmalta\b
       # Town of Scotia — not the province inside "Nova Scotia".
@@ -162,12 +169,15 @@ _MULTI_LOCAL_EXCLUDED = frozenset(
 
 # "New York Times/Post/…" mastheads are national media names, not place context.
 # Also reject abbreviated ``ny times`` (including NBSP variants via ``\s``).
+# Wire datelines use ``N.Y.``; locals often write ``NYS`` for New York State.
 _NY_CONTEXT = re.compile(
     r"""
     (?:
         \bny\b(?!\s*times\b)
       # Reject handle TLDs like @socialists.nyc (dot before nyc).
       | (?<!\.)\bnyc\b
+      | n\.y\.
+      | \bnys\b
       | new\s+york(?!\s+(?:
             times|post|daily\s+news|magazine|observer|herald|metro|sun
           )\b)
@@ -186,7 +196,7 @@ _NY_CONTEXT = re.compile(
 # @handles can embed place-like tokens (nokings-albany, socialists.nyc) that
 # must not unlock ambiguous-place keeps. Strong positives still see full text.
 # Require a non-word char before @ so email local-parts (troy@example.com) stay
-# intact for the ``troy(?!@)`` ambiguous-place guard.
+# intact for the troy ambiguous-place guard (``troy`` must not match ``troy@``).
 _HANDLE_MENTION = re.compile(r'(?<![\w.])@[\w.-]+', flags=re.UNICODE)
 
 # Hard negatives that always win over an otherwise-strong local phrase
@@ -214,11 +224,13 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
-# Canadian "capital region" cues (Ottawa national, Victoria BC / #yyj).
+# Canadian "capital region" cues (Ottawa national, Victoria BC / #yyj / CRD).
 _CANADIAN_GEO_CUE = (
     r'\bcanada\b|\bcanadian\b|\bottawa\b|\#canadian\w*|'
     r'\#yyj\b|\#bcpoli\b|british\s+columbia|\blangford\b|'
-    r'victoria(?:\s*,?\s*bc\b)'
+    r'victoria(?:\s*,?\s*bc\b)|greater\s+victoria|'
+    r'capital\s+regional\s+district|\blivable\s+crd\b|'
+    r'timescolonist\.com'
 )
 
 # Ottawa / Canada / BC "capital region" co-occurring with Canadian cues (not NY).
@@ -269,7 +281,7 @@ _WI_TROY_WATERFORD = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
-# Galway Ireland (university / county / League of Ireland clubs).
+# Galway Ireland (university / county / League of Ireland / tourism itineraries).
 _GALWAY_IRELAND = re.compile(
     r"""
     (?:
@@ -280,6 +292,25 @@ _GALWAY_IRELAND = re.compile(
       | league\s+of\s+ireland
       | county\s+mayo\b
       | cois\s+coiribe
+      | \bireland\b
+      | \#visitireland\b
+      | \#wildatlanticway\b
+      | wild\s+atlantic\s+way
+      | \bdingle\b
+      | \bkinsale\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Clifton Park cricket ground (York, England) — not Clifton Park, NY.
+_CLIFTON_PARK_UK = re.compile(
+    r"""
+    (?:
+        \byorkshire\b
+      | \bdurham\b
+      | \bcricket(?:er)?s?\b
+      | county\s+championship
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -533,14 +564,15 @@ def _ny_capital_region_context(haystack: str) -> bool:
     """True when haystack has explicit NY Cap Region anchors."""
     return (
         re.search(
-            r"""
+            rf"""
             (?:
-                \b(?:ny|new\s+york)\b
+                \b(?:ny|nys|new\s+york)\b
+              | n\.y\.
               | hudson\s+valley
               | \#albanyny\b
-              | albany\s*,?\s*(?:ny|new\s+york)
+              | albany\s*,?\s*(?:ny|n\.y\.|new\s+york)
               | schenectady
-              | (?<!\d\s)\btroy\b(?!@)(?!\s*(?:oz|ounces?|ozt|weight)\b)
+              | {_TROY_PLACE}
             )
             """,
             haystack,
@@ -582,7 +614,11 @@ def _galway_ireland_conflict(haystack: str) -> bool:
         return False
     if not _GALWAY_IRELAND.search(haystack):
         return False
-    if re.search(r'galway\s*,?\s*ny\b|town\s+of\s+galway', haystack, flags=re.IGNORECASE):
+    if re.search(
+        r'galway\s*,?\s*(?:ny|n\.y\.)\b|town\s+of\s+galway',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
         return False
     return True
 
@@ -594,10 +630,27 @@ def _bethlehem_pa_conflict(haystack: str) -> bool:
     if not _BETHLEHEM_PA.search(haystack):
         return False
     if re.search(
-        r'bethlehem\s*,?\s*ny\b|town\s+of\s+bethlehem',
+        r'bethlehem\s*,?\s*(?:ny|n\.y\.)\b|town\s+of\s+bethlehem',
         haystack,
         flags=re.IGNORECASE,
     ):
+        return False
+    return True
+
+
+def _clifton_park_uk_conflict(haystack: str) -> bool:
+    """True when Clifton Park refers to the York cricket ground, not NY."""
+    if not re.search(r'clifton\s+park', haystack, flags=re.IGNORECASE):
+        return False
+    if not _CLIFTON_PARK_UK.search(haystack):
+        return False
+    if re.search(
+        r'clifton\s+park\s*,?\s*(?:ny|n\.y\.|new\s+york)\b',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    if _NY_CONTEXT.search(haystack):
         return False
     return True
 
@@ -729,6 +782,8 @@ def match_post(
             return MatchResult(False, 'hard_negative:canadian_capital_region')
         if _md_dc_capital_region_conflict(haystack):
             return MatchResult(False, 'hard_negative:md_dc_capital_region')
+        if _clifton_park_uk_conflict(haystack):
+            return MatchResult(False, 'hard_negative:clifton_park_uk')
         return MatchResult(True, 'strong_positive')
 
     if _COLONIE_LOCAL.search(haystack):

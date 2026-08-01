@@ -171,6 +171,17 @@ def test_canadian_capital_region_is_hard_negative() -> None:
     bc = match_post('Zooming out for a birds-eye view of capital region politics. #yyj #BCpoli')
     assert bc.matched is False
 
+    # Greater Victoria / Livable CRD / Times Colonist "capital region" is not NY.
+    victoria = match_post(
+        'Mayoral candidates should answer transit surveys.',
+        alt_text=(
+            'Coalition of transit advocates to grade Greater Victoria candidates. '
+            'Livable CRD plans to survey capital region candidates on housing.'
+        ),
+    )
+    assert victoria.matched is False
+    assert victoria.reason == 'hard_negative:canadian_capital_region'
+
     # NY Capital Region + Canada mention in passing can still keep.
     keep = match_post(
         'Capital Region exporters shipped goods to Canada through the Port of Albany (#AlbanyNY).'
@@ -277,7 +288,47 @@ def test_galway_ireland_not_town_of_galway() -> None:
         ).matched
         is False
     )
+    # Tourism itineraries: Ireland + Galway + NYC must not unlock Town of Galway NY.
+    tourism = match_post(
+        'Ireland is one of the safest places you will visit. NYC to Dublin is under '
+        '6 hours. Start with Dingle, Galway, Kinsale. #VisitIreland #WildAtlanticWay'
+    )
+    assert tourism.matched is False
+    assert tourism.reason == 'hard_negative:galway_ireland'
     assert match_post('Town of Galway, NY board meets Thursday.').matched is True
+
+
+def test_clifton_park_uk_cricket_not_ny() -> None:
+    cricket = match_post(
+        "Yorkshire make light work of Durham on Clifton Park's grand occasion",
+        alt_text=(
+            "Yorkshire make light work of Durham on Clifton Park's grand occasion | The Cricketer"
+        ),
+    )
+    assert cricket.matched is False
+    assert cricket.reason == 'hard_negative:clifton_park_uk'
+    assert match_post('Water main break on Carlton Road in Clifton Park, NY.').matched is True
+
+
+def test_ny_dot_abbrev_and_nys_are_ny_context() -> None:
+    """Wire datelines use N.Y.; locals often write NYS for New York State."""
+    assert match_post('SARATOGA SPRINGS, N.Y. — Local Knowledge wins the Amsterdam Stakes.').matched
+    assert match_post('ALBANY, N.Y. (WRGB) — Lawmakers met in the state Capitol.').matched
+    assert match_post('MALTA, N.Y. (WNYT) – Deputies tracked a missing person.').matched
+    assert match_post(
+        'I moved all the way to Albany and I am still far from Rochester, best city in NYS.'
+    ).matched
+
+
+def test_troy_hyphenated_name_not_troy_ny() -> None:
+    """Hyphenated troy- names/domains must not unlock via New York art titles."""
+    assert (
+        match_post(
+            'Snow in New York print sold. See troy-caperton.pixels.com — email troy@example.com'
+        ).matched
+        is False
+    )
+    assert match_post('Heading from Troy to NYC for the weekend show.').matched is True
 
 
 def test_galway_united_waterford_not_multi_local() -> None:

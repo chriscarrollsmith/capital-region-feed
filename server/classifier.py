@@ -65,7 +65,7 @@ _CAP_REGION_HINT = re.compile(
     (?:
         capital\s+(?:region|district)\b
       | \balbany\b
-      | (?<!\d\s)\btroy\b(?!@)(?!\s*(?:oz|ounces?|ozt|weight)\b)
+      | (?<!\d\s)(?<![\w.])troy(?![\w@.-])(?!\s*(?:oz|ounces?|ozt|weight)\b)
       | schenectady
       | \bcolonie\b
       | guilderland
