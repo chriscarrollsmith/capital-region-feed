@@ -343,7 +343,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
 ---
 
 ### B-059 — Daily feed audit: Victoria CRD, Clifton Park UK, Galway tourism, N.Y./NYS, troy-
-- **Status:** in progress
+- **Status:** done ([#32](https://github.com/chriscarrollsmith/capital-region-feed/pull/32))
 - **Why:** 2026-08-01 audit of last-24h AppView feed (~126 posts) found active FPs and
   wire-dateline recall gaps after #28:
   Greater Victoria / Livable CRD "capital region" via Times Colonist cards; Yorkshire/Durham
