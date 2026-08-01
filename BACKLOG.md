@@ -342,6 +342,25 @@ Status: `todo` · `in progress` · `done` · `blocked`
 
 ---
 
+### B-059 — Daily feed audit: Victoria CRD, Clifton Park UK, Galway tourism, N.Y./NYS, troy-
+- **Status:** in progress
+- **Why:** 2026-08-01 audit of last-24h AppView feed (~126 posts) found active FPs and
+  wire-dateline recall gaps after #28:
+  Greater Victoria / Livable CRD "capital region" via Times Colonist cards; Yorkshire/Durham
+  cricket at Clifton Park (England); Ireland tourism itineraries (Dingle/Galway/Kinsale)
+  unlocked by NYC; hyphenated `troy-` artist domains with "New York" art titles; and
+  `N.Y.` / `NYS` failing to supply NY context so `SARATOGA SPRINGS, N.Y.` / bare Albany+NYS
+  dropped.
+- **Work:**
+  - Expand Canadian capital-region geo cues (Greater Victoria, Livable CRD, timescolonist).
+  - Clifton Park UK cricket conflict helper (Yorkshire / Durham / cricket).
+  - Broaden Galway Ireland cues (Ireland, VisitIreland, Wild Atlantic Way, Dingle, Kinsale).
+  - Treat `N.Y.` and `NYS` as NY context; wire dateline strong positives for Albany/Saratoga/Troy.
+  - Ignore hyphenated `troy-` names/domains in ambiguous Troy matching.
+  - Grow eval with 2026-08-01 FP/TP anchors.
+- **Done when:** Audited FPs drop; `N.Y.`/`NYS` Cap Region posts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-058 — Jetstream catch-up keepalive wedge (quiet feed)
 - **Status:** done
 - **Why:** From ~2026-07-30T16:30Z the Fly machine stayed healthy (`/healthz` 200) while
