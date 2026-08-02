@@ -2474,5 +2474,126 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-08-01 audit: Halfmoon / Clifton Park local retail TP"
+  },
+  {
+    "id": "fp-malta-rotterdam-ais-vesselalert",
+    "text": "VesselAlert\nName: PRYSMIAN MARCO POLO\nMMSI: 249023000\nCallsign: 9HA6070\nType: Other\nFlag: Malta\nSeen: 02-Aug-2026 09:03:25 CEST\nSpeed: 6.9 kts\nHeading: 252 deg\nDest.: ROTTERDAM\nDistance: 48.1 nm",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-02 audit: Flag: Malta + Dest. Rotterdam AIS shipping unlocked multi_local_places"
+  },
+  {
+    "id": "fp-malta-ais-flag-only-with-mmsi",
+    "text": "VesselAlert Name: BARBAROSSA I MMSI: 256002474 Callsign: 9HA5570 Type: Other Flag: Malta Seen: 02-Aug-2026 09:15:05 CEST Status: restricted manoeuvrability",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-02 audit: bare Flag: Malta VesselAlert should not keep as Malta NY"
+  },
+  {
+    "id": "tp-malta-ny-town-board",
+    "text": "Malta, NY town board meets tonight about the solar farm setbacks.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-02 audit: Town of Malta NY counterpart to AIS Europe FP"
+  },
+  {
+    "id": "tp-rotterdam-ny-fire-open-house",
+    "text": "Rotterdam, NY fire department open house this weekend — bring the kids.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-02 audit: Town of Rotterdam NY counterpart to AIS Europe FP"
+  },
+  {
+    "id": "fp-louisiana-capital-region-baton-rouge",
+    "text": "Ahead of Tropical Storm Bertha, governments across the Capital Region, including East Baton Rouge, East Feliciana and St. Mary parishes, are preparing shelters.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-02 audit: Baton Rouge LA capital region weather/emergency copy"
+  },
+  {
+    "id": "fp-louisiana-capital-region-wbrz-handle",
+    "text": "Storms are expected to move through the Capital Region overnight, but the good news is most of the rain should be out of here around sunrise Sunday.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "author_handle": "wbrz-mirror.bsky.social",
+    "note": "2026-08-02 audit: WBRZ mirror weather with bare Capital Region and no Baton Rouge in body"
+  },
+  {
+    "id": "tp-capital-region-mentions-louisiana-port",
+    "text": "Capital Region exporters shipped goods to Louisiana through the Port of Albany (#AlbanyNY).",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-02 audit: NY Capital Region keeps when Louisiana is only a shipping destination"
+  },
+  {
+    "id": "fp-pennsylvania-capital-region-water-harrisburg",
+    "text": "A sinkhole formed on a Harrisburg road Thursday, prompting repairs from Capital Region Water. The affected stretch of Bartine Street remains closed.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-02 audit: Harrisburg Capital Region Water utility is not NY"
+  },
+  {
+    "id": "fp-pennsylvania-capital-region-stands-up",
+    "text": "Spent Sunday afternoon at Pennsylvania Capital Region Stands Up forum on the judicial retention question.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-02 audit: Pennsylvania Capital Region branding"
+  },
+  {
+    "id": "tp-capital-region-visited-harrisburg",
+    "text": "Capital Region students visited Harrisburg before returning to #AlbanyNY.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-02 audit: NY Capital Region keeps when Harrisburg is only a trip destination"
+  },
+  {
+    "id": "tn-malta-international-lmml-sim",
+    "text": "iniBuilds swaps megahubs for the Mediterranean with Malta International (LMML) scenery for 2026.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-02 audit: Malta International airport sim scenery is Europe"
+  },
+  {
+    "id": "fp-malta-portugal-firefighters",
+    "text": "Malta sends 40 firefighters to help battle wildfires in Portugal. The Civil Protection Department confirmed the deployment.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-02 audit: nation of Malta firefighter deployment"
   }
 ]
