@@ -362,7 +362,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-060 — Daily feed audit: Malta/Rotterdam AIS, LA/PA capital region
-- **Status:** in progress
+- **Status:** done ([#33](https://github.com/chriscarrollsmith/capital-region-feed/pull/33))
 - **Why:** 2026-08-02 audit of last-24h AppView feed (~102 posts) found active FPs after #32:
   European AIS `Flag: Malta` + `Dest.: ROTTERDAM` unlocked `multi_local_places` (Town of
   Malta/Rotterdam NY collisions); WBRZ Baton Rouge weather kept on bare `Capital Region`
