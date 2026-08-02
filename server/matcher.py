@@ -216,8 +216,11 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
             madrid|spain|belgium|brussels|paris|france|berlin|germany|
             tokyo|seoul|beijing|delhi|ottawa|canberra|rome|italy|
             amsterdam|vienna|warsaw|prague|lisbon|athens|dublin|
-            canada|denmark|copenhagen|mississippi
+            canada|denmark|copenhagen|mississippi|louisiana|pennsylvania
           )\b
+      # Harrisburg PA utility — not NY Capital Region.
+      | capital\s+region\s+water\b
+      | pennsylvania\s+capital\s+region
       | hauptstadtregion
     )
     """,
@@ -261,6 +264,72 @@ _MD_DC_CAPITAL_REGION = re.compile(
     (?:
         capital\s+region\b[\s\S]{{0,160}}(?:{_MD_DC_GEO_CUE})
       | (?:{_MD_DC_GEO_CUE})[\s\S]{{0,160}}capital\s+region\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Louisiana "capital region" (Baton Rouge / WBRZ). Handles like wbrz-mirror are
+# checked via author_handle because weather copy often omits "Baton Rouge".
+_LA_GEO_CUE = (
+    r'\bbaton\s+rouge\b|\blouisiana\b|\#la(?:wx|politics|gov)\b|'
+    r'\bwbrz\b|wbrz\.com|east\s+baton\s+rouge|west\s+feliciana|'
+    r'\bfeliciana\b|st\.?\s+mary\s+parish'
+)
+
+_LA_CAPITAL_REGION = re.compile(
+    rf"""
+    (?:
+        capital\s+region\s+of\s+louisiana\b
+      | capital\s+region\b[\s\S]{{0,160}}(?:{_LA_GEO_CUE})
+      | (?:{_LA_GEO_CUE})[\s\S]{{0,160}}capital\s+region\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Pennsylvania "capital region" (Harrisburg / Capital Region Water).
+_PA_GEO_CUE = (
+    r'\bharrisburg\b|\bpennsylvania\b|\#pa(?:wx|politics|gov)\b|'
+    r'capital\s+region\s+water\b|pennlive|susquehanna\b|'
+    r'pennsylvania\s+capital\s+region'
+)
+
+_PA_CAPITAL_REGION = re.compile(
+    rf"""
+    (?:
+        pennsylvania\s+capital\s+region
+      | capital\s+region\s+of\s+pennsylvania\b
+      | capital\s+region\s+water\b
+      | capital\s+region\b[\s\S]{{0,160}}(?:{_PA_GEO_CUE})
+      | (?:{_PA_GEO_CUE})[\s\S]{{0,160}}capital\s+region\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# European Malta / AIS shipping (Flag: Malta + Dest. Rotterdam, etc.) — not
+# Town of Malta NY or Town of Rotterdam NY.
+_MALTA_EUROPE = re.compile(
+    r"""
+    (?:
+        \bmmsi\b
+      | \bvesselalert\b
+      | \bais\b
+      | flag:\s*malta\b
+      | bandera:\s*malta\b
+      | dest\.?\s*:\s*rotterdam\b
+      | \blmml\b
+      | isle\s+of\s+mtv
+      | mediterranean
+      | \bmalti\b
+      | callsign:\s*9ha
+      | \b9ha\d+\b
+      | malta\s+international
+      | malta\s+sends\b
+      | wildfires?\s+in\s+portugal
+      | \bportugal\b[\s\S]{0,80}\bmalta\b
+      | \bmalta\b[\s\S]{0,80}\bportugal\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -361,8 +430,10 @@ _HARD_NEGATIVE = re.compile(
             madrid|spain|belgium|brussels|paris|france|berlin|germany|
             tokyo|seoul|beijing|delhi|ottawa|canberra|rome|italy|
             amsterdam|vienna|warsaw|prague|lisbon|athens|dublin|
-            canada|denmark|copenhagen|mississippi
+            canada|denmark|copenhagen|mississippi|louisiana|pennsylvania
           )\b
+      | capital\s+region\s+water\b
+      | pennsylvania\s+capital\s+region
       | hauptstadtregion
       | jc\s+latham
       | saratoga\s+springs\s*,\s*ut\b
@@ -597,6 +668,46 @@ def _md_dc_capital_region_conflict(haystack: str) -> bool:
     return not _ny_capital_region_context(haystack)
 
 
+def _louisiana_capital_region_conflict(haystack: str, author_handle: str | None = None) -> bool:
+    """True when 'capital region' refers to Baton Rouge / LA, not NY."""
+    if _ny_capital_region_context(haystack):
+        return False
+    if _LA_CAPITAL_REGION.search(haystack):
+        return True
+    # WBRZ mirrors often omit "Baton Rouge" in short weather copy.
+    handle = (author_handle or '').strip().lower()
+    if re.search(r'\bwbrz\b', handle) and re.search(
+        r'capital\s+region\b', haystack, flags=re.IGNORECASE
+    ):
+        return True
+    return False
+
+
+def _pennsylvania_capital_region_conflict(haystack: str) -> bool:
+    """True when 'capital region' refers to Harrisburg / PA, not NY."""
+    if not _PA_CAPITAL_REGION.search(haystack):
+        return False
+    return not _ny_capital_region_context(haystack)
+
+
+def _malta_europe_conflict(haystack: str) -> bool:
+    """True when Malta/Rotterdam refer to the EU island / AIS shipping, not NY."""
+    if not re.search(r'\bmalta\b|\brotterdam\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not _MALTA_EUROPE.search(haystack):
+        return False
+    if re.search(
+        r'(?:malta|rotterdam)\s*,?\s*(?:ny|n\.y\.|new\s+york)\b|'
+        r'town\s+of\s+(?:malta|rotterdam)',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    if _ny_capital_region_context(haystack):
+        return False
+    return True
+
+
 def _wi_troy_waterford_conflict(haystack: str, distinct: set[str]) -> bool:
     """True when Troy+Waterford (etc.) are Wisconsin East Troy weather, not NY."""
     if not ({'troy', 'waterford'} & distinct):
@@ -782,6 +893,10 @@ def match_post(
             return MatchResult(False, 'hard_negative:canadian_capital_region')
         if _md_dc_capital_region_conflict(haystack):
             return MatchResult(False, 'hard_negative:md_dc_capital_region')
+        if _louisiana_capital_region_conflict(haystack, author_handle):
+            return MatchResult(False, 'hard_negative:louisiana_capital_region')
+        if _pennsylvania_capital_region_conflict(haystack):
+            return MatchResult(False, 'hard_negative:pennsylvania_capital_region')
         if _clifton_park_uk_conflict(haystack):
             return MatchResult(False, 'hard_negative:clifton_park_uk')
         return MatchResult(True, 'strong_positive')
@@ -802,10 +917,15 @@ def match_post(
         # Ireland Galway (+ Waterford FC scorelines) must not unlock multi-local.
         if _galway_ireland_conflict(haystack) and distinct <= {'galway', 'waterford'}:
             return MatchResult(False, 'hard_negative:galway_ireland')
+        # European Malta AIS / Rotterdam shipping must not unlock multi-local.
+        if _malta_europe_conflict(haystack) and distinct <= {'malta', 'rotterdam'}:
+            return MatchResult(False, 'hard_negative:malta_europe')
         multi_eligible = {name for name in distinct if name not in _MULTI_LOCAL_EXCLUDED}
         if len(multi_eligible) >= 2:
             if _wi_troy_waterford_conflict(haystack, multi_eligible):
                 return MatchResult(False, 'hard_negative:wi_troy_waterford')
+            if _malta_europe_conflict(haystack) and ({'malta', 'rotterdam'} & multi_eligible):
+                return MatchResult(False, 'hard_negative:malta_europe')
             return MatchResult(True, 'multi_local_places')
 
         # Prefer a non-collision token when several ambiguous names appear but
@@ -838,6 +958,9 @@ def match_post(
 
         if term == 'bethlehem' and _bethlehem_pa_conflict(haystack):
             return MatchResult(False, 'hard_negative:bethlehem_pa')
+
+        if term in {'malta', 'rotterdam'} and _malta_europe_conflict(haystack):
+            return MatchResult(False, 'hard_negative:malta_europe')
 
         if _NY_CONTEXT.search(place_haystack) or _STRONG_POSITIVE.search(haystack):
             return MatchResult(True, f'ambiguous_with_context:{term}')
