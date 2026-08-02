@@ -217,6 +217,59 @@ def test_md_dc_capital_region_is_hard_negative() -> None:
     assert keep.matched is True
 
 
+def test_louisiana_capital_region_is_hard_negative() -> None:
+    la = match_post(
+        'Governments across the Capital Region, including East Baton Rouge Parish, '
+        'are preparing shelters ahead of the storm.'
+    )
+    assert la.matched is False
+    assert la.reason == 'hard_negative:louisiana_capital_region'
+
+    # WBRZ weather copy often omits Baton Rouge; gate on author handle.
+    wbrz = match_post(
+        'Storms are expected to move through the Capital Region overnight, '
+        'but most of the rain should be out by sunrise.',
+        author_handle='wbrz-mirror.bsky.social',
+    )
+    assert wbrz.matched is False
+    assert wbrz.reason == 'hard_negative:louisiana_capital_region'
+
+    keep = match_post(
+        'Capital Region exporters shipped goods to Louisiana through the Port of Albany '
+        '(#AlbanyNY).'
+    )
+    assert keep.matched is True
+
+
+def test_pennsylvania_capital_region_is_hard_negative() -> None:
+    pa = match_post(
+        'Capital Region Water replaces manholes in Harrisburg through March.',
+    )
+    assert pa.matched is False
+
+    forum = match_post(
+        'Spent Sunday at the Pennsylvania Capital Region Stands Up forum on judicial retention.'
+    )
+    assert forum.matched is False
+
+    keep = match_post('Capital Region students visited Harrisburg before returning to #AlbanyNY.')
+    assert keep.matched is True
+
+
+def test_malta_europe_ais_not_multi_local() -> None:
+    ais = match_post(
+        'VesselAlert\nName: PRYSMIAN MARCO POLO\nMMSI: 249023000\n'
+        'Callsign: 9HA6070\nType: Other\nFlag: Malta\n'
+        'Dest.: ROTTERDAM\nSpeed: 6.9 kts'
+    )
+    assert ais.matched is False
+    assert ais.reason == 'hard_negative:malta_europe'
+
+    # Town of Malta / Rotterdam NY still keep with NY context.
+    assert match_post('Malta, NY town board meets about the solar farm tonight.').matched is True
+    assert match_post('Rotterdam, NY fire department open house this weekend.').matched is True
+
+
 def test_troy_weight_is_not_troy_ny() -> None:
     assert (
         match_post(
