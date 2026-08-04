@@ -182,6 +182,23 @@ def test_canadian_capital_region_is_hard_negative() -> None:
     assert victoria.matched is False
     assert victoria.reason == 'hard_negative:canadian_capital_region'
 
+    # RCAF Snowbirds flyovers / Times Colonist author handle.
+    snowbirds = match_post(
+        '',
+        alt_text=(
+            'Parkland Secondary grad Capt. Brendan Pellow will return to the capital '
+            'region with the Snowbirds team on Monday.'
+        ),
+    )
+    assert snowbirds.matched is False
+    assert snowbirds.reason == 'hard_negative:canadian_capital_region'
+
+    tc_handle = match_post(
+        'Flyover returns to the capital region on Monday.',
+        author_handle='timescolonist.bsky.social',
+    )
+    assert tc_handle.matched is False
+
     # NY Capital Region + Canada mention in passing can still keep.
     keep = match_post(
         'Capital Region exporters shipped goods to Canada through the Port of Albany (#AlbanyNY).'
@@ -360,7 +377,63 @@ def test_clifton_park_uk_cricket_not_ny() -> None:
     )
     assert cricket.matched is False
     assert cricket.reason == 'hard_negative:clifton_park_uk'
+
+    # Rotherham Show / .gov.uk Clifton Park is England, not NY.
+    rotherham = match_post(
+        'The Rotherham Show returns to Clifton Park, with one of its most vibrant programmes yet. '
+        'www.rotherham.gov.uk/rotherham-show'
+    )
+    assert rotherham.matched is False
+    assert rotherham.reason == 'hard_negative:clifton_park_uk'
+
     assert match_post('Water main break on Carlton Road in Clifton Park, NY.').matched is True
+
+
+def test_california_capital_region_is_hard_negative() -> None:
+    sac = match_post(
+        'In recent years, numerous social clubs geared toward women in the capital region '
+        'have sprung up.',
+        alt_text='Sacramento meet-up clubs help women form community in adulthood.',
+    )
+    assert sac.matched is False
+    assert sac.reason == 'hard_negative:california_capital_region'
+
+    # SacBee cards may omit Sacramento in short body copy.
+    handle = match_post(
+        'Are social clubs in the capital region creating true friendships?',
+        author_handle='sacbee.com',
+    )
+    assert handle.matched is False
+    assert handle.reason == 'hard_negative:california_capital_region'
+
+    keep = match_post('Capital Region students visited Sacramento before returning to #AlbanyNY.')
+    assert keep.matched is True
+
+
+def test_korea_capital_region_is_hard_negative() -> None:
+    seoul = match_post(
+        "Seoul and parts of Gyeonggi Province came under the capital region's first "
+        'Heat Wave Emergency Warning on Monday, as record-breaking heat in southeastern '
+        'South Korea spread westward.'
+    )
+    assert seoul.matched is False
+    assert seoul.reason == 'hard_negative:korea_capital_region'
+
+    keep = match_post(
+        'Capital Region exporters shipped goods to Seoul through the Port of Albany (#AlbanyNY).'
+    )
+    assert keep.matched is True
+
+
+def test_saratoga_venue_cues_without_ny() -> None:
+    """Caffe Lena / High Rock Park imply Saratoga Springs NY even without ', NY'."""
+    caffe = match_post('Got to see Rory Block over the weekend at Caffe Lena in Saratoga Springs.')
+    assert caffe.matched is True
+
+    high_rock = match_post(
+        'We are popping up again in SARATOGA SPRINGS in September at High Rock Park Pavilions!'
+    )
+    assert high_rock.matched is True
 
 
 def test_ny_dot_abbrev_and_nys_are_ny_context() -> None:
