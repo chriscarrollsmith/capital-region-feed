@@ -105,6 +105,11 @@ _STRONG_POSITIVE = re.compile(
       # Hashtag #SPAC next to Saratoga (avoid bare SPAC / financial SPACs).
       | \#spac\b[\s\S]{0,200}\bsaratoga\b
       | \bsaratoga\b[\s\S]{0,200}\#spac\b
+      # Distinctive Saratoga Springs venues (often omit ", NY").
+      | caffe\s+lena\b
+      | high\s+rock\s+park\s+pavilions?\b
+      | high\s+rock\s+park[\s\S]{0,80}\bsaratoga\b
+      | \bsaratoga\b[\s\S]{0,80}high\s+rock\s+park\b
       | times\s+union\b
       # Town of New Scotland — not "a new Scotland" / "New Scotland Shirt".
       | new\s+scotland(?:\s*,?\s*ny\b|\s+town\b)
@@ -216,7 +221,8 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
             madrid|spain|belgium|brussels|paris|france|berlin|germany|
             tokyo|seoul|beijing|delhi|ottawa|canberra|rome|italy|
             amsterdam|vienna|warsaw|prague|lisbon|athens|dublin|
-            canada|denmark|copenhagen|mississippi|louisiana|pennsylvania
+            canada|denmark|copenhagen|mississippi|louisiana|pennsylvania|
+            california|sacramento|korea|south\s+korea
           )\b
       # Harrisburg PA utility — not NY Capital Region.
       | capital\s+region\s+water\b
@@ -228,12 +234,13 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
 )
 
 # Canadian "capital region" cues (Ottawa national, Victoria BC / #yyj / CRD).
+# Snowbirds = RCAF demo team (Victoria-area flyovers); not birdwatching copy.
 _CANADIAN_GEO_CUE = (
     r'\bcanada\b|\bcanadian\b|\bottawa\b|\#canadian\w*|'
     r'\#yyj\b|\#bcpoli\b|british\s+columbia|\blangford\b|'
     r'victoria(?:\s*,?\s*bc\b)|greater\s+victoria|'
     r'capital\s+regional\s+district|\blivable\s+crd\b|'
-    r'timescolonist\.com'
+    r'timescolonist\.com|\bsnowbirds?\b|parkland\s+secondary'
 )
 
 # Ottawa / Canada / BC "capital region" co-occurring with Canadian cues (not NY).
@@ -308,6 +315,43 @@ _PA_CAPITAL_REGION = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
+# California "capital region" (Sacramento / SacBee).
+_CA_GEO_CUE = (
+    r'\bsacramento\b|\bcalifornia\b|\#ca(?:wx|politics|gov)\b|'
+    r'\bsacbee\b|sacbee\.com|folsom\b|elk\s+grove\b|'
+    r'west\s+sacramento|roseville\b'
+)
+
+_CA_CAPITAL_REGION = re.compile(
+    rf"""
+    (?:
+        capital\s+region\s+of\s+(?:california|sacramento)\b
+      | capital\s+region\b[\s\S]{{0,160}}(?:{_CA_GEO_CUE})
+      | (?:{_CA_GEO_CUE})[\s\S]{{0,160}}capital\s+region\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# South Korea "capital region" (Seoul / Gyeonggi / KMA heat alerts).
+_KR_GEO_CUE = (
+    r'\bseoul\b|\bgyeonggi\b|\bkorea\b|south\s+korea|'
+    r'\bincheon\b|\bkoreaherald\b|korea\s+herald|'
+    r'\bgangnam\b|han\s+river|\bkma\b'
+)
+
+_KR_CAPITAL_REGION = re.compile(
+    rf"""
+    (?:
+        capital\s+region\s+of\s+(?:korea|south\s+korea|seoul)\b
+      | greater\s+seoul
+      | capital\s+region\b[\s\S]{{0,160}}(?:{_KR_GEO_CUE})
+      | (?:{_KR_GEO_CUE})[\s\S]{{0,160}}capital\s+region\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
 # European Malta / AIS shipping (Flag: Malta + Dest. Rotterdam, etc.) — not
 # Town of Malta NY or Town of Rotterdam NY.
 _MALTA_EUROPE = re.compile(
@@ -372,7 +416,7 @@ _GALWAY_IRELAND = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
-# Clifton Park cricket ground (York, England) — not Clifton Park, NY.
+# Clifton Park (York / Rotherham, England) — not Clifton Park, NY.
 _CLIFTON_PARK_UK = re.compile(
     r"""
     (?:
@@ -380,6 +424,10 @@ _CLIFTON_PARK_UK = re.compile(
       | \bdurham\b
       | \bcricket(?:er)?s?\b
       | county\s+championship
+      | \brotherham\b
+      | rotherham\s+show
+      | \.gov\.uk\b
+      | south\s+yorkshire
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -430,7 +478,8 @@ _HARD_NEGATIVE = re.compile(
             madrid|spain|belgium|brussels|paris|france|berlin|germany|
             tokyo|seoul|beijing|delhi|ottawa|canberra|rome|italy|
             amsterdam|vienna|warsaw|prague|lisbon|athens|dublin|
-            canada|denmark|copenhagen|mississippi|louisiana|pennsylvania
+            canada|denmark|copenhagen|mississippi|louisiana|pennsylvania|
+            california|sacramento|korea|south\s+korea
           )\b
       | capital\s+region\s+water\b
       | pennsylvania\s+capital\s+region
@@ -653,17 +702,45 @@ def _ny_capital_region_context(haystack: str) -> bool:
     )
 
 
-def _canadian_capital_region_conflict(haystack: str) -> bool:
+def _canadian_capital_region_conflict(haystack: str, author_handle: str | None = None) -> bool:
     """True when 'capital region' refers to Ottawa/Canada/BC, not NY."""
-    if not _CANADIAN_CAPITAL_REGION.search(haystack):
+    if _ny_capital_region_context(haystack):
         return False
-    # Explicit NY Cap Region context wins over Canadian co-mentions.
-    return not _ny_capital_region_context(haystack)
+    if _CANADIAN_CAPITAL_REGION.search(haystack):
+        return True
+    # Times Colonist cards often omit the timescolonist.com domain in embeds.
+    handle = (author_handle or '').strip().lower()
+    if re.search(r'timescolonist', handle) and re.search(
+        r'capital\s+region\b', haystack, flags=re.IGNORECASE
+    ):
+        return True
+    return False
 
 
 def _md_dc_capital_region_conflict(haystack: str) -> bool:
     """True when 'capital region' refers to MD/DC metro, not NY."""
     if not _MD_DC_CAPITAL_REGION.search(haystack):
+        return False
+    return not _ny_capital_region_context(haystack)
+
+
+def _california_capital_region_conflict(haystack: str, author_handle: str | None = None) -> bool:
+    """True when 'capital region' refers to Sacramento / CA, not NY."""
+    if _ny_capital_region_context(haystack):
+        return False
+    if _CA_CAPITAL_REGION.search(haystack):
+        return True
+    handle = (author_handle or '').strip().lower()
+    if re.search(r'\bsacbee\b', handle) and re.search(
+        r'capital\s+region\b', haystack, flags=re.IGNORECASE
+    ):
+        return True
+    return False
+
+
+def _korea_capital_region_conflict(haystack: str) -> bool:
+    """True when 'capital region' refers to Seoul / Gyeonggi, not NY."""
+    if not _KR_CAPITAL_REGION.search(haystack):
         return False
     return not _ny_capital_region_context(haystack)
 
@@ -750,7 +827,7 @@ def _bethlehem_pa_conflict(haystack: str) -> bool:
 
 
 def _clifton_park_uk_conflict(haystack: str) -> bool:
-    """True when Clifton Park refers to the York cricket ground, not NY."""
+    """True when Clifton Park refers to York/Rotherham (England), not NY."""
     if not re.search(r'clifton\s+park', haystack, flags=re.IGNORECASE):
         return False
     if not _CLIFTON_PARK_UK.search(haystack):
@@ -889,7 +966,7 @@ def match_post(
         # Bare "Albany County" is also a strong token; still drop WY-tagged posts.
         if _albany_county_wy_conflict(haystack):
             return MatchResult(False, 'entity_other:albany_county_wy')
-        if _canadian_capital_region_conflict(haystack):
+        if _canadian_capital_region_conflict(haystack, author_handle):
             return MatchResult(False, 'hard_negative:canadian_capital_region')
         if _md_dc_capital_region_conflict(haystack):
             return MatchResult(False, 'hard_negative:md_dc_capital_region')
@@ -897,6 +974,10 @@ def match_post(
             return MatchResult(False, 'hard_negative:louisiana_capital_region')
         if _pennsylvania_capital_region_conflict(haystack):
             return MatchResult(False, 'hard_negative:pennsylvania_capital_region')
+        if _california_capital_region_conflict(haystack, author_handle):
+            return MatchResult(False, 'hard_negative:california_capital_region')
+        if _korea_capital_region_conflict(haystack):
+            return MatchResult(False, 'hard_negative:korea_capital_region')
         if _clifton_park_uk_conflict(haystack):
             return MatchResult(False, 'hard_negative:clifton_park_uk')
         return MatchResult(True, 'strong_positive')
