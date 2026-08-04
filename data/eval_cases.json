@@ -2595,5 +2595,129 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-08-02 audit: nation of Malta firefighter deployment"
+  },
+  {
+    "id": "fp-sacramento-capital-region-sacbee",
+    "text": "In recent years, numerous social clubs geared toward women in the capital region have sprung up. Are they actually creating true friendships?",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Sacramento meet-up clubs help women form community in adulthood.",
+    "note": "2026-08-04 audit: Sacramento Bee capital region meetup clubs"
+  },
+  {
+    "id": "fp-sacramento-capital-region-sacbee-handle",
+    "text": "Are social clubs in the capital region creating true friendships?",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "author_handle": "sacbee.com",
+    "note": "2026-08-04 audit: SacBee handle gate when Sacramento omitted from body"
+  },
+  {
+    "id": "tp-capital-region-visited-sacramento",
+    "text": "Capital Region students visited Sacramento before returning to #AlbanyNY.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-04 audit: NY Capital Region keeps when Sacramento is only a trip destination"
+  },
+  {
+    "id": "fp-korea-capital-region-seoul-gyeonggi",
+    "text": "Seoul and parts of Gyeonggi Province came under the capital region's first Heat Wave Emergency Warning on Monday, as record-breaking heat in southeastern South Korea spread westward.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-04 audit: Seoul/Gyeonggi capital region heat wave"
+  },
+  {
+    "id": "fp-korea-capital-region-greater-seoul",
+    "text": "Highest-level heat wave warning issued for Greater Seoul area as the capital region hit record highs.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-04 audit: Greater Seoul capital region phrasing"
+  },
+  {
+    "id": "tp-capital-region-shipped-to-seoul",
+    "text": "Capital Region exporters shipped goods to Seoul through the Port of Albany (#AlbanyNY).",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-04 audit: NY Capital Region keeps when Seoul is only a shipping destination"
+  },
+  {
+    "id": "fp-clifton-park-rotherham-show",
+    "text": "The Rotherham Show returns to Clifton Park, with one of its most vibrant programmes yet. Brought to you by Rotherham Council. www.rotherham.gov.uk/rotherham-show",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-04 audit: Rotherham Show at Clifton Park England"
+  },
+  {
+    "id": "tp-clifton-park-route-9-retail",
+    "text": "New shop opens on Route 9 in Clifton Park this weekend — locals love it.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-04 audit: Cap Region Clifton Park TP counterpart to Rotherham FP"
+  },
+  {
+    "id": "fp-timescolonist-snowbirds-capital-region",
+    "text": "",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Parkland Secondary grad Capt. Brendan Pellow will return to the capital region with the Snowbirds team on Monday, signing autographs after a noon flyover.",
+    "note": "2026-08-04 audit: Victoria BC Snowbirds flyover capital region via Times Colonist card"
+  },
+  {
+    "id": "fp-timescolonist-handle-capital-region",
+    "text": "Flyover returns to the capital region on Monday.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "author_handle": "timescolonist.bsky.social",
+    "note": "2026-08-04 audit: Times Colonist author handle gate for bare capital region"
+  },
+  {
+    "id": "tp-caffe-lena-saratoga-springs",
+    "text": "Got to see Rory Block over the weekend at Caffe Lena in Saratoga Springs.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-04 audit: Caffe Lena venue recall without , NY"
+  },
+  {
+    "id": "tp-high-rock-park-pavilions-saratoga",
+    "text": "We are popping up again in SARATOGA SPRINGS in September at High Rock Park Pavilions!",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-04 audit: High Rock Park Pavilions + Saratoga Springs without NY"
   }
 ]
