@@ -397,7 +397,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-062 — Daily feed audit: Ukrainian capital region, Montreal Scotia, Watervliet MI, The Egg
-- **Status:** in progress
+- **Status:** done ([#35](https://github.com/chriscarrollsmith/capital-region-feed/pull/35))
 - **Why:** 2026-08-05 audit of last-24h AppView feed (~190 posts since 2026-08-04T09:00Z)
   found active FPs after #32 (and unmerged #33/#34 cherry-picks): AP/wire "Ukrainian capital
   region" / Kyiv mirrors (~10 keeps); Osheaga Scotia Forest Stage and Cinéma Banque Scotia
