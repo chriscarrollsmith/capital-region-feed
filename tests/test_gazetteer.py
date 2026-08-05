@@ -27,6 +27,14 @@ def test_match_post_entity_other_and_local() -> None:
     assert local.reason == 'entity_local:niskayuna_ny'
 
 
+def test_watervliet_michigan_beats_watervliet_ny() -> None:
+    gaz = default_gazetteer()
+    hit = gaz.lookup('RN Acute Inpatient Rehab - Watervliet, MI')
+    assert hit is not None
+    assert hit.region == 'other'
+    assert hit.entity_id == 'watervliet_mi'
+
+
 def test_albany_county_wyoming_not_capital_region() -> None:
     contiguous = match_post('Road work begins in Albany County, WY next month.')
     assert contiguous.matched is False
