@@ -396,6 +396,24 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Saratoga venue FNs keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-062 — Daily feed audit: Ukrainian capital region, Montreal Scotia, Watervliet MI, The Egg
+- **Status:** in progress
+- **Why:** 2026-08-05 audit of last-24h AppView feed (~190 posts since 2026-08-04T09:00Z)
+  found active FPs after #32 (and unmerged #33/#34 cherry-picks): AP/wire "Ukrainian capital
+  region" / Kyiv mirrors (~10 keeps); Osheaga Scotia Forest Stage and Cinéma Banque Scotia
+  Montréal + New York plot unlocked Village of Scotia; Galway tourism with "Irish" (not
+  "Ireland") + New York; Watervliet, MI hospital jobs via bare `watervliet` entity/strong.
+  FN: The Egg + Albany tour footnotes without an explicit NY token.
+- **Work:**
+  - Ukraine capital-region conflict + hard-negative `ukrainian capital region`.
+  - Scotia Montreal conflict (Banque Scotia / Osheaga / Parc Jean-Drapeau).
+  - Expand Galway Ireland cues (`irish`, day-tripping from Galway).
+  - Gazetteer `watervliet_mi` + MI conflict helper / hard-negative block.
+  - Strong positive for The Egg co-occurring with Albany.
+  - Grow eval with 2026-08-05 FP/TP anchors.
+- **Done when:** Audited FPs drop; Scotia/Watervliet/Egg Cap Region counterparts keep;
+  eval P/R stay 1.000; unit tests cover the new gates.
+
 ### B-058 — Jetstream catch-up keepalive wedge (quiet feed)
 - **Status:** done
 - **Why:** From ~2026-07-30T16:30Z the Fly machine stayed healthy (`/healthz` 200) while
