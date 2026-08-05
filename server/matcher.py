@@ -108,6 +108,9 @@ _STRONG_POSITIVE = re.compile(
       # Distinctive Saratoga Springs venues (often omit ", NY").
       | caffe\s+lena\b
       | high\s+rock\s+park\s+pavilions?\b
+      # The Egg (Empire State Plaza) — co-occur with Albany; bare "egg" is too noisy.
+      | \bthe\s+egg\b[\s\S]{0,80}\balbany\b
+      | \balbany\b[\s\S]{0,80}\bthe\s+egg\b
       | high\s+rock\s+park[\s\S]{0,80}\bsaratoga\b
       | \bsaratoga\b[\s\S]{0,80}high\s+rock\s+park\b
       | times\s+union\b
@@ -222,12 +225,14 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
             tokyo|seoul|beijing|delhi|ottawa|canberra|rome|italy|
             amsterdam|vienna|warsaw|prague|lisbon|athens|dublin|
             canada|denmark|copenhagen|mississippi|louisiana|pennsylvania|
-            california|sacramento|korea|south\s+korea
+            california|sacramento|korea|south\s+korea|ukraine|kyiv|kiev
           )\b
+      | ukrainian\s+capital\s+region
       # Harrisburg PA utility — not NY Capital Region.
       | capital\s+region\s+water\b
       | pennsylvania\s+capital\s+region
       | hauptstadtregion
+      | watervliet\s*,?\s*(?:mi|michigan)\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -352,6 +357,24 @@ _KR_CAPITAL_REGION = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
+# Ukraine "capital region" (Kyiv / AP wire mirrors).
+_UA_GEO_CUE = (
+    r'\bukraine\b|\bukrainian\b|\bkyiv\b|\bkiev\b|'
+    r'\#ukraine\b|\#kyiv\b|kyivunderattack'
+)
+
+_UA_CAPITAL_REGION = re.compile(
+    rf"""
+    (?:
+        ukrainian\s+capital\s+region
+      | capital\s+region\s+of\s+(?:ukraine|kyiv|kiev)\b
+      | capital\s+region\b[\s\S]{{0,160}}(?:{_UA_GEO_CUE})
+      | (?:{_UA_GEO_CUE})[\s\S]{{0,160}}capital\s+region\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
 # European Malta / AIS shipping (Flag: Malta + Dest. Rotterdam, etc.) — not
 # Town of Malta NY or Town of Rotterdam NY.
 _MALTA_EUROPE = re.compile(
@@ -406,11 +429,40 @@ _GALWAY_IRELAND = re.compile(
       | county\s+mayo\b
       | cois\s+coiribe
       | \bireland\b
+      | \birish\b
+      | day\s+tripping\s+from\s+galway
       | \#visitireland\b
       | \#wildatlanticway\b
       | wild\s+atlantic\s+way
       | \bdingle\b
       | \bkinsale\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Scotia (Village of Scotia NY) vs Montreal Banque Scotia / Osheaga stage.
+_SCOTIA_MONTREAL = re.compile(
+    r"""
+    (?:
+        banque\s+scotia
+      | cin[eé]ma\s+banque\s+scotia
+      | scotia\s+forest\s+stage
+      | parc\s+jean[-\s]?drapeau
+      | \bosheaga\b
+      | \bmontr[eé]al\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Watervliet, Michigan (jobs / hospital listings) — not Watervliet NY.
+_WATERVLIET_MI = re.compile(
+    r"""
+    (?:
+        watervliet\s*,?\s*(?:mi|michigan)\b
+      | watervliet[\s\S]{0,80}\b(?:mi|michigan)\b
+      | \b(?:mi|michigan)\b[\s\S]{0,80}watervliet
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -479,14 +531,16 @@ _HARD_NEGATIVE = re.compile(
             tokyo|seoul|beijing|delhi|ottawa|canberra|rome|italy|
             amsterdam|vienna|warsaw|prague|lisbon|athens|dublin|
             canada|denmark|copenhagen|mississippi|louisiana|pennsylvania|
-            california|sacramento|korea|south\s+korea
+            california|sacramento|korea|south\s+korea|ukraine|kyiv|kiev
           )\b
+      | ukrainian\s+capital\s+region
       | capital\s+region\s+water\b
       | pennsylvania\s+capital\s+region
       | hauptstadtregion
       | jc\s+latham
       | saratoga\s+springs\s*,\s*ut\b
       | saratoga\s+springs\s+ut\b
+      | watervliet\s*,?\s*(?:mi|michigan)\b
       | colonie\s+de\s+vacances
       | colonie\s+num[eé]rique
       | une\s+colonie
@@ -745,6 +799,13 @@ def _korea_capital_region_conflict(haystack: str) -> bool:
     return not _ny_capital_region_context(haystack)
 
 
+def _ukraine_capital_region_conflict(haystack: str) -> bool:
+    """True when 'capital region' refers to Kyiv / Ukraine, not NY."""
+    if not _UA_CAPITAL_REGION.search(haystack):
+        return False
+    return not _ny_capital_region_context(haystack)
+
+
 def _louisiana_capital_region_conflict(haystack: str, author_handle: str | None = None) -> bool:
     """True when 'capital region' refers to Baton Rouge / LA, not NY."""
     if _ny_capital_region_context(haystack):
@@ -804,6 +865,37 @@ def _galway_ireland_conflict(haystack: str) -> bool:
         return False
     if re.search(
         r'galway\s*,?\s*(?:ny|n\.y\.)\b|town\s+of\s+galway',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    return True
+
+
+def _scotia_montreal_conflict(haystack: str) -> bool:
+    """True when Scotia refers to Montreal Banque Scotia / Osheaga, not NY."""
+    if not re.search(r'\bscotia\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not _SCOTIA_MONTREAL.search(haystack):
+        return False
+    if re.search(
+        r'scotia\s*,?\s*(?:ny|n\.y\.|new\s+york)\b|town\s+of\s+scotia|'
+        r'village\s+of\s+scotia',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    return True
+
+
+def _watervliet_mi_conflict(haystack: str) -> bool:
+    """True when Watervliet refers to Michigan, not the city in NY."""
+    if not re.search(r'\bwatervliet\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not _WATERVLIET_MI.search(haystack):
+        return False
+    if re.search(
+        r'watervliet\s*,?\s*(?:ny|n\.y\.|new\s+york)\b',
         haystack,
         flags=re.IGNORECASE,
     ):
@@ -960,12 +1052,16 @@ def match_post(
     if entity is not None and entity.region == 'capital_ny':
         if entity.entity_id == 'albany_county_ny' and _albany_county_wy_conflict(haystack):
             return MatchResult(False, 'entity_other:albany_county_wy')
+        if entity.entity_id == 'watervliet_ny' and _watervliet_mi_conflict(haystack):
+            return MatchResult(False, 'entity_other:watervliet_mi')
         return MatchResult(True, f'entity_local:{entity.entity_id}')
 
     if _STRONG_POSITIVE.search(haystack):
         # Bare "Albany County" is also a strong token; still drop WY-tagged posts.
         if _albany_county_wy_conflict(haystack):
             return MatchResult(False, 'entity_other:albany_county_wy')
+        if _watervliet_mi_conflict(haystack):
+            return MatchResult(False, 'entity_other:watervliet_mi')
         if _canadian_capital_region_conflict(haystack, author_handle):
             return MatchResult(False, 'hard_negative:canadian_capital_region')
         if _md_dc_capital_region_conflict(haystack):
@@ -978,6 +1074,8 @@ def match_post(
             return MatchResult(False, 'hard_negative:california_capital_region')
         if _korea_capital_region_conflict(haystack):
             return MatchResult(False, 'hard_negative:korea_capital_region')
+        if _ukraine_capital_region_conflict(haystack):
+            return MatchResult(False, 'hard_negative:ukraine_capital_region')
         if _clifton_park_uk_conflict(haystack):
             return MatchResult(False, 'hard_negative:clifton_park_uk')
         return MatchResult(True, 'strong_positive')
@@ -998,6 +1096,9 @@ def match_post(
         # Ireland Galway (+ Waterford FC scorelines) must not unlock multi-local.
         if _galway_ireland_conflict(haystack) and distinct <= {'galway', 'waterford'}:
             return MatchResult(False, 'hard_negative:galway_ireland')
+        # Montreal Banque Scotia / Osheaga must not unlock Village of Scotia NY.
+        if _scotia_montreal_conflict(haystack) and distinct <= {'scotia'}:
+            return MatchResult(False, 'hard_negative:scotia_montreal')
         # European Malta AIS / Rotterdam shipping must not unlock multi-local.
         if _malta_europe_conflict(haystack) and distinct <= {'malta', 'rotterdam'}:
             return MatchResult(False, 'hard_negative:malta_europe')
@@ -1007,6 +1108,8 @@ def match_post(
                 return MatchResult(False, 'hard_negative:wi_troy_waterford')
             if _malta_europe_conflict(haystack) and ({'malta', 'rotterdam'} & multi_eligible):
                 return MatchResult(False, 'hard_negative:malta_europe')
+            if _scotia_montreal_conflict(haystack) and 'scotia' in multi_eligible:
+                return MatchResult(False, 'hard_negative:scotia_montreal')
             return MatchResult(True, 'multi_local_places')
 
         # Prefer a non-collision token when several ambiguous names appear but
@@ -1036,6 +1139,9 @@ def match_post(
 
         if term == 'galway' and _galway_ireland_conflict(haystack):
             return MatchResult(False, 'hard_negative:galway_ireland')
+
+        if term == 'scotia' and _scotia_montreal_conflict(haystack):
+            return MatchResult(False, 'hard_negative:scotia_montreal')
 
         if term == 'bethlehem' and _bethlehem_pa_conflict(haystack):
             return MatchResult(False, 'hard_negative:bethlehem_pa')

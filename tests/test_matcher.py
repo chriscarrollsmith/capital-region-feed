@@ -365,6 +365,16 @@ def test_galway_ireland_not_town_of_galway() -> None:
     )
     assert tourism.matched is False
     assert tourism.reason == 'hard_negative:galway_ireland'
+    # "Irish" (not only "Ireland") + Galway + New York must still drop.
+    irish = match_post(
+        'My latest adventures in and around Galway.',
+        alt_text=(
+            'Day Tripping from Galway | My Irish road trip envy started with a '
+            'Facebook post I saw while still living in New York.'
+        ),
+    )
+    assert irish.matched is False
+    assert irish.reason == 'hard_negative:galway_ireland'
     assert match_post('Town of Galway, NY board meets Thursday.').matched is True
 
 
@@ -423,6 +433,52 @@ def test_korea_capital_region_is_hard_negative() -> None:
         'Capital Region exporters shipped goods to Seoul through the Port of Albany (#AlbanyNY).'
     )
     assert keep.matched is True
+
+
+def test_ukraine_capital_region_is_hard_negative() -> None:
+    wire = match_post(
+        'Russian missile and drone barrage in Ukrainian capital region kills at least 15'
+    )
+    assert wire.matched is False
+
+    kyiv = match_post('Overnight strikes in the capital region near Kyiv killed 15 people.')
+    assert kyiv.matched is False
+    assert kyiv.reason == 'hard_negative:ukraine_capital_region'
+
+    keep = match_post('Capital Region aid groups sent medical supplies to Kyiv from #AlbanyNY.')
+    assert keep.matched is True
+
+
+def test_scotia_montreal_not_village_of_scotia() -> None:
+    osheaga = match_post(
+        'New York five-piece WHATMORE introduced Osheaga audiences on the '
+        'Scotia Forest Stage at Parc Jean-Drapeau.'
+    )
+    assert osheaga.matched is False
+    assert osheaga.reason == 'hard_negative:scotia_montreal'
+
+    cinema = match_post(
+        'Wacky hijinks in modern day New York.',
+        alt_text='Tuesday, August 4th, 2026 - 10:00 PM Cinéma Banque Scotia Montréal',
+    )
+    assert cinema.matched is False
+    assert cinema.reason == 'hard_negative:scotia_montreal'
+
+    assert match_post('Scotia, NY fire department open house this Saturday.').matched is True
+
+
+def test_watervliet_mi_not_watervliet_ny() -> None:
+    mi = match_post('RN Acute Inpatient Rehab - Watervliet, MI Job listing')
+    assert mi.matched is False
+    assert mi.reason in {'entity_other:watervliet_mi', 'hard_negative'}
+
+    assert match_post('Watervliet, NY water main break on 19th Street.').matched is True
+
+
+def test_the_egg_with_albany_is_strong_positive() -> None:
+    """The Egg + Albany keeps even without explicit NY (tour footnotes, PT copy)."""
+    assert match_post('show especial para familiares e amigos no The Egg, em Albany.').matched
+    assert match_post('Family-and-friends show at The Egg in Albany.').matched
 
 
 def test_saratoga_venue_cues_without_ny() -> None:

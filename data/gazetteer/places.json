@@ -161,6 +161,17 @@
       "surfaces": ["niskayuna"]
     },
     {
+      "id": "watervliet_mi",
+      "region": "other",
+      "surfaces": [
+        "watervliet, mi",
+        "watervliet, michigan",
+        "watervliet mi",
+        "watervliet michigan"
+      ],
+      "notes": "Michigan city; bare Watervliet + MI cues also gated in matcher._watervliet_mi_conflict"
+    },
+    {
       "id": "watervliet_ny",
       "region": "capital_ny",
       "surfaces": ["watervliet"]
