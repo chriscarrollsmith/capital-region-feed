@@ -2719,5 +2719,127 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-08-04 audit: High Rock Park Pavilions + Saratoga Springs without NY"
+  },
+  {
+    "id": "fp-ukrainian-capital-region-wire",
+    "text": "Russian missile and drone barrage in Ukrainian capital region kills at least 15",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-05 audit: AP/wire Ukrainian capital region strong-positive flood"
+  },
+  {
+    "id": "fp-kyiv-capital-region-window",
+    "text": "Overnight strikes in the capital region near Kyiv killed 15 people.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-05 audit: capital region + Kyiv without Ukrainian adjective"
+  },
+  {
+    "id": "tp-capital-region-kyiv-aid-albanyny",
+    "text": "Capital Region aid groups sent medical supplies to Kyiv from #AlbanyNY.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-05 audit: NY Capital Region + Kyiv keep counterpart"
+  },
+  {
+    "id": "fp-scotia-forest-stage-osheaga",
+    "text": "New York five-piece WHATMORE introduced Osheaga audiences on the Scotia Forest Stage at Parc Jean-Drapeau.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-05 audit: Osheaga Scotia Forest Stage + NY band unlocked Village of Scotia"
+  },
+  {
+    "id": "fp-cinema-banque-scotia-montreal",
+    "text": "Wacky hijinks in modern day New York.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "Tuesday, August 4th, 2026 - 10:00 PM Cinéma Banque Scotia Montréal",
+    "note": "2026-08-05 audit: Banque Scotia Montreal cinema card + New York plot"
+  },
+  {
+    "id": "tp-scotia-ny-fire-open-house",
+    "text": "Scotia, NY fire department open house this Saturday.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-05 audit: Village of Scotia NY keep counterpart"
+  },
+  {
+    "id": "fp-galway-irish-road-trip-nyc",
+    "text": "My latest adventures in and around Galway.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "Day Tripping from Galway | My Irish road trip envy started with a Facebook post I saw while still living in New York.",
+    "note": "2026-08-05 audit: Irish (not Ireland) Galway tourism + New York memory"
+  },
+  {
+    "id": "tp-town-of-galway-ny-board",
+    "text": "Town of Galway, NY board meets Thursday.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-05 audit: Town of Galway NY keep counterpart"
+  },
+  {
+    "id": "fp-watervliet-mi-job",
+    "text": "RN Acute Inpatient Rehab - Watervliet, MI Job listing",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-05 audit: Watervliet MI hospital job via watervliet_ny entity/strong"
+  },
+  {
+    "id": "tp-watervliet-ny-water-main",
+    "text": "Watervliet, NY water main break on 19th Street.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-05 audit: Watervliet NY keep counterpart"
+  },
+  {
+    "id": "tp-the-egg-albany-portuguese",
+    "text": "show especial para familiares e amigos no The Egg, em Albany.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-05 audit: The Egg + Albany venue recall without NY token"
+  },
+  {
+    "id": "tp-the-egg-in-albany",
+    "text": "Family-and-friends show at The Egg in Albany.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-05 audit: The Egg in Albany English counterpart"
   }
 ]
