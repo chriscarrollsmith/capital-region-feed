@@ -30,6 +30,7 @@ _DISTINCTIVE_LOCAL_MICRO = re.compile(
       | corning\s+preserve
       | crossgates(?:\s+mall)?
       | stuyvesant\s+plaza
+      | river\s+street
       | new\s+scotland\s+(?:avenue|ave|road|rd)\b
       | empire\s+state\s+plaza
       | buckingham\s+lake
@@ -42,8 +43,7 @@ _DISTINCTIVE_LOCAL_MICRO = re.compile(
 
 # Common street/park names that exist nationwide. Only count as local micro
 # when a Capital Region hint is also present (avoids Hackensack Central Ave,
-# Chicago Lincoln Park, "14th"/"34th" substring traps, Guyana 4th Street,
-# Canadian "River Street" presses, …).
+# Chicago Lincoln Park, "14th"/"34th" substring traps, Guyana 4th Street, …).
 _COLLISION_LOCAL_MICRO = re.compile(
     r"""
     (?:
@@ -53,7 +53,6 @@ _COLLISION_LOCAL_MICRO = re.compile(
       | western\s+(?:avenue|ave)\b
       | lincoln\s+park
       | washington\s+park
-      | river\s+street
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -92,6 +91,18 @@ _CAP_REGION_HINT = re.compile(
 # News wire "(The Center Square)" — not Albany's Center Square neighborhood.
 _CENTER_SQUARE_WIRE = re.compile(r'\(\s*the\s+center\s+square\s*\)', re.IGNORECASE)
 
+# Canadian "River Street" press / Instagram (Quill & Quire) — not Troy's corridor.
+_RIVER_STREET_OTHER = re.compile(
+    r"""
+    (?:
+        quill\s*(?:&|and)\s*quire
+      | river_street_writes
+      | \bon\s+instagram:\s*["']?more\s+literary
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
 # Back-compat alias for tests / callers that imported ``_LOCAL_MICRO``.
 _LOCAL_MICRO = _DISTINCTIVE_LOCAL_MICRO
 
@@ -103,6 +114,9 @@ def _local_micro_hits(haystack: str) -> list[str]:
     hits = list(_DISTINCTIVE_LOCAL_MICRO.findall(scan))
     if _CAP_REGION_HINT.search(scan):
         hits.extend(_COLLISION_LOCAL_MICRO.findall(scan))
+    # Drop River Street when Canadian literary-press cues dominate the card.
+    if _RIVER_STREET_OTHER.search(scan):
+        hits = [h for h in hits if 'river' not in h.lower() or 'street' not in h.lower()]
     return hits
 
 
