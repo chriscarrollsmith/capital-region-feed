@@ -76,7 +76,7 @@ def test_collision_micros_need_cap_region_hint() -> None:
         is True
     )
 
-    # Bare River Street (Canadian press / Instagram) must not keep; Troy needs a hint.
+    # Canadian River Street / Quill & Quire cards must not unlock event+micro keeps.
     assert (
         match_post(
             'River Street on Instagram: Thank you to Quill & Quire for an autumnal preview.',
@@ -84,8 +84,8 @@ def test_collision_micros_need_cap_region_hint() -> None:
         ).matched
         is False
     )
-    river = match_post('Art walk on River Street in Troy this Saturday at noon.')
-    assert river.matched is True
+    # Troy corridor River Street + event cue still keeps without an extra town token.
+    assert match_post('Open mic tomorrow on River Street — sign-ups start at 6.').matched is True
 
 
 def test_center_square_wire_byline_is_not_local_micro() -> None:

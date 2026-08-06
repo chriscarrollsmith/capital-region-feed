@@ -431,7 +431,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
     and WBRZ handle prefix (`wbrznews2`).
   - Sudan/Khartoum capital-region conflict + hard-negative phrases.
   - Word-boundary `schenectady` / `guilderland` / `niskayuna` / `watervliet` strong positives.
-  - Move `river street` to collision micros (Cap Region hint required).
+  - Scrub Canadian River Street / Quill & Quire cues from classifier micros.
   - Hyphen-aware `Brussels-Capital Region` hard negative.
   - Grow eval with 2026-08-06 FP/TP anchors.
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
