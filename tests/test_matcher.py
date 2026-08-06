@@ -251,6 +251,21 @@ def test_louisiana_capital_region_is_hard_negative() -> None:
     assert wbrz.matched is False
     assert wbrz.reason == 'hard_negative:louisiana_capital_region'
 
+    # wbrznews2 (prefix, not a bare \bwbrz\b token) and Ascension Parish towns.
+    wbrznews = match_post(
+        'First day of qualifying ends for US House, local races across Capital Region.',
+        author_handle='wbrznews2.bsky.social',
+    )
+    assert wbrznews.matched is False
+    assert wbrznews.reason == 'hard_negative:louisiana_capital_region'
+
+    ascension = match_post(
+        'From St. Amant to Sorrento to Prairieville, we deliver portable storage across '
+        'Ascension and the wider Capital Region.'
+    )
+    assert ascension.matched is False
+    assert ascension.reason == 'hard_negative:louisiana_capital_region'
+
     keep = match_post(
         'Capital Region exporters shipped goods to Louisiana through the Port of Albany '
         '(#AlbanyNY).'
@@ -396,6 +411,15 @@ def test_clifton_park_uk_cricket_not_ny() -> None:
     assert rotherham.matched is False
     assert rotherham.reason == 'hard_negative:clifton_park_uk'
 
+    # Council Watersplash promos often omit "Rotherham" in the body.
+    watersplash = match_post(
+        "If you're planning a visit to Clifton Park during this school holidays, "
+        "don't forget that the Watersplash is open.",
+        author_handle='rotherhamcouncil.bsky.social',
+    )
+    assert watersplash.matched is False
+    assert watersplash.reason == 'hard_negative:clifton_park_uk'
+
     assert match_post('Water main break on Carlton Road in Clifton Park, NY.').matched is True
 
 
@@ -447,6 +471,45 @@ def test_ukraine_capital_region_is_hard_negative() -> None:
 
     keep = match_post('Capital Region aid groups sent medical supplies to Kyiv from #AlbanyNY.')
     assert keep.matched is True
+
+
+def test_sudan_capital_region_is_hard_negative() -> None:
+    sudan = match_post(
+        "For more than a century, the Sunut Forest was an oasis in Khartoum, Sudan's capital.",
+        alt_text=(
+            "Three years into a brutal civil war, the country's capital region is awash "
+            'in rubble, sewage and bodies.'
+        ),
+    )
+    assert sudan.matched is False
+    assert sudan.reason == 'hard_negative:sudan_capital_region'
+
+    keep = match_post(
+        'Capital Region aid groups shipped medical supplies to Khartoum from #AlbanyNY.'
+    )
+    assert keep.matched is True
+
+
+def test_brussels_capital_region_hyphen_is_hard_negative() -> None:
+    hyphen = match_post(
+        'The Iris Festival celebrates the Brussels-Capital Region each year around 8 May.'
+    )
+    assert hyphen.matched is False
+
+    spaced = match_post('Tourism board promotes the Brussels Capital Region this spring.')
+    assert spaced.matched is False
+
+
+def test_schenectady_hashtag_stuffing_is_not_strong_positive() -> None:
+    """Compound hashtags must not unlock bare Schenectady strong positives."""
+    spam = match_post(
+        'Cleaning & Organization Cuts Cleanup Costs by 45%\n'
+        '#schenectadyparkcleanup #tennisclubvolunteerguide #juneteenthcommunityevent'
+    )
+    assert spam.matched is False
+
+    assert match_post('Schenectady City Council meets Tuesday at City Hall.').matched is True
+    assert match_post('Computer repair service in Schenectady, NY.').matched is True
 
 
 def test_scotia_montreal_not_village_of_scotia() -> None:

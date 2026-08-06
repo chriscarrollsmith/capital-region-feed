@@ -30,7 +30,6 @@ _DISTINCTIVE_LOCAL_MICRO = re.compile(
       | corning\s+preserve
       | crossgates(?:\s+mall)?
       | stuyvesant\s+plaza
-      | river\s+street
       | new\s+scotland\s+(?:avenue|ave|road|rd)\b
       | empire\s+state\s+plaza
       | buckingham\s+lake
@@ -43,7 +42,8 @@ _DISTINCTIVE_LOCAL_MICRO = re.compile(
 
 # Common street/park names that exist nationwide. Only count as local micro
 # when a Capital Region hint is also present (avoids Hackensack Central Ave,
-# Chicago Lincoln Park, "14th"/"34th" substring traps, Guyana 4th Street, …).
+# Chicago Lincoln Park, "14th"/"34th" substring traps, Guyana 4th Street,
+# Canadian "River Street" presses, …).
 _COLLISION_LOCAL_MICRO = re.compile(
     r"""
     (?:
@@ -53,6 +53,7 @@ _COLLISION_LOCAL_MICRO = re.compile(
       | western\s+(?:avenue|ave)\b
       | lincoln\s+park
       | washington\s+park
+      | river\s+street
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -66,11 +67,11 @@ _CAP_REGION_HINT = re.compile(
         capital\s+(?:region|district)\b
       | \balbany\b
       | (?<!\d\s)(?<![\w.])troy(?![\w@.-])(?!\s*(?:oz|ounces?|ozt|weight)\b)
-      | schenectady
+      | \bschenectady\b
       | \bcolonie\b
-      | guilderland
-      | niskayuna
-      | watervliet
+      | \bguilderland\b
+      | \bniskayuna\b
+      | \bwatervliet\b
       | \bcohoes\b
       | \blatham\b
       | \bdelmar\b
