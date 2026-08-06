@@ -414,6 +414,29 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Scotia/Watervliet/Egg Cap Region counterparts keep;
   eval P/R stay 1.000; unit tests cover the new gates.
 
+### B-063 — Daily feed audit: Rotherham Watersplash, LA Ascension/WBRZnews2, Sudan, Schenectady hashtags, River Street
+- **Status:** in progress
+- **Why:** 2026-08-06 audit of last-24h AppView feed (~234 posts since 2026-08-05T09:00Z)
+  found active FPs after #32 (and unmerged #33/#34/#35 cherry-picks): Rotherham council
+  Clifton Park Watersplash (handle omitted "Rotherham" in body); Ascension Parish /
+  Prairieville–Sorrento–St. Amant "Capital Region" storage ads; `wbrznews2` Capital Region
+  race qualifying (prior `\bwbrz\b` handle gate missed the prefix); Sudan/Khartoum
+  "capital region" UNEP cards; `#schenectadyparkcleanup` hashtag stuffing via bare
+  `schenectady` substring; Canadian River Street / Quill & Quire Instagram via distinctive
+  `river street` micro. Also closed hyphenated `Brussels-Capital Region`. No new Cap Region
+  FNs in the window (search misses were off-region capital-region drops or non-local).
+- **Work:**
+  - Expand Clifton Park UK cues (`watersplash`) + `rotherham` author_handle gate.
+  - Expand Louisiana capital-region cues (Ascension / Prairieville / Sorrento / St. Amant)
+    and WBRZ handle prefix (`wbrznews2`).
+  - Sudan/Khartoum capital-region conflict + hard-negative phrases.
+  - Word-boundary `schenectady` / `guilderland` / `niskayuna` / `watervliet` strong positives.
+  - Move `river street` to collision micros (Cap Region hint required).
+  - Hyphen-aware `Brussels-Capital Region` hard negative.
+  - Grow eval with 2026-08-06 FP/TP anchors.
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-058 — Jetstream catch-up keepalive wedge (quiet feed)
 - **Status:** done
 - **Why:** From ~2026-07-30T16:30Z the Fly machine stayed healthy (`/healthz` 200) while

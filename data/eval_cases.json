@@ -2841,5 +2841,129 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-08-05 audit: The Egg in Albany English counterpart"
+  },
+  {
+    "id": "fp-clifton-park-rotherham-watersplash",
+    "text": "If you're planning a visit to Clifton Park during this school holidays, don't forget that the Watersplash is open. Entry is free.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "author_handle": "rotherhamcouncil.bsky.social",
+    "note": "2026-08-06 audit: Rotherham council Clifton Park Watersplash via handle/UK cues"
+  },
+  {
+    "id": "tp-clifton-park-ny-school-holiday",
+    "text": "Clifton Park, NY pool opens for school holidays next week.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-06 audit: Clifton Park NY keep counterpart to Watersplash FP"
+  },
+  {
+    "id": "fp-la-ascension-capital-region",
+    "text": "From St. Amant to Sorrento to Prairieville, we deliver portable storage across Ascension and the wider Capital Region. Local roots, local service.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-06 audit: Ascension Parish LA Capital Region portable storage"
+  },
+  {
+    "id": "fp-wbrznews2-capital-region-qualifying",
+    "text": "First day of qualifying ends for US House, local races across Capital Region.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "author_handle": "wbrznews2.bsky.social",
+    "note": "2026-08-06 audit: WBRZ news2 handle prefix Capital Region races"
+  },
+  {
+    "id": "tp-capital-region-louisiana-trade",
+    "text": "Capital Region exporters shipped goods to Louisiana through the Port of Albany (#AlbanyNY).",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-06 audit: NY Capital Region + Louisiana keep counterpart"
+  },
+  {
+    "id": "fp-sudan-khartoum-capital-region",
+    "text": "For more than a century, the Sunut Forest was an oasis in the middle of Khartoum, Sudan's sprawling capital.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Three years into a brutal civil war, the country's capital region is awash in rubble, sewage and bodies.",
+    "note": "2026-08-06 audit: Sudan/Khartoum capital region UNEP card"
+  },
+  {
+    "id": "tp-capital-region-khartoum-aid",
+    "text": "Capital Region aid groups shipped medical supplies to Khartoum from #AlbanyNY.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-06 audit: NY Capital Region + Khartoum keep counterpart"
+  },
+  {
+    "id": "fp-schenectady-hashtag-stuffing",
+    "text": "Cleaning & Organization Cuts Cleanup Costs by 45%\n#schenectadyparkcleanup #tennisclubvolunteerguide #juneteenthcommunityevent",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-06 audit: compound #schenectadyparkcleanup hashtag stuffing"
+  },
+  {
+    "id": "tp-schenectady-city-council",
+    "text": "Schenectady City Council meets Tuesday at City Hall.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-06 audit: bare Schenectady word keep counterpart"
+  },
+  {
+    "id": "fp-river-street-quill-quire",
+    "text": "River Street on Instagram: More literary love for a stellar spread of fiction.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Thank you to Quill & Quire for compiling an excellent autumnal preview. 74 likes - river_street_writes on July 29, 2026",
+    "note": "2026-08-06 audit: Canadian River Street press via distinctive micro"
+  },
+  {
+    "id": "tp-river-street-troy-art-walk",
+    "text": "Art walk on River Street in Troy this Saturday at noon.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-06 audit: River Street + Troy keep counterpart"
+  },
+  {
+    "id": "fp-brussels-capital-region-hyphen",
+    "text": "The Iris Festival celebrates the Brussels-Capital Region each year around 8 May.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-06 audit: hyphenated Brussels-Capital Region"
   }
 ]
