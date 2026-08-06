@@ -415,7 +415,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   eval P/R stay 1.000; unit tests cover the new gates.
 
 ### B-063 — Daily feed audit: Rotherham Watersplash, LA Ascension/WBRZnews2, Sudan, Schenectady hashtags, River Street
-- **Status:** in progress
+- **Status:** done ([#36](https://github.com/chriscarrollsmith/capital-region-feed/pull/36))
 - **Why:** 2026-08-06 audit of last-24h AppView feed (~234 posts since 2026-08-05T09:00Z)
   found active FPs after #32 (and unmerged #33/#34/#35 cherry-picks): Rotherham council
   Clifton Park Watersplash (handle omitted "Rotherham" in body); Ascension Parish /
