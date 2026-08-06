@@ -76,6 +76,17 @@ def test_collision_micros_need_cap_region_hint() -> None:
         is True
     )
 
+    # Bare River Street (Canadian press / Instagram) must not keep; Troy needs a hint.
+    assert (
+        match_post(
+            'River Street on Instagram: Thank you to Quill & Quire for an autumnal preview.',
+            alt_text='74 likes, 1 comments - river_street_writes on July 29, 2026',
+        ).matched
+        is False
+    )
+    river = match_post('Art walk on River Street in Troy this Saturday at noon.')
+    assert river.matched is True
+
 
 def test_center_square_wire_byline_is_not_local_micro() -> None:
     """The Center Square news wire must not unlock November/event + micro keeps."""

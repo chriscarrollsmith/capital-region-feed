@@ -45,10 +45,11 @@ _STRONG_POSITIVE = re.compile(
       | rensselaer\s+county
       | schenectady\s+county
       | saratoga\s+county
-      | schenectady
-      | guilderland
-      | niskayuna
-      | watervliet
+      # Word-boundary: reject hashtag stuffing like #schenectadyparkcleanup.
+      | \bschenectady\b
+      | \bguilderland\b
+      | \bniskayuna\b
+      | \bwatervliet\b
       | \bcohoes\b
       | \bmenands\b
       | loudonville
@@ -216,7 +217,7 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
         albany\s+park
       | new\s+albany(?!\s+bus\s+(?:station|terminal|depot))
       | national\s+capital\s+region
-      | brussels\s+capital\s+region
+      | brussels[- ]capital\s+region
       | canadian\s+capital\s+region
       # Other-state / non-NY newsroom jargon (e.g. Jackson MS bureau).
       | capital\s+region\s+bureau\b
@@ -225,9 +226,11 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
             tokyo|seoul|beijing|delhi|ottawa|canberra|rome|italy|
             amsterdam|vienna|warsaw|prague|lisbon|athens|dublin|
             canada|denmark|copenhagen|mississippi|louisiana|pennsylvania|
-            california|sacramento|korea|south\s+korea|ukraine|kyiv|kiev
+            california|sacramento|korea|south\s+korea|ukraine|kyiv|kiev|
+            sudan|khartoum
           )\b
       | ukrainian\s+capital\s+region
+      | sudan(?:ese)?\s+capital\s+region
       # Harrisburg PA utility — not NY Capital Region.
       | capital\s+region\s+water\b
       | pennsylvania\s+capital\s+region
@@ -281,12 +284,14 @@ _MD_DC_CAPITAL_REGION = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
-# Louisiana "capital region" (Baton Rouge / WBRZ). Handles like wbrz-mirror are
-# checked via author_handle because weather copy often omits "Baton Rouge".
+# Louisiana "capital region" (Baton Rouge / WBRZ). Handles like wbrz-mirror /
+# wbrznews2 are checked via author_handle because short copy often omits geo.
 _LA_GEO_CUE = (
     r'\bbaton\s+rouge\b|\blouisiana\b|\#la(?:wx|politics|gov)\b|'
     r'\bwbrz\b|wbrz\.com|east\s+baton\s+rouge|west\s+feliciana|'
-    r'\bfeliciana\b|st\.?\s+mary\s+parish'
+    r'\bfeliciana\b|st\.?\s+mary\s+parish|'
+    r'\bascension(?:\s+parish)?\b|\bprairieville\b|\bsorrento\b|'
+    r'\bst\.?\s+amant\b|\bgonzales\b'
 )
 
 _LA_CAPITAL_REGION = re.compile(
@@ -370,6 +375,21 @@ _UA_CAPITAL_REGION = re.compile(
       | capital\s+region\s+of\s+(?:ukraine|kyiv|kiev)\b
       | capital\s+region\b[\s\S]{{0,160}}(?:{_UA_GEO_CUE})
       | (?:{_UA_GEO_CUE})[\s\S]{{0,160}}capital\s+region\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Sudan "capital region" (Khartoum UNEP / wire cards).
+_SD_GEO_CUE = r'\bsudan\b|\bsudanese\b|\bkhartoum\b|\#sudan\b|\#khartoum\b'
+
+_SD_CAPITAL_REGION = re.compile(
+    rf"""
+    (?:
+        sudan(?:ese)?\s+capital\s+region
+      | capital\s+region\s+of\s+(?:sudan|khartoum)\b
+      | capital\s+region\b[\s\S]{{0,160}}(?:{_SD_GEO_CUE})
+      | (?:{_SD_GEO_CUE})[\s\S]{{0,160}}capital\s+region\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -469,6 +489,8 @@ _WATERVLIET_MI = re.compile(
 )
 
 # Clifton Park (York / Rotherham, England) — not Clifton Park, NY.
+# Watersplash is the Rotherham council paddling pool; handles like
+# rotherhamcouncil often omit "Rotherham" in the body.
 _CLIFTON_PARK_UK = re.compile(
     r"""
     (?:
@@ -480,6 +502,7 @@ _CLIFTON_PARK_UK = re.compile(
       | rotherham\s+show
       | \.gov\.uk\b
       | south\s+yorkshire
+      | \bwatersplash\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -523,7 +546,7 @@ _HARD_NEGATIVE = re.compile(
       # National politician, not Troy NY.
       | \btroy\s+jackson\b
       | national\s+capital\s+region
-      | brussels\s+capital\s+region
+      | brussels[- ]capital\s+region
       | canadian\s+capital\s+region
       | capital\s+region\s+bureau\b
       | capital\s+region\s+of\s+(?:
@@ -531,9 +554,11 @@ _HARD_NEGATIVE = re.compile(
             tokyo|seoul|beijing|delhi|ottawa|canberra|rome|italy|
             amsterdam|vienna|warsaw|prague|lisbon|athens|dublin|
             canada|denmark|copenhagen|mississippi|louisiana|pennsylvania|
-            california|sacramento|korea|south\s+korea|ukraine|kyiv|kiev
+            california|sacramento|korea|south\s+korea|ukraine|kyiv|kiev|
+            sudan|khartoum
           )\b
       | ukrainian\s+capital\s+region
+      | sudan(?:ese)?\s+capital\s+region
       | capital\s+region\s+water\b
       | pennsylvania\s+capital\s+region
       | hauptstadtregion
@@ -806,15 +831,22 @@ def _ukraine_capital_region_conflict(haystack: str) -> bool:
     return not _ny_capital_region_context(haystack)
 
 
+def _sudan_capital_region_conflict(haystack: str) -> bool:
+    """True when 'capital region' refers to Khartoum / Sudan, not NY."""
+    if not _SD_CAPITAL_REGION.search(haystack):
+        return False
+    return not _ny_capital_region_context(haystack)
+
+
 def _louisiana_capital_region_conflict(haystack: str, author_handle: str | None = None) -> bool:
     """True when 'capital region' refers to Baton Rouge / LA, not NY."""
     if _ny_capital_region_context(haystack):
         return False
     if _LA_CAPITAL_REGION.search(haystack):
         return True
-    # WBRZ mirrors often omit "Baton Rouge" in short weather copy.
+    # WBRZ mirrors (wbrz, wbrznews2, …) often omit "Baton Rouge" in short copy.
     handle = (author_handle or '').strip().lower()
-    if re.search(r'\bwbrz\b', handle) and re.search(
+    if re.search(r'(?<![a-z0-9])wbrz', handle) and re.search(
         r'capital\s+region\b', haystack, flags=re.IGNORECASE
     ):
         return True
@@ -918,11 +950,9 @@ def _bethlehem_pa_conflict(haystack: str) -> bool:
     return True
 
 
-def _clifton_park_uk_conflict(haystack: str) -> bool:
+def _clifton_park_uk_conflict(haystack: str, author_handle: str | None = None) -> bool:
     """True when Clifton Park refers to York/Rotherham (England), not NY."""
     if not re.search(r'clifton\s+park', haystack, flags=re.IGNORECASE):
-        return False
-    if not _CLIFTON_PARK_UK.search(haystack):
         return False
     if re.search(
         r'clifton\s+park\s*,?\s*(?:ny|n\.y\.|new\s+york)\b',
@@ -932,7 +962,13 @@ def _clifton_park_uk_conflict(haystack: str) -> bool:
         return False
     if _NY_CONTEXT.search(haystack):
         return False
-    return True
+    if _CLIFTON_PARK_UK.search(haystack):
+        return True
+    # Council accounts often omit "Rotherham" in Watersplash / park promo copy.
+    handle = (author_handle or '').strip().lower()
+    if re.search(r'rotherham', handle):
+        return True
+    return False
 
 
 def _haystack_without_handles(haystack: str) -> str:
@@ -1076,7 +1112,9 @@ def match_post(
             return MatchResult(False, 'hard_negative:korea_capital_region')
         if _ukraine_capital_region_conflict(haystack):
             return MatchResult(False, 'hard_negative:ukraine_capital_region')
-        if _clifton_park_uk_conflict(haystack):
+        if _sudan_capital_region_conflict(haystack):
+            return MatchResult(False, 'hard_negative:sudan_capital_region')
+        if _clifton_park_uk_conflict(haystack, author_handle):
             return MatchResult(False, 'hard_negative:clifton_park_uk')
         return MatchResult(True, 'strong_positive')
 
