@@ -381,11 +381,11 @@ Status: `todo` · `in progress` · `done` · `blocked`
 ### B-061 — Daily feed audit: Sacramento/Korea capital region, Rotherham Clifton Park, Snowbirds, Caffe Lena
 - **Status:** done ([#34](https://github.com/chriscarrollsmith/capital-region-feed/pull/34))
 - **Why:** 2026-08-04 audit of last-24h AppView feed (~171 posts since 2026-08-03T09:00Z)
-  found active FPs after #32 (and unmerged #33): Sacramento Bee / Seoul–Gyeonggi "capital
+  found active FPs after #32/#33: Sacramento Bee / Seoul–Gyeonggi "capital
   region"; Times Colonist Snowbirds / Parkland Secondary cards; Rotherham Show at Clifton
   Park (England) beyond the cricket-only UK gate. Also restored recall for Caffe Lena and
   High Rock Park Pavilions in Saratoga Springs without `, NY`. WBRZ Baton Rouge remains
-  covered by the cherry-picked B-060 Louisiana gate.
+  covered by the B-060 Louisiana gate.
 - **Work:**
   - California capital-region conflict (Sacramento / SacBee handle).
   - Korea capital-region conflict (Seoul / Gyeonggi / Greater Seoul).
@@ -399,7 +399,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
 ### B-062 — Daily feed audit: Ukrainian capital region, Montreal Scotia, Watervliet MI, The Egg
 - **Status:** done ([#35](https://github.com/chriscarrollsmith/capital-region-feed/pull/35))
 - **Why:** 2026-08-05 audit of last-24h AppView feed (~190 posts since 2026-08-04T09:00Z)
-  found active FPs after #32 (and unmerged #33/#34 cherry-picks): AP/wire "Ukrainian capital
+  found active FPs after #32/#33/#34: AP/wire "Ukrainian capital
   region" / Kyiv mirrors (~10 keeps); Osheaga Scotia Forest Stage and Cinéma Banque Scotia
   Montréal + New York plot unlocked Village of Scotia; Galway tourism with "Irish" (not
   "Ireland") + New York; Watervliet, MI hospital jobs via bare `watervliet` entity/strong.
