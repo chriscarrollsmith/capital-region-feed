@@ -437,6 +437,27 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-064 — Daily feed audit: Bogotá Capital District, MD Banner, CFAX, Virginia, Disney Saratoga
+- **Status:** in progress
+- **Why:** 2026-08-07 audit of last-24h AppView feed (~276 posts since 2026-08-06T09:00Z)
+  found active FPs after #32 (and unmerged #33–#36 cherry-picks): Bogotá Capital District
+  flight trackers; Maryland Banner MoCo/PG County "capital region" weekend guides (Olney /
+  National Harbor; handle omitted Maryland); CFAX Victoria BC capital-region call-ins with
+  `#yyj` beyond the prior 160-char window; Virginia Spanberger/Dominion "Capital region";
+  Disney Saratoga Springs / Treehouse Villas via hyphenated WDW URLs unlocking
+  `multi_local_places` from nested `saratoga` ⊂ `saratoga springs`. No new matcher FNs
+  (The Egg + Albany search hit was an indexing gap; matcher already keeps).
+- **Work:**
+  - Colombia Capital District conflict + hard-negative phrases.
+  - Expand MD/DC cues (Olney Theatre, National Harbor) + `bannermoco` /
+    `bannerpgcounty` author_handle gates.
+  - Widen Canadian capital-region window to 240 + `cfax` handle gate.
+  - Virginia capital-region conflict (Spanberger / Dominion / Richmond).
+  - Disney Saratoga Springs conflict + collapse nested ambiguous tokens for multi_local.
+  - Grow eval with 2026-08-07 FP/TP anchors.
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-058 — Jetstream catch-up keepalive wedge (quiet feed)
 - **Status:** done
 - **Why:** From ~2026-07-30T16:30Z the Fly machine stayed healthy (`/healthz` 200) while
