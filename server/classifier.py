@@ -66,11 +66,11 @@ _CAP_REGION_HINT = re.compile(
         capital\s+(?:region|district)\b
       | \balbany\b
       | (?<!\d\s)(?<![\w.])troy(?![\w@.-])(?!\s*(?:oz|ounces?|ozt|weight)\b)
-      | schenectady
+      | \bschenectady\b
       | \bcolonie\b
-      | guilderland
-      | niskayuna
-      | watervliet
+      | \bguilderland\b
+      | \bniskayuna\b
+      | \bwatervliet\b
       | \bcohoes\b
       | \blatham\b
       | \bdelmar\b
@@ -91,6 +91,18 @@ _CAP_REGION_HINT = re.compile(
 # News wire "(The Center Square)" — not Albany's Center Square neighborhood.
 _CENTER_SQUARE_WIRE = re.compile(r'\(\s*the\s+center\s+square\s*\)', re.IGNORECASE)
 
+# Canadian "River Street" press / Instagram (Quill & Quire) — not Troy's corridor.
+_RIVER_STREET_OTHER = re.compile(
+    r"""
+    (?:
+        quill\s*(?:&|and)\s*quire
+      | river_street_writes
+      | \bon\s+instagram:\s*["']?more\s+literary
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
 # Back-compat alias for tests / callers that imported ``_LOCAL_MICRO``.
 _LOCAL_MICRO = _DISTINCTIVE_LOCAL_MICRO
 
@@ -102,6 +114,9 @@ def _local_micro_hits(haystack: str) -> list[str]:
     hits = list(_DISTINCTIVE_LOCAL_MICRO.findall(scan))
     if _CAP_REGION_HINT.search(scan):
         hits.extend(_COLLISION_LOCAL_MICRO.findall(scan))
+    # Drop River Street when Canadian literary-press cues dominate the card.
+    if _RIVER_STREET_OTHER.search(scan):
+        hits = [h for h in hits if 'river' not in h.lower() or 'street' not in h.lower()]
     return hits
 
 

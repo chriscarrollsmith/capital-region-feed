@@ -76,6 +76,17 @@ def test_collision_micros_need_cap_region_hint() -> None:
         is True
     )
 
+    # Canadian River Street / Quill & Quire cards must not unlock event+micro keeps.
+    assert (
+        match_post(
+            'River Street on Instagram: Thank you to Quill & Quire for an autumnal preview.',
+            alt_text='74 likes, 1 comments - river_street_writes on July 29, 2026',
+        ).matched
+        is False
+    )
+    # Troy corridor River Street + event cue still keeps without an extra town token.
+    assert match_post('Open mic tomorrow on River Street — sign-ups start at 6.').matched is True
+
 
 def test_center_square_wire_byline_is_not_local_micro() -> None:
     """The Center Square news wire must not unlock November/event + micro keeps."""
