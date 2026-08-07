@@ -227,14 +227,18 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
             amsterdam|vienna|warsaw|prague|lisbon|athens|dublin|
             canada|denmark|copenhagen|mississippi|louisiana|pennsylvania|
             california|sacramento|korea|south\s+korea|ukraine|kyiv|kiev|
-            sudan|khartoum
+            sudan|khartoum|virginia|richmond|colombia|bogot[aá]
           )\b
       | ukrainian\s+capital\s+region
       | sudan(?:ese)?\s+capital\s+region
+      | (?:virginia|richmond)\s+capital\s+region
+      | bogot[aá]\s+capital\s+district
+      | capital\s+district\s*,?\s*colombia\b
       # Harrisburg PA utility — not NY Capital Region.
       | capital\s+region\s+water\b
       | pennsylvania\s+capital\s+region
       | hauptstadtregion
+      | disney(?:['\u2019]?s)?\s+saratoga\s+springs
       | watervliet\s*,?\s*(?:mi|michigan)\b
     )
     """,
@@ -243,12 +247,14 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
 
 # Canadian "capital region" cues (Ottawa national, Victoria BC / #yyj / CRD).
 # Snowbirds = RCAF demo team (Victoria-area flyovers); not birdwatching copy.
+# Window is 240 chars: CFAX call-in intros often put #yyj / #BCpoli after a long clause.
 _CANADIAN_GEO_CUE = (
     r'\bcanada\b|\bcanadian\b|\bottawa\b|\#canadian\w*|'
     r'\#yyj\b|\#bcpoli\b|british\s+columbia|\blangford\b|'
     r'victoria(?:\s*,?\s*bc\b)|greater\s+victoria|'
     r'capital\s+regional\s+district|\blivable\s+crd\b|'
-    r'timescolonist\.com|\bsnowbirds?\b|parkland\s+secondary'
+    r'timescolonist\.com|\bsnowbirds?\b|parkland\s+secondary|'
+    r'\bcfax\b|cfax\.com'
 )
 
 # Ottawa / Canada / BC "capital region" co-occurring with Canadian cues (not NY).
@@ -257,8 +263,8 @@ _CANADIAN_CAPITAL_REGION = re.compile(
     (?:
         canadian\s+capital\s+region
       | capital\s+region\s+of\s+(?:canada|ottawa)\b
-      | capital\s+region\b[\s\S]{{0,160}}(?:{_CANADIAN_GEO_CUE})
-      | (?:{_CANADIAN_GEO_CUE})[\s\S]{{0,160}}capital\s+region\b
+      | capital\s+region\b[\s\S]{{0,240}}(?:{_CANADIAN_GEO_CUE})
+      | (?:{_CANADIAN_GEO_CUE})[\s\S]{{0,240}}capital\s+region\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -270,15 +276,205 @@ _MD_DC_GEO_CUE = (
     # AppView cards often use a curly apostrophe in "George's".
     r"prince\s+george['\u2019]?s|\bmaryland\b|\#md(?:wx|politics|gov)\b|"
     r'washington(?:\s*,?\s*d\.?c\.?\b)|(?<![\w.])dc\s+metro\b|'
-    r'\bdmv\b|silver\s+spring|\bbethesda\b|\brockville\b'
+    r'\bdmv\b|silver\s+spring|\bbethesda\b|\brockville\b|'
+    r'olney\s+theatre|national\s+harbor|college\s+park|\bannapolis\b'
 )
 
 # MD/DC "capital region" co-occurring with Maryland / Prince George's cues (not NY).
 _MD_DC_CAPITAL_REGION = re.compile(
     rf"""
     (?:
-        capital\s+region\b[\s\S]{{0,160}}(?:{_MD_DC_GEO_CUE})
-      | (?:{_MD_DC_GEO_CUE})[\s\S]{{0,160}}capital\s+region\b
+        capital\s+region\b[\s\S]{{0,200}}(?:{_MD_DC_GEO_CUE})
+      | (?:{_MD_DC_GEO_CUE})[\s\S]{{0,200}}capital\s+region\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Louisiana "capital region" (Baton Rouge / WBRZ). Handles like wbrz-mirror /
+# wbrznews2 are checked via author_handle because short copy often omits geo.
+_LA_GEO_CUE = (
+    r'\bbaton\s+rouge\b|\blouisiana\b|\#la(?:wx|politics|gov)\b|'
+    r'\bwbrz\b|wbrz\.com|east\s+baton\s+rouge|west\s+feliciana|'
+    r'\bfeliciana\b|st\.?\s+mary\s+parish|'
+    r'\bascension(?:\s+parish)?\b|\bprairieville\b|\bsorrento\b|'
+    r'\bst\.?\s+amant\b|\bgonzales\b'
+)
+
+_LA_CAPITAL_REGION = re.compile(
+    rf"""
+    (?:
+        capital\s+region\s+of\s+louisiana\b
+      | capital\s+region\b[\s\S]{{0,160}}(?:{_LA_GEO_CUE})
+      | (?:{_LA_GEO_CUE})[\s\S]{{0,160}}capital\s+region\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Pennsylvania "capital region" (Harrisburg / Capital Region Water).
+_PA_GEO_CUE = (
+    r'\bharrisburg\b|\bpennsylvania\b|\#pa(?:wx|politics|gov)\b|'
+    r'capital\s+region\s+water\b|pennlive|susquehanna\b|'
+    r'pennsylvania\s+capital\s+region'
+)
+
+_PA_CAPITAL_REGION = re.compile(
+    rf"""
+    (?:
+        pennsylvania\s+capital\s+region
+      | capital\s+region\s+of\s+pennsylvania\b
+      | capital\s+region\s+water\b
+      | capital\s+region\b[\s\S]{{0,160}}(?:{_PA_GEO_CUE})
+      | (?:{_PA_GEO_CUE})[\s\S]{{0,160}}capital\s+region\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# California "capital region" (Sacramento / SacBee).
+_CA_GEO_CUE = (
+    r'\bsacramento\b|\bcalifornia\b|\#ca(?:wx|politics|gov)\b|'
+    r'\bsacbee\b|sacbee\.com|folsom\b|elk\s+grove\b|'
+    r'west\s+sacramento|roseville\b'
+)
+
+_CA_CAPITAL_REGION = re.compile(
+    rf"""
+    (?:
+        capital\s+region\s+of\s+(?:california|sacramento)\b
+      | capital\s+region\b[\s\S]{{0,160}}(?:{_CA_GEO_CUE})
+      | (?:{_CA_GEO_CUE})[\s\S]{{0,160}}capital\s+region\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# South Korea "capital region" (Seoul / Gyeonggi / KMA heat alerts).
+_KR_GEO_CUE = (
+    r'\bseoul\b|\bgyeonggi\b|\bkorea\b|south\s+korea|'
+    r'\bincheon\b|\bkoreaherald\b|korea\s+herald|'
+    r'\bgangnam\b|han\s+river|\bkma\b'
+)
+
+_KR_CAPITAL_REGION = re.compile(
+    rf"""
+    (?:
+        capital\s+region\s+of\s+(?:korea|south\s+korea|seoul)\b
+      | greater\s+seoul
+      | capital\s+region\b[\s\S]{{0,160}}(?:{_KR_GEO_CUE})
+      | (?:{_KR_GEO_CUE})[\s\S]{{0,160}}capital\s+region\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Ukraine "capital region" (Kyiv / AP wire mirrors).
+_UA_GEO_CUE = (
+    r'\bukraine\b|\bukrainian\b|\bkyiv\b|\bkiev\b|'
+    r'\#ukraine\b|\#kyiv\b|kyivunderattack'
+)
+
+_UA_CAPITAL_REGION = re.compile(
+    rf"""
+    (?:
+        ukrainian\s+capital\s+region
+      | capital\s+region\s+of\s+(?:ukraine|kyiv|kiev)\b
+      | capital\s+region\b[\s\S]{{0,160}}(?:{_UA_GEO_CUE})
+      | (?:{_UA_GEO_CUE})[\s\S]{{0,160}}capital\s+region\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Sudan "capital region" (Khartoum UNEP / wire cards).
+_SD_GEO_CUE = r'\bsudan\b|\bsudanese\b|\bkhartoum\b|\#sudan\b|\#khartoum\b'
+
+_SD_CAPITAL_REGION = re.compile(
+    rf"""
+    (?:
+        sudan(?:ese)?\s+capital\s+region
+      | capital\s+region\s+of\s+(?:sudan|khartoum)\b
+      | capital\s+region\b[\s\S]{{0,160}}(?:{_SD_GEO_CUE})
+      | (?:{_SD_GEO_CUE})[\s\S]{{0,160}}capital\s+region\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Virginia "capital region" (Richmond / Spanberger / Dominion Energy).
+_VA_GEO_CUE = (
+    r'\bvirginia\b|\brichmond\b|\#va(?:wx|politics|gov)\b|'
+    r'\bspanberger\b|dominion(?:\s+energy)?\b|\bnextera\b|'
+    r'hampton\s+roads|northern\s+virginia'
+)
+
+_VA_CAPITAL_REGION = re.compile(
+    rf"""
+    (?:
+        (?:virginia|richmond)\s+capital\s+region
+      | capital\s+region\s+of\s+(?:virginia|richmond)\b
+      | capital\s+region\b[\s\S]{{0,160}}(?:{_VA_GEO_CUE})
+      | (?:{_VA_GEO_CUE})[\s\S]{{0,160}}capital\s+region\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Bogotá "Capital District" / Colombia — not NY Capital District.
+_CO_CAPITAL_DISTRICT = re.compile(
+    r"""
+    (?:
+        bogot[aá]\s*,?\s*bogot[aá]\s+capital\s+district
+      | bogot[aá]\s+capital\s+district
+      | capital\s+district\s*,?\s*colombia
+      | capital\s+district\b[\s\S]{0,80}\bcolombia\b
+      | \bcolombia\b[\s\S]{0,80}capital\s+district\b
+      | \bbogot[aá]\b[\s\S]{0,80}capital\s+district\b
+      | capital\s+district\b[\s\S]{0,80}\bbogot[aá]\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Disney's Saratoga Springs Resort (WDW) — not Saratoga Springs NY.
+_DISNEY_SARATOGA = re.compile(
+    r"""
+    (?:
+        disney(?:['\u2019]?s)?\s+saratoga\s+springs
+      | saratoga\s+springs\s+resort
+      | treehouse\s+villas
+      | \bwdwmagic\b
+      | wdwmagic\.com
+      | disney\s+world
+      | \bwdw\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# European Malta / AIS shipping (Flag: Malta + Dest. Rotterdam, etc.) — not
+# Town of Malta NY or Town of Rotterdam NY.
+_MALTA_EUROPE = re.compile(
+    r"""
+    (?:
+        \bmmsi\b
+      | \bvesselalert\b
+      | \bais\b
+      | flag:\s*malta\b
+      | bandera:\s*malta\b
+      | dest\.?\s*:\s*rotterdam\b
+      | \blmml\b
+      | isle\s+of\s+mtv
+      | mediterranean
+      | \bmalti\b
+      | callsign:\s*9ha
+      | \b9ha\d+\b
+      | malta\s+international
+      | malta\s+sends\b
+      | wildfires?\s+in\s+portugal
+      | \bportugal\b[\s\S]{0,80}\bmalta\b
+      | \bmalta\b[\s\S]{0,80}\bportugal\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -555,16 +751,20 @@ _HARD_NEGATIVE = re.compile(
             amsterdam|vienna|warsaw|prague|lisbon|athens|dublin|
             canada|denmark|copenhagen|mississippi|louisiana|pennsylvania|
             california|sacramento|korea|south\s+korea|ukraine|kyiv|kiev|
-            sudan|khartoum
+            sudan|khartoum|virginia|richmond|colombia|bogot[aá]
           )\b
       | ukrainian\s+capital\s+region
       | sudan(?:ese)?\s+capital\s+region
+      | (?:virginia|richmond)\s+capital\s+region
+      | bogot[aá]\s+capital\s+district
+      | capital\s+district\s*,?\s*colombia\b
       | capital\s+region\s+water\b
       | pennsylvania\s+capital\s+region
       | hauptstadtregion
       | jc\s+latham
       | saratoga\s+springs\s*,\s*ut\b
       | saratoga\s+springs\s+ut\b
+      | disney(?:['\u2019]?s)?\s+saratoga\s+springs
       | watervliet\s*,?\s*(?:mi|michigan)\b
       | colonie\s+de\s+vacances
       | colonie\s+num[eé]rique
@@ -787,20 +987,28 @@ def _canadian_capital_region_conflict(haystack: str, author_handle: str | None =
         return False
     if _CANADIAN_CAPITAL_REGION.search(haystack):
         return True
-    # Times Colonist cards often omit the timescolonist.com domain in embeds.
+    # Times Colonist / CFAX cards often omit domain cues; gate on handle.
     handle = (author_handle or '').strip().lower()
-    if re.search(r'timescolonist', handle) and re.search(
+    if re.search(r'timescolonist|\bcfax', handle) and re.search(
         r'capital\s+region\b', haystack, flags=re.IGNORECASE
     ):
         return True
     return False
 
 
-def _md_dc_capital_region_conflict(haystack: str) -> bool:
+def _md_dc_capital_region_conflict(haystack: str, author_handle: str | None = None) -> bool:
     """True when 'capital region' refers to MD/DC metro, not NY."""
-    if not _MD_DC_CAPITAL_REGION.search(haystack):
+    if _ny_capital_region_context(haystack):
         return False
-    return not _ny_capital_region_context(haystack)
+    if _MD_DC_CAPITAL_REGION.search(haystack):
+        return True
+    # Maryland Banner mirrors (bannermoco / bannerpgcounty) often omit "Maryland".
+    handle = (author_handle or '').strip().lower()
+    if re.search(r'banner(?:moco|pgcounty)|marylandbanner', handle) and re.search(
+        r'capital\s+region\b', haystack, flags=re.IGNORECASE
+    ):
+        return True
+    return False
 
 
 def _california_capital_region_conflict(haystack: str, author_handle: str | None = None) -> bool:
@@ -836,6 +1044,32 @@ def _sudan_capital_region_conflict(haystack: str) -> bool:
     if not _SD_CAPITAL_REGION.search(haystack):
         return False
     return not _ny_capital_region_context(haystack)
+
+
+def _virginia_capital_region_conflict(haystack: str) -> bool:
+    """True when 'capital region' refers to Richmond / Virginia, not NY."""
+    if not _VA_CAPITAL_REGION.search(haystack):
+        return False
+    return not _ny_capital_region_context(haystack)
+
+
+def _colombia_capital_district_conflict(haystack: str) -> bool:
+    """True when 'capital district' refers to Bogotá / Colombia, not NY."""
+    if not _CO_CAPITAL_DISTRICT.search(haystack):
+        return False
+    return not _ny_capital_region_context(haystack)
+
+
+def _disney_saratoga_conflict(haystack: str, author_handle: str | None = None) -> bool:
+    """True when Saratoga Springs refers to Disney World, not NY."""
+    if not re.search(r'\bsaratoga\b', haystack, flags=re.IGNORECASE):
+        return False
+    if _ny_capital_region_context(haystack):
+        return False
+    if _DISNEY_SARATOGA.search(haystack):
+        return True
+    handle = (author_handle or '').strip().lower()
+    return bool(re.search(r'wdwmagic|\bdisney', handle))
 
 
 def _louisiana_capital_region_conflict(haystack: str, author_handle: str | None = None) -> bool:
@@ -1100,7 +1334,7 @@ def match_post(
             return MatchResult(False, 'entity_other:watervliet_mi')
         if _canadian_capital_region_conflict(haystack, author_handle):
             return MatchResult(False, 'hard_negative:canadian_capital_region')
-        if _md_dc_capital_region_conflict(haystack):
+        if _md_dc_capital_region_conflict(haystack, author_handle):
             return MatchResult(False, 'hard_negative:md_dc_capital_region')
         if _louisiana_capital_region_conflict(haystack, author_handle):
             return MatchResult(False, 'hard_negative:louisiana_capital_region')
@@ -1114,6 +1348,10 @@ def match_post(
             return MatchResult(False, 'hard_negative:ukraine_capital_region')
         if _sudan_capital_region_conflict(haystack):
             return MatchResult(False, 'hard_negative:sudan_capital_region')
+        if _virginia_capital_region_conflict(haystack):
+            return MatchResult(False, 'hard_negative:virginia_capital_region')
+        if _colombia_capital_district_conflict(haystack):
+            return MatchResult(False, 'hard_negative:colombia_capital_district')
         if _clifton_park_uk_conflict(haystack, author_handle):
             return MatchResult(False, 'hard_negative:clifton_park_uk')
         return MatchResult(True, 'strong_positive')
@@ -1140,7 +1378,20 @@ def match_post(
         # European Malta AIS / Rotterdam shipping must not unlock multi-local.
         if _malta_europe_conflict(haystack) and distinct <= {'malta', 'rotterdam'}:
             return MatchResult(False, 'hard_negative:malta_europe')
+        # Disney's Saratoga Springs Resort must not unlock Cap Region Saratoga.
+        if _disney_saratoga_conflict(haystack, author_handle) and distinct <= {
+            'saratoga',
+            'saratoga springs',
+        }:
+            return MatchResult(False, 'hard_negative:disney_saratoga')
         multi_eligible = {name for name in distinct if name not in _MULTI_LOCAL_EXCLUDED}
+        # Collapse nested tokens ("saratoga" ⊂ "saratoga springs") so a hyphenated
+        # URL path cannot unlock multi_local from a single place name.
+        multi_eligible = {
+            name
+            for name in multi_eligible
+            if not any(name != other and name in other for other in multi_eligible)
+        }
         if len(multi_eligible) >= 2:
             if _wi_troy_waterford_conflict(haystack, multi_eligible):
                 return MatchResult(False, 'hard_negative:wi_troy_waterford')
@@ -1148,6 +1399,10 @@ def match_post(
                 return MatchResult(False, 'hard_negative:malta_europe')
             if _scotia_montreal_conflict(haystack) and 'scotia' in multi_eligible:
                 return MatchResult(False, 'hard_negative:scotia_montreal')
+            if _disney_saratoga_conflict(haystack, author_handle) and (
+                {'saratoga', 'saratoga springs'} & multi_eligible
+            ):
+                return MatchResult(False, 'hard_negative:disney_saratoga')
             return MatchResult(True, 'multi_local_places')
 
         # Prefer a non-collision token when several ambiguous names appear but
@@ -1186,6 +1441,11 @@ def match_post(
 
         if term in {'malta', 'rotterdam'} and _malta_europe_conflict(haystack):
             return MatchResult(False, 'hard_negative:malta_europe')
+
+        if term in {'saratoga', 'saratoga springs'} and _disney_saratoga_conflict(
+            haystack, author_handle
+        ):
+            return MatchResult(False, 'hard_negative:disney_saratoga')
 
         if _NY_CONTEXT.search(place_haystack) or _STRONG_POSITIVE.search(haystack):
             return MatchResult(True, f'ambiguous_with_context:{term}')

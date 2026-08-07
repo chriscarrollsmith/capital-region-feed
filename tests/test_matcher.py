@@ -288,6 +288,90 @@ def test_pennsylvania_capital_region_is_hard_negative() -> None:
     assert keep.matched is True
 
 
+def test_bogota_capital_district_is_hard_negative() -> None:
+    bogota = match_post(
+        '98-0002 Landed near Bogota, Bogotá Capital District, Colombia. Apx. flt. time 0 min.',
+        author_handle='usairforcevip.bsky.social',
+    )
+    assert bogota.matched is False
+
+    keep = match_post(
+        'Capital District aid groups sent supplies after floods in Colombia (#AlbanyNY).'
+    )
+    assert keep.matched is True
+
+
+def test_maryland_banner_capital_region_is_hard_negative() -> None:
+    olney = match_post(
+        '7 things to do in the capital region, including a free day of theater.',
+        alt_text=(
+            'Weekend guide for the capital region, including Olney Theatre Center '
+            'and a water lantern festival in National Harbor.'
+        ),
+        author_handle='bannerpgcounty.bsky.social',
+    )
+    assert olney.matched is False
+    assert olney.reason == 'hard_negative:md_dc_capital_region'
+
+    handle_only = match_post(
+        '7 things to do in the capital region this weekend.',
+        author_handle='bannermoco.bsky.social',
+    )
+    assert handle_only.matched is False
+    assert handle_only.reason == 'hard_negative:md_dc_capital_region'
+
+    keep = match_post('Capital Region exporters shipped goods through Maryland to #AlbanyNY.')
+    assert keep.matched is True
+
+
+def test_cfax_canadian_capital_region_long_window() -> None:
+    # #yyj sits ~196 chars after "capital region" — beyond the old 160-char window.
+    cfax = match_post(
+        'Explore debates in the capital region with local callers weighing deer '
+        'immunocontraception efforts, downtown street disorder, the role of advocacy '
+        'groups in municipal politics and more. #yyj #BCpoli',
+        author_handle='cfax1070.bsky.social',
+    )
+    assert cfax.matched is False
+    assert cfax.reason == 'hard_negative:canadian_capital_region'
+
+    handle_only = match_post(
+        'Callers weigh in on deer control across the capital region this hour.',
+        author_handle='cfax1070.bsky.social',
+    )
+    assert handle_only.matched is False
+    assert handle_only.reason == 'hard_negative:canadian_capital_region'
+
+
+def test_virginia_capital_region_is_hard_negative() -> None:
+    va = match_post(
+        'She notes the harm this merger can have for people across the Capital region.',
+        alt_text='Opinion | Abigail Spanberger: Why I’m intervening in the Dominion-NextEra merger',
+    )
+    assert va.matched is False
+    assert va.reason == 'hard_negative:virginia_capital_region'
+
+    keep = match_post('Capital Region students visited Richmond before returning to #AlbanyNY.')
+    assert keep.matched is True
+
+
+def test_disney_saratoga_springs_not_multi_local() -> None:
+    disney = match_post(
+        'Room-by-room tour of the new Treehouse Villas at Saratoga Springs is out.\n'
+        'https://www.wdwmagic.com/resorts/Treehouse-Villas-at-Disneys-Saratoga-Springs'
+        '-Resort-and-Spa/news/06Aug2026.htm',
+        author_handle='wdwmagic.bsky.social',
+    )
+    assert disney.matched is False
+    assert disney.reason == 'hard_negative:disney_saratoga'
+
+    resort = match_post("Staying at Disney's Saratoga Springs Resort next month.")
+    assert resort.matched is False
+
+    keep = match_post('Saratoga Springs, NY weekend at the Race Course.')
+    assert keep.matched is True
+
+
 def test_malta_europe_ais_not_multi_local() -> None:
     ais = match_post(
         'VesselAlert\nName: PRYSMIAN MARCO POLO\nMMSI: 249023000\n'

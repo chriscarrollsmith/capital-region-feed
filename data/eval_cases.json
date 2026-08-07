@@ -2965,5 +2965,153 @@
     "split": "dev",
     "regression": true,
     "note": "2026-08-06 audit: hyphenated Brussels-Capital Region"
+  },
+  {
+    "id": "fp-bogota-capital-district",
+    "text": "98-0002 Landed near Bogota, Bogotá Capital District, Colombia. Apx. flt. time 0 min.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "author_handle": "usairforcevip.bsky.social",
+    "note": "2026-08-07 audit: Bogotá Capital District flight tracker vs NY Capital District"
+  },
+  {
+    "id": "tp-capital-district-colombia-aid",
+    "text": "Capital District aid groups sent supplies after floods in Colombia (#AlbanyNY).",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-07 audit: NY Capital District + Colombia keep counterpart"
+  },
+  {
+    "id": "fp-maryland-banner-olney-national-harbor",
+    "text": "7 things to do in the capital region, including a free day of theater and a water lantern festival",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "author_handle": "bannerpgcounty.bsky.social",
+    "alt_text": "Here’s your weekend guide for things to do in the capital region, including free musical theater performances at the Olney Theatre Center and a water lantern festival in National Harbor.",
+    "note": "2026-08-07 audit: Maryland Banner PG County capital region + Olney/National Harbor"
+  },
+  {
+    "id": "fp-bannermoco-handle-capital-region",
+    "text": "7 things to do in the capital region this weekend.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "author_handle": "bannermoco.bsky.social",
+    "note": "2026-08-07 audit: Maryland Banner MoCo author handle gate for bare capital region"
+  },
+  {
+    "id": "tp-capital-region-maryland-trade",
+    "text": "Capital Region exporters shipped goods through Maryland to #AlbanyNY.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-07 audit: NY Capital Region + Maryland keep counterpart"
+  },
+  {
+    "id": "fp-cfax-yyj-capital-region-long",
+    "text": "Explore debates in the capital region with local callers weighing deer immunocontraception efforts, downtown street disorder, the role of advocacy groups in municipal politics and more. #yyj #BCpoli",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "author_handle": "cfax1070.bsky.social",
+    "note": "2026-08-07 audit: CFAX Victoria BC capital region with #yyj beyond prior 160-char window"
+  },
+  {
+    "id": "fp-cfax-handle-capital-region",
+    "text": "Callers weigh in on deer control across the capital region this hour.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "author_handle": "cfax1070.bsky.social",
+    "note": "2026-08-07 audit: CFAX author handle gate when #yyj omitted"
+  },
+  {
+    "id": "fp-virginia-spanberger-capital-region",
+    "text": "She notes the harm this merger can have for the livelihoods of people across the Capital region.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Opinion | Abigail Spanberger: Why I’m intervening in the Dominion-NextEra merger",
+    "note": "2026-08-07 audit: Virginia Spanberger/Dominion Capital region"
+  },
+  {
+    "id": "tp-capital-region-richmond-visit",
+    "text": "Capital Region students visited Richmond before returning to #AlbanyNY.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-07 audit: NY Capital Region + Richmond keep counterpart"
+  },
+  {
+    "id": "fp-disney-saratoga-springs-wdwmagic",
+    "text": "Room-by-room tour of the new Treehouse Villas at Saratoga Springs is out.\n\nhttps://www.wdwmagic.com/resorts/Treehouse-Villas-at-Disneys-Saratoga-Springs-Resort-and-Spa/news/06Aug2026.htm",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "author_handle": "wdwmagic.bsky.social",
+    "note": "2026-08-07 audit: Disney Saratoga Springs via hyphenated URL unlocking multi_local"
+  },
+  {
+    "id": "fp-disney-saratoga-springs-resort",
+    "text": "Staying at Disney's Saratoga Springs Resort next month.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-07 audit: Disney's Saratoga Springs Resort hard negative"
+  },
+  {
+    "id": "tp-saratoga-springs-ny-race-course",
+    "text": "Saratoga Springs, NY weekend at the Race Course.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-07 audit: Cap Region Saratoga Springs keep counterpart"
+  },
+  {
+    "id": "tp-the-egg-albany-plaza",
+    "text": "Five years ago in Albany, just staring at the Egg on Empire Plaza. A spaceship? Nope, a theater.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-07 audit: The Egg + Albany recall (search FN was indexing gap, matcher keep)"
+  },
+  {
+    "id": "tp-capital-district-nys-engineers",
+    "text": "Joined members of the Capital District Chapter of the NYS Society of Professional Engineers for a group photo.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-07 audit: NY Capital District chapter keep counterpart"
   }
 ]
