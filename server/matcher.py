@@ -480,6 +480,144 @@ _MALTA_EUROPE = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
+# Louisiana "capital region" (Baton Rouge / WBRZ). Handles like wbrz-mirror /
+# wbrznews2 are checked via author_handle because short copy often omits geo.
+_LA_GEO_CUE = (
+    r'\bbaton\s+rouge\b|\blouisiana\b|\#la(?:wx|politics|gov)\b|'
+    r'\bwbrz\b|wbrz\.com|east\s+baton\s+rouge|west\s+feliciana|'
+    r'\bfeliciana\b|st\.?\s+mary\s+parish|'
+    r'\bascension(?:\s+parish)?\b|\bprairieville\b|\bsorrento\b|'
+    r'\bst\.?\s+amant\b|\bgonzales\b'
+)
+
+_LA_CAPITAL_REGION = re.compile(
+    rf"""
+    (?:
+        capital\s+region\s+of\s+louisiana\b
+      | capital\s+region\b[\s\S]{{0,160}}(?:{_LA_GEO_CUE})
+      | (?:{_LA_GEO_CUE})[\s\S]{{0,160}}capital\s+region\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Pennsylvania "capital region" (Harrisburg / Capital Region Water).
+_PA_GEO_CUE = (
+    r'\bharrisburg\b|\bpennsylvania\b|\#pa(?:wx|politics|gov)\b|'
+    r'capital\s+region\s+water\b|pennlive|susquehanna\b|'
+    r'pennsylvania\s+capital\s+region'
+)
+
+_PA_CAPITAL_REGION = re.compile(
+    rf"""
+    (?:
+        pennsylvania\s+capital\s+region
+      | capital\s+region\s+of\s+pennsylvania\b
+      | capital\s+region\s+water\b
+      | capital\s+region\b[\s\S]{{0,160}}(?:{_PA_GEO_CUE})
+      | (?:{_PA_GEO_CUE})[\s\S]{{0,160}}capital\s+region\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# California "capital region" (Sacramento / SacBee).
+_CA_GEO_CUE = (
+    r'\bsacramento\b|\bcalifornia\b|\#ca(?:wx|politics|gov)\b|'
+    r'\bsacbee\b|sacbee\.com|folsom\b|elk\s+grove\b|'
+    r'west\s+sacramento|roseville\b'
+)
+
+_CA_CAPITAL_REGION = re.compile(
+    rf"""
+    (?:
+        capital\s+region\s+of\s+(?:california|sacramento)\b
+      | capital\s+region\b[\s\S]{{0,160}}(?:{_CA_GEO_CUE})
+      | (?:{_CA_GEO_CUE})[\s\S]{{0,160}}capital\s+region\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# South Korea "capital region" (Seoul / Gyeonggi / KMA heat alerts).
+_KR_GEO_CUE = (
+    r'\bseoul\b|\bgyeonggi\b|\bkorea\b|south\s+korea|'
+    r'\bincheon\b|\bkoreaherald\b|korea\s+herald|'
+    r'\bgangnam\b|han\s+river|\bkma\b'
+)
+
+_KR_CAPITAL_REGION = re.compile(
+    rf"""
+    (?:
+        capital\s+region\s+of\s+(?:korea|south\s+korea|seoul)\b
+      | greater\s+seoul
+      | capital\s+region\b[\s\S]{{0,160}}(?:{_KR_GEO_CUE})
+      | (?:{_KR_GEO_CUE})[\s\S]{{0,160}}capital\s+region\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Ukraine "capital region" (Kyiv / AP wire mirrors).
+_UA_GEO_CUE = (
+    r'\bukraine\b|\bukrainian\b|\bkyiv\b|\bkiev\b|'
+    r'\#ukraine\b|\#kyiv\b|kyivunderattack'
+)
+
+_UA_CAPITAL_REGION = re.compile(
+    rf"""
+    (?:
+        ukrainian\s+capital\s+region
+      | capital\s+region\s+of\s+(?:ukraine|kyiv|kiev)\b
+      | capital\s+region\b[\s\S]{{0,160}}(?:{_UA_GEO_CUE})
+      | (?:{_UA_GEO_CUE})[\s\S]{{0,160}}capital\s+region\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Sudan "capital region" (Khartoum UNEP / wire cards).
+_SD_GEO_CUE = r'\bsudan\b|\bsudanese\b|\bkhartoum\b|\#sudan\b|\#khartoum\b'
+
+_SD_CAPITAL_REGION = re.compile(
+    rf"""
+    (?:
+        sudan(?:ese)?\s+capital\s+region
+      | capital\s+region\s+of\s+(?:sudan|khartoum)\b
+      | capital\s+region\b[\s\S]{{0,160}}(?:{_SD_GEO_CUE})
+      | (?:{_SD_GEO_CUE})[\s\S]{{0,160}}capital\s+region\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# European Malta / AIS shipping (Flag: Malta + Dest. Rotterdam, etc.) — not
+# Town of Malta NY or Town of Rotterdam NY.
+_MALTA_EUROPE = re.compile(
+    r"""
+    (?:
+        \bmmsi\b
+      | \bvesselalert\b
+      | \bais\b
+      | flag:\s*malta\b
+      | bandera:\s*malta\b
+      | dest\.?\s*:\s*rotterdam\b
+      | \blmml\b
+      | isle\s+of\s+mtv
+      | mediterranean
+      | \bmalti\b
+      | callsign:\s*9ha
+      | \b9ha\d+\b
+      | malta\s+international
+      | malta\s+sends\b
+      | wildfires?\s+in\s+portugal
+      | \bportugal\b[\s\S]{0,80}\bmalta\b
+      | \bmalta\b[\s\S]{0,80}\bportugal\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
 # Wisconsin East Troy / Waterford weather (and similar) must not unlock
 # multi_local_places via Cap Region town-name collisions.
 _WI_TROY_WATERFORD = re.compile(

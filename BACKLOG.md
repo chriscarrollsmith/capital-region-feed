@@ -381,11 +381,11 @@ Status: `todo` · `in progress` · `done` · `blocked`
 ### B-061 — Daily feed audit: Sacramento/Korea capital region, Rotherham Clifton Park, Snowbirds, Caffe Lena
 - **Status:** done ([#34](https://github.com/chriscarrollsmith/capital-region-feed/pull/34))
 - **Why:** 2026-08-04 audit of last-24h AppView feed (~171 posts since 2026-08-03T09:00Z)
-  found active FPs after #32 (and unmerged #33): Sacramento Bee / Seoul–Gyeonggi "capital
+  found active FPs after #32/#33: Sacramento Bee / Seoul–Gyeonggi "capital
   region"; Times Colonist Snowbirds / Parkland Secondary cards; Rotherham Show at Clifton
   Park (England) beyond the cricket-only UK gate. Also restored recall for Caffe Lena and
   High Rock Park Pavilions in Saratoga Springs without `, NY`. WBRZ Baton Rouge remains
-  covered by the cherry-picked B-060 Louisiana gate.
+  covered by the B-060 Louisiana gate.
 - **Work:**
   - California capital-region conflict (Sacramento / SacBee handle).
   - Korea capital-region conflict (Seoul / Gyeonggi / Greater Seoul).
@@ -399,7 +399,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
 ### B-062 — Daily feed audit: Ukrainian capital region, Montreal Scotia, Watervliet MI, The Egg
 - **Status:** done ([#35](https://github.com/chriscarrollsmith/capital-region-feed/pull/35))
 - **Why:** 2026-08-05 audit of last-24h AppView feed (~190 posts since 2026-08-04T09:00Z)
-  found active FPs after #32 (and unmerged #33/#34 cherry-picks): AP/wire "Ukrainian capital
+  found active FPs after #32/#33/#34: AP/wire "Ukrainian capital
   region" / Kyiv mirrors (~10 keeps); Osheaga Scotia Forest Stage and Cinéma Banque Scotia
   Montréal + New York plot unlocked Village of Scotia; Galway tourism with "Irish" (not
   "Ireland") + New York; Watervliet, MI hospital jobs via bare `watervliet` entity/strong.
@@ -417,7 +417,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
 ### B-063 — Daily feed audit: Rotherham Watersplash, LA Ascension/WBRZnews2, Sudan, Schenectady hashtags, River Street
 - **Status:** done ([#36](https://github.com/chriscarrollsmith/capital-region-feed/pull/36))
 - **Why:** 2026-08-06 audit of last-24h AppView feed (~234 posts since 2026-08-05T09:00Z)
-  found active FPs after #32 (and unmerged #33/#34/#35 cherry-picks): Rotherham council
+  found active FPs after #32/#33/#34/#35: Rotherham council
   Clifton Park Watersplash (handle omitted "Rotherham" in body); Ascension Parish /
   Prairieville–Sorrento–St. Amant "Capital Region" storage ads; `wbrznews2` Capital Region
   race qualifying (prior `\bwbrz\b` handle gate missed the prefix); Sudan/Khartoum
@@ -440,7 +440,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
 ### B-064 — Daily feed audit: Bogotá Capital District, MD Banner, CFAX, Virginia, Disney Saratoga
 - **Status:** done ([#37](https://github.com/chriscarrollsmith/capital-region-feed/pull/37))
 - **Why:** 2026-08-07 audit of last-24h AppView feed (~276 posts since 2026-08-06T09:00Z)
-  found active FPs after #32 (and unmerged #33–#36 cherry-picks): Bogotá Capital District
+  found active FPs after #32/#33/#34/#35/#36: Bogotá Capital District
   flight trackers; Maryland Banner MoCo/PG County "capital region" weekend guides (Olney /
   National Harbor; handle omitted Maryland); CFAX Victoria BC capital-region call-ins with
   `#yyj` beyond the prior 160-char window; Virginia Spanberger/Dominion "Capital region";
