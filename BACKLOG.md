@@ -438,7 +438,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-064 — Daily feed audit: Bogotá Capital District, MD Banner, CFAX, Virginia, Disney Saratoga
-- **Status:** in progress
+- **Status:** done ([#37](https://github.com/chriscarrollsmith/capital-region-feed/pull/37))
 - **Why:** 2026-08-07 audit of last-24h AppView feed (~276 posts since 2026-08-06T09:00Z)
   found active FPs after #32 (and unmerged #33–#36 cherry-picks): Bogotá Capital District
   flight trackers; Maryland Banner MoCo/PG County "capital region" weekend guides (Olney /
