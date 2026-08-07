@@ -2507,7 +2507,7 @@
   },
   {
     "id": "tp-rotterdam-ny-fire-open-house",
-    "text": "Rotterdam, NY fire department open house this weekend \u2014 bring the kids.",
+    "text": "Rotterdam, NY fire department open house this weekend — bring the kids.",
     "expected": true,
     "signal": "text",
     "bucket": "strong_local",
@@ -2670,7 +2670,7 @@
   },
   {
     "id": "tp-clifton-park-route-9-retail",
-    "text": "New shop opens on Route 9 in Clifton Park this weekend \u2014 locals love it.",
+    "text": "New shop opens on Route 9 in Clifton Park this weekend — locals love it.",
     "expected": true,
     "signal": "text",
     "bucket": "strong_local",
@@ -2768,7 +2768,7 @@
     "bucket": "precision_gate",
     "split": "holdout",
     "regression": true,
-    "alt_text": "Tuesday, August 4th, 2026 - 10:00 PM Cin\u00e9ma Banque Scotia Montr\u00e9al",
+    "alt_text": "Tuesday, August 4th, 2026 - 10:00 PM Cinéma Banque Scotia Montréal",
     "note": "2026-08-05 audit: Banque Scotia Montreal cinema card + New York plot"
   },
   {
