@@ -361,6 +361,23 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; `N.Y.`/`NYS` Cap Region posts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-060 — Daily feed audit: Malta/Rotterdam AIS, LA/PA capital region
+- **Status:** done ([#33](https://github.com/chriscarrollsmith/capital-region-feed/pull/33))
+- **Why:** 2026-08-02 audit of last-24h AppView feed (~102 posts) found active FPs after #32:
+  European AIS `Flag: Malta` + `Dest.: ROTTERDAM` unlocked `multi_local_places` (Town of
+  Malta/Rotterdam NY collisions); WBRZ Baton Rouge weather kept on bare `Capital Region`
+  (often with no LA cue in the body); Harrisburg `Capital Region Water` /
+  `Pennsylvania Capital Region` also kept. Rematch already dropped stale Malta/Troy MI /
+  Jacksonville Brunswick rows from prior gates. No new Cap Region FNs in the window
+  (search misses were replies, MD/Canadian capital-region drops, or Proctor surname).
+- **Work:**
+  - Malta/Europe AIS conflict helper (MMSI / VesselAlert / Flag: Malta / LMML / Portugal).
+  - Louisiana capital-region conflict (Baton Rouge / WBRZ handle gate).
+  - Pennsylvania capital-region conflict + hard-negative `Capital Region Water`.
+  - Grow eval with 2026-08-02 FP/TP anchors.
+- **Done when:** Audited FPs drop; Malta/Rotterdam NY counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-058 — Jetstream catch-up keepalive wedge (quiet feed)
 - **Status:** done
 - **Why:** From ~2026-07-30T16:30Z the Fly machine stayed healthy (`/healthz` 200) while
