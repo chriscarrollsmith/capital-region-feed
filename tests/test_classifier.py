@@ -102,6 +102,27 @@ def test_center_square_wire_byline_is_not_local_micro() -> None:
     )
     assert result.matched is False
 
+    # Dash-suffix wire titles (no parens) also scrub.
+    dash = match_post(
+        'Illinois Quick Hits: SBA approves disaster declaration for 6 counties - The Center Square',
+        alt_text=(
+            'Illinois Quick Hits: SBA approves disaster declaration for 6 counties '
+            '(The Center Square) – The U.S. Small Business Administration has approved '
+            'a disaster declaration for flooding in northeastern Illinois from July 2-4.'
+        ),
+    )
+    assert dash.matched is False
+
+    # Hollywood Squares / Paul Lynde "center square" is not Albany Center Square.
+    hollywood = match_post(
+        "Good ol' Paul Lynde. One of the funniest guys EV-ER.",
+        alt_text=(
+            'Paul Lynde, center square on “The Hollywood Squares” (1968–1981). '
+            '#gamespotsquares #centersquare June 13, 2026'
+        ),
+    )
+    assert hollywood.matched is False
+
     # Real Albany Center Square neighborhood + event cue still keeps.
     porch = match_post('Center Square Porchfest is this weekend. Maps at noon.')
     assert porch.matched is True

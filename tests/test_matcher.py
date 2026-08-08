@@ -677,6 +677,75 @@ def test_bethlehem_pa_not_town_of_bethlehem_ny() -> None:
     assert match_post('Town of Bethlehem, NY board meeting tonight.').matched is True
 
 
+def test_waterford_ct_not_waterford_ny() -> None:
+    assert (
+        match_post(
+            'Waterford town beach, meets rocky area, where fisherman often sit patiently. '
+            'Ferry from New London CT. to Long Island NY, in the background.'
+        ).matched
+        is False
+    )
+    assert match_post('Town of Waterford, NY board meeting tonight.').matched is True
+
+
+def test_donna_troy_not_troy_ny() -> None:
+    assert (
+        match_post(
+            "GREEN LANTERN #68 | Nov '95\n"
+            'Can Kyle and Donna Troy stop Mr. Freeze before he puts the city of '
+            'New York on ice forever?'
+        ).matched
+        is False
+    )
+    assert match_post('Dinner in Troy, New York tonight.').matched is True
+
+
+def test_loudonville_ohio_not_loudonville_ny() -> None:
+    assert (
+        match_post('Advantage Air Heating & Cooling HVAC Contractor in Loudonville, OH').matched
+        is False
+    )
+    assert match_post('Road work begins in Loudonville near Albany this week.').matched is True
+
+
+def test_ottawa_citizen_capital_region_not_ny() -> None:
+    assert (
+        match_post(
+            'Busy overnight shift for OPP highway patrol in capital region '
+            'ottawacitizen.com/news/busy-shift',
+            author_handle='ottawacitizen.com',
+        ).matched
+        is False
+    )
+    assert match_post("New York's Capital Region flash flood warning until 10pm.").matched is True
+
+
+def test_albany_ga_radio_market_not_multi_local() -> None:
+    nielsen = (
+        "Today's markets include Nielsen Spring ratings for Albany GA, Ann Arbor, "
+        'Beaumont/Port Arthur, Bloomington IL, Brunswick, Dothan, and Savannah.'
+    )
+    result = match_post(nielsen)
+    assert result.matched is False
+    assert result.reason in {'entity_other:albany_georgia', 'hard_negative'}
+    assert match_post('Drive from Albany to Brunswick for the farmers market.').matched is True
+
+
+def test_reinvent_albany_nyc_advocacy_not_capital_region() -> None:
+    assert (
+        match_post(
+            'reinventalbany.org/2026/08/mayoral-election-systems',
+            alt_text=(
+                'Mayoral Election Systems in the 50 Largest U.S. Cities - Reinvent Albany '
+                'looked at how the 50 most populous cities select their mayors. '
+                'New York City’s election process is unique.'
+            ),
+        ).matched
+        is False
+    )
+    assert match_post('Moved from NYC to Albany for outdoor activities.').matched is True
+
+
 def test_proctors_theatre_not_surname_proctor() -> None:
     assert (
         match_post(
