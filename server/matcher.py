@@ -130,8 +130,8 @@ _STRONG_POSITIVE = re.compile(
 # Includes Cap Region micro-toponyms that collide with personal names,
 # other U.S./world places, or common phrases (e.g. "green islands").
 # ``troy`` ignores email local-parts (``troy@…``), hyphenated names/domains
-# (``troy-caperton``), and troy weight (oz / "10.8 troy").
-_TROY_PLACE = r'(?<!\d\s)(?<![\w.])troy(?![\w@.-])(?!\s*(?:oz|ounces?|ozt|weight)\b)'
+# (``troy-caperton``), troy weight (oz / "10.8 troy"), and "Donna Troy".
+_TROY_PLACE = r'(?<!\d\s)(?<![\w.])(?<!donna\s)troy(?![\w@.-])(?!\s*(?:oz|ounces?|ozt|weight)\b)'
 
 _AMBIGUOUS_PLACE = re.compile(
     rf"""
@@ -240,6 +240,8 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
       | hauptstadtregion
       | disney(?:['\u2019]?s)?\s+saratoga\s+springs
       | watervliet\s*,?\s*(?:mi|michigan)\b
+      | loudonville\s*,?\s*(?:oh|ohio)\b
+      | reinvent\s*albany
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -253,7 +255,7 @@ _CANADIAN_GEO_CUE = (
     r'\#yyj\b|\#bcpoli\b|british\s+columbia|\blangford\b|'
     r'victoria(?:\s*,?\s*bc\b)|greater\s+victoria|'
     r'capital\s+regional\s+district|\blivable\s+crd\b|'
-    r'timescolonist\.com|\bsnowbirds?\b|parkland\s+secondary|'
+    r'timescolonist\.com|ottawacitizen\.com|\bsnowbirds?\b|parkland\s+secondary|'
     r'\bcfax\b|cfax\.com'
 )
 
@@ -716,6 +718,18 @@ _BETHLEHEM_PA = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
+# Waterford, Connecticut (New London ferry / Hartford Tpke) — not Waterford NY.
+_WATERFORD_CT = re.compile(
+    r"""
+    (?:
+        waterford\s*,?\s*(?:ct|connecticut)\b
+      | waterford[\s\S]{0,160}\b(?:new\s+london|hartford\s+tpke|connecticut)\b
+      | \b(?:new\s+london|hartford\s+tpke|connecticut)\b[\s\S]{0,160}waterford
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
 # Hard negatives: other Albanys / homographs that should never match alone.
 # State abbreviations require a comma/space boundary so we do not trip on
 # English words like "Albany or …" / "Albany in …".
@@ -766,6 +780,10 @@ _HARD_NEGATIVE = re.compile(
       | saratoga\s+springs\s+ut\b
       | disney(?:['\u2019]?s)?\s+saratoga\s+springs
       | watervliet\s*,?\s*(?:mi|michigan)\b
+      | loudonville\s*,?\s*(?:oh|ohio)\b
+      | reinvent\s*albany
+      # Radio-market lists often omit the comma ("Albany GA").
+      | albany\s+ga\b
       | colonie\s+de\s+vacances
       | colonie\s+num[eé]rique
       | une\s+colonie
@@ -987,9 +1005,9 @@ def _canadian_capital_region_conflict(haystack: str, author_handle: str | None =
         return False
     if _CANADIAN_CAPITAL_REGION.search(haystack):
         return True
-    # Times Colonist / CFAX cards often omit domain cues; gate on handle.
+    # Times Colonist / CFAX / Ottawa Citizen cards often omit domain cues; gate on handle.
     handle = (author_handle or '').strip().lower()
-    if re.search(r'timescolonist|\bcfax', handle) and re.search(
+    if re.search(r'timescolonist|\bcfax|ottawacitizen', handle) and re.search(
         r'capital\s+region\b', haystack, flags=re.IGNORECASE
     ):
         return True
@@ -1177,6 +1195,21 @@ def _bethlehem_pa_conflict(haystack: str) -> bool:
         return False
     if re.search(
         r'bethlehem\s*,?\s*(?:ny|n\.y\.)\b|town\s+of\s+bethlehem',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    return True
+
+
+def _waterford_ct_conflict(haystack: str) -> bool:
+    """True when Waterford refers to Connecticut, not Waterford NY."""
+    if not re.search(r'\bwaterford\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not _WATERFORD_CT.search(haystack):
+        return False
+    if re.search(
+        r'waterford\s*,?\s*(?:ny|n\.y\.)\b|town\s+of\s+waterford',
         haystack,
         flags=re.IGNORECASE,
     ):
@@ -1438,6 +1471,9 @@ def match_post(
 
         if term == 'bethlehem' and _bethlehem_pa_conflict(haystack):
             return MatchResult(False, 'hard_negative:bethlehem_pa')
+
+        if term == 'waterford' and _waterford_ct_conflict(haystack):
+            return MatchResult(False, 'hard_negative:waterford_ct')
 
         if term in {'malta', 'rotterdam'} and _malta_europe_conflict(haystack):
             return MatchResult(False, 'hard_negative:malta_europe')
