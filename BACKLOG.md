@@ -459,7 +459,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-065 — Daily feed audit: Center Square wire/Hollywood, Ottawa Citizen, Albany GA, Waterford CT, Donna Troy, Loudonville OH, Reinvent Albany
-- **Status:** in progress
+- **Status:** done ([#38](https://github.com/chriscarrollsmith/capital-region-feed/pull/38))
 - **Why:** 2026-08-08 audit of last-24h AppView feed (~185 posts since 2026-08-07T09:03Z)
   found active FPs after #37: Illinois "The Center Square" dash bylines + Hollywood Squares /
   Paul Lynde "center square" classifier keeps; Ottawa Citizen "capital region" (handle/domain
