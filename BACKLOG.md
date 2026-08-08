@@ -458,6 +458,27 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-065 — Daily feed audit: Center Square wire/Hollywood, Ottawa Citizen, Albany GA, Waterford CT, Donna Troy, Loudonville OH, Reinvent Albany
+- **Status:** in progress
+- **Why:** 2026-08-08 audit of last-24h AppView feed (~185 posts since 2026-08-07T09:03Z)
+  found active FPs after #37: Illinois "The Center Square" dash bylines + Hollywood Squares /
+  Paul Lynde "center square" classifier keeps; Ottawa Citizen "capital region" (handle/domain
+  omitted from prior Canadian gate); Nielsen `Albany GA` + Brunswick `multi_local_places`
+  (gazetteer lacked comma-less `albany ga`); Waterford CT beach + New London unlocked via
+  Long Island NY context; Donna Troy comic + New York; Loudonville, OH HVAC via bare
+  `loudonville` strong positive; Reinvent Albany NYC advocacy via `albany_with_ny_context`.
+  No new matcher FNs in Cap Region search (non-reply) for the window.
+- **Work:**
+  - Expand Center Square wire scrub (dash bylines) + Hollywood Squares / Paul Lynde scrub.
+  - Ottawa Citizen domain + `ottawacitizen` author_handle Canadian capital-region gate.
+  - Gazetteer `albany ga` (and peer no-comma state surfaces) + hard-negative `albany ga`.
+  - Waterford CT conflict (New London / Hartford Tpke / Connecticut).
+  - Exclude `Donna Troy` from troy ambiguous place matching.
+  - Hard-negative `loudonville, OH` and `reinvent albany` / `reinventalbany`.
+  - Grow eval with 2026-08-08 FP/TP anchors.
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-058 — Jetstream catch-up keepalive wedge (quiet feed)
 - **Status:** done
 - **Why:** From ~2026-07-30T16:30Z the Fly machine stayed healthy (`/healthz` 200) while
