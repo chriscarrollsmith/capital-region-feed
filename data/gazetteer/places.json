@@ -20,32 +20,32 @@
     {
       "id": "albany_california",
       "region": "other",
-      "surfaces": ["albany, ca", "albany, california", "albany california"]
+      "surfaces": ["albany, ca", "albany ca", "albany, california", "albany california"]
     },
     {
       "id": "albany_georgia",
       "region": "other",
-      "surfaces": ["albany, ga", "albany, georgia", "albany georgia"]
+      "surfaces": ["albany, ga", "albany ga", "albany, georgia", "albany georgia"]
     },
     {
       "id": "albany_texas",
       "region": "other",
-      "surfaces": ["albany, tx", "albany, texas", "albany texas"]
+      "surfaces": ["albany, tx", "albany tx", "albany, texas", "albany texas"]
     },
     {
       "id": "albany_minnesota",
       "region": "other",
-      "surfaces": ["albany, mn", "albany, minnesota", "albany minnesota"]
+      "surfaces": ["albany, mn", "albany mn", "albany, minnesota", "albany minnesota"]
     },
     {
       "id": "albany_missouri",
       "region": "other",
-      "surfaces": ["albany, mo", "albany, missouri", "albany missouri"]
+      "surfaces": ["albany, mo", "albany mo", "albany, missouri", "albany missouri"]
     },
     {
       "id": "albany_kentucky",
       "region": "other",
-      "surfaces": ["albany, ky", "albany, kentucky", "albany kentucky"]
+      "surfaces": ["albany, ky", "albany ky", "albany, kentucky", "albany kentucky"]
     },
     {
       "id": "albany_indiana",
@@ -60,7 +60,7 @@
     {
       "id": "albany_wyoming",
       "region": "other",
-      "surfaces": ["albany, wy", "albany, wyoming", "albany wyoming"]
+      "surfaces": ["albany, wy", "albany wy", "albany, wyoming", "albany wyoming"]
     },
     {
       "id": "albany_county_wy",

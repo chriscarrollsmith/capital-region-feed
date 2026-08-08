@@ -35,6 +35,18 @@ def test_watervliet_michigan_beats_watervliet_ny() -> None:
     assert hit.entity_id == 'watervliet_mi'
 
 
+def test_albany_ga_without_comma_is_other_region() -> None:
+    """Radio-market lists often write 'Albany GA' without a comma."""
+    from server.gazetteer import default_gazetteer as gaz_fn
+
+    gaz_fn.cache_clear()
+    gaz = gaz_fn()
+    hit = gaz.lookup('Nielsen Spring ratings for Albany GA, Ann Arbor, Brunswick')
+    assert hit is not None
+    assert hit.region == 'other'
+    assert hit.entity_id == 'albany_georgia'
+
+
 def test_albany_county_wyoming_not_capital_region() -> None:
     contiguous = match_post('Road work begins in Albany County, WY next month.')
     assert contiguous.matched is False

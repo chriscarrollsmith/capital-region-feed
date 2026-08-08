@@ -88,8 +88,26 @@ _CAP_REGION_HINT = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
-# News wire "(The Center Square)" — not Albany's Center Square neighborhood.
-_CENTER_SQUARE_WIRE = re.compile(r'\(\s*the\s+center\s+square\s*\)', re.IGNORECASE)
+# News wire "The Center Square" — not Albany's Center Square neighborhood.
+# Paren bylines and dash suffixes both appear in AppView title/description copy.
+_CENTER_SQUARE_WIRE = re.compile(
+    r'(?:\(\s*the\s+center\s+square\s*\)|[-–—]\s*the\s+center\s+square\b)',
+    re.IGNORECASE,
+)
+
+# Hollywood Squares / Paul Lynde "center square" — not the Albany neighborhood.
+_HOLLYWOOD_CENTER_SQUARE = re.compile(
+    r"""
+    (?:
+        hollywood\s+squares
+      | \#?centersquare\b
+      | \#?gameshow\s*squares\b
+      | paul\s+lynde
+      | center\s+square\s+on\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
 
 # Canadian "River Street" press / Instagram (Quill & Quire) — not Troy's corridor.
 _RIVER_STREET_OTHER = re.compile(
@@ -111,6 +129,9 @@ def _local_micro_hits(haystack: str) -> list[str]:
     """Return micro-signal hits eligible for classifier features."""
     # Scrub wire bylines before matching so they cannot unlock event+micro keeps.
     scan = _CENTER_SQUARE_WIRE.sub(' ', haystack)
+    # Hollywood Squares / Paul Lynde must not unlock Albany Center Square micros.
+    if _HOLLYWOOD_CENTER_SQUARE.search(scan):
+        scan = re.sub(r'center\s+square', ' ', scan, flags=re.IGNORECASE)
     hits = list(_DISTINCTIVE_LOCAL_MICRO.findall(scan))
     if _CAP_REGION_HINT.search(scan):
         hits.extend(_COLLISION_LOCAL_MICRO.findall(scan))
