@@ -480,7 +480,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-066 — Daily feed audit: Iceland/Japan capital region, drought burnt hills, Roblox Rensselaer, rowonebrand, E Greenbush
-- **Status:** in progress
+- **Status:** done ([#39](https://github.com/chriscarrollsmith/capital-region-feed/pull/39))
 - **Why:** 2026-08-09 audit of last-24h AppView feed (~176 posts since 2026-08-08T09:00Z)
   found active FPs after #38: Iceland Reykjavik "capital region" / Capital Region Police
   (`mbl.is`); Japanese senryu "capital district"; image alt `drought/burnt hills` unlocking
