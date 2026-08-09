@@ -62,8 +62,9 @@ _STRONG_POSITIVE = re.compile(
       | \bschodack\b
       | \bduanesburg\b
       | \bdelanson\b
-      | east\s+greenbush
-      | north\s+greenbush
+      # NWS / scanner copy often abbreviates East/North Greenbush.
+      | (?:e\.?|east)\s+greenbush
+      | (?:n\.?|north)\s+greenbush
       | mechanicville
       | burnt\s+hills
       | ballston\s+spa
@@ -130,8 +131,8 @@ _STRONG_POSITIVE = re.compile(
 # Includes Cap Region micro-toponyms that collide with personal names,
 # other U.S./world places, or common phrases (e.g. "green islands").
 # ``troy`` ignores email local-parts (``troy@…``), hyphenated names/domains
-# (``troy-caperton``), and troy weight (oz / "10.8 troy").
-_TROY_PLACE = r'(?<!\d\s)(?<![\w.])troy(?![\w@.-])(?!\s*(?:oz|ounces?|ozt|weight)\b)'
+# (``troy-caperton``), troy weight (oz / "10.8 troy"), and "Donna Troy".
+_TROY_PLACE = r'(?<!\d\s)(?<![\w.])(?<!donna\s)troy(?![\w@.-])(?!\s*(?:oz|ounces?|ozt|weight)\b)'
 
 _AMBIGUOUS_PLACE = re.compile(
     rf"""
@@ -227,10 +228,12 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
             amsterdam|vienna|warsaw|prague|lisbon|athens|dublin|
             canada|denmark|copenhagen|mississippi|louisiana|pennsylvania|
             california|sacramento|korea|south\s+korea|ukraine|kyiv|kiev|
-            sudan|khartoum|virginia|richmond|colombia|bogot[aá]
+            sudan|khartoum|virginia|richmond|colombia|bogot[aá]|
+            iceland|reykjav[ií]k
           )\b
       | ukrainian\s+capital\s+region
       | sudan(?:ese)?\s+capital\s+region
+      | icelandic\s+capital\s+region
       | (?:virginia|richmond)\s+capital\s+region
       | bogot[aá]\s+capital\s+district
       | capital\s+district\s*,?\s*colombia\b
@@ -240,6 +243,10 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
       | hauptstadtregion
       | disney(?:['\u2019]?s)?\s+saratoga\s+springs
       | watervliet\s*,?\s*(?:mi|michigan)\b
+      | loudonville\s*,?\s*(?:oh|ohio)\b
+      | reinvent\s*albany
+      # Sports-print spam lists Albany among many cities.
+      | rowonebrand
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -253,7 +260,7 @@ _CANADIAN_GEO_CUE = (
     r'\#yyj\b|\#bcpoli\b|british\s+columbia|\blangford\b|'
     r'victoria(?:\s*,?\s*bc\b)|greater\s+victoria|'
     r'capital\s+regional\s+district|\blivable\s+crd\b|'
-    r'timescolonist\.com|\bsnowbirds?\b|parkland\s+secondary|'
+    r'timescolonist\.com|ottawacitizen\.com|\bsnowbirds?\b|parkland\s+secondary|'
     r'\bcfax\b|cfax\.com'
 )
 
@@ -432,6 +439,63 @@ _CO_CAPITAL_DISTRICT = re.compile(
       | \bcolombia\b[\s\S]{0,80}capital\s+district\b
       | \bbogot[aá]\b[\s\S]{0,80}capital\s+district\b
       | capital\s+district\b[\s\S]{0,80}\bbogot[aá]\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Iceland "capital region" (Reykjavik Police / mbl.is mirrors).
+_IS_GEO_CUE = (
+    r'\biceland\b|\bicelandic\b|\breykjav[ií]k\b|'
+    r'\#iceland\b|\#reykjav[ií]k\b|mbl\.is'
+)
+
+_IS_CAPITAL_REGION = re.compile(
+    rf"""
+    (?:
+        icelandic\s+capital\s+region
+      | capital\s+region\s+of\s+(?:iceland|reykjav[ií]k)\b
+      | capital\s+region\b[\s\S]{{0,160}}(?:{_IS_GEO_CUE})
+      | (?:{_IS_GEO_CUE})[\s\S]{{0,160}}capital\s+region\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Japanese poetry / translation using "capital district" (not NY).
+_JP_CAPITAL_DISTRICT = re.compile(
+    r"""
+    (?:
+        \#senryu\b
+      | \bsenryu\b
+      | \bbanzai\b
+      | capital\s+district\b[\s\S]{0,120}[\u3040-\u30ff\u3400-\u9fff]
+      | [\u3040-\u30ff\u3400-\u9fff][\s\S]{0,120}capital\s+district\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Image alt-text "drought/burnt hills" — not the town of Burnt Hills.
+_BURNT_HILLS_DESCRIPTIVE = re.compile(
+    r"""
+    (?:
+        (?:drought|wildfire|scorched|charred|brown)\b[\s\S]{0,40}burnt\s+hills
+      | burnt\s+hills\b[\s\S]{0,40}(?:drought|wildfire|scorched|charred)
+      | drought\s*/\s*burnt\s+hills
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Roblox game maps named after Rensselaer County — not local news.
+_RENSSELAER_ROBLOX = re.compile(
+    r"""
+    (?:
+        \#roblox\b
+      | \broblox\b
+      | rensselaer\s+county[\s\S]{0,80}\broblox\b
+      | \broblox\b[\s\S]{0,80}rensselaer\s+county
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -716,6 +780,18 @@ _BETHLEHEM_PA = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
+# Waterford, Connecticut (New London ferry / Hartford Tpke) — not Waterford NY.
+_WATERFORD_CT = re.compile(
+    r"""
+    (?:
+        waterford\s*,?\s*(?:ct|connecticut)\b
+      | waterford[\s\S]{0,160}\b(?:new\s+london|hartford\s+tpke|connecticut)\b
+      | \b(?:new\s+london|hartford\s+tpke|connecticut)\b[\s\S]{0,160}waterford
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
 # Hard negatives: other Albanys / homographs that should never match alone.
 # State abbreviations require a comma/space boundary so we do not trip on
 # English words like "Albany or …" / "Albany in …".
@@ -751,10 +827,12 @@ _HARD_NEGATIVE = re.compile(
             amsterdam|vienna|warsaw|prague|lisbon|athens|dublin|
             canada|denmark|copenhagen|mississippi|louisiana|pennsylvania|
             california|sacramento|korea|south\s+korea|ukraine|kyiv|kiev|
-            sudan|khartoum|virginia|richmond|colombia|bogot[aá]
+            sudan|khartoum|virginia|richmond|colombia|bogot[aá]|
+            iceland|reykjav[ií]k
           )\b
       | ukrainian\s+capital\s+region
       | sudan(?:ese)?\s+capital\s+region
+      | icelandic\s+capital\s+region
       | (?:virginia|richmond)\s+capital\s+region
       | bogot[aá]\s+capital\s+district
       | capital\s+district\s*,?\s*colombia\b
@@ -766,6 +844,11 @@ _HARD_NEGATIVE = re.compile(
       | saratoga\s+springs\s+ut\b
       | disney(?:['\u2019]?s)?\s+saratoga\s+springs
       | watervliet\s*,?\s*(?:mi|michigan)\b
+      | loudonville\s*,?\s*(?:oh|ohio)\b
+      | reinvent\s*albany
+      | rowonebrand
+      # Radio-market lists often omit the comma ("Albany GA").
+      | albany\s+ga\b
       | colonie\s+de\s+vacances
       | colonie\s+num[eé]rique
       | une\s+colonie
@@ -987,9 +1070,9 @@ def _canadian_capital_region_conflict(haystack: str, author_handle: str | None =
         return False
     if _CANADIAN_CAPITAL_REGION.search(haystack):
         return True
-    # Times Colonist / CFAX cards often omit domain cues; gate on handle.
+    # Times Colonist / CFAX / Ottawa Citizen cards often omit domain cues; gate on handle.
     handle = (author_handle or '').strip().lower()
-    if re.search(r'timescolonist|\bcfax', handle) and re.search(
+    if re.search(r'timescolonist|\bcfax|ottawacitizen', handle) and re.search(
         r'capital\s+region\b', haystack, flags=re.IGNORECASE
     ):
         return True
@@ -1056,6 +1139,47 @@ def _virginia_capital_region_conflict(haystack: str) -> bool:
 def _colombia_capital_district_conflict(haystack: str) -> bool:
     """True when 'capital district' refers to Bogotá / Colombia, not NY."""
     if not _CO_CAPITAL_DISTRICT.search(haystack):
+        return False
+    return not _ny_capital_region_context(haystack)
+
+
+def _iceland_capital_region_conflict(haystack: str) -> bool:
+    """True when 'capital region' refers to Reykjavik / Iceland, not NY."""
+    if not _IS_CAPITAL_REGION.search(haystack):
+        return False
+    return not _ny_capital_region_context(haystack)
+
+
+def _japan_capital_district_conflict(haystack: str) -> bool:
+    """True when 'capital district' is Japanese poetry/translation, not NY."""
+    if not re.search(r'capital\s+district\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not _JP_CAPITAL_DISTRICT.search(haystack):
+        return False
+    return not _ny_capital_region_context(haystack)
+
+
+def _burnt_hills_descriptive_conflict(haystack: str) -> bool:
+    """True when 'burnt hills' describes drought/wildfire terrain, not the town."""
+    if not re.search(r'burnt\s+hills', haystack, flags=re.IGNORECASE):
+        return False
+    if not _BURNT_HILLS_DESCRIPTIVE.search(haystack):
+        return False
+    if re.search(
+        r'burnt\s+hills\s*,?\s*(?:ny|n\.y\.|new\s+york)\b|'
+        r'town\s+of\s+burnt\s+hills|burnt\s+hills-ballston',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    return not _ny_capital_region_context(haystack)
+
+
+def _rensselaer_roblox_conflict(haystack: str) -> bool:
+    """True when Rensselaer County refers to a Roblox map, not NY locality."""
+    if not re.search(r'rensselaer\s+county', haystack, flags=re.IGNORECASE):
+        return False
+    if not _RENSSELAER_ROBLOX.search(haystack):
         return False
     return not _ny_capital_region_context(haystack)
 
@@ -1177,6 +1301,21 @@ def _bethlehem_pa_conflict(haystack: str) -> bool:
         return False
     if re.search(
         r'bethlehem\s*,?\s*(?:ny|n\.y\.)\b|town\s+of\s+bethlehem',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    return True
+
+
+def _waterford_ct_conflict(haystack: str) -> bool:
+    """True when Waterford refers to Connecticut, not Waterford NY."""
+    if not re.search(r'\bwaterford\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not _WATERFORD_CT.search(haystack):
+        return False
+    if re.search(
+        r'waterford\s*,?\s*(?:ny|n\.y\.)\b|town\s+of\s+waterford',
         haystack,
         flags=re.IGNORECASE,
     ):
@@ -1324,6 +1463,8 @@ def match_post(
             return MatchResult(False, 'entity_other:albany_county_wy')
         if entity.entity_id == 'watervliet_ny' and _watervliet_mi_conflict(haystack):
             return MatchResult(False, 'entity_other:watervliet_mi')
+        if entity.entity_id == 'rensselaer_county_ny' and _rensselaer_roblox_conflict(haystack):
+            return MatchResult(False, 'hard_negative:rensselaer_roblox')
         return MatchResult(True, f'entity_local:{entity.entity_id}')
 
     if _STRONG_POSITIVE.search(haystack):
@@ -1332,6 +1473,8 @@ def match_post(
             return MatchResult(False, 'entity_other:albany_county_wy')
         if _watervliet_mi_conflict(haystack):
             return MatchResult(False, 'entity_other:watervliet_mi')
+        if _rensselaer_roblox_conflict(haystack):
+            return MatchResult(False, 'hard_negative:rensselaer_roblox')
         if _canadian_capital_region_conflict(haystack, author_handle):
             return MatchResult(False, 'hard_negative:canadian_capital_region')
         if _md_dc_capital_region_conflict(haystack, author_handle):
@@ -1348,10 +1491,16 @@ def match_post(
             return MatchResult(False, 'hard_negative:ukraine_capital_region')
         if _sudan_capital_region_conflict(haystack):
             return MatchResult(False, 'hard_negative:sudan_capital_region')
+        if _iceland_capital_region_conflict(haystack):
+            return MatchResult(False, 'hard_negative:iceland_capital_region')
         if _virginia_capital_region_conflict(haystack):
             return MatchResult(False, 'hard_negative:virginia_capital_region')
         if _colombia_capital_district_conflict(haystack):
             return MatchResult(False, 'hard_negative:colombia_capital_district')
+        if _japan_capital_district_conflict(haystack):
+            return MatchResult(False, 'hard_negative:japan_capital_district')
+        if _burnt_hills_descriptive_conflict(haystack):
+            return MatchResult(False, 'hard_negative:burnt_hills_descriptive')
         if _clifton_park_uk_conflict(haystack, author_handle):
             return MatchResult(False, 'hard_negative:clifton_park_uk')
         return MatchResult(True, 'strong_positive')
@@ -1438,6 +1587,9 @@ def match_post(
 
         if term == 'bethlehem' and _bethlehem_pa_conflict(haystack):
             return MatchResult(False, 'hard_negative:bethlehem_pa')
+
+        if term == 'waterford' and _waterford_ct_conflict(haystack):
+            return MatchResult(False, 'hard_negative:waterford_ct')
 
         if term in {'malta', 'rotterdam'} and _malta_europe_conflict(haystack):
             return MatchResult(False, 'hard_negative:malta_europe')
