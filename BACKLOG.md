@@ -479,6 +479,25 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-066 — Daily feed audit: Iceland/Japan capital region, drought burnt hills, Roblox Rensselaer, rowonebrand, E Greenbush
+- **Status:** in progress
+- **Why:** 2026-08-09 audit of last-24h AppView feed (~176 posts since 2026-08-08T09:00Z)
+  found active FPs after #38: Iceland Reykjavik "capital region" / Capital Region Police
+  (`mbl.is`); Japanese senryu "capital district"; image alt `drought/burnt hills` unlocking
+  Burnt Hills strong positive; Roblox `Rensselaer County` game maps; rowonebrand Albany
+  city-list spam via `albany_with_ny_context`. FN: NWS `E Greenbush` / `N Greenbush`
+  abbreviations missed `east|north greenbush` strong positives.
+- **Work:**
+  - Iceland capital-region conflict + hard-negative phrases.
+  - Japan capital-district conflict (senryu / banzai / CJK window).
+  - Burnt Hills descriptive (drought/wildfire) conflict.
+  - Rensselaer County + Roblox conflict (entity + strong paths).
+  - Hard-negative `rowonebrand`.
+  - Strong-positive aliases `E.? Greenbush` / `N.? Greenbush`.
+  - Grow eval with 2026-08-09 FP/TP anchors.
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-058 — Jetstream catch-up keepalive wedge (quiet feed)
 - **Status:** done
 - **Why:** From ~2026-07-30T16:30Z the Fly machine stayed healthy (`/healthz` 200) while
