@@ -3268,5 +3268,139 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-08-08 audit: NYC→Albany move still keeps via albany_with_ny_context"
+  },
+  {
+    "id": "fp-iceland-capital-region-mbl",
+    "text": "Police record 56 cases during relatively quiet Saturday #Iceland #police #reykjavik",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Police in the capital region recorded 56 cases between 5am and 5pm on Saturday, mbl.is reported.",
+    "note": "2026-08-09 audit: Iceland capital region + mbl.is"
+  },
+  {
+    "id": "fp-iceland-capital-region-police",
+    "text": "Police step up security for Pride parade #police #Prideparade #reykjavik",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "Deputy chief of the traffic division of the Capital Region Police told mbl.is.",
+    "note": "2026-08-09 audit: Reykjavik Capital Region Police"
+  },
+  {
+    "id": "tp-capital-region-reykjavik-export",
+    "text": "Capital Region exporters shipped fish to Reykjavik from #AlbanyNY.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-09 audit: NY Capital Region + Reykjavik keep"
+  },
+  {
+    "id": "fp-japan-capital-district-senryu",
+    "text": "萬歳の足駄に府下の霜柱\nCelebrating “Banzai!” in wooden clogs—the frost columns of the capital district\n\n- Kenkabo Inoue\n\n#senryu",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-09 audit: Japanese senryu capital district"
+  },
+  {
+    "id": "tp-capital-district-flash-flood",
+    "text": "New York's Capital District flash flood warning until 10pm.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-09 audit: NY Capital District keep"
+  },
+  {
+    "id": "fp-burnt-hills-drought-alt",
+    "text": "We still have some green! It is next to a river though.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "A green playing field with houses and brown drought/burnt hills in the distance",
+    "note": "2026-08-09 audit: drought/burnt hills alt text"
+  },
+  {
+    "id": "tp-burnt-hills-ny-concert",
+    "text": "Concert tonight in Burnt Hills, NY at the high school.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-09 audit: Burnt Hills NY keep"
+  },
+  {
+    "id": "fp-rensselaer-county-roblox",
+    "text": "Je parle des jeux #roblox Greenville, Rensselaer County et STU26.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Chaîne dédiée à l'immersion dans l'univers Roblox !",
+    "note": "2026-08-09 audit: Roblox Rensselaer County map"
+  },
+  {
+    "id": "tp-rensselaer-county-legislature",
+    "text": "Rensselaer County legislature meets Tuesday in Troy.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-09 audit: Rensselaer County NY keep"
+  },
+  {
+    "id": "fp-rowonebrand-albany-city-list",
+    "text": "Row One | Historic Sports Art Prints\nMontreal | Buffalo | Syracuse, NY | Albany | Rochester | NYC rowonebrand.com",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-09 audit: rowonebrand Albany city-list spam"
+  },
+  {
+    "id": "tp-e-greenbush-nws-alert",
+    "text": "Severe Thunderstorm Near Ravena or 13 Miles S of Delmar Moving E At 30 MPH. Locations Impacted Include Albany, E Greenbush, Rensselaer, Chatham, Nassau, Delmar, New Baltimore",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-09 audit: NWS E Greenbush abbreviation FN"
+  },
+  {
+    "id": "tp-east-greenbush-road-work",
+    "text": "Road work on Route 4 in East Greenbush this week.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-09 audit: East Greenbush keep"
+  },
+  {
+    "id": "tp-n-greenbush-fire-open-house",
+    "text": "N Greenbush fire department open house Saturday.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-09 audit: N Greenbush abbreviation"
   }
 ]
