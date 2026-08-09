@@ -746,6 +746,88 @@ def test_reinvent_albany_nyc_advocacy_not_capital_region() -> None:
     assert match_post('Moved from NYC to Albany for outdoor activities.').matched is True
 
 
+def test_iceland_capital_region_is_hard_negative() -> None:
+    quiet = match_post(
+        'Police record 56 cases during relatively quiet Saturday #Iceland #police #reykjavik',
+        alt_text=(
+            'Police in the capital region recorded 56 cases between 5am and 5pm on Saturday, '
+            'mbl.is reported.'
+        ),
+    )
+    assert quiet.matched is False
+    assert quiet.reason == 'hard_negative:iceland_capital_region'
+
+    pride = match_post(
+        'Police step up security for Pride parade #police #Prideparade #reykjavik',
+        alt_text=(
+            'Árni Friðleifsson, deputy chief of the traffic division of the Capital Region '
+            'Police, told mbl.is.'
+        ),
+    )
+    assert pride.matched is False
+    assert pride.reason == 'hard_negative:iceland_capital_region'
+
+    keep = match_post('Capital Region exporters shipped fish to Reykjavik from #AlbanyNY.')
+    assert keep.matched is True
+
+
+def test_japan_capital_district_senryu_is_hard_negative() -> None:
+    senryu = match_post(
+        '萬歳の足駄に府下の霜柱\n'
+        'Celebrating “Banzai!” in wooden clogs—the frost columns of the capital district\n\n'
+        '- Kenkabo Inoue\n\n#senryu'
+    )
+    assert senryu.matched is False
+    assert senryu.reason == 'hard_negative:japan_capital_district'
+
+    assert match_post("New York's Capital District flash flood warning until 10pm.").matched is True
+
+
+def test_burnt_hills_drought_alt_text_not_town() -> None:
+    drought = match_post(
+        'We still have some green! It is next to a river though.',
+        alt_text=(
+            'A green playing field with houses and brown drought/burnt hills in the distance'
+        ),
+    )
+    assert drought.matched is False
+    assert drought.reason == 'hard_negative:burnt_hills_descriptive'
+
+    assert match_post('Concert tonight in Burnt Hills, NY at the high school.').matched is True
+
+
+def test_rensselaer_county_roblox_not_local() -> None:
+    roblox = match_post(
+        'Je parle des jeux #roblox Greenville, Rensselaer County et STU26.',
+        alt_text="Chaîne dédiée à l'immersion dans l'univers Roblox !",
+    )
+    assert roblox.matched is False
+    assert roblox.reason == 'hard_negative:rensselaer_roblox'
+
+    assert match_post('Rensselaer County legislature meets Tuesday in Troy.').matched is True
+
+
+def test_rowonebrand_albany_city_list_not_local() -> None:
+    spam = match_post(
+        'Row One | Historic Sports Art Prints\n'
+        'Montreal | Buffalo | Syracuse, NY | Albany | Rochester | NYC rowonebrand.com'
+    )
+    assert spam.matched is False
+
+    assert match_post('Moved from NYC to Albany for outdoor activities.').matched is True
+
+
+def test_e_greenbush_nws_abbreviation_is_strong_positive() -> None:
+    alert = match_post(
+        'Severe Thunderstorm Near Ravena or 13 Miles S of Delmar Moving E At 30 MPH. '
+        'Locations Impacted Include Albany, E Greenbush, Rensselaer, Chatham, Nassau, '
+        'Delmar, New Baltimore'
+    )
+    assert alert.matched is True
+    assert match_post('Road work on Route 4 in East Greenbush this week.').matched is True
+    assert match_post('N Greenbush fire department open house Saturday.').matched is True
+
+
 def test_proctors_theatre_not_surname_proctor() -> None:
     assert (
         match_post(
