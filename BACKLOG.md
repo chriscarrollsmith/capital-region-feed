@@ -499,7 +499,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-067 — Daily feed audit: Finland/Australia/Atlanta capital region, Malta Gozo film, Rotterdam NL, LOI, Loudonville OH hashtags, Aging journal, Delmar Ave
-- **Status:** in progress
+- **Status:** done ([#40](https://github.com/chriscarrollsmith/capital-region-feed/pull/40))
 - **Why:** 2026-08-10 audit of last-24h AppView feed (~159 posts since 2026-08-09T09:00Z)
   found active FPs after #39: Helsinki HSL "capital region"; Canberra Rise Above Capital
   Region Cancer Relief; Atlanta ICE "capital region"; Malta/Gozo film tourism unlocking
