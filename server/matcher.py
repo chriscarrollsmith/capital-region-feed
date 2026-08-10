@@ -229,22 +229,30 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
             canada|denmark|copenhagen|mississippi|louisiana|pennsylvania|
             california|sacramento|korea|south\s+korea|ukraine|kyiv|kiev|
             sudan|khartoum|virginia|richmond|colombia|bogot[aá]|
-            iceland|reykjav[ií]k
+            iceland|reykjav[ií]k|finland|helsinki|australia|
+            georgia|atlanta
           )\b
       | ukrainian\s+capital\s+region
       | sudan(?:ese)?\s+capital\s+region
       | icelandic\s+capital\s+region
+      | finnish\s+capital\s+region
+      | australian\s+capital\s+region
       | (?:virginia|richmond)\s+capital\s+region
       | bogot[aá]\s+capital\s+district
       | capital\s+district\s*,?\s*colombia\b
       # Harrisburg PA utility — not NY Capital Region.
       | capital\s+region\s+water\b
       | pennsylvania\s+capital\s+region
+      # Canberra / ACT charity branding (Rise Above).
+      | capital\s+region\s+cancer\s+relief
+      | rise\s+above\s*[-–—]?\s*capital\s+region
       | hauptstadtregion
       | disney(?:['\u2019]?s)?\s+saratoga\s+springs
       | watervliet\s*,?\s*(?:mi|michigan)\b
       | loudonville\s*,?\s*(?:oh|ohio)\b
       | reinvent\s*albany
+      # PubMed journal abbreviation — not Albany NY local news.
+      | aging\s*\(\s*albany\s*ny\s*\)
       # Sports-print spam lists Albany among many cities.
       | rowonebrand
     )
@@ -462,6 +470,64 @@ _IS_CAPITAL_REGION = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
+# Finland "capital region" (Helsinki / HSL winter timetables).
+_FI_GEO_CUE = (
+    r'\bfinland\b|\bfinnish\b|\bhelsinki\b|'
+    r'\#finland\b|\#helsinki\b|helsinki\s+region\s+transport|'
+    r'(?<![a-z0-9])hsl(?![a-z0-9])'
+)
+
+_FI_CAPITAL_REGION = re.compile(
+    rf"""
+    (?:
+        finnish\s+capital\s+region
+      | capital\s+region\s+of\s+(?:finland|helsinki)\b
+      | capital\s+region\b[\s\S]{{0,160}}(?:{_FI_GEO_CUE})
+      | (?:{_FI_GEO_CUE})[\s\S]{{0,160}}capital\s+region\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Australia "capital region" (Canberra / ACT / Queanbeyan charities).
+_AU_GEO_CUE = (
+    r'\bcanberra\b|\bqueanbeyan\b|\baustralia\b|\baustralian\b|'
+    r'\#auspol\b|riseabovecbr|\.org\.au\b|'
+    r'australian\s+capital\s+territory|\bact\s+eden'
+)
+
+_AU_CAPITAL_REGION = re.compile(
+    rf"""
+    (?:
+        australian\s+capital\s+region
+      | capital\s+region\s+cancer\s+relief
+      | rise\s+above\s*[-–—]?\s*capital\s+region
+      | capital\s+region\s+of\s+(?:australia|canberra|act)\b
+      | capital\s+region\b[\s\S]{{0,160}}(?:{_AU_GEO_CUE})
+      | (?:{_AU_GEO_CUE})[\s\S]{{0,160}}capital\s+region\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Georgia (US) "capital region" (Atlanta metro ICE / wire mirrors).
+_GA_ATLANTA_GEO_CUE = (
+    r'\batlanta\b|\bgeorgia\b|\#ga(?:pol|wx|politics)\b|'
+    r'state\s+of\s+georgia|operation\s+safe\s+community'
+)
+
+_GA_ATLANTA_CAPITAL_REGION = re.compile(
+    rf"""
+    (?:
+        (?:atlanta|georgia)\s+capital\s+region
+      | capital\s+region\s+of\s+(?:georgia|atlanta)\b
+      | capital\s+region\b[\s\S]{{0,160}}(?:{_GA_ATLANTA_GEO_CUE})
+      | (?:{_GA_ATLANTA_GEO_CUE})[\s\S]{{0,160}}capital\s+region\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
 # Japanese poetry / translation using "capital district" (not NY).
 _JP_CAPITAL_DISTRICT = re.compile(
     r"""
@@ -517,7 +583,7 @@ _DISNEY_SARATOGA = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
-# European Malta / AIS shipping (Flag: Malta + Dest. Rotterdam, etc.) — not
+# European Malta / AIS shipping / Gozo film / Netherlands Rotterdam — not
 # Town of Malta NY or Town of Rotterdam NY.
 _MALTA_EUROPE = re.compile(
     r"""
@@ -539,144 +605,19 @@ _MALTA_EUROPE = re.compile(
       | wildfires?\s+in\s+portugal
       | \bportugal\b[\s\S]{0,80}\bmalta\b
       | \bmalta\b[\s\S]{0,80}\bportugal\b
-    )
-    """,
-    re.IGNORECASE | re.VERBOSE,
-)
-
-# Louisiana "capital region" (Baton Rouge / WBRZ). Handles like wbrz-mirror /
-# wbrznews2 are checked via author_handle because short copy often omits geo.
-_LA_GEO_CUE = (
-    r'\bbaton\s+rouge\b|\blouisiana\b|\#la(?:wx|politics|gov)\b|'
-    r'\bwbrz\b|wbrz\.com|east\s+baton\s+rouge|west\s+feliciana|'
-    r'\bfeliciana\b|st\.?\s+mary\s+parish|'
-    r'\bascension(?:\s+parish)?\b|\bprairieville\b|\bsorrento\b|'
-    r'\bst\.?\s+amant\b|\bgonzales\b'
-)
-
-_LA_CAPITAL_REGION = re.compile(
-    rf"""
-    (?:
-        capital\s+region\s+of\s+louisiana\b
-      | capital\s+region\b[\s\S]{{0,160}}(?:{_LA_GEO_CUE})
-      | (?:{_LA_GEO_CUE})[\s\S]{{0,160}}capital\s+region\b
-    )
-    """,
-    re.IGNORECASE | re.VERBOSE,
-)
-
-# Pennsylvania "capital region" (Harrisburg / Capital Region Water).
-_PA_GEO_CUE = (
-    r'\bharrisburg\b|\bpennsylvania\b|\#pa(?:wx|politics|gov)\b|'
-    r'capital\s+region\s+water\b|pennlive|susquehanna\b|'
-    r'pennsylvania\s+capital\s+region'
-)
-
-_PA_CAPITAL_REGION = re.compile(
-    rf"""
-    (?:
-        pennsylvania\s+capital\s+region
-      | capital\s+region\s+of\s+pennsylvania\b
-      | capital\s+region\s+water\b
-      | capital\s+region\b[\s\S]{{0,160}}(?:{_PA_GEO_CUE})
-      | (?:{_PA_GEO_CUE})[\s\S]{{0,160}}capital\s+region\b
-    )
-    """,
-    re.IGNORECASE | re.VERBOSE,
-)
-
-# California "capital region" (Sacramento / SacBee).
-_CA_GEO_CUE = (
-    r'\bsacramento\b|\bcalifornia\b|\#ca(?:wx|politics|gov)\b|'
-    r'\bsacbee\b|sacbee\.com|folsom\b|elk\s+grove\b|'
-    r'west\s+sacramento|roseville\b'
-)
-
-_CA_CAPITAL_REGION = re.compile(
-    rf"""
-    (?:
-        capital\s+region\s+of\s+(?:california|sacramento)\b
-      | capital\s+region\b[\s\S]{{0,160}}(?:{_CA_GEO_CUE})
-      | (?:{_CA_GEO_CUE})[\s\S]{{0,160}}capital\s+region\b
-    )
-    """,
-    re.IGNORECASE | re.VERBOSE,
-)
-
-# South Korea "capital region" (Seoul / Gyeonggi / KMA heat alerts).
-_KR_GEO_CUE = (
-    r'\bseoul\b|\bgyeonggi\b|\bkorea\b|south\s+korea|'
-    r'\bincheon\b|\bkoreaherald\b|korea\s+herald|'
-    r'\bgangnam\b|han\s+river|\bkma\b'
-)
-
-_KR_CAPITAL_REGION = re.compile(
-    rf"""
-    (?:
-        capital\s+region\s+of\s+(?:korea|south\s+korea|seoul)\b
-      | greater\s+seoul
-      | capital\s+region\b[\s\S]{{0,160}}(?:{_KR_GEO_CUE})
-      | (?:{_KR_GEO_CUE})[\s\S]{{0,160}}capital\s+region\b
-    )
-    """,
-    re.IGNORECASE | re.VERBOSE,
-)
-
-# Ukraine "capital region" (Kyiv / AP wire mirrors).
-_UA_GEO_CUE = (
-    r'\bukraine\b|\bukrainian\b|\bkyiv\b|\bkiev\b|'
-    r'\#ukraine\b|\#kyiv\b|kyivunderattack'
-)
-
-_UA_CAPITAL_REGION = re.compile(
-    rf"""
-    (?:
-        ukrainian\s+capital\s+region
-      | capital\s+region\s+of\s+(?:ukraine|kyiv|kiev)\b
-      | capital\s+region\b[\s\S]{{0,160}}(?:{_UA_GEO_CUE})
-      | (?:{_UA_GEO_CUE})[\s\S]{{0,160}}capital\s+region\b
-    )
-    """,
-    re.IGNORECASE | re.VERBOSE,
-)
-
-# Sudan "capital region" (Khartoum UNEP / wire cards).
-_SD_GEO_CUE = r'\bsudan\b|\bsudanese\b|\bkhartoum\b|\#sudan\b|\#khartoum\b'
-
-_SD_CAPITAL_REGION = re.compile(
-    rf"""
-    (?:
-        sudan(?:ese)?\s+capital\s+region
-      | capital\s+region\s+of\s+(?:sudan|khartoum)\b
-      | capital\s+region\b[\s\S]{{0,160}}(?:{_SD_GEO_CUE})
-      | (?:{_SD_GEO_CUE})[\s\S]{{0,160}}capital\s+region\b
-    )
-    """,
-    re.IGNORECASE | re.VERBOSE,
-)
-
-# European Malta / AIS shipping (Flag: Malta + Dest. Rotterdam, etc.) — not
-# Town of Malta NY or Town of Rotterdam NY.
-_MALTA_EUROPE = re.compile(
-    r"""
-    (?:
-        \bmmsi\b
-      | \bvesselalert\b
-      | \bais\b
-      | flag:\s*malta\b
-      | bandera:\s*malta\b
-      | dest\.?\s*:\s*rotterdam\b
-      | \blmml\b
-      | isle\s+of\s+mtv
-      | mediterranean
-      | \bmalti\b
-      | callsign:\s*9ha
-      | \b9ha\d+\b
-      | malta\s+international
-      | malta\s+sends\b
-      | wildfires?\s+in\s+portugal
-      | \bportugal\b[\s\S]{0,80}\bmalta\b
-      | \bmalta\b[\s\S]{0,80}\bportugal\b
+      # Gozo / Lovin Malta film tourism (Troy as film title, not Troy NY).
+      | \bgozo\b
+      | lovin\s+malta
+      | film(?:ed|ing)?\s+on\s+gozo
+      | malta\s+as\s+a\s+film
+      | \bmgarr\b
+      # Rotterdam, The Netherlands (architecture / football wire mirrors).
+      | \bthe\s+netherlands\b
+      | \bnetherlands\b
+      | \bfeyenoord\b
+      | sparta\s+rotterdam
+      | \barchdaily\b
+      | archdaily\.com
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -716,6 +657,16 @@ _GALWAY_IRELAND = re.compile(
       | wild\s+atlantic\s+way
       | \bdingle\b
       | \bkinsale\b
+      # LOI fixture lists often omit "Ireland" / "United".
+      | \#derrycityfc\b
+      | derry\s+city
+      | \bdundalk\b
+      | \bsligo\b
+      | \bshelbourne\b
+      | \bshels\b
+      | \bbohemians\b
+      | \bbohs\b
+      | \bdrogheda\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -743,6 +694,18 @@ _WATERVLIET_MI = re.compile(
         watervliet\s*,?\s*(?:mi|michigan)\b
       | watervliet[\s\S]{0,80}\b(?:mi|michigan)\b
       | \b(?:mi|michigan)\b[\s\S]{0,80}watervliet
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Loudonville, Ohio (hashtag civic lists) — not Loudonville NY.
+_LOUDONVILLE_OH = re.compile(
+    r"""
+    (?:
+        loudonville\s*,?\s*(?:oh|ohio)\b
+      | loudonville[\s\S]{0,160}(?:\#ohio\b|\bohio\b|\#oh\d+\b)
+      | (?:\#ohio\b|\bohio\b|\#oh\d+\b)[\s\S]{0,160}loudonville
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -813,8 +776,10 @@ _HARD_NEGATIVE = re.compile(
       | albany\s+road
       # California city / racetrack (not Delmar, NY).
       | \bdel\s+mar\b
-      # Street name elsewhere (e.g. Rochester) — not the Town of Delmar.
-      | delmar\s+st(?:reet)?\b
+      # Street name elsewhere (e.g. Rochester / Salem IL) — not the Town of Delmar.
+      | delmar\s+(?:st(?:reet)?|ave(?:nue)?)\b
+      # PubMed journal abbreviation — not Albany NY local news.
+      | aging\s*\(\s*albany\s*ny\s*\)
       # National politician, not Troy NY.
       | \btroy\s+jackson\b
       | national\s+capital\s+region
@@ -1150,6 +1115,27 @@ def _iceland_capital_region_conflict(haystack: str) -> bool:
     return not _ny_capital_region_context(haystack)
 
 
+def _finland_capital_region_conflict(haystack: str) -> bool:
+    """True when 'capital region' refers to Helsinki / Finland, not NY."""
+    if not _FI_CAPITAL_REGION.search(haystack):
+        return False
+    return not _ny_capital_region_context(haystack)
+
+
+def _australia_capital_region_conflict(haystack: str) -> bool:
+    """True when 'capital region' refers to Canberra / ACT, not NY."""
+    if not _AU_CAPITAL_REGION.search(haystack):
+        return False
+    return not _ny_capital_region_context(haystack)
+
+
+def _georgia_atlanta_capital_region_conflict(haystack: str) -> bool:
+    """True when 'capital region' refers to Atlanta / Georgia, not NY."""
+    if not _GA_ATLANTA_CAPITAL_REGION.search(haystack):
+        return False
+    return not _ny_capital_region_context(haystack)
+
+
 def _japan_capital_district_conflict(haystack: str) -> bool:
     """True when 'capital district' is Japanese poetry/translation, not NY."""
     if not re.search(r'capital\s+district\b', haystack, flags=re.IGNORECASE):
@@ -1219,7 +1205,12 @@ def _pennsylvania_capital_region_conflict(haystack: str) -> bool:
 
 
 def _malta_europe_conflict(haystack: str) -> bool:
-    """True when Malta/Rotterdam refer to the EU island / AIS shipping, not NY."""
+    """True when Malta/Rotterdam refer to the EU island / AIS shipping, not NY.
+
+    Do not use bare Troy / New York as NY anchors here: film titles ("Troy") and
+    firm bylines ("ODA New York") collide with Cap Region tokens while describing
+    Gozo shoots or Rotterdam architecture.
+    """
     if not re.search(r'\bmalta\b|\brotterdam\b', haystack, flags=re.IGNORECASE):
         return False
     if not _MALTA_EUROPE.search(haystack):
@@ -1230,8 +1221,6 @@ def _malta_europe_conflict(haystack: str) -> bool:
         haystack,
         flags=re.IGNORECASE,
     ):
-        return False
-    if _ny_capital_region_context(haystack):
         return False
     return True
 
@@ -1291,6 +1280,21 @@ def _watervliet_mi_conflict(haystack: str) -> bool:
     ):
         return False
     return True
+
+
+def _loudonville_oh_conflict(haystack: str) -> bool:
+    """True when Loudonville refers to Ohio, not the hamlet near Albany."""
+    if not re.search(r'\bloudonville\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not _LOUDONVILLE_OH.search(haystack):
+        return False
+    if re.search(
+        r'loudonville\s*,?\s*(?:ny|n\.y\.|new\s+york)\b',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    return not _ny_capital_region_context(haystack)
 
 
 def _bethlehem_pa_conflict(haystack: str) -> bool:
@@ -1493,6 +1497,12 @@ def match_post(
             return MatchResult(False, 'hard_negative:sudan_capital_region')
         if _iceland_capital_region_conflict(haystack):
             return MatchResult(False, 'hard_negative:iceland_capital_region')
+        if _finland_capital_region_conflict(haystack):
+            return MatchResult(False, 'hard_negative:finland_capital_region')
+        if _australia_capital_region_conflict(haystack):
+            return MatchResult(False, 'hard_negative:australia_capital_region')
+        if _georgia_atlanta_capital_region_conflict(haystack):
+            return MatchResult(False, 'hard_negative:georgia_atlanta_capital_region')
         if _virginia_capital_region_conflict(haystack):
             return MatchResult(False, 'hard_negative:virginia_capital_region')
         if _colombia_capital_district_conflict(haystack):
@@ -1501,6 +1511,8 @@ def match_post(
             return MatchResult(False, 'hard_negative:japan_capital_district')
         if _burnt_hills_descriptive_conflict(haystack):
             return MatchResult(False, 'hard_negative:burnt_hills_descriptive')
+        if _loudonville_oh_conflict(haystack):
+            return MatchResult(False, 'hard_negative:loudonville_oh')
         if _clifton_park_uk_conflict(haystack, author_handle):
             return MatchResult(False, 'hard_negative:clifton_park_uk')
         return MatchResult(True, 'strong_positive')
