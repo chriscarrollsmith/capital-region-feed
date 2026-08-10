@@ -498,6 +498,26 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-067 — Daily feed audit: Finland/Australia/Atlanta capital region, Malta Gozo film, Rotterdam NL, LOI, Loudonville OH hashtags, Aging journal, Delmar Ave
+- **Status:** in progress
+- **Why:** 2026-08-10 audit of last-24h AppView feed (~159 posts since 2026-08-09T09:00Z)
+  found active FPs after #39: Helsinki HSL "capital region"; Canberra Rise Above Capital
+  Region Cancer Relief; Atlanta ICE "capital region"; Malta/Gozo film tourism unlocking
+  `multi_local` via the film title Troy; Rotterdam NL ArchDaily + ODA New York;
+  League of Ireland Galway+Waterford fixture lists; `#Ohio`+`#Loudonville` strong
+  positives; PubMed `Aging (Albany NY)` journal; USPS `DELMAR AVE` street + unrelated NY.
+  Cap Region search found no new matcher FNs in the window (non-reply).
+- **Work:**
+  - Finland / Australia / Georgia-Atlanta capital-region conflicts + hard-negative phrases.
+  - Expand Malta/Europe cues (Gozo / Netherlands / ArchDaily); stop bare Troy/New York
+    from canceling the Europe conflict.
+  - Expand Galway Ireland cues for LOI club lists (Derry City, Dundalk, Shels, Bohs).
+  - Loudonville + `#Ohio` conflict; hard-negative `Aging (Albany NY)` and `Delmar Ave`.
+  - Deduplicate accidental redefinitions of LA–Sudan capital-region regexes.
+  - Grow eval with 2026-08-10 FP/TP anchors.
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-058 — Jetstream catch-up keepalive wedge (quiet feed)
 - **Status:** done
 - **Why:** From ~2026-07-30T16:30Z the Fly machine stayed healthy (`/healthz` 200) while
