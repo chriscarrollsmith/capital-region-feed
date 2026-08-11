@@ -519,7 +519,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-068 — Daily feed audit: DC Snipers capital region, PNG National Capital District, Troy Avenue, Bay Area Albany
-- **Status:** in progress
+- **Status:** done ([#41](https://github.com/chriscarrollsmith/capital-region-feed/pull/41))
 - **Why:** 2026-08-11 audit of last-24h AppView feed (~181 posts since 2026-08-10T09:00Z)
   found active FPs after cherry-picking #40: Montgomery County MD `mymcmedia` DC Snipers
   "capital region" exhibit; Papua New Guinea `National Capital District` / Port Moresby
