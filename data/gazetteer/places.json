@@ -99,6 +99,12 @@
       "surfaces": ["national capital region"]
     },
     {
+      "id": "national_capital_district",
+      "region": "other",
+      "surfaces": ["national capital district"],
+      "notes": "Papua New Guinea (Port Moresby); substring of Cap District strong positive"
+    },
+    {
       "id": "brussels_capital_region",
       "region": "other",
       "surfaces": ["brussels capital region", "hauptstadtregion"]

@@ -227,10 +227,64 @@ def test_md_dc_capital_region_is_hard_negative() -> None:
     )
     assert curly.matched is False
 
+    # DC Snipers exhibit copy — "DC" alone is not a geo cue, but "DC Snipers" is.
+    snipers = match_post(
+        'It’s been nearly 24 years since the DC Snipers terrorized the capital region. '
+        'Without Warning, an exhibit at the National Law Enforcement Museum.'
+    )
+    assert snipers.matched is False
+    assert snipers.reason == 'hard_negative:md_dc_capital_region'
+
+    # MoCo community media often omits Maryland in the body.
+    mymc = match_post(
+        'It’s been nearly 24 years since snipers terrorized the capital region.',
+        author_handle='mymcmedia.bsky.social',
+    )
+    assert mymc.matched is False
+    assert mymc.reason == 'hard_negative:md_dc_capital_region'
+
     # NY Capital Region keeps even if Maryland is mentioned in passing.
     keep = match_post(
         'Capital Region students visited museums in Maryland before returning to #AlbanyNY.'
     )
+    assert keep.matched is True
+
+
+def test_png_national_capital_district_is_hard_negative() -> None:
+    png = match_post(
+        'The National Capital District Provincial Health Authority (NCDPHA) has submitted '
+        'its 2027 Annual Budget for Port Moresby and Motu Koitabu areas.'
+    )
+    assert png.matched is False
+
+    keep = match_post(
+        'Capital District aid groups sent supplies after floods in Port Moresby (#AlbanyNY).'
+    )
+    assert keep.matched is True
+
+
+def test_troy_avenue_brooklyn_not_troy_ny() -> None:
+    crown = match_post(
+        'A major new development planned for the corner of Troy Avenue and East New York '
+        'Avenue is prompting questions among Crown Heights residents.'
+    )
+    assert crown.matched is False
+    assert crown.reason == 'hard_negative'
+
+    keep = match_post('Architecture walking tour on River Street in Troy, NY.')
+    assert keep.matched is True
+
+
+def test_bay_area_albany_not_albany_ny() -> None:
+    bay = match_post(
+        'like obviously piedmont and atherton and albany should not exist. but we should '
+        'seriously consider large-scale consolidation in the bay area like new york city '
+        'did in 1898'
+    )
+    assert bay.matched is False
+    assert bay.reason == 'hard_negative:albany_bay_area'
+
+    keep = match_post('#AlbanyNY officials toured Bay Area transit projects before returning home.')
     assert keep.matched is True
 
 
