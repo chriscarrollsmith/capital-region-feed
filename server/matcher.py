@@ -240,6 +240,8 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
       | (?:virginia|richmond)\s+capital\s+region
       | bogot[aá]\s+capital\s+district
       | capital\s+district\s*,?\s*colombia\b
+      # Papua New Guinea — "National Capital District" contains Cap District.
+      | national\s+capital\s+district
       # Harrisburg PA utility — not NY Capital Region.
       | capital\s+region\s+water\b
       | pennsylvania\s+capital\s+region
@@ -291,6 +293,7 @@ _MD_DC_GEO_CUE = (
     # AppView cards often use a curly apostrophe in "George's".
     r"prince\s+george['\u2019]?s|\bmaryland\b|\#md(?:wx|politics|gov)\b|"
     r'washington(?:\s*,?\s*d\.?c\.?\b)|(?<![\w.])dc\s+metro\b|'
+    r'(?<![\w.])dc\s+snipers?\b|national\s+law\s+enforcement\s+museum|'
     r'\bdmv\b|silver\s+spring|\bbethesda\b|\brockville\b|'
     r'olney\s+theatre|national\s+harbor|college\s+park|\bannapolis\b'
 )
@@ -447,6 +450,40 @@ _CO_CAPITAL_DISTRICT = re.compile(
       | \bcolombia\b[\s\S]{0,80}capital\s+district\b
       | \bbogot[aá]\b[\s\S]{0,80}capital\s+district\b
       | capital\s+district\b[\s\S]{0,80}\bbogot[aá]\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Papua New Guinea "National Capital District" (Port Moresby) — not NY.
+_PNG_GEO_CUE = (
+    r'national\s+capital\s+district|\bport\s+moresby\b|\bmotu\s+koitabu\b|'
+    r'\bncdpha\b|papua\s+new\s+guinea|\bpost\s+courier\b'
+)
+
+_PNG_CAPITAL_DISTRICT = re.compile(
+    rf"""
+    (?:
+        national\s+capital\s+district
+      | capital\s+district\b[\s\S]{{0,160}}(?:{_PNG_GEO_CUE})
+      | (?:{_PNG_GEO_CUE})[\s\S]{{0,160}}capital\s+district\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Bay Area Albany (CA) discussed alongside NYC consolidation — not Albany NY.
+_BAY_AREA_ALBANY = re.compile(
+    r"""
+    (?:
+        \balbany\b[\s\S]{0,200}(?:
+            \bbay\s+area\b|\bpiedmont\b|\batherton\b|\boakland\b|
+            sfchronicle|san\s+francisco
+        )
+      | (?:
+            \bbay\s+area\b|\bpiedmont\b|\batherton\b|\boakland\b|
+            sfchronicle|san\s+francisco
+        )[\s\S]{0,200}\balbany\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -778,11 +815,14 @@ _HARD_NEGATIVE = re.compile(
       | \bdel\s+mar\b
       # Street name elsewhere (e.g. Rochester / Salem IL) — not the Town of Delmar.
       | delmar\s+(?:st(?:reet)?|ave(?:nue)?)\b
+      # Brooklyn / NYC street — not the City of Troy.
+      | troy\s+(?:ave(?:nue)?|st(?:reet)?)\b
       # PubMed journal abbreviation — not Albany NY local news.
       | aging\s*\(\s*albany\s*ny\s*\)
       # National politician, not Troy NY.
       | \btroy\s+jackson\b
       | national\s+capital\s+region
+      | national\s+capital\s+district
       | brussels[- ]capital\s+region
       | canadian\s+capital\s+region
       | capital\s+region\s+bureau\b
@@ -1050,13 +1090,31 @@ def _md_dc_capital_region_conflict(haystack: str, author_handle: str | None = No
         return False
     if _MD_DC_CAPITAL_REGION.search(haystack):
         return True
-    # Maryland Banner mirrors (bannermoco / bannerpgcounty) often omit "Maryland".
+    # Maryland Banner / MoCo community media often omit "Maryland" in the body.
     handle = (author_handle or '').strip().lower()
-    if re.search(r'banner(?:moco|pgcounty)|marylandbanner', handle) and re.search(
+    if re.search(r'banner(?:moco|pgcounty)|marylandbanner|\bmymcmedia\b', handle) and re.search(
         r'capital\s+region\b', haystack, flags=re.IGNORECASE
     ):
         return True
     return False
+
+
+def _png_capital_district_conflict(haystack: str) -> bool:
+    """True when 'capital district' refers to Port Moresby / PNG, not NY."""
+    if not _PNG_CAPITAL_DISTRICT.search(haystack):
+        return False
+    return not _ny_capital_region_context(haystack)
+
+
+def _albany_bay_area_conflict(haystack: str) -> bool:
+    """True when bare Albany is the East Bay city, not Albany NY."""
+    if re.search(
+        r'albany\s*,?\s*(?:ny|n\.y\.|new\s+york)|\#albanyny\b',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    return _BAY_AREA_ALBANY.search(haystack) is not None
 
 
 def _california_capital_region_conflict(haystack: str, author_handle: str | None = None) -> bool:
@@ -1507,6 +1565,8 @@ def match_post(
             return MatchResult(False, 'hard_negative:virginia_capital_region')
         if _colombia_capital_district_conflict(haystack):
             return MatchResult(False, 'hard_negative:colombia_capital_district')
+        if _png_capital_district_conflict(haystack):
+            return MatchResult(False, 'hard_negative:png_capital_district')
         if _japan_capital_district_conflict(haystack):
             return MatchResult(False, 'hard_negative:japan_capital_district')
         if _burnt_hills_descriptive_conflict(haystack):
@@ -1571,6 +1631,8 @@ def match_post(
         term = sorted(distinct, key=lambda name: (name in _MULTI_LOCAL_EXCLUDED, name))[0]
         # Bare "albany" is the noisiest token; require NY/local context.
         if term == 'albany':
+            if _albany_bay_area_conflict(haystack):
+                return MatchResult(False, 'hard_negative:albany_bay_area')
             if _NY_CONTEXT.search(place_haystack):
                 return MatchResult(True, 'albany_with_ny_context')
             if _STRONG_POSITIVE.search(haystack):

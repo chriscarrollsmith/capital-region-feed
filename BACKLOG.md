@@ -518,6 +518,26 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-068 — Daily feed audit: DC Snipers capital region, PNG National Capital District, Troy Avenue, Bay Area Albany
+- **Status:** done ([#41](https://github.com/chriscarrollsmith/capital-region-feed/pull/41))
+- **Why:** 2026-08-11 audit of last-24h AppView feed (~181 posts since 2026-08-10T09:00Z)
+  found active FPs after cherry-picking #40: Montgomery County MD `mymcmedia` DC Snipers
+  "capital region" exhibit; Papua New Guinea `National Capital District` / Port Moresby
+  health-authority wire (substring of Cap District strong positive); Brooklyn Troy Avenue
+  + East New York / Crown Heights unlocking `ambiguous_with_context:troy`; Bay Area Albany
+  (Piedmont/Atherton) + "new york city" consolidation talk → `albany_with_ny_context`.
+  Cap Region search found no new matcher FNs in the window (non-reply). Intentional keeps
+  include ROTTERDAM, NY (WRGB) republished on europesays.nl and Albany N.Y. Uganda wire.
+- **Work:**
+  - Expand MD/DC capital-region cues (`DC Snipers`, National Law Enforcement Museum) +
+    `mymcmedia` handle gate.
+  - Gazetteer + hard-negative `national capital district` / PNG conflict helper.
+  - Hard-negative `Troy Avenue` / `Troy Street` (mirror Delmar Ave).
+  - Bay Area Albany conflict before `albany_with_ny_context`.
+  - Grow eval with 2026-08-11 FP/TP anchors.
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-058 — Jetstream catch-up keepalive wedge (quiet feed)
 - **Status:** done
 - **Why:** From ~2026-07-30T16:30Z the Fly machine stayed healthy (`/healthz` 200) while

@@ -3567,5 +3567,126 @@
     "split": "dev",
     "regression": true,
     "note": "2026-08-10 audit: Troy Stakes at Saratoga keep"
+  },
+  {
+    "id": "fp-dc-snipers-capital-region",
+    "text": "It’s been nearly 24 years since the DC Snipers terrorized the capital region. Without Warning, an exhibit at the National Law Enforcement Museum.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-11 audit: DC Snipers MD/DC capital region"
+  },
+  {
+    "id": "fp-mymcmedia-capital-region-handle",
+    "text": "It’s been nearly 24 years since snipers terrorized the capital region.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "author_handle": "mymcmedia.bsky.social",
+    "note": "2026-08-11 audit: mymcmedia capital region handle gate"
+  },
+  {
+    "id": "tp-capital-region-md-pass-through",
+    "text": "Capital Region students visited museums in Maryland before returning to #AlbanyNY.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-11 audit: Cap Region + Maryland pass-through keep"
+  },
+  {
+    "id": "fp-png-national-capital-district",
+    "text": "The National Capital District Provincial Health Authority (NCDPHA) has submitted its 2027 Annual Budget for Port Moresby and Motu Koitabu areas.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-11 audit: PNG National Capital District"
+  },
+  {
+    "id": "tp-capital-district-port-moresby-aid",
+    "text": "Capital District aid groups sent supplies after floods in Port Moresby (#AlbanyNY).",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-11 audit: Cap District + Port Moresby pass-through"
+  },
+  {
+    "id": "fp-troy-avenue-crown-heights",
+    "text": "A major new development planned for the corner of Troy Avenue and East New York Avenue is prompting questions among Crown Heights residents.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-11 audit: Troy Avenue Brooklyn + NY context"
+  },
+  {
+    "id": "tp-troy-ny-river-street-tour",
+    "text": "Architecture walking tour on River Street in Troy, NY.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-11 audit: Troy NY keep after Troy Avenue gate"
+  },
+  {
+    "id": "fp-bay-area-albany-nyc-consolidation",
+    "text": "like obviously piedmont and atherton and albany should not exist. but we should seriously consider large-scale consolidation in the bay area like new york city did in 1898",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-11 audit: Bay Area Albany + NYC comparison"
+  },
+  {
+    "id": "tp-albany-ny-bay-area-tour",
+    "text": "#AlbanyNY officials toured Bay Area transit projects before returning home.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-11 audit: Albany NY + Bay Area pass-through"
+  },
+  {
+    "id": "tp-rotterdam-ny-hometown-heroes",
+    "text": "ROTTERDAM, NY (WRGB)- A Rotterdam military family is questioning how the town’s Hometown Heroes banner program communicates with residents.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-11 audit: Rotterdam NY keep despite europesays.nl republisher"
+  },
+  {
+    "id": "tp-capital-district-after-dark",
+    "text": "Tonight, Capital District: After Dark returns. A brick house above black water.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-11 audit: Capital District actual-play keep"
+  },
+  {
+    "id": "tp-albany-ny-uganda-wire",
+    "text": "Photo provided by Sophie Whiteman. ALBANY, N.Y. (July 21, 2026) — Off a dirt road in Ddegeya village, students partnered on rural health.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-11 audit: Albany N.Y. wire dateline keep"
   }
 ]
