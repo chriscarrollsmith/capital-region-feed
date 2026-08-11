@@ -3402,5 +3402,170 @@
     "split": "dev",
     "regression": true,
     "note": "2026-08-09 audit: N Greenbush abbreviation"
+  },
+  {
+    "id": "fp-finland-hsl-capital-region",
+    "text": "HSL introduces winter timetables with more trains and buses",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Helsinki Region Transport (HSL) will introduce its winter timetable from 10 August, bringing more frequent public transport services across the capital region.",
+    "note": "2026-08-10 audit: Helsinki HSL capital region"
+  },
+  {
+    "id": "tp-capital-region-helsinki-trade",
+    "text": "Capital Region exporters shipped goods to Helsinki from #AlbanyNY.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-10 audit: Cap Region + Helsinki keep"
+  },
+  {
+    "id": "fp-australia-rise-above-cancer-relief",
+    "text": "Rise Above celebrates 40 years of helping cancer patients",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "Rise Above – Capital Region Cancer Relief will celebrate 40 years of supporting cancer patients and their families with a free event at the Royal Hotel Queanbeyan.",
+    "note": "2026-08-10 audit: Canberra ACT Rise Above charity"
+  },
+  {
+    "id": "tp-capital-region-canberra-aid",
+    "text": "Capital Region aid groups sent supplies to Canberra from #AlbanyNY.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-10 audit: Cap Region + Canberra keep"
+  },
+  {
+    "id": "fp-georgia-atlanta-capital-region-ice",
+    "text": "PHOTOS: 1,200 Illegal Aliens Arrested in Georgia #BorderCrisis",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Federal authorities rounded up more than 1,200 people during a major operation in the state of Georgia. ICE announced Operation Safe Community – Atlanta, which was carried out statewide but focused on the capital region.",
+    "note": "2026-08-10 audit: Atlanta capital region ICE mirror"
+  },
+  {
+    "id": "tp-capital-region-atlanta-trade",
+    "text": "Capital Region exporters shipped goods to Atlanta from #AlbanyNY.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-10 audit: Cap Region + Atlanta keep"
+  },
+  {
+    "id": "fp-malta-gozo-film-troy-title",
+    "text": "The Guardian piece on Malta as a film magnet notes Madame Blanc was filmed on Gozo. Over 100 productions have shot here, from Troy to The Count of Monte Cristo.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "The beautiful cove of Mgarr ix-Xini, where Two Weeks in August filmed.",
+    "note": "2026-08-10 audit: Malta/Gozo film + Troy title"
+  },
+  {
+    "id": "tp-malta-troy-town-meeting",
+    "text": "Town of Malta planning board meets with Troy officials tonight.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-10 audit: Malta NY + Troy multi-local keep"
+  },
+  {
+    "id": "fp-rotterdam-netherlands-oda-new-york",
+    "text": "POST Rotterdam Tower / ODA New York - https://www.archdaily.com/1181776/post-rotterdam",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Completed in 2026 in Rotterdam, The Netherlands. Images by Ossip van Duivenbode.",
+    "note": "2026-08-10 audit: Rotterdam NL + ODA New York"
+  },
+  {
+    "id": "tp-rotterdam-troy-town-meeting",
+    "text": "Town of Rotterdam meeting; see also Troy City Council agenda.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-10 audit: Rotterdam NY + Troy keep"
+  },
+  {
+    "id": "fp-loi-galway-waterford-derrycity",
+    "text": "#DerryCityFC have 9 League fixtures remaining. Home against Rovers, Galway, St Pats and Dundalk and away to Bohs, Waterford, Shels, Drogheda, Sligo.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-10 audit: LOI Galway+Waterford fixture list"
+  },
+  {
+    "id": "fp-ohio-loudonville-hashtag-list",
+    "text": "#Ohio voter alert #Parma #Brunswick #Wooster #Loudonville #Massillon #Canton",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-10 audit: #Ohio + #Loudonville hashtag list"
+  },
+  {
+    "id": "tp-loudonville-ny-road-work",
+    "text": "Road work begins in Loudonville near Albany this week.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-10 audit: Loudonville NY keep"
+  },
+  {
+    "id": "fp-aging-albany-ny-pubmed-journal",
+    "text": "Aging is indexed by PubMed/Medline abbreviated as “Aging (Albany NY)”, PubMed Central, and Web of Science.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-10 audit: Aging (Albany NY) journal"
+  },
+  {
+    "id": "fp-delmar-ave-salem-il-usps",
+    "text": "BLUE BOX: 886 MARYVALE DR, CHEEKTOWAGA NY 14225 PO LOBBY: 125 S DELMAR AVE, SALEM IL 62881",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-10 audit: Delmar Ave street + unrelated NY"
+  },
+  {
+    "id": "tp-troy-stakes-saratoga",
+    "text": "Troy Stakes at Saratoga this weekend.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-10 audit: Troy Stakes at Saratoga keep"
   }
 ]

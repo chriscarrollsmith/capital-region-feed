@@ -705,6 +705,11 @@ def test_loudonville_ohio_not_loudonville_ny() -> None:
         match_post('Advantage Air Heating & Cooling HVAC Contractor in Loudonville, OH').matched
         is False
     )
+    hashtag = match_post(
+        '#Ohio voter alert #Parma #Brunswick #Wooster #Loudonville #Massillon #Canton'
+    )
+    assert hashtag.matched is False
+    assert hashtag.reason == 'hard_negative:loudonville_oh'
     assert match_post('Road work begins in Loudonville near Albany this week.').matched is True
 
 
@@ -769,6 +774,107 @@ def test_iceland_capital_region_is_hard_negative() -> None:
 
     keep = match_post('Capital Region exporters shipped fish to Reykjavik from #AlbanyNY.')
     assert keep.matched is True
+
+
+def test_finland_capital_region_is_hard_negative() -> None:
+    hsl = match_post(
+        'HSL introduces winter timetables with more trains and buses',
+        alt_text=(
+            'Helsinki Region Transport (HSL) will introduce its winter timetable from '
+            '10 August, bringing more frequent public transport services across the '
+            'capital region.'
+        ),
+    )
+    assert hsl.matched is False
+    assert hsl.reason == 'hard_negative:finland_capital_region'
+
+    keep = match_post('Capital Region exporters shipped goods to Helsinki from #AlbanyNY.')
+    assert keep.matched is True
+
+
+def test_australia_capital_region_cancer_relief_is_hard_negative() -> None:
+    charity = match_post(
+        'Rise Above celebrates 40 years of helping cancer patients',
+        alt_text=(
+            'Rise Above – Capital Region Cancer Relief will celebrate 40 years of supporting '
+            'cancer patients and their families with a free event at the Royal Hotel Queanbeyan.'
+        ),
+    )
+    assert charity.matched is False
+    assert charity.reason == 'hard_negative:australia_capital_region'
+
+    keep = match_post('Capital Region aid groups sent supplies to Canberra from #AlbanyNY.')
+    assert keep.matched is True
+
+
+def test_georgia_atlanta_capital_region_is_hard_negative() -> None:
+    ice = match_post(
+        'PHOTOS: 1,200 Illegal Aliens Arrested in Georgia #BorderCrisis',
+        alt_text=(
+            'Federal authorities rounded up more than 1,200 people during a major operation '
+            'in the state of Georgia. ICE announced Operation Safe Community – Atlanta, '
+            'which was carried out statewide but focused on the capital region.'
+        ),
+    )
+    assert ice.matched is False
+    assert ice.reason == 'hard_negative:georgia_atlanta_capital_region'
+
+    keep = match_post('Capital Region exporters shipped goods to Atlanta from #AlbanyNY.')
+    assert keep.matched is True
+
+
+def test_malta_gozo_film_troy_title_not_multi_local() -> None:
+    gozo = match_post(
+        'The Guardian piece on Malta as a film magnet notes Madame Blanc was filmed on Gozo. '
+        'Over 100 productions have shot here, from Troy to The Count of Monte Cristo.',
+        alt_text='The beautiful cove of Mgarr ix-Xini, where Two Weeks in August filmed.',
+    )
+    assert gozo.matched is False
+    assert gozo.reason == 'hard_negative:malta_europe'
+
+    assert (
+        match_post('Town of Malta planning board meets with Troy officials tonight.').matched
+        is True
+    )
+
+
+def test_rotterdam_netherlands_oda_new_york_not_ambiguous() -> None:
+    tower = match_post(
+        'POST Rotterdam Tower / ODA New York - https://www.archdaily.com/1181776/post-rotterdam',
+        alt_text='Completed in 2026 in Rotterdam, The Netherlands. Images by Ossip van Duivenbode.',
+    )
+    assert tower.matched is False
+    assert tower.reason == 'hard_negative:malta_europe'
+
+    assert (
+        match_post('Town of Rotterdam meeting; see also Troy City Council agenda.').matched is True
+    )
+
+
+def test_loi_galway_waterford_fixture_list_not_multi_local() -> None:
+    loi = match_post(
+        '#DerryCityFC have 9 League fixtures remaining. Home against Rovers, Galway, '
+        'St Pats and Dundalk and away to Bohs, Waterford, Shels, Drogheda, Sligo.'
+    )
+    assert loi.matched is False
+    assert loi.reason == 'hard_negative:galway_ireland'
+
+
+def test_aging_albany_ny_pubmed_journal_not_local() -> None:
+    journal = match_post(
+        'Aging is indexed by PubMed/Medline abbreviated as “Aging (Albany NY)”, '
+        'PubMed Central, and Web of Science.'
+    )
+    assert journal.matched is False
+    assert journal.reason == 'hard_negative'
+
+
+def test_delmar_avenue_street_not_town_of_delmar() -> None:
+    usps = match_post(
+        'BLUE BOX: 886 MARYVALE DR, CHEEKTOWAGA NY 14225 PO LOBBY: 125 S DELMAR AVE, SALEM IL 62881'
+    )
+    assert usps.matched is False
+    assert usps.reason == 'hard_negative'
 
 
 def test_japan_capital_district_senryu_is_hard_negative() -> None:
