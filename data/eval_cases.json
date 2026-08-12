@@ -3688,5 +3688,157 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-08-11 audit: Albany N.Y. wire dateline keep"
+  },
+  {
+    "id": "fp-stillwater-film-nyff",
+    "text": "",
+    "alt_text": "Tom McCarthy's 'A Statement' to World Premiere at 64th New York Film Festival. It's been five years since \"Stillwater,\" starring Matt Damon.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-12 audit: Stillwater film + NY Film Festival"
+  },
+  {
+    "id": "tp-stillwater-ny-town-board",
+    "text": "Stillwater, NY town board meets Tuesday on the waterfront plan.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-12 audit: Stillwater NY keep after film gate"
+  },
+  {
+    "id": "fp-troy-michigan-ithaca-odyssey",
+    "text": "a couple's odyssey from Troy Michigan to Ithaca New York and their separate adventures after one of them seeks asylum in Canada once they hit Sarnia.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-12 audit: Troy MI + Ithaca NY context"
+  },
+  {
+    "id": "fp-detroit-troy-nyc-travel-list",
+    "text": "New York City • August 25–28\nLas Vegas • September 10–12\nDetroit/Troy • September 28–30",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-12 audit: Detroit/Troy + NYC itinerary"
+  },
+  {
+    "id": "tp-troy-ny-music-hall-concert",
+    "text": "Concert in Troy, NY tonight at the Music Hall.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-12 audit: Troy NY keep after Michigan gate"
+  },
+  {
+    "id": "fp-van-helderbergh-ghent-pulpit",
+    "text": "Pulpit of the Small Beguinage of Ghent, executed by Jan Baptist van Helderbergh, 1731–1732.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-12 audit: Belgian sculptor vs Helderberg"
+  },
+  {
+    "id": "tp-helderberg-escarpment-hike",
+    "text": "Hike the Helderberg Escarpment this weekend near #AlbanyNY.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-12 audit: Helderberg keep after surname gate"
+  },
+  {
+    "id": "fp-bay-area-albany-saratoga-consolidation",
+    "text": "various city/county consolidation concepts",
+    "alt_text": "cupertino+saratoga+monte sereno+los gatos\nalbany+berkeley+emeryville\noakland+piedmont",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-12 audit: Bay Area albany+saratoga multi_local"
+  },
+  {
+    "id": "tp-albany-saratoga-springs-drive",
+    "text": "Drive from Albany to Saratoga Springs for the races.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-12 audit: Cap Region albany+saratoga keep"
+  },
+  {
+    "id": "fp-indiana-albany-saratoga-inwx",
+    "text": "Severe Thunderstorm Near Albany or 7 Miles NE of Muncie Moving SE At 50 MPH. Locations Impacted Include Muncie, Winchester, Union City, Albany, Eaton, Parker City, Farmland, Lynn, Selma, Ridgeville, Saratoga, Modoc & Ball State University. #inwx Details",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-12 audit: Indiana Albany+Saratoga weather"
+  },
+  {
+    "id": "tp-amtrak-saratoga-springs-boarding",
+    "text": "UNSAFE DE-BOARDING by Amtrak in Saratoga Springs",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-12 audit: Amtrak + Saratoga Springs FN"
+  },
+  {
+    "id": "tp-spac-bare-saratoga-springs-show",
+    "text": "Show at SPAC in Saratoga Springs this Friday",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-12 audit: bare SPAC + Saratoga Springs FN"
+  },
+  {
+    "id": "tp-saratoga-jazz-festival-weekend",
+    "text": "From the Saratoga Jazz Festival to the Toying Around Block Party in Johnstown this weekend.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-12 audit: Saratoga Jazz Festival FN"
+  },
+  {
+    "id": "fp-saratoga-av-mta-subway",
+    "text": "Uptown 3 trains are running with delays after we requested NYPD assistance for an unauthorized person on the tracks at Saratoga Av. #nyc #mta #subway",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-12 audit: Brooklyn Saratoga Av subway"
+  },
+  {
+    "id": "tp-saratoga-ny-march-meetup",
+    "text": "March On Washington meetup in Saratoga New York this Thursday.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-12 audit: Saratoga NY keep after Avenue gate"
   }
 ]
