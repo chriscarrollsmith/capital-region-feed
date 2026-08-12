@@ -77,7 +77,8 @@ _STRONG_POSITIVE = re.compile(
       | boght\s+corners
       | newtonville
       | \bcoeymans\b
-      | helderberg
+      # Word boundary: Belgian sculptor "van Helderbergh" must not match.
+      | \bhelderbergs?\b
       # Cap Region Altamont cues only — bare "Altamont" stays ambiguous (CA festival / band names).
       | \baltamont-based\b
       | altamont\s+fair
@@ -104,9 +105,13 @@ _STRONG_POSITIVE = re.compile(
       | national\s+museum\s+of\s+racing
       # Horse-racing debut copy often omits "Race Course".
       | debut\s+at\s+saratoga\b
-      # Hashtag #SPAC next to Saratoga (avoid bare SPAC / financial SPACs).
-      | \#spac\b[\s\S]{0,200}\bsaratoga\b
-      | \bsaratoga\b[\s\S]{0,200}\#spac\b
+      # SPAC / #SPAC next to Saratoga (avoid bare SPAC webinars without venue).
+      | \#?spac\b[\s\S]{0,200}\bsaratoga\b
+      | \bsaratoga\b[\s\S]{0,200}\#?spac\b
+      # Amtrak station / jazz festival often omit ", NY".
+      | amtrak[\s\S]{0,80}saratoga\s+springs\b
+      | saratoga\s+springs[\s\S]{0,80}amtrak
+      | saratoga\s+jazz\s+festival
       # Distinctive Saratoga Springs venues (often omit ", NY").
       | caffe\s+lena\b
       | high\s+rock\s+park\s+pavilions?\b
@@ -251,12 +256,16 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
       | hauptstadtregion
       | disney(?:['\u2019]?s)?\s+saratoga\s+springs
       | watervliet\s*,?\s*(?:mi|michigan)\b
+      | troy\s*,?\s*(?:mi|michigan)\b
+      | detroit\s*/\s*troy\b
       | loudonville\s*,?\s*(?:oh|ohio)\b
       | reinvent\s*albany
       # PubMed journal abbreviation — not Albany NY local news.
       | aging\s*\(\s*albany\s*ny\s*\)
       # Sports-print spam lists Albany among many cities.
       | rowonebrand
+      # Belgian sculptor surname — not Helderberg Escarpment.
+      | van\s+helderbergh
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -472,18 +481,69 @@ _PNG_CAPITAL_DISTRICT = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
-# Bay Area Albany (CA) discussed alongside NYC consolidation — not Albany NY.
+# Bay Area Albany / Saratoga (CA) city lists — not Albany NY / Saratoga Springs NY.
+_BAY_AREA_PLACE_CUE = (
+    r'\bbay\s+area\b|\bpiedmont\b|\batherton\b|\boakland\b|'
+    r'\bberkeley\b|\bemeryville\b|\bcupertino\b|\blos\s+gatos\b|'
+    r'\bmenlo\s+park\b|\bsan\s+mateo\b|\bsanta\s+clara\b|'
+    r'\bfremont\b|\bhayward\b|\blivermore\b|\bmillbrae\b|'
+    r'\bpalo\s+alto\b|\bsunnyvale\b|\balameda\s+co\b|'
+    r'sfchronicle|san\s+francisco'
+)
+
 _BAY_AREA_ALBANY = re.compile(
+    rf"""
+    (?:
+        \balbany\b[\s\S]{{0,200}}(?:{_BAY_AREA_PLACE_CUE})
+      | (?:{_BAY_AREA_PLACE_CUE})[\s\S]{{0,200}}\balbany\b
+      | \bsaratoga\b[\s\S]{{0,200}}(?:{_BAY_AREA_PLACE_CUE})
+      | (?:{_BAY_AREA_PLACE_CUE})[\s\S]{{0,200}}\bsaratoga\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Matt Damon / Tom McCarthy film "Stillwater" — not the Town of Stillwater NY.
+_STILLWATER_FILM = re.compile(
     r"""
     (?:
-        \balbany\b[\s\S]{0,200}(?:
-            \bbay\s+area\b|\bpiedmont\b|\batherton\b|\boakland\b|
-            sfchronicle|san\s+francisco
-        )
-      | (?:
-            \bbay\s+area\b|\bpiedmont\b|\batherton\b|\boakland\b|
-            sfchronicle|san\s+francisco
-        )[\s\S]{0,200}\balbany\b
+        ["'“”]?stillwater["'“”]?\s*,?\s*starring
+      | (?:film|movie|picture)\s+["'“”]stillwater["'“”]
+      | since\s+["'“”]stillwater["'“”]
+      | \bstillwater\b[\s\S]{0,100}\b(?:matt\s+damon|tom\s+mccarthy)\b
+      | \b(?:matt\s+damon|tom\s+mccarthy)\b[\s\S]{0,100}\bstillwater\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Troy, Michigan (Detroit suburb) — not Troy NY, even when NYC/Ithaca appear.
+_TROY_MICHIGAN = re.compile(
+    r"""
+    (?:
+        troy\s*,?\s*(?:mi|michigan)\b
+      | detroit\s*/\s*troy\b
+      | troy\s*/\s*detroit\b
+      | (?<![\w.])troy(?![\w@.-])[\s\S]{0,40}\b(?:mi|michigan)\b
+      | \b(?:mi|michigan)\b[\s\S]{0,40}(?<![\w.])troy(?![\w@.-])
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Indiana Albany + Saratoga weather towns (Muncie / Ball State / #inwx).
+# Keep cues distinctive — avoid Bay Area "Union City" / generic "farmland".
+_IN_ALBANY_SARATOGA = re.compile(
+    r"""
+    (?:
+        \#inwx\b
+      | \bmuncie\b
+      | ball\s+state
+      | \bindiana\b
+      | \bmodoc\b
+      | \bridgeville\b
+      | parker\s+city
+      | \bwinchester\b[\s\S]{0,80}\b(?:eaton|lynn|selma)\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -817,6 +877,8 @@ _HARD_NEGATIVE = re.compile(
       | delmar\s+(?:st(?:reet)?|ave(?:nue)?)\b
       # Brooklyn / NYC street — not the City of Troy.
       | troy\s+(?:ave(?:nue)?|st(?:reet)?)\b
+      # Brooklyn subway (Saratoga Av on the 3) — not Saratoga Springs.
+      | saratoga\s+av(?:e(?:nue)?)?\b
       # PubMed journal abbreviation — not Albany NY local news.
       | aging\s*\(\s*albany\s*ny\s*\)
       # National politician, not Troy NY.
@@ -849,6 +911,8 @@ _HARD_NEGATIVE = re.compile(
       | saratoga\s+springs\s+ut\b
       | disney(?:['\u2019]?s)?\s+saratoga\s+springs
       | watervliet\s*,?\s*(?:mi|michigan)\b
+      | troy\s*,?\s*(?:mi|michigan)\b
+      | detroit\s*/\s*troy\b
       | loudonville\s*,?\s*(?:oh|ohio)\b
       | reinvent\s*albany
       | rowonebrand
@@ -863,6 +927,7 @@ _HARD_NEGATIVE = re.compile(
       | galway\s+united\b
       | galway\s+fc\b
       | league\s+of\s+ireland
+      | van\s+helderbergh
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -1107,14 +1172,67 @@ def _png_capital_district_conflict(haystack: str) -> bool:
 
 
 def _albany_bay_area_conflict(haystack: str) -> bool:
-    """True when bare Albany is the East Bay city, not Albany NY."""
+    """True when bare Albany/Saratoga are Bay Area CA cities, not NY."""
     if re.search(
-        r'albany\s*,?\s*(?:ny|n\.y\.|new\s+york)|\#albanyny\b',
+        r'(?:albany|saratoga(?:\s+springs)?)\s*,?\s*(?:ny|n\.y\.|new\s+york)|'
+        r'\#albanyny\b|\#saratogasprings\b',
         haystack,
         flags=re.IGNORECASE,
     ):
         return False
     return _BAY_AREA_ALBANY.search(haystack) is not None
+
+
+def _stillwater_film_conflict(haystack: str) -> bool:
+    """True when Stillwater refers to the Matt Damon film, not Stillwater NY."""
+    if not re.search(r'\bstillwater\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not _STILLWATER_FILM.search(haystack):
+        return False
+    if re.search(
+        r'stillwater\s*,?\s*(?:ny|n\.y\.|new\s+york)\b|town\s+of\s+stillwater',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    return True
+
+
+def _troy_michigan_conflict(haystack: str) -> bool:
+    """True when Troy refers to the Detroit suburb, not Troy NY."""
+    if not re.search(r'\btroy\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not _TROY_MICHIGAN.search(haystack):
+        return False
+    if re.search(
+        r'troy\s*,?\s*(?:ny|n\.y\.|new\s+york)\b|city\s+of\s+troy|'
+        r'troy\s+(?:music\s+hall|savings\s+bank)',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    return True
+
+
+def _indiana_albany_saratoga_conflict(haystack: str, distinct: set[str]) -> bool:
+    """True when Albany+Saratoga are Indiana weather towns, not NY Cap Region."""
+    if not ({'albany', 'saratoga', 'saratoga springs'} & distinct):
+        return False
+    if len({'albany', 'saratoga', 'saratoga springs'} & distinct) < 2 and 'albany' not in distinct:
+        return False
+    # Require Albany paired with a Saratoga token (multi-local Indiana towns).
+    if 'albany' not in distinct or not ({'saratoga', 'saratoga springs'} & distinct):
+        return False
+    if not _IN_ALBANY_SARATOGA.search(haystack):
+        return False
+    if re.search(
+        r'(?:albany|saratoga(?:\s+springs)?)\s*,?\s*(?:ny|n\.y\.|new\s+york)\b|'
+        r'\#albanyny\b|\#nywx\b|nws\s+albany',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    return True
 
 
 def _california_capital_region_conflict(haystack: str, author_handle: str | None = None) -> bool:
@@ -1616,6 +1734,8 @@ def match_post(
         if len(multi_eligible) >= 2:
             if _wi_troy_waterford_conflict(haystack, multi_eligible):
                 return MatchResult(False, 'hard_negative:wi_troy_waterford')
+            if _indiana_albany_saratoga_conflict(haystack, multi_eligible):
+                return MatchResult(False, 'hard_negative:indiana_albany_saratoga')
             if _malta_europe_conflict(haystack) and ({'malta', 'rotterdam'} & multi_eligible):
                 return MatchResult(False, 'hard_negative:malta_europe')
             if _scotia_montreal_conflict(haystack) and 'scotia' in multi_eligible:
@@ -1624,6 +1744,12 @@ def match_post(
                 {'saratoga', 'saratoga springs'} & multi_eligible
             ):
                 return MatchResult(False, 'hard_negative:disney_saratoga')
+            if _albany_bay_area_conflict(haystack) and (
+                {'albany', 'saratoga', 'saratoga springs'} & multi_eligible
+            ):
+                return MatchResult(False, 'hard_negative:albany_bay_area')
+            if _troy_michigan_conflict(haystack) and 'troy' in multi_eligible:
+                return MatchResult(False, 'hard_negative:troy_michigan')
             return MatchResult(True, 'multi_local_places')
 
         # Prefer a non-collision token when several ambiguous names appear but
@@ -1672,6 +1798,15 @@ def match_post(
             haystack, author_handle
         ):
             return MatchResult(False, 'hard_negative:disney_saratoga')
+
+        if term in {'saratoga', 'saratoga springs'} and _albany_bay_area_conflict(haystack):
+            return MatchResult(False, 'hard_negative:albany_bay_area')
+
+        if term == 'stillwater' and _stillwater_film_conflict(haystack):
+            return MatchResult(False, 'hard_negative:stillwater_film')
+
+        if term == 'troy' and _troy_michigan_conflict(haystack):
+            return MatchResult(False, 'hard_negative:troy_michigan')
 
         if _NY_CONTEXT.search(place_haystack) or _STRONG_POSITIVE.search(haystack):
             return MatchResult(True, f'ambiguous_with_context:{term}')
