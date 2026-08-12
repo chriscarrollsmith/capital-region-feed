@@ -7,6 +7,7 @@ from typing import Any
 
 from server import config
 from server.author_priors import author_has_soft_prior, is_strong_match_reason, record_strong_match
+from server.content_filters import author_is_blocked, text_is_muted
 from server.database import Post, db, prune_old_posts, utc_now
 from server.logger import logger
 from server.matcher import extract_alt_text, match_post
@@ -59,13 +60,6 @@ def _maybe_prune() -> None:
         logger.info('pruned %s old posts', deleted)
 
 
-def _is_muted(text: str, alt_text: str) -> bool:
-    if not config.MUTED_KEYWORDS:
-        return False
-    haystack = f'{text} {alt_text}'.lower()
-    return any(keyword in haystack for keyword in config.MUTED_KEYWORDS)
-
-
 def handle_engagement_event(event: dict[str, Any]) -> None:
     """Increment like/repost counts when engagement targets an indexed post."""
     operation = event.get('operation')
@@ -109,16 +103,24 @@ def handle_event(event: dict[str, Any]) -> None:
     ):
         return
 
+    author_did = event.get('author')
+    if author_is_blocked(
+        author_did if isinstance(author_did, str) else None,
+        blocklist_dids=config.BLOCKLIST_DIDS,
+        blocklist_handles=config.BLOCKLIST_HANDLES,
+    ):
+        logger.debug('blocklisted %s', uri)
+        return
+
     text = record.get('text') or ''
     alt_text = extract_alt_text(record.get('embed'))
-    if _is_muted(text, alt_text):
+    if text_is_muted(text, alt_text, keywords=config.MUTED_KEYWORDS):
         logger.debug('muted %s', uri)
         return
 
     langs = record.get('langs') or []
     if not isinstance(langs, list):
         langs = []
-    author_did = event.get('author')
     soft_prior_dids = {author_did} if author_has_soft_prior(author_did) else set()
     result = match_post(
         text,

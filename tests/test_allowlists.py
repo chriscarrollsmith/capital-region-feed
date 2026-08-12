@@ -5,7 +5,13 @@ from __future__ import annotations
 from pathlib import Path
 
 from scripts.resolve_allowlist_dids import build_did_file
-from server.allowlists import load_allowlist_dids, load_allowlist_handles, load_list_file
+from server.allowlists import (
+    load_allowlist_dids,
+    load_allowlist_handles,
+    load_blocklist_dids,
+    load_blocklist_handles,
+    load_list_file,
+)
 
 
 def test_load_list_file_skips_comments_and_blanks(tmp_path: Path) -> None:
@@ -24,6 +30,16 @@ def test_production_allowlists_are_nonempty_and_aligned() -> None:
     # Every checked-in DID should correspond to a curated handle (file comments).
     # Count equality keeps the resolve script honest after handle edits.
     assert len(dids) == len(handles)
+
+
+def test_production_blocklists_are_aligned() -> None:
+    handles = load_blocklist_handles()
+    dids = load_blocklist_dids()
+    assert all(h == h.lower() for h in handles)
+    assert all(d.startswith('did:') for d in dids)
+    assert len(dids) == len(handles)
+    assert 'bypophoenix.bsky.social' in handles
+    assert 'did:plc:vdykwvsuhnim6beywhcqje7r' in dids
 
 
 def test_build_did_file_includes_handle_provenance() -> None:

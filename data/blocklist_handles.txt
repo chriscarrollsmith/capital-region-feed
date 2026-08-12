@@ -1,0 +1,10 @@
+# Authors whose posts are never indexed (DID + handle checked at ingest).
+# Jetstream supplies DIDs only — keep data/blocklist_dids.txt in sync with:
+#   uv run python scripts/resolve_allowlist_dids.py \
+#     --handles data/blocklist_handles.txt --output data/blocklist_dids.txt
+#
+# Use for accounts that match Cap Region geography/cues but are a poor fit for
+# the feed's prosocial aesthetic (spam, erotica mills, etc.).
+
+# Anarchist-themed erotica / "byporevolution" content
+bypophoenix.bsky.social

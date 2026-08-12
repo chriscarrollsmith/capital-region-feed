@@ -1,0 +1,7 @@
+# DID blocklist for Jetstream ingest (author field is DID-only).
+# Generated from blocklist_handles.txt — re-run:
+#   uv run python scripts/resolve_allowlist_dids.py --handles data/blocklist_handles.txt --output data/blocklist_dids.txt
+# Do not hand-edit DIDs unless a handle is unstable; prefer updating handles.
+
+# bypophoenix.bsky.social
+did:plc:vdykwvsuhnim6beywhcqje7r

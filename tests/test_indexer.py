@@ -63,6 +63,34 @@ def test_handle_event_skips_unknown_author_without_placename(isolated_db: None) 
     assert config.ALLOWLIST_DIDS
 
 
+def test_handle_event_skips_blocklisted_author_even_with_local_text(isolated_db: None) -> None:
+    from server import config
+    from server.indexer import handle_event
+
+    assert config.BLOCKLIST_DIDS, 'production DID blocklist must be populated'
+    author = sorted(config.BLOCKLIST_DIDS)[0]
+    event = _create_event(
+        author=author,
+        text='Live from Albany NY — Empire State Plaza tonight.',
+        uri_key='blocked',
+    )
+    handle_event(event)
+    assert Post.select().where(Post.uri == event['uri']).count() == 0
+
+
+def test_handle_event_skips_acab_assertion_even_with_local_text(isolated_db: None) -> None:
+    from server.indexer import handle_event
+
+    author = 'did:plc:acabfiltertest0000000000001'
+    event = _create_event(
+        author=author,
+        text='ACAB rally near the Empire State Plaza in Albany.',
+        uri_key='acab',
+    )
+    handle_event(event)
+    assert Post.select().where(Post.uri == event['uri']).count() == 0
+
+
 def test_handle_event_records_strong_match_and_soft_prior_keeps_bare(isolated_db: None) -> None:
     from server import config
     from server.author_priors import author_has_soft_prior
