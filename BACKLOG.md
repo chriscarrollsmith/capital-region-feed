@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-069 — Daily feed audit: Stillwater film, Troy MI, van Helderbergh, Bay Area multi_local, Indiana wx, Saratoga FNs
-- **Status:** in progress
+- **Status:** done ([#43](https://github.com/chriscarrollsmith/capital-region-feed/pull/43))
 - **Why:** 2026-08-12 audit of last-24h AppView feed (~186 posts since 2026-08-11T09:03Z)
   found active FPs after #41: Matt Damon *Stillwater* + New York Film Festival
   (`ambiguous_with_context:stillwater`); Troy Michigan / Detroit/Troy itineraries unlocked
