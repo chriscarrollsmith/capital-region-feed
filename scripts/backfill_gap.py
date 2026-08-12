@@ -320,11 +320,22 @@ def process_event(
         return 'exists'
 
     if dry_run:
+        from server.content_filters import author_is_blocked, text_is_muted
+
         record = event.get('record') or {}
         if config.IGNORE_REPLY_POSTS and record.get('reply'):
             return 'dry_run_skip'
+        author_did = event.get('author')
+        if author_is_blocked(
+            author_did if isinstance(author_did, str) else None,
+            blocklist_dids=config.BLOCKLIST_DIDS,
+            blocklist_handles=config.BLOCKLIST_HANDLES,
+        ):
+            return 'dry_run_skip'
         text = record.get('text') or ''
         alt_text = extract_alt_text(record.get('embed'))
+        if text_is_muted(text, alt_text, keywords=config.MUTED_KEYWORDS):
+            return 'dry_run_skip'
         langs = record.get('langs') or []
         if not isinstance(langs, list):
             langs = []
@@ -332,7 +343,7 @@ def process_event(
             text,
             alt_text=alt_text,
             langs=langs,
-            author_did=event.get('author'),
+            author_did=author_did,
             allowlist_dids=config.ALLOWLIST_DIDS,
             allowlist_handles=config.ALLOWLIST_HANDLES,
         )

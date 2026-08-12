@@ -179,7 +179,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Why:** Orthogonal to match quality, but useful once recall rises.
 - **Work:** Optional ranking among indexed posts (likes/reposts/recency);
   muted keywords; per-user preferences later if needed.
-- **Notes:** `RANKING_MODE=indexed|created|engagement`. Jetstream also subscribes to like/repost commits and increments counts for indexed URIs. `MUTED_KEYWORDS` drops matching posts at index time. Per-user prefs deferred.
+- **Notes:** `RANKING_MODE=indexed|created|engagement`. Jetstream also subscribes to like/repost commits and increments counts for indexed URIs. Built-in ACAB mutes + optional `MUTED_KEYWORDS` drop matching posts at index time; `data/blocklist_*.txt` drops curated authors. Per-user prefs deferred.
 
 ### B-041 — Language-aware heuristics
 - **Status:** done

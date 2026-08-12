@@ -42,7 +42,13 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from server.allowlists import load_allowlist_dids, load_allowlist_handles  # noqa: E402
+from server.allowlists import (  # noqa: E402
+    load_allowlist_dids,
+    load_allowlist_handles,
+    load_blocklist_dids,
+    load_blocklist_handles,
+)
+from server.content_filters import author_is_blocked, text_is_muted  # noqa: E402
 from server.matcher import extract_alt_text, match_post  # noqa: E402
 
 DEFAULT_API_HOST = 'https://api.bsky.app'
@@ -66,6 +72,8 @@ SOFT_PRIOR_WINDOW_DAYS = int(os.environ.get('SOFT_PRIOR_WINDOW_DAYS', '30'))
 MUTED_KEYWORDS = tuple(
     part.strip().lower() for part in os.environ.get('MUTED_KEYWORDS', '').split(',') if part.strip()
 )
+BLOCKLIST_DIDS = load_blocklist_dids()
+BLOCKLIST_HANDLES = load_blocklist_handles()
 
 JsonObject = dict[str, Any]
 Fetcher = Callable[[str], JsonObject]
@@ -238,13 +246,6 @@ def post_alt_text(post: JsonObject) -> str:
     return ' '.join(ordered)
 
 
-def is_muted(text: str, alt_text: str) -> bool:
-    if not MUTED_KEYWORDS:
-        return False
-    haystack = f'{text} {alt_text}'.lower()
-    return any(keyword in haystack for keyword in MUTED_KEYWORDS)
-
-
 def evaluate_post(
     post: JsonObject,
     *,
@@ -252,6 +253,8 @@ def evaluate_post(
     allowlist_handles: set[str],
     soft_prior_dids: set[str],
     ignore_replies: bool = IGNORE_REPLY_POSTS,
+    blocklist_dids: set[str] | None = None,
+    blocklist_handles: set[str] | None = None,
 ) -> tuple[bool, str]:
     """Return (matched, reason) using the same gates as indexer.create."""
     record = post.get('record') if isinstance(post.get('record'), dict) else {}
@@ -259,9 +262,21 @@ def evaluate_post(
     if ignore_replies and isinstance(record, dict) and record.get('reply'):
         return False, 'reply_ignored'
 
+    author_did = author.get('did') if isinstance(author, dict) else None
+    author_handle = author.get('handle') if isinstance(author, dict) else None
+    blocked_dids = BLOCKLIST_DIDS if blocklist_dids is None else blocklist_dids
+    blocked_handles = BLOCKLIST_HANDLES if blocklist_handles is None else blocklist_handles
+    if author_is_blocked(
+        str(author_did) if author_did else None,
+        str(author_handle) if author_handle else None,
+        blocklist_dids=blocked_dids,
+        blocklist_handles=blocked_handles,
+    ):
+        return False, 'blocklisted'
+
     text = str(record.get('text') or '') if isinstance(record, dict) else ''
     alt_text = post_alt_text(post)
-    if is_muted(text, alt_text):
+    if text_is_muted(text, alt_text, keywords=MUTED_KEYWORDS):
         return False, 'muted'
 
     langs = record.get('langs') if isinstance(record, dict) else None
@@ -272,8 +287,8 @@ def evaluate_post(
         text,
         alt_text=alt_text,
         langs=langs,
-        author_did=author.get('did') if isinstance(author, dict) else None,
-        author_handle=author.get('handle') if isinstance(author, dict) else None,
+        author_did=author_did if isinstance(author_did, str) else None,
+        author_handle=author_handle if isinstance(author_handle, str) else None,
         allowlist_dids=allowlist_dids,
         allowlist_handles=allowlist_handles,
         soft_prior_dids=soft_prior_dids,

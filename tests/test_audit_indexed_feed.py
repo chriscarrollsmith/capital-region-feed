@@ -71,9 +71,49 @@ def test_evaluate_post_keeps_strong_local() -> None:
         allowlist_handles=set(),
         soft_prior_dids=set(),
         ignore_replies=True,
+        blocklist_dids=set(),
+        blocklist_handles=set(),
     )
     assert matched is True
     assert reason.startswith('entity_local:') or reason == 'strong_positive'
+
+
+def test_evaluate_post_drops_blocklisted_author() -> None:
+    post = {
+        'uri': 'at://did:plc:blocked/app.bsky.feed.post/1',
+        'author': {'did': 'did:plc:blocked', 'handle': 'blocked.bsky.social'},
+        'record': {'text': 'Concert at the Empire State Plaza tonight'},
+    }
+    matched, reason = evaluate_post(
+        post,
+        allowlist_dids=set(),
+        allowlist_handles=set(),
+        soft_prior_dids=set(),
+        ignore_replies=True,
+        blocklist_dids={'did:plc:blocked'},
+        blocklist_handles=set(),
+    )
+    assert matched is False
+    assert reason == 'blocklisted'
+
+
+def test_evaluate_post_drops_acab_mute() -> None:
+    post = {
+        'uri': 'at://did:plc:x/app.bsky.feed.post/1',
+        'author': {'did': 'did:plc:x', 'handle': 'x.bsky.social'},
+        'record': {'text': 'ACAB at the Empire State Plaza tonight'},
+    }
+    matched, reason = evaluate_post(
+        post,
+        allowlist_dids=set(),
+        allowlist_handles=set(),
+        soft_prior_dids=set(),
+        ignore_replies=True,
+        blocklist_dids=set(),
+        blocklist_handles=set(),
+    )
+    assert matched is False
+    assert reason == 'muted'
 
 
 def test_load_uris_and_purge(tmp_path: Path) -> None:

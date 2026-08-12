@@ -45,11 +45,18 @@ def resolve_handle(handle: str, *, api_host: str, timeout: float = 30.0) -> str:
     return did
 
 
-def build_did_file(entries: list[tuple[str, str]]) -> str:
+def build_did_file(
+    entries: list[tuple[str, str]],
+    *,
+    kind: str = 'allowlist',
+    handles_name: str = 'allowlist_handles.txt',
+    resolve_hint: str | None = None,
+) -> str:
+    hint = resolve_hint or 'uv run python scripts/resolve_allowlist_dids.py'
     lines = [
-        '# DID allowlist for Jetstream ingest (author field is DID-only).',
-        '# Generated from allowlist_handles.txt — re-run:',
-        '#   uv run python scripts/resolve_allowlist_dids.py',
+        f'# DID {kind} for Jetstream ingest (author field is DID-only).',
+        f'# Generated from {handles_name} — re-run:',
+        f'#   {hint}',
         '# Do not hand-edit DIDs unless a handle is unstable; prefer updating handles.',
         '',
     ]
@@ -118,7 +125,20 @@ def main() -> int:
         print('no DIDs resolved', file=sys.stderr)
         return 1
 
-    content = build_did_file(resolved)
+    handles_name = args.handles.name
+    kind = 'blocklist' if 'blocklist' in handles_name else 'allowlist'
+    resolve_hint = (
+        'uv run python scripts/resolve_allowlist_dids.py '
+        f'--handles {args.handles} --output {args.output}'
+        if kind == 'blocklist'
+        else 'uv run python scripts/resolve_allowlist_dids.py'
+    )
+    content = build_did_file(
+        resolved,
+        kind=kind,
+        handles_name=handles_name,
+        resolve_hint=resolve_hint,
+    )
     if args.check:
         current = args.output.read_text(encoding='utf-8') if args.output.is_file() else ''
         if current != content:
