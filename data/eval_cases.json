@@ -3840,5 +3840,85 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-08-12 audit: Saratoga NY keep after Avenue gate"
+  },
+  {
+    "id": "fp-iceland-capital-district-fire-rescue",
+    "text": "One taken to hospital after two-car crash #police #reykjavik #trafficaccident. Capital District Fire and Rescue Service responded near Miklabraut, mbl.is reported.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-13 audit: Iceland Capital District Fire and Rescue vs Cap District"
+  },
+  {
+    "id": "tp-capital-district-nws-albany",
+    "text": "NWS Albany NY warns of storms across the Capital District this evening.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-13 audit: Cap District keep after Iceland district gate"
+  },
+  {
+    "id": "fp-egg-art-garden-kansas-city",
+    "text": "Bottom's Up Festival at The Egg and Art Garden KC — sunny weekend in Northeast Kansas City.",
+    "expected": false,
+    "signal": "event",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-13 audit: KC Egg and Art Garden vs Albany The Egg"
+  },
+  {
+    "id": "tp-the-egg-albany-jazz-friday",
+    "text": "Jazz night at The Egg in downtown #AlbanyNY this Friday.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-13 audit: The Egg + Albany keep after KC gate"
+  },
+  {
+    "id": "fp-center-square-washington-state-standard",
+    "text": "Judge upholds income tax ballot language after Thurston County ruling, according to reporting by the Washington State Standard and The Center Square. The August decision affects Clark County voters.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-13 audit: Center Square wire conjunction + August event cue"
+  },
+  {
+    "id": "tp-center-square-porchfest-weekend",
+    "text": "Center Square Porchfest is this weekend. Maps at noon.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "ambiguous_classifier",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-13 audit: Albany Center Square keep after wire conjunction scrub"
+  },
+  {
+    "id": "tp-saratoga-springs-play-the-ponies",
+    "text": "We're at Sara's Kitchen in Saratoga Springs. Tomorrow we'll play the ponies and go to Boca Bistro.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-13 audit: FN play the ponies + Saratoga Springs without NY token"
+  },
+  {
+    "id": "tn-saratoga-springs-utah-olive-garden",
+    "text": "Utah has a highly rated Olive Garden near Saratoga Springs — no race meet, just pasta.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-13 audit: bare Saratoga Springs UT still drops without ponies/NY cues"
   }
 ]
