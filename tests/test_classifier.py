@@ -113,6 +113,18 @@ def test_center_square_wire_byline_is_not_local_micro() -> None:
     )
     assert dash.matched is False
 
+    # Conjunction attributions ("…Standard and The Center Square") + month cue.
+    conjunction = match_post(
+        'Judge upholds income tax ballot language, cancels hearing for initiative sponsors',
+        alt_text=(
+            "A Thurston County Superior Court judge has upheld the state's fiscal impact "
+            'disclosure, according to reporting by the Washington State Standard and '
+            'The Center Square. The ruling on Friday, August 8, 2026, ensures that voters '
+            'in Clark County see accurate ballot language.'
+        ),
+    )
+    assert conjunction.matched is False
+
     # Hollywood Squares / Paul Lynde "center square" is not Albany Center Square.
     hollywood = match_post(
         "Good ol' Paul Lynde. One of the funniest guys EV-ER.",

@@ -89,10 +89,20 @@ _CAP_REGION_HINT = re.compile(
 )
 
 # News wire "The Center Square" — not Albany's Center Square neighborhood.
-# Paren bylines and dash suffixes both appear in AppView title/description copy.
+# Paren bylines, dash suffixes, and "Standard and The Center Square" conjunctions
+# all appear in AppView title/description copy.
 _CENTER_SQUARE_WIRE = re.compile(
-    r'(?:\(\s*the\s+center\s+square\s*\)|[-–—]\s*the\s+center\s+square\b)',
-    re.IGNORECASE,
+    r"""
+    (?:
+        \(\s*the\s+center\s+square\s*\)
+      | [-–—]\s*the\s+center\s+square\b
+      | \band\s+the\s+center\s+square\b
+      | (?:reporting\s+by|according\s+to(?:\s+reporting\s+by)?)\b
+        [\s\S]{0,100}the\s+center\s+square\b
+      | washington\s+state\s+standard[\s\S]{0,60}the\s+center\s+square\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
 )
 
 # Hollywood Squares / Paul Lynde "center square" — not the Albany neighborhood.
