@@ -538,6 +538,26 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-070 — Daily feed audit: Iceland Capital District, Egg Art Garden KC, Center Square conjunction, ponies FN
+- **Status:** in progress
+- **Why:** 2026-08-13 audit of last-24h AppView feed (~150 posts since 2026-08-12T09:17Z)
+  found active FPs after cherry-picking #43: Iceland `Capital District Fire and Rescue`
+  (mbl.is / `#reykjavik`) still kept via strong `capital district` because the Iceland
+  conflict only gated `capital region`; Kansas City `The Egg and Art Garden` unlocked
+  `event_local_venue:at the egg`; Washington State Standard **and The Center Square**
+  wire conjunction + August month cue unlocked `classifier:local_micro`. FN: Saratoga
+  Springs dining + "play the ponies" without `, NY` (`ambiguous_no_context:saratoga springs`).
+  Stale AppView Malta/bare-Saratoga rows already rematch-drop. Intentional keeps include
+  allowlisted non-local posts and NWS Albany CWA warnings into VT.
+- **Work:**
+  - Expand Iceland capital-region conflict to `capital district` + Fire and Rescue branding.
+  - Hard-negative Egg and Art Garden / Kansas City before The Egg venue keep.
+  - Scrub Center Square wire conjunction / reporting-by attributions in classifier micros.
+  - Strong positive: `play the ponies` ↔ Saratoga.
+  - Grow eval with 2026-08-13 FP/TP/FN anchors.
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-069 — Daily feed audit: Stillwater film, Troy MI, van Helderbergh, Bay Area multi_local, Indiana wx, Saratoga FNs
 - **Status:** done ([#43](https://github.com/chriscarrollsmith/capital-region-feed/pull/43))
 - **Why:** 2026-08-12 audit of last-24h AppView feed (~186 posts since 2026-08-11T09:03Z)
