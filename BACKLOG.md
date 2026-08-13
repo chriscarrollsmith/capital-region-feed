@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-070 — Daily feed audit: Iceland Capital District, Egg Art Garden KC, Center Square conjunction, ponies FN
-- **Status:** in progress
+- **Status:** done ([#44](https://github.com/chriscarrollsmith/capital-region-feed/pull/44))
 - **Why:** 2026-08-13 audit of last-24h AppView feed (~150 posts since 2026-08-12T09:17Z)
   found active FPs after cherry-picking #43: Iceland `Capital District Fire and Rescue`
   (mbl.is / `#reykjavik`) still kept via strong `capital district` because the Iceland
