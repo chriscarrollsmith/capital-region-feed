@@ -920,8 +920,34 @@ def test_iceland_capital_region_is_hard_negative() -> None:
     assert pride.matched is False
     assert pride.reason == 'hard_negative:iceland_capital_region'
 
+    # mbl.is "Capital District Fire and Rescue" uses district, not region.
+    crash = match_post(
+        'One taken to hospital after two-car crash #police #reykjavik #trafficaccident',
+        alt_text=(
+            'One person was taken to hospital after a two-car crash at Miklabraut and '
+            'Grensásvegur late Tuesday night, mbl.is reported. According to the Capital '
+            'District Fire and Rescue Service, two ambulances were sent to the scene.'
+        ),
+    )
+    assert crash.matched is False
+
     keep = match_post('Capital Region exporters shipped fish to Reykjavik from #AlbanyNY.')
     assert keep.matched is True
+
+
+def test_egg_kansas_city_art_garden_is_hard_negative() -> None:
+    kc = match_post(
+        'Bottom’s Up Festival at The Egg and Art Garden KC',
+        alt_text=(
+            'The second annual Bottoms Up festival was greeted by a sunny early summer '
+            'weekend in Northeast Kansas City.'
+        ),
+    )
+    assert kc.matched is False
+
+    keep = match_post('Jazz night at The Egg in downtown #AlbanyNY this Friday.')
+    assert keep.matched is True
+    assert keep.reason == 'strong_positive'
 
 
 def test_finland_capital_region_is_hard_negative() -> None:
@@ -1130,6 +1156,13 @@ def test_saratoga_race_course_and_spac_are_strong_positives() -> None:
         is True
     )
     assert match_post('The filly is expected to make her debut at Saratoga.').matched is True
+    assert (
+        match_post(
+            'We’re at Sara’s Kitchen in Saratoga Springs. Tomorrow we’ll play the ponies '
+            'and go to Boca Bistro.'
+        ).matched
+        is True
+    )
 
 
 def test_handle_mentions_do_not_supply_albany_or_nyc_context() -> None:
