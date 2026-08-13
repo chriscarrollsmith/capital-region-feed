@@ -112,6 +112,9 @@ _STRONG_POSITIVE = re.compile(
       | amtrak[\s\S]{0,80}saratoga\s+springs\b
       | saratoga\s+springs[\s\S]{0,80}amtrak
       | saratoga\s+jazz\s+festival
+      # Tourism / race-week phrasing often omits ", NY".
+      | play\s+the\s+ponies[\s\S]{0,80}\bsaratoga\b
+      | \bsaratoga\b[\s\S]{0,80}play\s+the\s+ponies
       # Distinctive Saratoga Springs venues (often omit ", NY").
       | caffe\s+lena\b
       | high\s+rock\s+park\s+pavilions?\b
@@ -245,6 +248,10 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
       | (?:virginia|richmond)\s+capital\s+region
       | bogot[aá]\s+capital\s+district
       | capital\s+district\s*,?\s*colombia\b
+      | icelandic\s+capital\s+district
+      | capital\s+district\s+fire\s+and\s+rescue
+      | (?:the\s+)?egg\s+and\s+art\s+garden
+      | art\s+garden\s+kc\b
       # Papua New Guinea — "National Capital District" contains Cap District.
       | national\s+capital\s+district
       # Harrisburg PA utility — not NY Capital Region.
@@ -549,19 +556,36 @@ _IN_ALBANY_SARATOGA = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
-# Iceland "capital region" (Reykjavik Police / mbl.is mirrors).
+# Iceland "capital region" / "capital district" (Reykjavik Police / mbl.is mirrors).
 _IS_GEO_CUE = (
     r'\biceland\b|\bicelandic\b|\breykjav[ií]k\b|'
-    r'\#iceland\b|\#reykjav[ií]k\b|mbl\.is'
+    r'\#iceland\b|\#reykjav[ií]k\b|mbl\.is|'
+    r'miklabraut|grens[aá]svegur'
 )
 
 _IS_CAPITAL_REGION = re.compile(
     rf"""
     (?:
-        icelandic\s+capital\s+region
-      | capital\s+region\s+of\s+(?:iceland|reykjav[ií]k)\b
-      | capital\s+region\b[\s\S]{{0,160}}(?:{_IS_GEO_CUE})
-      | (?:{_IS_GEO_CUE})[\s\S]{{0,160}}capital\s+region\b
+        icelandic\s+capital\s+(?:region|district)
+      | capital\s+(?:region|district)\s+of\s+(?:iceland|reykjav[ií]k)\b
+      | capital\s+(?:region|district)\b[\s\S]{{0,160}}(?:{_IS_GEO_CUE})
+      | (?:{_IS_GEO_CUE})[\s\S]{{0,160}}capital\s+(?:region|district)\b
+      # Reykjavik emergency services branding.
+      | capital\s+district\s+fire\s+and\s+rescue
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Kansas City "The Egg and Art Garden" — not Albany's The Egg.
+_EGG_KANSAS_CITY = re.compile(
+    r"""
+    (?:
+        (?:the\s+)?egg\s+and\s+art\s+garden
+      | art\s+garden\s+kc\b
+      | \bat\s+the\s+egg\b[\s\S]{0,120}(?:kansas\s+city|\bkc\b)
+      | (?:kansas\s+city|\bkc\b)[\s\S]{0,120}\bat\s+the\s+egg\b
+      | bottoms?\s+up\s+festival[\s\S]{0,80}\bthe\s+egg\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -899,7 +923,10 @@ _HARD_NEGATIVE = re.compile(
           )\b
       | ukrainian\s+capital\s+region
       | sudan(?:ese)?\s+capital\s+region
-      | icelandic\s+capital\s+region
+      | icelandic\s+capital\s+(?:region|district)
+      | capital\s+district\s+fire\s+and\s+rescue
+      | (?:the\s+)?egg\s+and\s+art\s+garden
+      | art\s+garden\s+kc\b
       | (?:virginia|richmond)\s+capital\s+region
       | bogot[aá]\s+capital\s+district
       | capital\s+district\s*,?\s*colombia\b
@@ -1285,10 +1312,26 @@ def _colombia_capital_district_conflict(haystack: str) -> bool:
 
 
 def _iceland_capital_region_conflict(haystack: str) -> bool:
-    """True when 'capital region' refers to Reykjavik / Iceland, not NY."""
+    """True when 'capital region/district' refers to Reykjavik / Iceland, not NY."""
     if not _IS_CAPITAL_REGION.search(haystack):
         return False
     return not _ny_capital_region_context(haystack)
+
+
+def _egg_kansas_city_conflict(haystack: str) -> bool:
+    """True when 'The Egg' refers to Kansas City's Art Garden venue, not Albany."""
+    if not re.search(r'\bthe\s+egg\b|\begg\s+and\s+art\s+garden\b', haystack, flags=re.IGNORECASE):
+        return False
+    if re.search(
+        r'(?:the\s+egg|egg)\s*,?\s*(?:albany|ny|n\.y\.)|'
+        r'\balbany\b[\s\S]{0,80}\bthe\s+egg\b|'
+        r'\bthe\s+egg\b[\s\S]{0,80}\balbany\b|'
+        r'\#albanyny\b|empire\s+state\s+plaza',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    return _EGG_KANSAS_CITY.search(haystack) is not None
 
 
 def _finland_capital_region_conflict(haystack: str) -> bool:
@@ -1566,6 +1609,9 @@ def _match_local_event(haystack: str) -> MatchResult | None:
     if not match:
         return None
     venue = re.sub(r'\s+', ' ', match.group(0).lower())
+    # Kansas City's Egg and Art Garden must not unlock Albany's The Egg.
+    if 'egg' in venue and _egg_kansas_city_conflict(haystack):
+        return None
     return MatchResult(True, f'event_local_venue:{venue}')
 
 
