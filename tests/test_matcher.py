@@ -1285,3 +1285,76 @@ def test_lang_gate_drops_french_colonie_not_english_local() -> None:
         langs=['en'],
     )
     assert english.matched is True
+
+
+def test_victoria_bc_island_rail_capital_region_not_ny() -> None:
+    """Vancouver Island / Goldstream 'Capital Region' is not NY."""
+    island = match_post(
+        'Track clearing in the Capital Region from Goldstream to Victoria may be '
+        'part of the island rail feasibility study.',
+        author_handle='restoreislandrail.bsky.social',
+    )
+    assert island.matched is False
+    assert island.reason == 'hard_negative:canadian_capital_region'
+
+    handle_only = match_post(
+        'Sightings of track clearing in the Capital Region this week.',
+        author_handle='restoreislandrail.bsky.social',
+    )
+    assert handle_only.matched is False
+
+    keep = match_post('Track work continues across the Capital Region from Albany to Schenectady.')
+    assert keep.matched is True
+
+
+def test_waterford_crystal_not_waterford_ny() -> None:
+    crystal = match_post(
+        'New listing up.',
+        alt_text=(
+            'Waterford Crystal Seahorse Ball Ornament - Etsy. Ships from Huntington Station, NY.'
+        ),
+    )
+    assert crystal.matched is False
+    assert match_post('Town of Waterford, NY board meeting tonight.').matched is True
+
+
+def test_norwegian_ny_does_not_unlock_troy() -> None:
+    """Sentence-initial Norwegian/Danish 'Ny' ('New') is not the NY abbreviation."""
+    norway = match_post(
+        'Ny bok om stortingsvalget 2025. Jeg og Troy bidrar med eget kapittel.',
+        alt_text='Norsk politikk er i endring. Tromsø, Trondheim, Bergen og Oslo.',
+    )
+    assert norway.matched is False
+    assert match_post('Dinner in Troy, NY tonight.').matched is True
+    assert match_post('Dinner in troy, ny tonight.').matched is True
+
+
+def test_rensselaer_city_and_rpi_not_indiana() -> None:
+    protest = match_post('Honk and wave in Rensselaer, NY at Washington Ave and I-90 exit 7.')
+    assert protest.matched is True
+
+    rpi = match_post('Rensselaer Polytechnic Institute hosted a career fair on campus.')
+    assert rpi.matched is True
+    assert rpi.reason == 'strong_positive'
+
+    indiana = match_post('Hiring CNC operators in Rensselaer, Indiana this fall.')
+    assert indiana.matched is False
+
+
+def test_saratoga_thoroughbred_and_fasig_tipton_without_ny() -> None:
+    thoroughbred = match_post(
+        'The Thoroughbred Aftercare Alliance summit in Saratoga Springs brought '
+        'together retired racehorse groups. ##OTTB'
+    )
+    assert thoroughbred.matched is True
+
+    fasig = match_post("Cody's Wish led first-crop yearling sires after Fasig-Tipton Saratoga.")
+    assert fasig.matched is True
+
+    stakes = match_post(
+        'Outfielder returns in the $225,000 Mahony Stakes (G3T) Aug. 16 at Saratoga.'
+    )
+    assert stakes.matched is True
+
+    # National Del Mar + Saratoga hashtag soup must stay dropped.
+    assert match_post('#horseracing #saratoga #delmar #delmarthoroughbredclub').matched is False

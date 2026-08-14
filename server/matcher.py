@@ -115,6 +115,17 @@ _STRONG_POSITIVE = re.compile(
       # Tourism / race-week phrasing often omits ", NY".
       | play\s+the\s+ponies[\s\S]{0,80}\bsaratoga\b
       | \bsaratoga\b[\s\S]{0,80}play\s+the\s+ponies
+      # Thoroughbred / OTTB / Fasig-Tipton sales often omit ", NY".
+      # Require word boundaries so #delmarthoroughbredclub cannot pair with #saratoga.
+      | (?:\bthoroughbreds?\b|\#?ottb\b|\baftercare\b)[\s\S]{0,100}saratoga(?:\s+springs)?\b
+      | saratoga(?:\s+springs)?\b[\s\S]{0,100}(?:\bthoroughbreds?\b|\#?ottb\b|\baftercare\b)
+      | fasig[-\s]?tipton[\s\S]{0,40}\bsaratoga\b
+      | \bsaratoga\b[\s\S]{0,40}fasig[-\s]?tipton
+      # Graded stakes copy often says "at Saratoga" without Springs/NY.
+      | \bstakes\b[\s\S]{0,80}\bat\s+saratoga\b
+      | at\s+saratoga\b[\s\S]{0,80}\bstakes\b
+      # City of Rensselaer / RPI (county is already covered above).
+      | rensselaer\s+polytechnic
       # Distinctive Saratoga Springs venues (often omit ", NY").
       | caffe\s+lena\b
       | high\s+rock\s+park\s+pavilions?\b
@@ -160,6 +171,8 @@ _AMBIGUOUS_PLACE = re.compile(
       | \brotterdam\b
       | \bhalfmoon\b
       | \bcolonie\b
+      # City of Rensselaer (not only "Rensselaer County" strong/entity).
+      | \brensselaer\b
       | saratoga\s+springs
       | \bsaratoga\b
       | round\s+lake
@@ -188,10 +201,12 @@ _MULTI_LOCAL_EXCLUDED = frozenset(
 # "New York Times/Post/…" mastheads are national media names, not place context.
 # Also reject abbreviated ``ny times`` (including NBSP variants via ``\s``).
 # Wire datelines use ``N.Y.``; locals often write ``NYS`` for New York State.
+# The two-letter form is case-sensitive (``NY`` / ``ny`` only): Norwegian/Danish
+# sentence-initial ``Ny`` ("New") must not unlock Troy / Waterford / etc.
 _NY_CONTEXT = re.compile(
     r"""
     (?:
-        \bny\b(?!\s*times\b)
+        (?-i:(?<![a-zA-Z])(?:NY|ny)(?![a-zA-Z]))(?!\s*times\b)
       # Reject handle TLDs like @socialists.nyc (dot before nyc).
       | (?<!\.)\bnyc\b
       | n\.y\.
@@ -273,6 +288,11 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
       | rowonebrand
       # Belgian sculptor surname — not Helderberg Escarpment.
       | van\s+helderbergh
+      # Irish crystal brand — not Town of Waterford NY.
+      | waterford\s+crystal
+      | waterford\s+wedgwood
+      # Rensselaer, Indiana — not City of Rensselaer NY.
+      | rensselaer\s*,?\s*(?:in|indiana)\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -281,10 +301,12 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
 # Canadian "capital region" cues (Ottawa national, Victoria BC / #yyj / CRD).
 # Snowbirds = RCAF demo team (Victoria-area flyovers); not birdwatching copy.
 # Window is 240 chars: CFAX call-in intros often put #yyj / #BCpoli after a long clause.
+# Goldstream / Vancouver Island rail copy often says bare "Victoria" (no "BC").
 _CANADIAN_GEO_CUE = (
     r'\bcanada\b|\bcanadian\b|\bottawa\b|\#canadian\w*|'
     r'\#yyj\b|\#bcpoli\b|british\s+columbia|\blangford\b|'
     r'victoria(?:\s*,?\s*bc\b)|greater\s+victoria|'
+    r'\bgoldstream\b|vancouver\s+island|restoreislandrail|'
     r'capital\s+regional\s+district|\blivable\s+crd\b|'
     r'timescolonist\.com|ottawacitizen\.com|\bsnowbirds?\b|parkland\s+secondary|'
     r'\bcfax\b|cfax\.com'
@@ -945,6 +967,9 @@ _HARD_NEGATIVE = re.compile(
       | rowonebrand
       # Radio-market lists often omit the comma ("Albany GA").
       | albany\s+ga\b
+      | waterford\s+crystal
+      | waterford\s+wedgwood
+      | rensselaer\s*,?\s*(?:in|indiana)\b
       | colonie\s+de\s+vacances
       | colonie\s+num[eé]rique
       | une\s+colonie
@@ -1145,7 +1170,8 @@ def _ny_capital_region_context(haystack: str) -> bool:
         re.search(
             rf"""
             (?:
-                \b(?:ny|nys|new\s+york)\b
+                (?-i:(?<![a-zA-Z])(?:NY|ny)(?![a-zA-Z]))
+              | \b(?:nys|new\s+york)\b
               | n\.y\.
               | hudson\s+valley
               | \#albanyny\b
@@ -1167,9 +1193,9 @@ def _canadian_capital_region_conflict(haystack: str, author_handle: str | None =
         return False
     if _CANADIAN_CAPITAL_REGION.search(haystack):
         return True
-    # Times Colonist / CFAX / Ottawa Citizen cards often omit domain cues; gate on handle.
+    # Times Colonist / CFAX / Ottawa Citizen / Island rail cards often omit domain cues.
     handle = (author_handle or '').strip().lower()
-    if re.search(r'timescolonist|\bcfax|ottawacitizen', handle) and re.search(
+    if re.search(r'timescolonist|\bcfax|ottawacitizen|restoreislandrail', handle) and re.search(
         r'capital\s+region\b', haystack, flags=re.IGNORECASE
     ):
         return True
@@ -1546,6 +1572,44 @@ def _waterford_ct_conflict(haystack: str) -> bool:
     return True
 
 
+def _waterford_crystal_conflict(haystack: str) -> bool:
+    """True when Waterford refers to the Irish crystal brand, not Waterford NY."""
+    if not re.search(r'\bwaterford\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not re.search(r'waterford\s+(?:crystal|wedgwood)\b', haystack, flags=re.IGNORECASE):
+        return False
+    if re.search(
+        r'waterford\s*,?\s*(?:ny|n\.y\.)\b|town\s+of\s+waterford',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    return True
+
+
+def _rensselaer_indiana_conflict(haystack: str) -> bool:
+    """True when Rensselaer refers to Indiana, not the city in NY."""
+    if not re.search(r'\brensselaer\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not re.search(
+        r'rensselaer\s*,?\s*(?:in|indiana)\b|'
+        r'rensselaer[\s\S]{0,80}\bindiana\b|'
+        r'\bindiana\b[\s\S]{0,80}rensselaer',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    if re.search(
+        r'rensselaer\s*,?\s*(?:ny|n\.y\.|new\s+york)\b|'
+        r'city\s+of\s+rensselaer|rensselaer\s+polytechnic|'
+        r'rensselaer\s+county',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    return True
+
+
 def _clifton_park_uk_conflict(haystack: str, author_handle: str | None = None) -> bool:
     """True when Clifton Park refers to York/Rotherham (England), not NY."""
     if not re.search(r'clifton\s+park', haystack, flags=re.IGNORECASE):
@@ -1836,6 +1900,12 @@ def match_post(
 
         if term == 'waterford' and _waterford_ct_conflict(haystack):
             return MatchResult(False, 'hard_negative:waterford_ct')
+
+        if term == 'waterford' and _waterford_crystal_conflict(haystack):
+            return MatchResult(False, 'hard_negative:waterford_crystal')
+
+        if term == 'rensselaer' and _rensselaer_indiana_conflict(haystack):
+            return MatchResult(False, 'hard_negative:rensselaer_indiana')
 
         if term in {'malta', 'rotterdam'} and _malta_europe_conflict(haystack):
             return MatchResult(False, 'hard_negative:malta_europe')
