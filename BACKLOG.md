@@ -538,6 +538,27 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-071 — Daily feed audit: Victoria BC island rail, Waterford Crystal, Norwegian Ny+Troy, Rensselaer/Saratoga FNs
+- **Status:** in progress
+- **Why:** 2026-08-14 audit of last-24h AppView feed (~134 posts since 2026-08-13T09:03Z)
+  found active FPs after cherry-picking #43/#44: Vancouver Island `Capital Region` +
+  Goldstream→Victoria / `restoreislandrail` (Canadian gate lacked Goldstream / island-rail
+  cues and bare Victoria); Waterford Crystal Etsy cards unlocked via Huntington Station NY
+  ship-from; Norwegian sentence-initial `Ny` ("New") unlocked person Troy via case-insensitive
+  `\bny\b`. FNs: Thoroughbred/OTTB + Fasig-Tipton Saratoga Springs without `, NY`; City of
+  Rensselaer NY civic posts (gazetteer/strong only had `Rensselaer County`). ~30 stale AppView
+  rows already rematch-drop (Malta/Rotterdam/bare Albany jobs). Intentional keeps include
+  allowlisted News10/Times Union non-local and NWS Albany CWA into VT.
+- **Work:**
+  - Expand Canadian capital-region cues (`goldstream`, Vancouver Island, restoreislandrail)
+    + handle gate.
+  - Hard-negative Waterford Crystal / Wedgwood; case-sensitive `NY`/`ny` abbreviation.
+  - Ambiguous `rensselaer` + Indiana conflict; strong `rensselaer polytechnic`.
+  - Strong positives: thoroughbred/OTTB/aftercare ↔ Saratoga; Fasig-Tipton Saratoga.
+  - Grow eval with 2026-08-14 FP/TP/FN anchors.
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-070 — Daily feed audit: Iceland Capital District, Egg Art Garden KC, Center Square conjunction, ponies FN
 - **Status:** done ([#44](https://github.com/chriscarrollsmith/capital-region-feed/pull/44))
 - **Why:** 2026-08-13 audit of last-24h AppView feed (~150 posts since 2026-08-12T09:17Z)

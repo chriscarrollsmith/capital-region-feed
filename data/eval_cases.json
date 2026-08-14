@@ -3920,5 +3920,138 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-08-13 audit: bare Saratoga Springs UT still drops without ponies/NY cues"
+  },
+  {
+    "id": "fp-victoria-bc-goldstream-capital-region",
+    "text": "Track clearing in the Capital Region from Goldstream to Victoria may be part of the island rail feasibility study.",
+    "author_handle": "restoreislandrail.bsky.social",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-14 audit: Vancouver Island Capital Region + Goldstream / restoreislandrail"
+  },
+  {
+    "id": "tp-capital-region-albany-schenectady-rail",
+    "text": "Track work continues across the Capital Region from Albany to Schenectady.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-14 audit: NY Capital Region rail keep after BC island-rail gate"
+  },
+  {
+    "id": "fp-waterford-crystal-etsy-ny-ship",
+    "text": "New ornament listing is live.",
+    "alt_text": "Waterford Crystal Seahorse Ball Ornament - Etsy. Ships from Huntington Station, NY.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-14 audit: Waterford Crystal brand + Long Island NY ship-from"
+  },
+  {
+    "id": "tp-waterford-ny-town-board",
+    "text": "Town of Waterford, NY board meeting tonight at Town Hall.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-14 audit: Town of Waterford NY keep after crystal brand gate"
+  },
+  {
+    "id": "fp-norwegian-ny-bok-troy-person",
+    "text": "Ny bok om stortingsvalget 2025. Jeg og Troy bidrar med eget kapittel om distriktsvelgerne.",
+    "alt_text": "Norsk politikk er i endring. Tromsø, Trondheim, Bergen og Oslo.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-14 audit: Norwegian sentence-initial Ny + person Troy"
+  },
+  {
+    "id": "tp-troy-ny-dinner",
+    "text": "Dinner in Troy, NY tonight near the waterfront.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-14 audit: Troy NY keep after Norwegian Ny case gate"
+  },
+  {
+    "id": "tp-saratoga-springs-thoroughbred-aftercare",
+    "text": "The Thoroughbred Aftercare Alliance summit in Saratoga Springs brought together retired racehorse groups. ##OTTB",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-14 audit: FN Thoroughbred/OTTB + Saratoga Springs without NY token"
+  },
+  {
+    "id": "tp-fasig-tipton-saratoga-yearlings",
+    "text": "Cody's Wish led first-crop yearling sires after Fasig-Tipton Saratoga.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-14 audit: FN Fasig-Tipton Saratoga without NY token"
+  },
+  {
+    "id": "tp-saratoga-stakes-at-saratoga",
+    "text": "Outfielder returns in the $225,000 Mahony Stakes (G3T) Aug. 16 at Saratoga after the Commonwealth Cup.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-14 audit: FN stakes at Saratoga without Springs/NY"
+  },
+  {
+    "id": "tp-rensselaer-ny-honk-wave",
+    "text": "Honk and wave in Rensselaer, NY at Washington Ave and I-90 exit 7.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-14 audit: FN City of Rensselaer NY (not only county)"
+  },
+  {
+    "id": "tp-rensselaer-polytechnic-institute",
+    "text": "Rensselaer Polytechnic Institute hosted a career fair on campus.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-14 audit: RPI strong positive without city+NY pairing"
+  },
+  {
+    "id": "tn-rensselaer-indiana-jobs",
+    "text": "Hiring CNC operators in Rensselaer, Indiana this fall.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-14 audit: Rensselaer IN must not unlock City of Rensselaer NY"
+  },
+  {
+    "id": "tn-saratoga-delmar-thoroughbred-hashtags",
+    "text": "#horseracing #saratoga #delmar #delmarthoroughbredclub",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-14 audit: Del Mar thoroughbred hashtag must not unlock via Saratoga"
   }
 ]
