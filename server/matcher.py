@@ -124,6 +124,16 @@ _STRONG_POSITIVE = re.compile(
       # Graded stakes copy often says "at Saratoga" without Springs/NY.
       | \bstakes\b[\s\S]{0,80}\bat\s+saratoga\b
       | at\s+saratoga\b[\s\S]{0,80}\bstakes\b
+      # Battlefield NPS / tourism often omits ", NY".
+      | saratoga\s+battlefield\b
+      # Graded race titles / starts often omit "stakes" beside Saratoga.
+      | christophe\s+clement[\s\S]{0,80}\bsaratoga\b
+      | \bsaratoga\b[\s\S]{0,80}christophe\s+clement
+      | glens\s+falls[\s\S]{0,80}\bsaratoga\b
+      | \bsaratoga\b[\s\S]{0,80}glens\s+falls
+      | \#saratogaracing\b
+      | \#saratoga\b[\s\S]{0,120}\b(?:race|racing|stakes|turf|odds|handicap)\b
+      | \b(?:race|racing|stakes|turf|odds|handicap)\b[\s\S]{0,120}\#saratoga\b
       # City of Rensselaer / RPI (county is already covered above).
       | rensselaer\s+polytechnic
       # Distinctive Saratoga Springs venues (often omit ", NY").
@@ -253,9 +263,10 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
             california|sacramento|korea|south\s+korea|ukraine|kyiv|kiev|
             sudan|khartoum|virginia|richmond|colombia|bogot[aá]|
             iceland|reykjav[ií]k|finland|helsinki|australia|
-            georgia|atlanta
+            georgia|atlanta|russia|moscow
           )\b
       | ukrainian\s+capital\s+region
+      | (?:russian|moscow)\s+capital\s+region
       | sudan(?:ese)?\s+capital\s+region
       | icelandic\s+capital\s+region
       | finnish\s+capital\s+region
@@ -443,6 +454,24 @@ _UA_CAPITAL_REGION = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
+# Russia "capital region" (Moscow drone / sabotage wire mirrors).
+_RU_GEO_CUE = (
+    r'\brussia\b|\brussian\b|\bmoscow\b|\bkremlin\b|'
+    r'\#russia\b|\#moscow\b|\#putin\b'
+)
+
+_RU_CAPITAL_REGION = re.compile(
+    rf"""
+    (?:
+        (?:russian|moscow)\s+capital\s+region
+      | capital\s+region\s+of\s+(?:russia|moscow)\b
+      | capital\s+region\b[\s\S]{{0,160}}(?:{_RU_GEO_CUE})
+      | (?:{_RU_GEO_CUE})[\s\S]{{0,160}}capital\s+region\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
 # Sudan "capital region" (Khartoum UNEP / wire cards).
 _SD_GEO_CUE = r'\bsudan\b|\bsudanese\b|\bkhartoum\b|\#sudan\b|\#khartoum\b'
 
@@ -541,6 +570,20 @@ _STILLWATER_FILM = re.compile(
       | since\s+["'“”]stillwater["'“”]
       | \bstillwater\b[\s\S]{0,100}\b(?:matt\s+damon|tom\s+mccarthy)\b
       | \b(?:matt\s+damon|tom\s+mccarthy)\b[\s\S]{0,100}\bstillwater\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# North Country "Stillwater Road" (Lewis Co / Croghan) — not Town of Stillwater NY.
+_STILLWATER_ROAD_NORTH = re.compile(
+    r"""
+    (?:
+        \bstillwater\s+road\b
+      | \bcroghan\b
+      | lewis\s+co(?:unty)?\b
+      | \bbuf\.nws
+      | \bbuf\.weather
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -754,6 +797,15 @@ _MALTA_EUROPE = re.compile(
       | film(?:ed|ing)?\s+on\s+gozo
       | malta\s+as\s+a\s+film
       | \bmgarr\b
+      # Malta Tourism / JFK nonstop (Delta Endless Summer cards).
+      | malta\s+tourism
+      | endless\s+summer[\s\S]{0,60}\bmalta\b
+      | \bmalta\b[\s\S]{0,60}endless\s+summer
+      | jfk[\s\-–—]*malta
+      | malta[\s\-–—]*jfk
+      | delta(?:['\u2019]?s)?\s+nonstop[\s\S]{0,60}\bmalta\b
+      | \beturbonews\b
+      | eturbonews\.com
       # Rotterdam, The Netherlands (architecture / football wire mirrors).
       | \bthe\s+netherlands\b
       | \bnetherlands\b
@@ -1251,6 +1303,24 @@ def _stillwater_film_conflict(haystack: str) -> bool:
     return True
 
 
+def _stillwater_road_conflict(haystack: str, author_handle: str | None = None) -> bool:
+    """True when Stillwater is a North Country street / Lewis Co spotter, not Town NY."""
+    if not re.search(r'\bstillwater\b', haystack, flags=re.IGNORECASE):
+        return False
+    handle = (author_handle or '').strip().lower()
+    handle_hit = bool(re.search(r'(?<![a-z0-9])buf\.(?:nws|weather)', handle))
+    if not (_STILLWATER_ROAD_NORTH.search(haystack) or handle_hit):
+        return False
+    if re.search(
+        r'stillwater\s*,?\s*(?:ny|n\.y\.|new\s+york)\b|town\s+of\s+stillwater|'
+        r'saratoga\s+county|\#albanyny\b|nws\s+albany',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    return True
+
+
 def _troy_michigan_conflict(haystack: str) -> bool:
     """True when Troy refers to the Detroit suburb, not Troy NY."""
     if not re.search(r'\btroy\b', haystack, flags=re.IGNORECASE):
@@ -1312,6 +1382,13 @@ def _korea_capital_region_conflict(haystack: str) -> bool:
 def _ukraine_capital_region_conflict(haystack: str) -> bool:
     """True when 'capital region' refers to Kyiv / Ukraine, not NY."""
     if not _UA_CAPITAL_REGION.search(haystack):
+        return False
+    return not _ny_capital_region_context(haystack)
+
+
+def _russia_capital_region_conflict(haystack: str) -> bool:
+    """True when 'capital region' refers to Moscow / Russia, not NY."""
+    if not _RU_CAPITAL_REGION.search(haystack):
         return False
     return not _ny_capital_region_context(haystack)
 
@@ -1779,6 +1856,8 @@ def match_post(
             return MatchResult(False, 'hard_negative:korea_capital_region')
         if _ukraine_capital_region_conflict(haystack):
             return MatchResult(False, 'hard_negative:ukraine_capital_region')
+        if _russia_capital_region_conflict(haystack):
+            return MatchResult(False, 'hard_negative:russia_capital_region')
         if _sudan_capital_region_conflict(haystack):
             return MatchResult(False, 'hard_negative:sudan_capital_region')
         if _iceland_capital_region_conflict(haystack):
@@ -1920,6 +1999,9 @@ def match_post(
 
         if term == 'stillwater' and _stillwater_film_conflict(haystack):
             return MatchResult(False, 'hard_negative:stillwater_film')
+
+        if term == 'stillwater' and _stillwater_road_conflict(haystack, author_handle):
+            return MatchResult(False, 'hard_negative:stillwater_road')
 
         if term == 'troy' and _troy_michigan_conflict(haystack):
             return MatchResult(False, 'hard_negative:troy_michigan')

@@ -318,6 +318,19 @@ def test_stillwater_film_not_stillwater_ny() -> None:
     assert keep.matched is True
 
 
+def test_stillwater_road_lewis_co_not_stillwater_ny() -> None:
+    road = match_post(
+        '11 ESE Croghan [Lewis Co, NY] 911 Call Center reports Tstm Wnd Dmg — '
+        'Multiple trees on wires on Stillwater Road.',
+        author_handle='buf.nws-bot.us',
+    )
+    assert road.matched is False
+    assert road.reason == 'hard_negative:stillwater_road'
+
+    keep = match_post('Farmers market returns to Stillwater, NY this Saturday.')
+    assert keep.matched is True
+
+
 def test_troy_michigan_with_ny_context_not_troy_ny() -> None:
     odyssey = match_post(
         'a couple’s odyssey from Troy Michigan to Ithaca New York and their separate '
@@ -703,6 +716,53 @@ def test_ukraine_capital_region_is_hard_negative() -> None:
 
     keep = match_post('Capital Region aid groups sent medical supplies to Kyiv from #AlbanyNY.')
     assert keep.matched is True
+
+
+def test_russia_capital_region_is_hard_negative() -> None:
+    russia = match_post(
+        'Escalating drone campaign against Russian military infrastructure.\n'
+        'Russia: Inland sabotage routes now threaten the capital region.'
+    )
+    assert russia.matched is False
+    assert russia.reason == 'hard_negative:russia_capital_region'
+
+    keep = match_post(
+        'Capital Region aid groups shipped medical supplies to Moscow from #AlbanyNY.'
+    )
+    assert keep.matched is True
+
+
+def test_malta_jfk_tourism_not_malta_ny() -> None:
+    tourism = match_post(
+        'eturbonews.com/endless-summ...',
+        alt_text=(
+            "Malta's Endless Summer for Americans goes until October 23. "
+            "Delta's Nonstop New York JFK- Malta service. Malta Tourism USA explains."
+        ),
+    )
+    assert tourism.matched is False
+    assert tourism.reason == 'hard_negative:malta_europe'
+
+    keep = match_post('Hiring store associates in Malta, NY this fall.')
+    assert keep.matched is True
+
+
+def test_saratoga_battlefield_and_racing_strong_positives() -> None:
+    assert (
+        match_post('Hear 18th-century fife & drum at Saratoga Battlefield this weekend.').matched
+        is True
+    )
+    assert (
+        match_post(
+            "Ancient Egypt is the top pick in Saturday's $500,000 Christophe Clement at Saratoga."
+        ).matched
+        is True
+    )
+    assert (
+        match_post('Survie makes her second Saratoga start after winning the Glens Falls.').matched
+        is True
+    )
+    assert match_post('#Saratoga 8/14/26 Race 9 - Smart and Fancy projected odds').matched is True
 
 
 def test_sudan_capital_region_is_hard_negative() -> None:
