@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-072 — Daily feed audit: Russia capital region, Stillwater Road, Malta JFK tourism, Saratoga Battlefield/racing FNs
-- **Status:** in progress
+- **Status:** done ([#46](https://github.com/chriscarrollsmith/capital-region-feed/pull/46))
 - **Why:** 2026-08-15 audit of last-24h AppView feed (~133 posts since 2026-08-14T09:01Z)
   found active FPs after cherry-picking #43/#44/#45: Russia/Moscow drone wire "capital region"
   (Ukraine-style international gate missing); Lewis Co / Croghan `Stillwater Road` unlocked via
