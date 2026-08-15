@@ -4053,5 +4053,128 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-08-14 audit: Del Mar thoroughbred hashtag must not unlock via Saratoga"
+  },
+  {
+    "id": "fp-russia-capital-region-drone-wire",
+    "text": "Escalating drone campaign against Russian military infrastructure.\nRussia: Inland sabotage routes now threaten the capital region.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-15 audit: Russia/Moscow capital region wire"
+  },
+  {
+    "id": "tp-capital-region-aid-moscow-albanyny",
+    "text": "Capital Region aid groups shipped medical supplies to Moscow from #AlbanyNY.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-15 audit: NY Capital Region counterpart to Russia capital-region FP"
+  },
+  {
+    "id": "fp-stillwater-road-lewis-co-croghan",
+    "text": "11 ESE Croghan [Lewis Co, NY] 911 Call Center reports Tstm Wnd Dmg — Multiple trees on wires on Stillwater Road.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "author_handle": "buf.nws-bot.us",
+    "note": "2026-08-15 audit: North Country Stillwater Road + Buffalo NWS"
+  },
+  {
+    "id": "tp-stillwater-ny-farmers-market",
+    "text": "Farmers market returns to Stillwater, NY this Saturday.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-15 audit: Town of Stillwater NY counterpart"
+  },
+  {
+    "id": "fp-malta-jfk-endless-summer-tourism",
+    "text": "eturbonews.com/endless-summ...",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Malta's Endless Summer for Americans goes until October 23. Delta's Nonstop New York JFK- Malta service. Malta Tourism USA explains.",
+    "note": "2026-08-15 audit: European Malta tourism + JFK unlocks NY context"
+  },
+  {
+    "id": "tp-malta-ny-store-associate",
+    "text": "Hiring store associates in Malta, NY this fall.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-15 audit: Town of Malta NY counterpart"
+  },
+  {
+    "id": "tp-saratoga-battlefield-fife-drum",
+    "text": "Hear 18th-century fife & drum at Saratoga Battlefield this weekend.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-15 audit: FN Saratoga Battlefield without , NY"
+  },
+  {
+    "id": "tp-saratoga-christophe-clement-turf",
+    "text": "Ancient Egypt is the top pick in Saturday's $500,000 Christophe Clement at Saratoga, a 1 1/2-mile turf race.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-15 audit: FN graded race title at Saratoga"
+  },
+  {
+    "id": "tp-saratoga-glens-falls-start",
+    "text": "Survie makes her second Saratoga start after winning the Glens Falls.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-15 audit: FN Saratoga start + Glens Falls race"
+  },
+  {
+    "id": "tp-saratoga-hashtag-race-odds",
+    "text": "#Saratoga 8/14/26 Race 9 - Smart and Fancy projected odds",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-15 audit: FN #Saratoga race cards"
+  },
+  {
+    "id": "tn-saratoga-springs-ut-homicide",
+    "text": "Arrest made in murder of Saratoga Springs family shot and killed inside home",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Police arrested a juvenile in Saratoga Springs, UT in connection with the murders.",
+    "note": "2026-08-15 audit: Utah Saratoga Springs must stay dropped"
+  },
+  {
+    "id": "tn-spac-oklo-finance-merger",
+    "text": "Oklo went public via a special purpose acquisition company merger (SPAC) in…",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-15 audit: finance SPAC acronym is not Performing Arts Center"
   }
 ]
