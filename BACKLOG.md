@@ -538,6 +538,27 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-072 — Daily feed audit: Russia capital region, Stillwater Road, Malta JFK tourism, Saratoga Battlefield/racing FNs
+- **Status:** in progress
+- **Why:** 2026-08-15 audit of last-24h AppView feed (~133 posts since 2026-08-14T09:01Z)
+  found active FPs after cherry-picking #43/#44/#45: Russia/Moscow drone wire "capital region"
+  (Ukraine-style international gate missing); Lewis Co / Croghan `Stillwater Road` unlocked via
+  NY context + Buffalo NWS bots; European Malta Endless Summer / Delta JFK-Malta / Malta Tourism
+  cards unlocked via New York JFK. FNs: Saratoga Battlefield tourism without `, NY`; Christophe
+  Clement / Glens Falls / `#Saratoga` race cards without "stakes at Saratoga". Stale AppView
+  Malta/Saratoga Av/bare-Albany rows already rematch-drop. Intentional keeps include allowlisted
+  News10/Times Union non-local, NWS Albany CWA into MA/VT, and residual Gothamist "legislation
+  in Albany" statehouse cards.
+- **Work:**
+  - Russia capital-region conflict helper + hard-negative phrase list.
+  - Stillwater Road / Lewis Co / Croghan / `buf.nws` conflict before ambiguous Stillwater keep.
+  - Expand Malta Europe cues (JFK-Malta, Malta Tourism, Endless Summer, Delta nonstop, eturbonews).
+  - Strong positives: Saratoga Battlefield; Christophe Clement ↔ Saratoga; Glens Falls ↔ Saratoga;
+    `#Saratoga` + race/odds cues; `#SaratogaRacing`.
+  - Grow eval with 2026-08-15 FP/TP/FN anchors.
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-071 — Daily feed audit: Victoria BC island rail, Waterford Crystal, Norwegian Ny+Troy, Rensselaer/Saratoga FNs
 - **Status:** done ([#45](https://github.com/chriscarrollsmith/capital-region-feed/pull/45))
 - **Why:** 2026-08-14 audit of last-24h AppView feed (~134 posts since 2026-08-13T09:03Z)
