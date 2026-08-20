@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-073 — Daily feed audit: I-787 study N, Troy Aikman, Loudonville OH soccer, NL New York Pizza, River Street off-region, Saratoga/Albany recall
-- **Status:** done ([#47](https://github.com/chriscarrollsmith/capital-region-feed/pull/47))
+- **Status:** done ([#48](https://github.com/chriscarrollsmith/capital-region-feed/pull/48); from [#47](https://github.com/chriscarrollsmith/capital-region-feed/pull/47))
 - **Why:** 2026-08-20 audit of last-24h AppView feed (~152 posts since 2026-08-19T09:02Z)
   found active FPs after cherry-picking #43–#46: medical PR "Study on 787 Brain Tumor
   Patients" matched bare `\bon\s+787\b`; Troy Aikman + New York Jets unlocked Troy;
@@ -565,7 +565,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-072 — Daily feed audit: Russia capital region, Stillwater Road, Malta JFK tourism, Saratoga Battlefield/racing FNs
-- **Status:** done ([#46](https://github.com/chriscarrollsmith/capital-region-feed/pull/46))
+- **Status:** done ([#48](https://github.com/chriscarrollsmith/capital-region-feed/pull/48); from [#46](https://github.com/chriscarrollsmith/capital-region-feed/pull/46))
 - **Why:** 2026-08-15 audit of last-24h AppView feed (~133 posts since 2026-08-14T09:01Z)
   found active FPs after cherry-picking #43/#44/#45: Russia/Moscow drone wire "capital region"
   (Ukraine-style international gate missing); Lewis Co / Croghan `Stillwater Road` unlocked via
@@ -586,7 +586,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-071 — Daily feed audit: Victoria BC island rail, Waterford Crystal, Norwegian Ny+Troy, Rensselaer/Saratoga FNs
-- **Status:** done ([#45](https://github.com/chriscarrollsmith/capital-region-feed/pull/45))
+- **Status:** done ([#48](https://github.com/chriscarrollsmith/capital-region-feed/pull/48); from [#45](https://github.com/chriscarrollsmith/capital-region-feed/pull/45))
 - **Why:** 2026-08-14 audit of last-24h AppView feed (~134 posts since 2026-08-13T09:03Z)
   found active FPs after cherry-picking #43/#44: Vancouver Island `Capital Region` +
   Goldstream→Victoria / `restoreislandrail` (Canadian gate lacked Goldstream / island-rail
@@ -608,7 +608,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-070 — Daily feed audit: Iceland Capital District, Egg Art Garden KC, Center Square conjunction, ponies FN
-- **Status:** done ([#44](https://github.com/chriscarrollsmith/capital-region-feed/pull/44))
+- **Status:** done ([#48](https://github.com/chriscarrollsmith/capital-region-feed/pull/48); from [#44](https://github.com/chriscarrollsmith/capital-region-feed/pull/44))
 - **Why:** 2026-08-13 audit of last-24h AppView feed (~150 posts since 2026-08-12T09:17Z)
   found active FPs after cherry-picking #43: Iceland `Capital District Fire and Rescue`
   (mbl.is / `#reykjavik`) still kept via strong `capital district` because the Iceland
