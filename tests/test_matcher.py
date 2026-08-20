@@ -288,6 +288,100 @@ def test_bay_area_albany_not_albany_ny() -> None:
     assert keep.matched is True
 
 
+def test_bay_area_albany_saratoga_multi_local_not_ny() -> None:
+    bay = match_post(
+        'various city/county consolidation concepts',
+        alt_text=(
+            'cupertino+saratoga+monte sereno+los gatos\n'
+            'albany+berkeley+emeryville\noakland+piedmont'
+        ),
+    )
+    assert bay.matched is False
+    assert bay.reason == 'hard_negative:albany_bay_area'
+
+    keep = match_post('Drive from Albany to Saratoga Springs for the races.')
+    assert keep.matched is True
+
+
+def test_stillwater_film_not_stillwater_ny() -> None:
+    film = match_post(
+        '',
+        alt_text=(
+            "Tom McCarthy's 'A Statement' to World Premiere at 64th New York Film Festival. "
+            'It\'s been five years since "Stillwater," starring Matt Damon.'
+        ),
+    )
+    assert film.matched is False
+    assert film.reason == 'hard_negative:stillwater_film'
+
+    keep = match_post('Stillwater, NY town board meets Tuesday.')
+    assert keep.matched is True
+
+
+def test_troy_michigan_with_ny_context_not_troy_ny() -> None:
+    odyssey = match_post(
+        'a couple’s odyssey from Troy Michigan to Ithaca New York and their separate '
+        'adventures after one of them seeks asylum in Canada once they hit Sarnia.'
+    )
+    assert odyssey.matched is False
+
+    detroit = match_post(
+        'New York City • August 25–28\nLas Vegas • September 10–12\nDetroit/Troy • September 28–30'
+    )
+    assert detroit.matched is False
+
+    keep = match_post('Concert in Troy, NY tonight at the Music Hall.')
+    assert keep.matched is True
+
+
+def test_indiana_albany_saratoga_weather_not_multi_local() -> None:
+    indiana = match_post(
+        'Severe Thunderstorm Near Albany or 7 Miles NE of Muncie Moving SE At 50 MPH. '
+        'Locations Impacted Include Muncie, Winchester, Union City, Albany, Eaton, '
+        'Parker City, Farmland, Lynn, Selma, Ridgeville, Saratoga, Modoc & '
+        'Ball State University. #inwx Details'
+    )
+    assert indiana.matched is False
+    assert indiana.reason == 'hard_negative:indiana_albany_saratoga'
+
+    keep = match_post('Drive from Albany to Saratoga Springs for the races.')
+    assert keep.matched is True
+
+
+def test_van_helderbergh_not_helderberg_escarpment() -> None:
+    sculptor = match_post(
+        'Pulpit of the Small Beguinage of Ghent, executed by Jan Baptist van Helderbergh, '
+        '1731–1732.'
+    )
+    assert sculptor.matched is False
+
+    keep = match_post('Hike the Helderberg Escarpment this weekend near #AlbanyNY.')
+    assert keep.matched is True
+
+
+def test_saratoga_amtrak_spac_jazz_without_ny_token() -> None:
+    assert match_post('UNSAFE DE-BOARDING by Amtrak in Saratoga Springs').matched is True
+    assert match_post('Show at SPAC in Saratoga Springs this Friday').matched is True
+    assert (
+        match_post(
+            'From the Saratoga Jazz Festival to the Toying Around Block Party in Johnstown'
+        ).matched
+        is True
+    )
+
+
+def test_saratoga_avenue_subway_not_saratoga_springs() -> None:
+    mta = match_post(
+        'Uptown 3 trains are running with delays after we requested NYPD assistance for an '
+        'unauthorized person on the tracks at Saratoga Av. #nyc #mta #subway'
+    )
+    assert mta.matched is False
+    assert mta.reason == 'hard_negative'
+
+    keep = match_post('March On Washington meetup in Saratoga New York this Thursday.')
+    assert keep.matched is True
+
+
 def test_louisiana_capital_region_is_hard_negative() -> None:
     la = match_post(
         'Governments across the Capital Region, including East Baton Rouge Parish, '

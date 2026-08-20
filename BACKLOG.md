@@ -538,6 +538,28 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-069 — Daily feed audit: Stillwater film, Troy MI, van Helderbergh, Bay Area multi_local, Indiana wx, Saratoga FNs
+- **Status:** done ([#43](https://github.com/chriscarrollsmith/capital-region-feed/pull/43))
+- **Why:** 2026-08-12 audit of last-24h AppView feed (~186 posts since 2026-08-11T09:03Z)
+  found active FPs after #41: Matt Damon *Stillwater* + New York Film Festival
+  (`ambiguous_with_context:stillwater`); Troy Michigan / Detroit/Troy itineraries unlocked
+  via Ithaca NYC context; Belgian sculptor "van Helderbergh" via bare `helderberg` strong
+  positive; Bay Area albany+saratoga consolidation lists via `multi_local_places` (prior
+  Bay Area gate was albany-only); Indiana `#inwx` Albany+Saratoga+Muncie weather via
+  `multi_local_places`; Brooklyn MTA `Saratoga Av` subway + NYPD. FNs: Amtrak / bare SPAC /
+  Saratoga Jazz Festival without `, NY`. ~55 stale AppView rows already rematch-drop
+  (Malta/Saratoga/Troy MI jobs).
+- **Work:**
+  - Stillwater film conflict; Troy Michigan hard-negative + conflict; Helderberg word-boundary
+    + `van Helderbergh` hard-negative.
+  - Expand Bay Area cues (berkeley/cupertino/…) and apply on multi_local albany/saratoga.
+  - Indiana Albany+Saratoga weather multi_local conflict (`#inwx` / Muncie / Ball State).
+  - Hard-negative `Saratoga Av(enue)` (mirror Troy Avenue).
+  - Strong positives: Amtrak+Saratoga Springs, bare SPAC+Saratoga, Saratoga Jazz Festival.
+  - Grow eval with 2026-08-12 FP/TP/FN anchors.
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-058 — Jetstream catch-up keepalive wedge (quiet feed)
 - **Status:** done
 - **Why:** From ~2026-07-30T16:30Z the Fly machine stayed healthy (`/healthz` 200) while
