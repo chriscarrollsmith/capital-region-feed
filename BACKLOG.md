@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-073 — Daily feed audit: I-787 study N, Troy Aikman, Loudonville OH soccer, NL New York Pizza, River Street off-region, Saratoga/Albany recall
-- **Status:** in progress
+- **Status:** done ([#47](https://github.com/chriscarrollsmith/capital-region-feed/pull/47))
 - **Why:** 2026-08-20 audit of last-24h AppView feed (~152 posts since 2026-08-19T09:02Z)
   found active FPs after cherry-picking #43–#46: medical PR "Study on 787 Brain Tumor
   Patients" matched bare `\bon\s+787\b`; Troy Aikman + New York Jets unlocked Troy;
