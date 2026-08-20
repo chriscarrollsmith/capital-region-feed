@@ -538,6 +538,32 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-073 — Daily feed audit: I-787 study N, Troy Aikman, Loudonville OH soccer, NL New York Pizza, River Street off-region, Saratoga/Albany recall
+- **Status:** in progress
+- **Why:** 2026-08-20 audit of last-24h AppView feed (~152 posts since 2026-08-19T09:02Z)
+  found active FPs after cherry-picking #43–#46: medical PR "Study on 787 Brain Tumor
+  Patients" matched bare `\bon\s+787\b`; Troy Aikman + New York Jets unlocked Troy;
+  Waynedale Golden Bears vs Loudonville OH soccer (no Ohio token); Dutch New York Pizza
+  bankruptcies in Rotterdam (`rotterdamse` / `failliet` / Rijnmond / dagblad010);
+  River Street Writing (Calgary) and Virginia River Street Networks broadband cards via
+  classifier micro + month cues. FNs: `race at Saratoga` / `Stakes @ Saratoga` /
+  The Saratoga Special / Battles of Saratoga; `Albany region` business copy. AppView
+  `searchPosts` returned 403 in this environment (FN search limited to feed drops +
+  synthetic probes). Intentional keeps include allowlisted News10/Times Union, Demon
+  Hunter lawsuit alt mentioning Albany NY, Excelsior/YWCA Greater Capital Region, and
+  residual NYC↔Albany statehouse cards.
+- **Work:**
+  - Require I-/interstate/route prefix for 787 strong positives.
+  - Exclude `Troy Aikman` from ambiguous Troy (mirror Donna Troy).
+  - Expand Loudonville OH cues (Waynedale / Golden Bears / OHSAA).
+  - Expand Malta/Europe Rotterdam cues for Dutch New York Pizza chain copy.
+  - Scrub River Street Writing / Networks / Franklin County VA / citizenportal micros.
+  - Strong positives: race at Saratoga; Stakes @ Saratoga; The Saratoga Special;
+    Battles of Saratoga; Albany region.
+  - Grow eval with 2026-08-20 FP/TP/FN anchors.
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-072 — Daily feed audit: Russia capital region, Stillwater Road, Malta JFK tourism, Saratoga Battlefield/racing FNs
 - **Status:** done ([#46](https://github.com/chriscarrollsmith/capital-region-feed/pull/46))
 - **Why:** 2026-08-15 audit of last-24h AppView feed (~133 posts since 2026-08-14T09:01Z)
