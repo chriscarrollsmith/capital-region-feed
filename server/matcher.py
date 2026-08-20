@@ -88,8 +88,10 @@ _STRONG_POSITIVE = re.compile(
       | university\s+at\s+albany
       | \bualbany\b
       | suny\s+albany
-      | \bi-?787\b
-      | \bon\s+787\b
+      # Interstate 787 — require I-/interstate/route prefix. Bare "on 787" matches
+      # medical PR ("Study on 787 Brain Tumor Patients").
+      | \b(?:i-?|interstate\s+|route\s+|ny\s+)787\b
+      | \bon\s+i-?787\b
       | local\s*518
       # Prefer #518ny / #518area — bare #518 collides with train/jersey numbers.
       | \#518(?:ny|area)\b
@@ -134,6 +136,13 @@ _STRONG_POSITIVE = re.compile(
       | \#saratogaracing\b
       | \#saratoga\b[\s\S]{0,120}\b(?:race|racing|stakes|turf|odds|handicap)\b
       | \b(?:race|racing|stakes|turf|odds|handicap)\b[\s\S]{0,120}\#saratoga\b
+      # Race cards often say "6th race at Saratoga" or "Stakes Preview @ Saratoga".
+      | \brace\b[\s\S]{0,40}\bat\s+saratoga\b
+      | at\s+saratoga\b[\s\S]{0,40}\brace\b
+      | \bstakes\b[\s\S]{0,80}@\s*saratoga\b
+      | @\s*saratoga\b[\s\S]{0,80}\bstakes\b
+      | the\s+saratoga\s+special\b
+      | battles?\s+of\s+saratoga\b
       # City of Rensselaer / RPI (county is already covered above).
       | rensselaer\s+polytechnic
       # Distinctive Saratoga Springs venues (often omit ", NY").
@@ -145,6 +154,8 @@ _STRONG_POSITIVE = re.compile(
       | high\s+rock\s+park[\s\S]{0,80}\bsaratoga\b
       | \bsaratoga\b[\s\S]{0,80}high\s+rock\s+park\b
       | times\s+union\b
+      # Local business / tourism copy often says "Albany region" without ", NY".
+      | albany\s+region\b
       # Town of New Scotland — not "a new Scotland" / "New Scotland Shirt".
       | new\s+scotland(?:\s*,?\s*ny\b|\s+town\b)
       # Distinctive Cap Region named events (not bare "Albany this weekend").
@@ -160,8 +171,12 @@ _STRONG_POSITIVE = re.compile(
 # Includes Cap Region micro-toponyms that collide with personal names,
 # other U.S./world places, or common phrases (e.g. "green islands").
 # ``troy`` ignores email local-parts (``troy@…``), hyphenated names/domains
-# (``troy-caperton``), troy weight (oz / "10.8 troy"), and "Donna Troy".
-_TROY_PLACE = r'(?<!\d\s)(?<![\w.])(?<!donna\s)troy(?![\w@.-])(?!\s*(?:oz|ounces?|ozt|weight)\b)'
+# (``troy-caperton``), troy weight (oz / "10.8 troy"), "Donna Troy", and
+# broadcaster "Troy Aikman".
+_TROY_PLACE = (
+    r'(?<!\d\s)(?<![\w.])(?<!donna\s)troy(?![\w@.-])'
+    r'(?!\s*(?:oz|ounces?|ozt|weight|aikman)\b)'
+)
 
 _AMBIGUOUS_PLACE = re.compile(
     rf"""
@@ -813,6 +828,17 @@ _MALTA_EUROPE = re.compile(
       | sparta\s+rotterdam
       | \barchdaily\b
       | archdaily\.com
+      # Dutch "New York Pizza" chain bankruptcies (vestigingen / failliet / Rijnmond).
+      | new\s+york\s+pizza
+      | \brotterdamse\b
+      | \bfailliet\b
+      | \bvestigingen?\b
+      | \brijnmond\b
+      | rijnmond\.nl
+      | \bdagblad010\b
+      | dagblad010\.nl
+      | \bomroepdelft\b
+      | omroepdelft\.nl
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -894,13 +920,17 @@ _WATERVLIET_MI = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
-# Loudonville, Ohio (hashtag civic lists) — not Loudonville NY.
+# Loudonville, Ohio (hashtag civic lists / high-school soccer) — not Loudonville NY.
 _LOUDONVILLE_OH = re.compile(
     r"""
     (?:
         loudonville\s*,?\s*(?:oh|ohio)\b
       | loudonville[\s\S]{0,160}(?:\#ohio\b|\bohio\b|\#oh\d+\b)
       | (?:\#ohio\b|\bohio\b|\#oh\d+\b)[\s\S]{0,160}loudonville
+      | \bwaynedale\b
+      | golden\s+bears[\s\S]{0,80}loudonville
+      | loudonville[\s\S]{0,80}golden\s+bears
+      | \bohsaa\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
