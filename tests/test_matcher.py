@@ -318,6 +318,19 @@ def test_stillwater_film_not_stillwater_ny() -> None:
     assert keep.matched is True
 
 
+def test_stillwater_road_lewis_co_not_stillwater_ny() -> None:
+    road = match_post(
+        '11 ESE Croghan [Lewis Co, NY] 911 Call Center reports Tstm Wnd Dmg — '
+        'Multiple trees on wires on Stillwater Road.',
+        author_handle='buf.nws-bot.us',
+    )
+    assert road.matched is False
+    assert road.reason == 'hard_negative:stillwater_road'
+
+    keep = match_post('Farmers market returns to Stillwater, NY this Saturday.')
+    assert keep.matched is True
+
+
 def test_troy_michigan_with_ny_context_not_troy_ny() -> None:
     odyssey = match_post(
         'a couple’s odyssey from Troy Michigan to Ithaca New York and their separate '
@@ -705,6 +718,53 @@ def test_ukraine_capital_region_is_hard_negative() -> None:
     assert keep.matched is True
 
 
+def test_russia_capital_region_is_hard_negative() -> None:
+    russia = match_post(
+        'Escalating drone campaign against Russian military infrastructure.\n'
+        'Russia: Inland sabotage routes now threaten the capital region.'
+    )
+    assert russia.matched is False
+    assert russia.reason == 'hard_negative:russia_capital_region'
+
+    keep = match_post(
+        'Capital Region aid groups shipped medical supplies to Moscow from #AlbanyNY.'
+    )
+    assert keep.matched is True
+
+
+def test_malta_jfk_tourism_not_malta_ny() -> None:
+    tourism = match_post(
+        'eturbonews.com/endless-summ...',
+        alt_text=(
+            "Malta's Endless Summer for Americans goes until October 23. "
+            "Delta's Nonstop New York JFK- Malta service. Malta Tourism USA explains."
+        ),
+    )
+    assert tourism.matched is False
+    assert tourism.reason == 'hard_negative:malta_europe'
+
+    keep = match_post('Hiring store associates in Malta, NY this fall.')
+    assert keep.matched is True
+
+
+def test_saratoga_battlefield_and_racing_strong_positives() -> None:
+    assert (
+        match_post('Hear 18th-century fife & drum at Saratoga Battlefield this weekend.').matched
+        is True
+    )
+    assert (
+        match_post(
+            "Ancient Egypt is the top pick in Saturday's $500,000 Christophe Clement at Saratoga."
+        ).matched
+        is True
+    )
+    assert (
+        match_post('Survie makes her second Saratoga start after winning the Glens Falls.').matched
+        is True
+    )
+    assert match_post('#Saratoga 8/14/26 Race 9 - Smart and Fancy projected odds').matched is True
+
+
 def test_sudan_capital_region_is_hard_negative() -> None:
     sudan = match_post(
         "For more than a century, the Sunut Forest was an oasis in Khartoum, Sudan's capital.",
@@ -859,6 +919,13 @@ def test_loudonville_ohio_not_loudonville_ny() -> None:
     assert hashtag.matched is False
     assert hashtag.reason == 'hard_negative:loudonville_oh'
     assert match_post('Road work begins in Loudonville near Albany this week.').matched is True
+    # Ohio high-school soccer (Waynedale / Golden Bears) without ", OH".
+    soccer = match_post(
+        'In a thrilling season opener, the Golden Bears emerged victorious against '
+        'Loudonville with a 1-0 win.'
+    )
+    assert soccer.matched is False
+    assert soccer.reason == 'hard_negative:loudonville_oh'
 
 
 def test_ottawa_citizen_capital_region_not_ny() -> None:
@@ -920,8 +987,34 @@ def test_iceland_capital_region_is_hard_negative() -> None:
     assert pride.matched is False
     assert pride.reason == 'hard_negative:iceland_capital_region'
 
+    # mbl.is "Capital District Fire and Rescue" uses district, not region.
+    crash = match_post(
+        'One taken to hospital after two-car crash #police #reykjavik #trafficaccident',
+        alt_text=(
+            'One person was taken to hospital after a two-car crash at Miklabraut and '
+            'Grensásvegur late Tuesday night, mbl.is reported. According to the Capital '
+            'District Fire and Rescue Service, two ambulances were sent to the scene.'
+        ),
+    )
+    assert crash.matched is False
+
     keep = match_post('Capital Region exporters shipped fish to Reykjavik from #AlbanyNY.')
     assert keep.matched is True
+
+
+def test_egg_kansas_city_art_garden_is_hard_negative() -> None:
+    kc = match_post(
+        'Bottom’s Up Festival at The Egg and Art Garden KC',
+        alt_text=(
+            'The second annual Bottoms Up festival was greeted by a sunny early summer '
+            'weekend in Northeast Kansas City.'
+        ),
+    )
+    assert kc.matched is False
+
+    keep = match_post('Jazz night at The Egg in downtown #AlbanyNY this Friday.')
+    assert keep.matched is True
+    assert keep.reason == 'strong_positive'
 
 
 def test_finland_capital_region_is_hard_negative() -> None:
@@ -997,6 +1090,27 @@ def test_rotterdam_netherlands_oda_new_york_not_ambiguous() -> None:
     assert (
         match_post('Town of Rotterdam meeting; see also Troy City Council agenda.').matched is True
     )
+
+
+def test_rotterdam_new_york_pizza_dutch_chain_not_ny() -> None:
+    pizza = match_post(
+        'Twee Rotterdamse vestigingen van New York Pizza failliet',
+        alt_text='https://dagblad010.nl/rotterdam/twee-rotterdamse-vestigingen-van-new-york-pizza',
+    )
+    assert pizza.matched is False
+    assert pizza.reason == 'hard_negative:malta_europe'
+
+    rijnmond = match_post(
+        'New York Pizza wil na faillissement doorgaan met Rotterdamse vestigingen #rijnmond',
+        alt_text=(
+            'De vestigingen van pizzaketen New York Pizza in Rotterdam-Keizerswaard '
+            'zijn failliet verklaard.'
+        ),
+    )
+    assert rijnmond.matched is False
+    assert rijnmond.reason == 'hard_negative:malta_europe'
+
+    assert match_post('Rotterdam, NY fire department open house this weekend.').matched is True
 
 
 def test_loi_galway_waterford_fixture_list_not_multi_local() -> None:
@@ -1130,6 +1244,13 @@ def test_saratoga_race_course_and_spac_are_strong_positives() -> None:
         is True
     )
     assert match_post('The filly is expected to make her debut at Saratoga.').matched is True
+    assert (
+        match_post(
+            'We’re at Sara’s Kitchen in Saratoga Springs. Tomorrow we’ll play the ponies '
+            'and go to Boca Bistro.'
+        ).matched
+        is True
+    )
 
 
 def test_handle_mentions_do_not_supply_albany_or_nyc_context() -> None:
@@ -1252,3 +1373,127 @@ def test_lang_gate_drops_french_colonie_not_english_local() -> None:
         langs=['en'],
     )
     assert english.matched is True
+
+
+def test_victoria_bc_island_rail_capital_region_not_ny() -> None:
+    """Vancouver Island / Goldstream 'Capital Region' is not NY."""
+    island = match_post(
+        'Track clearing in the Capital Region from Goldstream to Victoria may be '
+        'part of the island rail feasibility study.',
+        author_handle='restoreislandrail.bsky.social',
+    )
+    assert island.matched is False
+    assert island.reason == 'hard_negative:canadian_capital_region'
+
+    handle_only = match_post(
+        'Sightings of track clearing in the Capital Region this week.',
+        author_handle='restoreislandrail.bsky.social',
+    )
+    assert handle_only.matched is False
+
+    keep = match_post('Track work continues across the Capital Region from Albany to Schenectady.')
+    assert keep.matched is True
+
+
+def test_waterford_crystal_not_waterford_ny() -> None:
+    crystal = match_post(
+        'New listing up.',
+        alt_text=(
+            'Waterford Crystal Seahorse Ball Ornament - Etsy. Ships from Huntington Station, NY.'
+        ),
+    )
+    assert crystal.matched is False
+    assert match_post('Town of Waterford, NY board meeting tonight.').matched is True
+
+
+def test_norwegian_ny_does_not_unlock_troy() -> None:
+    """Sentence-initial Norwegian/Danish 'Ny' ('New') is not the NY abbreviation."""
+    norway = match_post(
+        'Ny bok om stortingsvalget 2025. Jeg og Troy bidrar med eget kapittel.',
+        alt_text='Norsk politikk er i endring. Tromsø, Trondheim, Bergen og Oslo.',
+    )
+    assert norway.matched is False
+    assert match_post('Dinner in Troy, NY tonight.').matched is True
+    assert match_post('Dinner in troy, ny tonight.').matched is True
+
+
+def test_rensselaer_city_and_rpi_not_indiana() -> None:
+    protest = match_post('Honk and wave in Rensselaer, NY at Washington Ave and I-90 exit 7.')
+    assert protest.matched is True
+
+    rpi = match_post('Rensselaer Polytechnic Institute hosted a career fair on campus.')
+    assert rpi.matched is True
+    assert rpi.reason == 'strong_positive'
+
+    indiana = match_post('Hiring CNC operators in Rensselaer, Indiana this fall.')
+    assert indiana.matched is False
+
+
+def test_saratoga_thoroughbred_and_fasig_tipton_without_ny() -> None:
+    thoroughbred = match_post(
+        'The Thoroughbred Aftercare Alliance summit in Saratoga Springs brought '
+        'together retired racehorse groups. ##OTTB'
+    )
+    assert thoroughbred.matched is True
+
+    fasig = match_post("Cody's Wish led first-crop yearling sires after Fasig-Tipton Saratoga.")
+    assert fasig.matched is True
+
+    stakes = match_post(
+        'Outfielder returns in the $225,000 Mahony Stakes (G3T) Aug. 16 at Saratoga.'
+    )
+    assert stakes.matched is True
+
+    # National Del Mar + Saratoga hashtag soup must stay dropped.
+    assert match_post('#horseracing #saratoga #delmar #delmarthoroughbredclub').matched is False
+
+
+def test_i787_requires_highway_prefix_not_study_n() -> None:
+    study = match_post(
+        'Monteris Medical Announces Landmark Study on 787 Brain Tumor Patients '
+        'Treated with NeuroBlate',
+        alt_text='MINNETONKA, Minn., Aug. 19, 2026 /PRNewswire/',
+    )
+    assert study.matched is False
+
+    assert match_post('Crash on I-787 northbound near downtown Albany.').matched is True
+    assert match_post('Backup on I-787 south of Madison Ave.').matched is True
+
+
+def test_troy_aikman_not_troy_ny() -> None:
+    aikman = match_post(
+        '2026 NFL Preseason Week 2 Schedule, TV, Announcers',
+        alt_text=(
+            'Thursday Las Vegas @ Houston 8:00PM ESPN Joe Buck and Troy Aikman. '
+            'Friday New York Jets @ New England.'
+        ),
+    )
+    assert aikman.matched is False
+    assert match_post('Dinner in Troy, New York tonight.').matched is True
+
+
+def test_saratoga_race_cards_and_albany_region_recall() -> None:
+    race = match_post("Wednesday's Bettor Bets play of the day is the 6th race at Saratoga.")
+    assert race.matched is True
+
+    stakes_at = match_post(
+        'NYSS Statue of Liberty Stakes Preview @ Saratoga | DRF Wednesday Race of the Day'
+    )
+    assert stakes_at.matched is True
+
+    special = match_post(
+        'Brendan Walsh trainees Real Restraint and Title Role are buds! '
+        'Shot for The Saratoga Special'
+    )
+    assert special.matched is True
+
+    battles = match_post(
+        'On Aug. 19, 1777, Horatio Gates took command. The Battles of Saratoga '
+        'began long before Sept. 19.'
+    )
+    assert battles.matched is True
+
+    region = match_post(
+        '7 Brew Coffee now has five locations in the Albany region and more are on the way.'
+    )
+    assert region.matched is True

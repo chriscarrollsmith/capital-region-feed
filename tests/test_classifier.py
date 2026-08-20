@@ -84,6 +84,27 @@ def test_collision_micros_need_cap_region_hint() -> None:
         ).matched
         is False
     )
+    # River Street Writing / Calgary poetry cards (October event cue).
+    assert (
+        match_post(
+            "A sneak peek into Kelly Kaur's forthcoming book: www.riverstreetwriting.com/blog/",
+            alt_text=(
+                'Excerpt from My Love is a Durian — River Street Writing. Coming this October!'
+            ),
+        ).matched
+        is False
+    )
+    # Virginia Franklin County "River Street Networks" broadband + June deadline.
+    assert (
+        match_post(
+            'Zaitel takes over broadband projects in Franklin County #FranklinCounty #VA',
+            alt_text=(
+                'Zaitel steps into River Street projects; county told June 30, 2027 '
+                "deadline. River Street Networks' regional broadband projects."
+            ),
+        ).matched
+        is False
+    )
     # Troy corridor River Street + event cue still keeps without an extra town token.
     assert match_post('Open mic tomorrow on River Street — sign-ups start at 6.').matched is True
 
@@ -112,6 +133,18 @@ def test_center_square_wire_byline_is_not_local_micro() -> None:
         ),
     )
     assert dash.matched is False
+
+    # Conjunction attributions ("…Standard and The Center Square") + month cue.
+    conjunction = match_post(
+        'Judge upholds income tax ballot language, cancels hearing for initiative sponsors',
+        alt_text=(
+            "A Thurston County Superior Court judge has upheld the state's fiscal impact "
+            'disclosure, according to reporting by the Washington State Standard and '
+            'The Center Square. The ruling on Friday, August 8, 2026, ensures that voters '
+            'in Clark County see accurate ballot language.'
+        ),
+    )
+    assert conjunction.matched is False
 
     # Hollywood Squares / Paul Lynde "center square" is not Albany Center Square.
     hollywood = match_post(

@@ -88,8 +88,10 @@ _STRONG_POSITIVE = re.compile(
       | university\s+at\s+albany
       | \bualbany\b
       | suny\s+albany
-      | \bi-?787\b
-      | \bon\s+787\b
+      # Interstate 787 — require I-/interstate/route prefix. Bare "on 787" matches
+      # medical PR ("Study on 787 Brain Tumor Patients").
+      | \b(?:i-?|interstate\s+|route\s+|ny\s+)787\b
+      | \bon\s+i-?787\b
       | local\s*518
       # Prefer #518ny / #518area — bare #518 collides with train/jersey numbers.
       | \#518(?:ny|area)\b
@@ -112,6 +114,37 @@ _STRONG_POSITIVE = re.compile(
       | amtrak[\s\S]{0,80}saratoga\s+springs\b
       | saratoga\s+springs[\s\S]{0,80}amtrak
       | saratoga\s+jazz\s+festival
+      # Tourism / race-week phrasing often omits ", NY".
+      | play\s+the\s+ponies[\s\S]{0,80}\bsaratoga\b
+      | \bsaratoga\b[\s\S]{0,80}play\s+the\s+ponies
+      # Thoroughbred / OTTB / Fasig-Tipton sales often omit ", NY".
+      # Require word boundaries so #delmarthoroughbredclub cannot pair with #saratoga.
+      | (?:\bthoroughbreds?\b|\#?ottb\b|\baftercare\b)[\s\S]{0,100}saratoga(?:\s+springs)?\b
+      | saratoga(?:\s+springs)?\b[\s\S]{0,100}(?:\bthoroughbreds?\b|\#?ottb\b|\baftercare\b)
+      | fasig[-\s]?tipton[\s\S]{0,40}\bsaratoga\b
+      | \bsaratoga\b[\s\S]{0,40}fasig[-\s]?tipton
+      # Graded stakes copy often says "at Saratoga" without Springs/NY.
+      | \bstakes\b[\s\S]{0,80}\bat\s+saratoga\b
+      | at\s+saratoga\b[\s\S]{0,80}\bstakes\b
+      # Battlefield NPS / tourism often omits ", NY".
+      | saratoga\s+battlefield\b
+      # Graded race titles / starts often omit "stakes" beside Saratoga.
+      | christophe\s+clement[\s\S]{0,80}\bsaratoga\b
+      | \bsaratoga\b[\s\S]{0,80}christophe\s+clement
+      | glens\s+falls[\s\S]{0,80}\bsaratoga\b
+      | \bsaratoga\b[\s\S]{0,80}glens\s+falls
+      | \#saratogaracing\b
+      | \#saratoga\b[\s\S]{0,120}\b(?:race|racing|stakes|turf|odds|handicap)\b
+      | \b(?:race|racing|stakes|turf|odds|handicap)\b[\s\S]{0,120}\#saratoga\b
+      # Race cards often say "6th race at Saratoga" or "Stakes Preview @ Saratoga".
+      | \brace\b[\s\S]{0,40}\bat\s+saratoga\b
+      | at\s+saratoga\b[\s\S]{0,40}\brace\b
+      | \bstakes\b[\s\S]{0,80}@\s*saratoga\b
+      | @\s*saratoga\b[\s\S]{0,80}\bstakes\b
+      | the\s+saratoga\s+special\b
+      | battles?\s+of\s+saratoga\b
+      # City of Rensselaer / RPI (county is already covered above).
+      | rensselaer\s+polytechnic
       # Distinctive Saratoga Springs venues (often omit ", NY").
       | caffe\s+lena\b
       | high\s+rock\s+park\s+pavilions?\b
@@ -121,6 +154,8 @@ _STRONG_POSITIVE = re.compile(
       | high\s+rock\s+park[\s\S]{0,80}\bsaratoga\b
       | \bsaratoga\b[\s\S]{0,80}high\s+rock\s+park\b
       | times\s+union\b
+      # Local business / tourism copy often says "Albany region" without ", NY".
+      | albany\s+region\b
       # Town of New Scotland — not "a new Scotland" / "New Scotland Shirt".
       | new\s+scotland(?:\s*,?\s*ny\b|\s+town\b)
       # Distinctive Cap Region named events (not bare "Albany this weekend").
@@ -136,8 +171,12 @@ _STRONG_POSITIVE = re.compile(
 # Includes Cap Region micro-toponyms that collide with personal names,
 # other U.S./world places, or common phrases (e.g. "green islands").
 # ``troy`` ignores email local-parts (``troy@…``), hyphenated names/domains
-# (``troy-caperton``), troy weight (oz / "10.8 troy"), and "Donna Troy".
-_TROY_PLACE = r'(?<!\d\s)(?<![\w.])(?<!donna\s)troy(?![\w@.-])(?!\s*(?:oz|ounces?|ozt|weight)\b)'
+# (``troy-caperton``), troy weight (oz / "10.8 troy"), "Donna Troy", and
+# broadcaster "Troy Aikman".
+_TROY_PLACE = (
+    r'(?<!\d\s)(?<![\w.])(?<!donna\s)troy(?![\w@.-])'
+    r'(?!\s*(?:oz|ounces?|ozt|weight|aikman)\b)'
+)
 
 _AMBIGUOUS_PLACE = re.compile(
     rf"""
@@ -157,6 +196,8 @@ _AMBIGUOUS_PLACE = re.compile(
       | \brotterdam\b
       | \bhalfmoon\b
       | \bcolonie\b
+      # City of Rensselaer (not only "Rensselaer County" strong/entity).
+      | \brensselaer\b
       | saratoga\s+springs
       | \bsaratoga\b
       | round\s+lake
@@ -185,10 +226,12 @@ _MULTI_LOCAL_EXCLUDED = frozenset(
 # "New York Times/Post/…" mastheads are national media names, not place context.
 # Also reject abbreviated ``ny times`` (including NBSP variants via ``\s``).
 # Wire datelines use ``N.Y.``; locals often write ``NYS`` for New York State.
+# The two-letter form is case-sensitive (``NY`` / ``ny`` only): Norwegian/Danish
+# sentence-initial ``Ny`` ("New") must not unlock Troy / Waterford / etc.
 _NY_CONTEXT = re.compile(
     r"""
     (?:
-        \bny\b(?!\s*times\b)
+        (?-i:(?<![a-zA-Z])(?:NY|ny)(?![a-zA-Z]))(?!\s*times\b)
       # Reject handle TLDs like @socialists.nyc (dot before nyc).
       | (?<!\.)\bnyc\b
       | n\.y\.
@@ -235,9 +278,10 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
             california|sacramento|korea|south\s+korea|ukraine|kyiv|kiev|
             sudan|khartoum|virginia|richmond|colombia|bogot[aá]|
             iceland|reykjav[ií]k|finland|helsinki|australia|
-            georgia|atlanta
+            georgia|atlanta|russia|moscow
           )\b
       | ukrainian\s+capital\s+region
+      | (?:russian|moscow)\s+capital\s+region
       | sudan(?:ese)?\s+capital\s+region
       | icelandic\s+capital\s+region
       | finnish\s+capital\s+region
@@ -245,6 +289,10 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
       | (?:virginia|richmond)\s+capital\s+region
       | bogot[aá]\s+capital\s+district
       | capital\s+district\s*,?\s*colombia\b
+      | icelandic\s+capital\s+district
+      | capital\s+district\s+fire\s+and\s+rescue
+      | (?:the\s+)?egg\s+and\s+art\s+garden
+      | art\s+garden\s+kc\b
       # Papua New Guinea — "National Capital District" contains Cap District.
       | national\s+capital\s+district
       # Harrisburg PA utility — not NY Capital Region.
@@ -266,6 +314,11 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
       | rowonebrand
       # Belgian sculptor surname — not Helderberg Escarpment.
       | van\s+helderbergh
+      # Irish crystal brand — not Town of Waterford NY.
+      | waterford\s+crystal
+      | waterford\s+wedgwood
+      # Rensselaer, Indiana — not City of Rensselaer NY.
+      | rensselaer\s*,?\s*(?:in|indiana)\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -274,10 +327,12 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
 # Canadian "capital region" cues (Ottawa national, Victoria BC / #yyj / CRD).
 # Snowbirds = RCAF demo team (Victoria-area flyovers); not birdwatching copy.
 # Window is 240 chars: CFAX call-in intros often put #yyj / #BCpoli after a long clause.
+# Goldstream / Vancouver Island rail copy often says bare "Victoria" (no "BC").
 _CANADIAN_GEO_CUE = (
     r'\bcanada\b|\bcanadian\b|\bottawa\b|\#canadian\w*|'
     r'\#yyj\b|\#bcpoli\b|british\s+columbia|\blangford\b|'
     r'victoria(?:\s*,?\s*bc\b)|greater\s+victoria|'
+    r'\bgoldstream\b|vancouver\s+island|restoreislandrail|'
     r'capital\s+regional\s+district|\blivable\s+crd\b|'
     r'timescolonist\.com|ottawacitizen\.com|\bsnowbirds?\b|parkland\s+secondary|'
     r'\bcfax\b|cfax\.com'
@@ -414,6 +469,24 @@ _UA_CAPITAL_REGION = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
+# Russia "capital region" (Moscow drone / sabotage wire mirrors).
+_RU_GEO_CUE = (
+    r'\brussia\b|\brussian\b|\bmoscow\b|\bkremlin\b|'
+    r'\#russia\b|\#moscow\b|\#putin\b'
+)
+
+_RU_CAPITAL_REGION = re.compile(
+    rf"""
+    (?:
+        (?:russian|moscow)\s+capital\s+region
+      | capital\s+region\s+of\s+(?:russia|moscow)\b
+      | capital\s+region\b[\s\S]{{0,160}}(?:{_RU_GEO_CUE})
+      | (?:{_RU_GEO_CUE})[\s\S]{{0,160}}capital\s+region\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
 # Sudan "capital region" (Khartoum UNEP / wire cards).
 _SD_GEO_CUE = r'\bsudan\b|\bsudanese\b|\bkhartoum\b|\#sudan\b|\#khartoum\b'
 
@@ -517,6 +590,20 @@ _STILLWATER_FILM = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
+# North Country "Stillwater Road" (Lewis Co / Croghan) — not Town of Stillwater NY.
+_STILLWATER_ROAD_NORTH = re.compile(
+    r"""
+    (?:
+        \bstillwater\s+road\b
+      | \bcroghan\b
+      | lewis\s+co(?:unty)?\b
+      | \bbuf\.nws
+      | \bbuf\.weather
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
 # Troy, Michigan (Detroit suburb) — not Troy NY, even when NYC/Ithaca appear.
 _TROY_MICHIGAN = re.compile(
     r"""
@@ -549,19 +636,36 @@ _IN_ALBANY_SARATOGA = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
-# Iceland "capital region" (Reykjavik Police / mbl.is mirrors).
+# Iceland "capital region" / "capital district" (Reykjavik Police / mbl.is mirrors).
 _IS_GEO_CUE = (
     r'\biceland\b|\bicelandic\b|\breykjav[ií]k\b|'
-    r'\#iceland\b|\#reykjav[ií]k\b|mbl\.is'
+    r'\#iceland\b|\#reykjav[ií]k\b|mbl\.is|'
+    r'miklabraut|grens[aá]svegur'
 )
 
 _IS_CAPITAL_REGION = re.compile(
     rf"""
     (?:
-        icelandic\s+capital\s+region
-      | capital\s+region\s+of\s+(?:iceland|reykjav[ií]k)\b
-      | capital\s+region\b[\s\S]{{0,160}}(?:{_IS_GEO_CUE})
-      | (?:{_IS_GEO_CUE})[\s\S]{{0,160}}capital\s+region\b
+        icelandic\s+capital\s+(?:region|district)
+      | capital\s+(?:region|district)\s+of\s+(?:iceland|reykjav[ií]k)\b
+      | capital\s+(?:region|district)\b[\s\S]{{0,160}}(?:{_IS_GEO_CUE})
+      | (?:{_IS_GEO_CUE})[\s\S]{{0,160}}capital\s+(?:region|district)\b
+      # Reykjavik emergency services branding.
+      | capital\s+district\s+fire\s+and\s+rescue
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Kansas City "The Egg and Art Garden" — not Albany's The Egg.
+_EGG_KANSAS_CITY = re.compile(
+    r"""
+    (?:
+        (?:the\s+)?egg\s+and\s+art\s+garden
+      | art\s+garden\s+kc\b
+      | \bat\s+the\s+egg\b[\s\S]{0,120}(?:kansas\s+city|\bkc\b)
+      | (?:kansas\s+city|\bkc\b)[\s\S]{0,120}\bat\s+the\s+egg\b
+      | bottoms?\s+up\s+festival[\s\S]{0,80}\bthe\s+egg\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -708,6 +812,15 @@ _MALTA_EUROPE = re.compile(
       | film(?:ed|ing)?\s+on\s+gozo
       | malta\s+as\s+a\s+film
       | \bmgarr\b
+      # Malta Tourism / JFK nonstop (Delta Endless Summer cards).
+      | malta\s+tourism
+      | endless\s+summer[\s\S]{0,60}\bmalta\b
+      | \bmalta\b[\s\S]{0,60}endless\s+summer
+      | jfk[\s\-–—]*malta
+      | malta[\s\-–—]*jfk
+      | delta(?:['\u2019]?s)?\s+nonstop[\s\S]{0,60}\bmalta\b
+      | \beturbonews\b
+      | eturbonews\.com
       # Rotterdam, The Netherlands (architecture / football wire mirrors).
       | \bthe\s+netherlands\b
       | \bnetherlands\b
@@ -715,6 +828,17 @@ _MALTA_EUROPE = re.compile(
       | sparta\s+rotterdam
       | \barchdaily\b
       | archdaily\.com
+      # Dutch "New York Pizza" chain bankruptcies (vestigingen / failliet / Rijnmond).
+      | new\s+york\s+pizza
+      | \brotterdamse\b
+      | \bfailliet\b
+      | \bvestigingen?\b
+      | \brijnmond\b
+      | rijnmond\.nl
+      | \bdagblad010\b
+      | dagblad010\.nl
+      | \bomroepdelft\b
+      | omroepdelft\.nl
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -796,13 +920,17 @@ _WATERVLIET_MI = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
-# Loudonville, Ohio (hashtag civic lists) — not Loudonville NY.
+# Loudonville, Ohio (hashtag civic lists / high-school soccer) — not Loudonville NY.
 _LOUDONVILLE_OH = re.compile(
     r"""
     (?:
         loudonville\s*,?\s*(?:oh|ohio)\b
       | loudonville[\s\S]{0,160}(?:\#ohio\b|\bohio\b|\#oh\d+\b)
       | (?:\#ohio\b|\bohio\b|\#oh\d+\b)[\s\S]{0,160}loudonville
+      | \bwaynedale\b
+      | golden\s+bears[\s\S]{0,80}loudonville
+      | loudonville[\s\S]{0,80}golden\s+bears
+      | \bohsaa\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -899,7 +1027,10 @@ _HARD_NEGATIVE = re.compile(
           )\b
       | ukrainian\s+capital\s+region
       | sudan(?:ese)?\s+capital\s+region
-      | icelandic\s+capital\s+region
+      | icelandic\s+capital\s+(?:region|district)
+      | capital\s+district\s+fire\s+and\s+rescue
+      | (?:the\s+)?egg\s+and\s+art\s+garden
+      | art\s+garden\s+kc\b
       | (?:virginia|richmond)\s+capital\s+region
       | bogot[aá]\s+capital\s+district
       | capital\s+district\s*,?\s*colombia\b
@@ -918,6 +1049,9 @@ _HARD_NEGATIVE = re.compile(
       | rowonebrand
       # Radio-market lists often omit the comma ("Albany GA").
       | albany\s+ga\b
+      | waterford\s+crystal
+      | waterford\s+wedgwood
+      | rensselaer\s*,?\s*(?:in|indiana)\b
       | colonie\s+de\s+vacances
       | colonie\s+num[eé]rique
       | une\s+colonie
@@ -1118,7 +1252,8 @@ def _ny_capital_region_context(haystack: str) -> bool:
         re.search(
             rf"""
             (?:
-                \b(?:ny|nys|new\s+york)\b
+                (?-i:(?<![a-zA-Z])(?:NY|ny)(?![a-zA-Z]))
+              | \b(?:nys|new\s+york)\b
               | n\.y\.
               | hudson\s+valley
               | \#albanyny\b
@@ -1140,9 +1275,9 @@ def _canadian_capital_region_conflict(haystack: str, author_handle: str | None =
         return False
     if _CANADIAN_CAPITAL_REGION.search(haystack):
         return True
-    # Times Colonist / CFAX / Ottawa Citizen cards often omit domain cues; gate on handle.
+    # Times Colonist / CFAX / Ottawa Citizen / Island rail cards often omit domain cues.
     handle = (author_handle or '').strip().lower()
-    if re.search(r'timescolonist|\bcfax|ottawacitizen', handle) and re.search(
+    if re.search(r'timescolonist|\bcfax|ottawacitizen|restoreislandrail', handle) and re.search(
         r'capital\s+region\b', haystack, flags=re.IGNORECASE
     ):
         return True
@@ -1191,6 +1326,24 @@ def _stillwater_film_conflict(haystack: str) -> bool:
         return False
     if re.search(
         r'stillwater\s*,?\s*(?:ny|n\.y\.|new\s+york)\b|town\s+of\s+stillwater',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    return True
+
+
+def _stillwater_road_conflict(haystack: str, author_handle: str | None = None) -> bool:
+    """True when Stillwater is a North Country street / Lewis Co spotter, not Town NY."""
+    if not re.search(r'\bstillwater\b', haystack, flags=re.IGNORECASE):
+        return False
+    handle = (author_handle or '').strip().lower()
+    handle_hit = bool(re.search(r'(?<![a-z0-9])buf\.(?:nws|weather)', handle))
+    if not (_STILLWATER_ROAD_NORTH.search(haystack) or handle_hit):
+        return False
+    if re.search(
+        r'stillwater\s*,?\s*(?:ny|n\.y\.|new\s+york)\b|town\s+of\s+stillwater|'
+        r'saratoga\s+county|\#albanyny\b|nws\s+albany',
         haystack,
         flags=re.IGNORECASE,
     ):
@@ -1263,6 +1416,13 @@ def _ukraine_capital_region_conflict(haystack: str) -> bool:
     return not _ny_capital_region_context(haystack)
 
 
+def _russia_capital_region_conflict(haystack: str) -> bool:
+    """True when 'capital region' refers to Moscow / Russia, not NY."""
+    if not _RU_CAPITAL_REGION.search(haystack):
+        return False
+    return not _ny_capital_region_context(haystack)
+
+
 def _sudan_capital_region_conflict(haystack: str) -> bool:
     """True when 'capital region' refers to Khartoum / Sudan, not NY."""
     if not _SD_CAPITAL_REGION.search(haystack):
@@ -1285,10 +1445,26 @@ def _colombia_capital_district_conflict(haystack: str) -> bool:
 
 
 def _iceland_capital_region_conflict(haystack: str) -> bool:
-    """True when 'capital region' refers to Reykjavik / Iceland, not NY."""
+    """True when 'capital region/district' refers to Reykjavik / Iceland, not NY."""
     if not _IS_CAPITAL_REGION.search(haystack):
         return False
     return not _ny_capital_region_context(haystack)
+
+
+def _egg_kansas_city_conflict(haystack: str) -> bool:
+    """True when 'The Egg' refers to Kansas City's Art Garden venue, not Albany."""
+    if not re.search(r'\bthe\s+egg\b|\begg\s+and\s+art\s+garden\b', haystack, flags=re.IGNORECASE):
+        return False
+    if re.search(
+        r'(?:the\s+egg|egg)\s*,?\s*(?:albany|ny|n\.y\.)|'
+        r'\balbany\b[\s\S]{0,80}\bthe\s+egg\b|'
+        r'\bthe\s+egg\b[\s\S]{0,80}\balbany\b|'
+        r'\#albanyny\b|empire\s+state\s+plaza',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    return _EGG_KANSAS_CITY.search(haystack) is not None
 
 
 def _finland_capital_region_conflict(haystack: str) -> bool:
@@ -1503,6 +1679,44 @@ def _waterford_ct_conflict(haystack: str) -> bool:
     return True
 
 
+def _waterford_crystal_conflict(haystack: str) -> bool:
+    """True when Waterford refers to the Irish crystal brand, not Waterford NY."""
+    if not re.search(r'\bwaterford\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not re.search(r'waterford\s+(?:crystal|wedgwood)\b', haystack, flags=re.IGNORECASE):
+        return False
+    if re.search(
+        r'waterford\s*,?\s*(?:ny|n\.y\.)\b|town\s+of\s+waterford',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    return True
+
+
+def _rensselaer_indiana_conflict(haystack: str) -> bool:
+    """True when Rensselaer refers to Indiana, not the city in NY."""
+    if not re.search(r'\brensselaer\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not re.search(
+        r'rensselaer\s*,?\s*(?:in|indiana)\b|'
+        r'rensselaer[\s\S]{0,80}\bindiana\b|'
+        r'\bindiana\b[\s\S]{0,80}rensselaer',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    if re.search(
+        r'rensselaer\s*,?\s*(?:ny|n\.y\.|new\s+york)\b|'
+        r'city\s+of\s+rensselaer|rensselaer\s+polytechnic|'
+        r'rensselaer\s+county',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    return True
+
+
 def _clifton_park_uk_conflict(haystack: str, author_handle: str | None = None) -> bool:
     """True when Clifton Park refers to York/Rotherham (England), not NY."""
     if not re.search(r'clifton\s+park', haystack, flags=re.IGNORECASE):
@@ -1566,6 +1780,9 @@ def _match_local_event(haystack: str) -> MatchResult | None:
     if not match:
         return None
     venue = re.sub(r'\s+', ' ', match.group(0).lower())
+    # Kansas City's Egg and Art Garden must not unlock Albany's The Egg.
+    if 'egg' in venue and _egg_kansas_city_conflict(haystack):
+        return None
     return MatchResult(True, f'event_local_venue:{venue}')
 
 
@@ -1669,6 +1886,8 @@ def match_post(
             return MatchResult(False, 'hard_negative:korea_capital_region')
         if _ukraine_capital_region_conflict(haystack):
             return MatchResult(False, 'hard_negative:ukraine_capital_region')
+        if _russia_capital_region_conflict(haystack):
+            return MatchResult(False, 'hard_negative:russia_capital_region')
         if _sudan_capital_region_conflict(haystack):
             return MatchResult(False, 'hard_negative:sudan_capital_region')
         if _iceland_capital_region_conflict(haystack):
@@ -1791,6 +2010,12 @@ def match_post(
         if term == 'waterford' and _waterford_ct_conflict(haystack):
             return MatchResult(False, 'hard_negative:waterford_ct')
 
+        if term == 'waterford' and _waterford_crystal_conflict(haystack):
+            return MatchResult(False, 'hard_negative:waterford_crystal')
+
+        if term == 'rensselaer' and _rensselaer_indiana_conflict(haystack):
+            return MatchResult(False, 'hard_negative:rensselaer_indiana')
+
         if term in {'malta', 'rotterdam'} and _malta_europe_conflict(haystack):
             return MatchResult(False, 'hard_negative:malta_europe')
 
@@ -1804,6 +2029,9 @@ def match_post(
 
         if term == 'stillwater' and _stillwater_film_conflict(haystack):
             return MatchResult(False, 'hard_negative:stillwater_film')
+
+        if term == 'stillwater' and _stillwater_road_conflict(haystack, author_handle):
+            return MatchResult(False, 'hard_negative:stillwater_road')
 
         if term == 'troy' and _troy_michigan_conflict(haystack):
             return MatchResult(False, 'hard_negative:troy_michigan')

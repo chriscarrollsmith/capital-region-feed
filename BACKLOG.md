@@ -538,6 +538,95 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-073 — Daily feed audit: I-787 study N, Troy Aikman, Loudonville OH soccer, NL New York Pizza, River Street off-region, Saratoga/Albany recall
+- **Status:** done ([#48](https://github.com/chriscarrollsmith/capital-region-feed/pull/48); from [#47](https://github.com/chriscarrollsmith/capital-region-feed/pull/47))
+- **Why:** 2026-08-20 audit of last-24h AppView feed (~152 posts since 2026-08-19T09:02Z)
+  found active FPs after cherry-picking #43–#46: medical PR "Study on 787 Brain Tumor
+  Patients" matched bare `\bon\s+787\b`; Troy Aikman + New York Jets unlocked Troy;
+  Waynedale Golden Bears vs Loudonville OH soccer (no Ohio token); Dutch New York Pizza
+  bankruptcies in Rotterdam (`rotterdamse` / `failliet` / Rijnmond / dagblad010);
+  River Street Writing (Calgary) and Virginia River Street Networks broadband cards via
+  classifier micro + month cues. FNs: `race at Saratoga` / `Stakes @ Saratoga` /
+  The Saratoga Special / Battles of Saratoga; `Albany region` business copy. AppView
+  `searchPosts` returned 403 in this environment (FN search limited to feed drops +
+  synthetic probes). Intentional keeps include allowlisted News10/Times Union, Demon
+  Hunter lawsuit alt mentioning Albany NY, Excelsior/YWCA Greater Capital Region, and
+  residual NYC↔Albany statehouse cards.
+- **Work:**
+  - Require I-/interstate/route prefix for 787 strong positives.
+  - Exclude `Troy Aikman` from ambiguous Troy (mirror Donna Troy).
+  - Expand Loudonville OH cues (Waynedale / Golden Bears / OHSAA).
+  - Expand Malta/Europe Rotterdam cues for Dutch New York Pizza chain copy.
+  - Scrub River Street Writing / Networks / Franklin County VA / citizenportal micros.
+  - Strong positives: race at Saratoga; Stakes @ Saratoga; The Saratoga Special;
+    Battles of Saratoga; Albany region.
+  - Grow eval with 2026-08-20 FP/TP/FN anchors.
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
+### B-072 — Daily feed audit: Russia capital region, Stillwater Road, Malta JFK tourism, Saratoga Battlefield/racing FNs
+- **Status:** done ([#48](https://github.com/chriscarrollsmith/capital-region-feed/pull/48); from [#46](https://github.com/chriscarrollsmith/capital-region-feed/pull/46))
+- **Why:** 2026-08-15 audit of last-24h AppView feed (~133 posts since 2026-08-14T09:01Z)
+  found active FPs after cherry-picking #43/#44/#45: Russia/Moscow drone wire "capital region"
+  (Ukraine-style international gate missing); Lewis Co / Croghan `Stillwater Road` unlocked via
+  NY context + Buffalo NWS bots; European Malta Endless Summer / Delta JFK-Malta / Malta Tourism
+  cards unlocked via New York JFK. FNs: Saratoga Battlefield tourism without `, NY`; Christophe
+  Clement / Glens Falls / `#Saratoga` race cards without "stakes at Saratoga". Stale AppView
+  Malta/Saratoga Av/bare-Albany rows already rematch-drop. Intentional keeps include allowlisted
+  News10/Times Union non-local, NWS Albany CWA into MA/VT, and residual Gothamist "legislation
+  in Albany" statehouse cards.
+- **Work:**
+  - Russia capital-region conflict helper + hard-negative phrase list.
+  - Stillwater Road / Lewis Co / Croghan / `buf.nws` conflict before ambiguous Stillwater keep.
+  - Expand Malta Europe cues (JFK-Malta, Malta Tourism, Endless Summer, Delta nonstop, eturbonews).
+  - Strong positives: Saratoga Battlefield; Christophe Clement ↔ Saratoga; Glens Falls ↔ Saratoga;
+    `#Saratoga` + race/odds cues; `#SaratogaRacing`.
+  - Grow eval with 2026-08-15 FP/TP/FN anchors.
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
+### B-071 — Daily feed audit: Victoria BC island rail, Waterford Crystal, Norwegian Ny+Troy, Rensselaer/Saratoga FNs
+- **Status:** done ([#48](https://github.com/chriscarrollsmith/capital-region-feed/pull/48); from [#45](https://github.com/chriscarrollsmith/capital-region-feed/pull/45))
+- **Why:** 2026-08-14 audit of last-24h AppView feed (~134 posts since 2026-08-13T09:03Z)
+  found active FPs after cherry-picking #43/#44: Vancouver Island `Capital Region` +
+  Goldstream→Victoria / `restoreislandrail` (Canadian gate lacked Goldstream / island-rail
+  cues and bare Victoria); Waterford Crystal Etsy cards unlocked via Huntington Station NY
+  ship-from; Norwegian sentence-initial `Ny` ("New") unlocked person Troy via case-insensitive
+  `\bny\b`. FNs: Thoroughbred/OTTB + Fasig-Tipton + stakes-at-Saratoga without `, NY`; City of
+  Rensselaer NY civic posts (gazetteer/strong only had `Rensselaer County`). ~30 stale AppView
+  rows already rematch-drop (Malta/Rotterdam/bare Albany jobs). Intentional keeps include
+  allowlisted News10/Times Union non-local and NWS Albany CWA into VT.
+- **Work:**
+  - Expand Canadian capital-region cues (`goldstream`, Vancouver Island, restoreislandrail)
+    + handle gate.
+  - Hard-negative Waterford Crystal / Wedgwood; case-sensitive `NY`/`ny` abbreviation.
+  - Ambiguous `rensselaer` + Indiana conflict; strong `rensselaer polytechnic`.
+  - Strong positives: thoroughbred/OTTB/aftercare ↔ Saratoga; Fasig-Tipton Saratoga;
+    stakes at Saratoga.
+  - Grow eval with 2026-08-14 FP/TP/FN anchors.
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
+### B-070 — Daily feed audit: Iceland Capital District, Egg Art Garden KC, Center Square conjunction, ponies FN
+- **Status:** done ([#48](https://github.com/chriscarrollsmith/capital-region-feed/pull/48); from [#44](https://github.com/chriscarrollsmith/capital-region-feed/pull/44))
+- **Why:** 2026-08-13 audit of last-24h AppView feed (~150 posts since 2026-08-12T09:17Z)
+  found active FPs after cherry-picking #43: Iceland `Capital District Fire and Rescue`
+  (mbl.is / `#reykjavik`) still kept via strong `capital district` because the Iceland
+  conflict only gated `capital region`; Kansas City `The Egg and Art Garden` unlocked
+  `event_local_venue:at the egg`; Washington State Standard **and The Center Square**
+  wire conjunction + August month cue unlocked `classifier:local_micro`. FN: Saratoga
+  Springs dining + "play the ponies" without `, NY` (`ambiguous_no_context:saratoga springs`).
+  Stale AppView Malta/bare-Saratoga rows already rematch-drop. Intentional keeps include
+  allowlisted non-local posts and NWS Albany CWA warnings into VT.
+- **Work:**
+  - Expand Iceland capital-region conflict to `capital district` + Fire and Rescue branding.
+  - Hard-negative Egg and Art Garden / Kansas City before The Egg venue keep.
+  - Scrub Center Square wire conjunction / reporting-by attributions in classifier micros.
+  - Strong positive: `play the ponies` ↔ Saratoga.
+  - Grow eval with 2026-08-13 FP/TP/FN anchors.
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-069 — Daily feed audit: Stillwater film, Troy MI, van Helderbergh, Bay Area multi_local, Indiana wx, Saratoga FNs
 - **Status:** done ([#43](https://github.com/chriscarrollsmith/capital-region-feed/pull/43))
 - **Why:** 2026-08-12 audit of last-24h AppView feed (~186 posts since 2026-08-11T09:03Z)
