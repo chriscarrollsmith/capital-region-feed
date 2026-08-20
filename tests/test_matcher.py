@@ -919,6 +919,13 @@ def test_loudonville_ohio_not_loudonville_ny() -> None:
     assert hashtag.matched is False
     assert hashtag.reason == 'hard_negative:loudonville_oh'
     assert match_post('Road work begins in Loudonville near Albany this week.').matched is True
+    # Ohio high-school soccer (Waynedale / Golden Bears) without ", OH".
+    soccer = match_post(
+        'In a thrilling season opener, the Golden Bears emerged victorious against '
+        'Loudonville with a 1-0 win.'
+    )
+    assert soccer.matched is False
+    assert soccer.reason == 'hard_negative:loudonville_oh'
 
 
 def test_ottawa_citizen_capital_region_not_ny() -> None:
@@ -1083,6 +1090,27 @@ def test_rotterdam_netherlands_oda_new_york_not_ambiguous() -> None:
     assert (
         match_post('Town of Rotterdam meeting; see also Troy City Council agenda.').matched is True
     )
+
+
+def test_rotterdam_new_york_pizza_dutch_chain_not_ny() -> None:
+    pizza = match_post(
+        'Twee Rotterdamse vestigingen van New York Pizza failliet',
+        alt_text='https://dagblad010.nl/rotterdam/twee-rotterdamse-vestigingen-van-new-york-pizza',
+    )
+    assert pizza.matched is False
+    assert pizza.reason == 'hard_negative:malta_europe'
+
+    rijnmond = match_post(
+        'New York Pizza wil na faillissement doorgaan met Rotterdamse vestigingen #rijnmond',
+        alt_text=(
+            'De vestigingen van pizzaketen New York Pizza in Rotterdam-Keizerswaard '
+            'zijn failliet verklaard.'
+        ),
+    )
+    assert rijnmond.matched is False
+    assert rijnmond.reason == 'hard_negative:malta_europe'
+
+    assert match_post('Rotterdam, NY fire department open house this weekend.').matched is True
 
 
 def test_loi_galway_waterford_fixture_list_not_multi_local() -> None:
@@ -1418,3 +1446,54 @@ def test_saratoga_thoroughbred_and_fasig_tipton_without_ny() -> None:
 
     # National Del Mar + Saratoga hashtag soup must stay dropped.
     assert match_post('#horseracing #saratoga #delmar #delmarthoroughbredclub').matched is False
+
+
+def test_i787_requires_highway_prefix_not_study_n() -> None:
+    study = match_post(
+        'Monteris Medical Announces Landmark Study on 787 Brain Tumor Patients '
+        'Treated with NeuroBlate',
+        alt_text='MINNETONKA, Minn., Aug. 19, 2026 /PRNewswire/',
+    )
+    assert study.matched is False
+
+    assert match_post('Crash on I-787 northbound near downtown Albany.').matched is True
+    assert match_post('Backup on I-787 south of Madison Ave.').matched is True
+
+
+def test_troy_aikman_not_troy_ny() -> None:
+    aikman = match_post(
+        '2026 NFL Preseason Week 2 Schedule, TV, Announcers',
+        alt_text=(
+            'Thursday Las Vegas @ Houston 8:00PM ESPN Joe Buck and Troy Aikman. '
+            'Friday New York Jets @ New England.'
+        ),
+    )
+    assert aikman.matched is False
+    assert match_post('Dinner in Troy, New York tonight.').matched is True
+
+
+def test_saratoga_race_cards_and_albany_region_recall() -> None:
+    race = match_post("Wednesday's Bettor Bets play of the day is the 6th race at Saratoga.")
+    assert race.matched is True
+
+    stakes_at = match_post(
+        'NYSS Statue of Liberty Stakes Preview @ Saratoga | DRF Wednesday Race of the Day'
+    )
+    assert stakes_at.matched is True
+
+    special = match_post(
+        'Brendan Walsh trainees Real Restraint and Title Role are buds! '
+        'Shot for The Saratoga Special'
+    )
+    assert special.matched is True
+
+    battles = match_post(
+        'On Aug. 19, 1777, Horatio Gates took command. The Battles of Saratoga '
+        'began long before Sept. 19.'
+    )
+    assert battles.matched is True
+
+    region = match_post(
+        '7 Brew Coffee now has five locations in the Albany region and more are on the way.'
+    )
+    assert region.matched is True
