@@ -4352,5 +4352,171 @@
     "split": "dev",
     "regression": true,
     "note": "2026-08-20 audit: bare Albany job listing without NY stays dropped"
+  },
+  {
+    "id": "fp-waynedale-handle-loudonville",
+    "text": "Highlights from Tuesday's 1-0 victory over Loudonville.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "author_handle": "waynedalesoccer.bsky.social",
+    "note": "2026-08-21 audit: Waynedale HS soccer handle must gate bare Loudonville"
+  },
+  {
+    "id": "tp-loudonville-albany-roadwork-20260821",
+    "text": "Road work begins in Loudonville near Albany this week.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-21 audit: Cap Region Loudonville counterpart"
+  },
+  {
+    "id": "fp-dc-go-go-capital-region",
+    "text": "Go-go music has an age problem. Plus, more things to do this weekend.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "author_handle": "zuriberry.com",
+    "alt_text": "7 things to do in the capital region, from a go-go concert to a demolition derby",
+    "note": "2026-08-21 audit: DC go-go + capital region must not keep via strong positive"
+  },
+  {
+    "id": "tp-ny-capital-region-flash-flood-20260821",
+    "text": "New York's Capital Region flash flood warning until 10pm.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-21 audit: NY Capital Region counterpart"
+  },
+  {
+    "id": "fp-rotterdam-film-festival-nyc",
+    "text": "NYC's Hidden Libraries Occult Mystery Thriller 'Chronovisor' Trailer",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "It premiered at the 2026 Rotterdam Film Festival.",
+    "note": "2026-08-21 audit: IFFR/Rotterdam Film + NYC must not unlock Town of Rotterdam NY"
+  },
+  {
+    "id": "tp-rotterdam-ny-town-board-20260821",
+    "text": "Town board meeting in Rotterdam, NY tonight.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-21 audit: Cap Region Rotterdam counterpart"
+  },
+  {
+    "id": "fp-troy-nyhammer-soccer-xi",
+    "text": "Pre-match vibe: Brighton visit Tromso in the Conference League Qual.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "Tromsø IL: Jakob Haugaard, Vetle Skjærvik, Troy Nyhammer\nBrighton & Hove Albion: Bart Verbruggen",
+    "note": "2026-08-21 audit: Troy Nyhammer must not match troy+ny strong positive"
+  },
+  {
+    "id": "tp-troy-ny-dinner-20260821",
+    "text": "Dinner in Troy, NY tonight.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-21 audit: Troy, NY counterpart"
+  },
+  {
+    "id": "fp-brunswick-records-1925",
+    "text": "The Cotton Pickers - Mishawaka Blues (1925). Recorded in New York, NY 6 Feb. 1925.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "\"Mishawaka Blues\" The Cotton Pickers (Brunswick, 1925)",
+    "note": "2026-08-21 audit: Brunswick Records discography + NY studio must not unlock Town of Brunswick"
+  },
+  {
+    "id": "tp-brunswick-ny-dinner-20260821",
+    "text": "Dinner in Brunswick, NY tonight.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-21 audit: Cap Region Brunswick counterpart"
+  },
+  {
+    "id": "tp-albany-business-review-publisher",
+    "text": "Walter Thorne, market president and publisher of the Albany Business Review, has announced he will exit the role.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-21 audit: Albany Business Review without bare-Albany NY token"
+  },
+  {
+    "id": "tp-rentredi-latham",
+    "text": "A few years back, the founder of what's now RentRedi in Latham lost out on an apartment because of paperwork.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-21 audit: RentRedi local company cue for Latham without NY token"
+  },
+  {
+    "id": "tp-saratoga-en-dash-race-card",
+    "text": "Play the low takeout Cross Country Pick 5 today!\nLeg A: Saratoga – Race 5 (3:29 PM ET)\nLeg B: Horseshoe Indianapolis – Race 6",
+    "expected": true,
+    "signal": "text",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-21 audit: Saratoga – Race N cross-country pick cards"
+  },
+  {
+    "id": "tn-malta-eurovision-aidan",
+    "text": "Malta: AIDAN releases mysterious Dolce Vita music video ahead of THE SHOW 2026. Maltese singer AIDAN represented Malta at Eurovision.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-21 audit: European Malta entertainment wire (stale feed row; rematch already drops)"
+  },
+  {
+    "id": "tn-stillwater-county-montana-fire",
+    "text": "Montana: Update: Fire near Reed Point grows to 3,655 acres. Stillwater County Department of Emergency Resources has told area residents to be prepared to evacuate.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-21 audit: Stillwater County MT must stay dropped"
+  },
+  {
+    "id": "tn-troy-women-ncaa-soccer",
+    "text": "FT: SE Louisiana Women 1 - 0 Troy Women",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-21 audit: Troy University NCAA soccer without NY context"
   }
 ]
