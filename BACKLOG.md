@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-074 — Daily feed audit: Waynedale Loudonville handle, DC go-go capital region, Rotterdam Film Festival, Troy Nyhammer, Brunswick Records, ABR/RentRedi/Saratoga race recall
-- **Status:** in progress
+- **Status:** done ([#49](https://github.com/chriscarrollsmith/capital-region-feed/pull/49))
 - **Why:** 2026-08-21 audit of last-24h AppView feed (~349 posts since 2026-08-20T09:01Z)
   found active FPs: Waynedale HS soccer handle vs bare Loudonville (Ohio cues only in
   body text, not handles); DC go-go "capital region" weekend cards (Banner MoCo/PG
