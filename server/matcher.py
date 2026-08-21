@@ -73,7 +73,8 @@ _STRONG_POSITIVE = re.compile(
       | averill\s+park
       # Wire datelines often use "N.Y." with periods.
       | saratoga\s+springs\s*,?\s*(?:ny|n\.y\.|new\s+york)
-      | (?<!\d\s)(?<![\w.])troy(?![\w@.-])\s*,?\s*(?:ny|n\.y\.|new\s+york)
+      # Require a word boundary after "ny" so "Troy Nyhammer" does not match.
+      | (?<!\d\s)(?<![\w.])troy(?![\w@.-])\s*,?\s*(?:ny\b|n\.y\.|new\s+york)
       | boght\s+corners
       | newtonville
       | \bcoeymans\b
@@ -141,6 +142,8 @@ _STRONG_POSITIVE = re.compile(
       | at\s+saratoga\b[\s\S]{0,40}\brace\b
       | \bstakes\b[\s\S]{0,80}@\s*saratoga\b
       | @\s*saratoga\b[\s\S]{0,80}\bstakes\b
+      # Cross-country pick cards: "Saratoga – Race 5" (en/em dash or colon).
+      | \bsaratoga\b[\s]*[\u2013\u2014\-:]\s*race\s*\d
       | the\s+saratoga\s+special\b
       | battles?\s+of\s+saratoga\b
       # City of Rensselaer / RPI (county is already covered above).
@@ -154,6 +157,8 @@ _STRONG_POSITIVE = re.compile(
       | high\s+rock\s+park[\s\S]{0,80}\bsaratoga\b
       | \bsaratoga\b[\s\S]{0,80}high\s+rock\s+park\b
       | times\s+union\b
+      | albany\s+business\s+review\b
+      | \brentredi\b
       # Local business / tourism copy often says "Albany region" without ", NY".
       | albany\s+region\b
       # Town of New Scotland — not "a new Scotland" / "New Scotland Shirt".
@@ -359,7 +364,9 @@ _MD_DC_GEO_CUE = (
     r'washington(?:\s*,?\s*d\.?c\.?\b)|(?<![\w.])dc\s+metro\b|'
     r'(?<![\w.])dc\s+snipers?\b|national\s+law\s+enforcement\s+museum|'
     r'\bdmv\b|silver\s+spring|\bbethesda\b|\brockville\b|'
-    r'olney\s+theatre|national\s+harbor|college\s+park|\bannapolis\b'
+    r'olney\s+theatre|national\s+harbor|college\s+park|\bannapolis\b|'
+    # DC go-go music listings often omit Maryland / DC place tokens.
+    r'\bgo-go\b|go\s+go\s+(?:music|concert|band)'
 )
 
 # MD/DC "capital region" co-occurring with Maryland / Prince George's cues (not NY).
@@ -839,6 +846,22 @@ _MALTA_EUROPE = re.compile(
       | dagblad010\.nl
       | \bomroepdelft\b
       | omroepdelft\.nl
+      # International Film Festival Rotterdam (IFFR) — not Town of Rotterdam NY.
+      | rotterdam\s+film(?:s)?\b
+      | film\s+festival[\s\S]{0,40}\brotterdam\b
+      | \biffr\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Brunswick Records (jazz/shellac discographies) — not Town of Brunswick NY.
+_BRUNSWICK_RECORDS = re.compile(
+    r"""
+    (?:
+        \(\s*brunswick\s*,\s*\d{4}\s*\)
+      | brunswick\s+records?\b
+      | on\s+brunswick\s+(?:records?\b|78s?\b|label\b)
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -1634,11 +1657,14 @@ def _watervliet_mi_conflict(haystack: str) -> bool:
     return True
 
 
-def _loudonville_oh_conflict(haystack: str) -> bool:
+def _loudonville_oh_conflict(haystack: str, author_handle: str | None = None) -> bool:
     """True when Loudonville refers to Ohio, not the hamlet near Albany."""
     if not re.search(r'\bloudonville\b', haystack, flags=re.IGNORECASE):
         return False
-    if not _LOUDONVILLE_OH.search(haystack):
+    handle = (author_handle or '').strip().lower()
+    # Waynedale HS accounts often omit Ohio / Waynedale from the body.
+    handle_hit = bool(re.search(r'waynedale', handle))
+    if not (_LOUDONVILLE_OH.search(haystack) or handle_hit):
         return False
     if re.search(
         r'loudonville\s*,?\s*(?:ny|n\.y\.|new\s+york)\b',
@@ -1647,6 +1673,21 @@ def _loudonville_oh_conflict(haystack: str) -> bool:
     ):
         return False
     return not _ny_capital_region_context(haystack)
+
+
+def _brunswick_records_conflict(haystack: str) -> bool:
+    """True when Brunswick refers to the record label, not Town of Brunswick NY."""
+    if not re.search(r'\bbrunswick\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not _BRUNSWICK_RECORDS.search(haystack):
+        return False
+    if re.search(
+        r'brunswick\s*,?\s*(?:ny|n\.y\.|new\s+york)\b|town\s+of\s+brunswick',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    return True
 
 
 def _bethlehem_pa_conflict(haystack: str) -> bool:
@@ -1908,7 +1949,7 @@ def match_post(
             return MatchResult(False, 'hard_negative:japan_capital_district')
         if _burnt_hills_descriptive_conflict(haystack):
             return MatchResult(False, 'hard_negative:burnt_hills_descriptive')
-        if _loudonville_oh_conflict(haystack):
+        if _loudonville_oh_conflict(haystack, author_handle):
             return MatchResult(False, 'hard_negative:loudonville_oh')
         if _clifton_park_uk_conflict(haystack, author_handle):
             return MatchResult(False, 'hard_negative:clifton_park_uk')
@@ -2006,6 +2047,9 @@ def match_post(
 
         if term == 'bethlehem' and _bethlehem_pa_conflict(haystack):
             return MatchResult(False, 'hard_negative:bethlehem_pa')
+
+        if term == 'brunswick' and _brunswick_records_conflict(haystack):
+            return MatchResult(False, 'hard_negative:brunswick_records')
 
         if term == 'waterford' and _waterford_ct_conflict(haystack):
             return MatchResult(False, 'hard_negative:waterford_ct')
