@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-075 — Daily feed audit: Denmark/Alberta capital region, NPS outside CR, Victoria Island Peers, Troy Fautanu/Helen/SC, Rotterdam Hotel NY, ValleyCats/Egg/Crossgates FNs
-- **Status:** in progress
+- **Status:** done ([#50](https://github.com/chriscarrollsmith/capital-region-feed/pull/50))
 - **Why:** 2026-08-22 audit of last-24h AppView feed (~233 posts since 2026-08-21T09:01Z)
   found active FPs after cherry-picking #49: Danish "Capital Region, Denmark" flight
   trackers and Hovedstaden Letbane (Ishøj/Lundtofte/Gladsaxe) light-rail wires; Alberta
