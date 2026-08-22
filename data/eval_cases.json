@@ -4518,5 +4518,183 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-08-21 audit: Troy University NCAA soccer without NY context"
+  },
+  {
+    "id": "fp-nps-national-parks-outside-capital-region",
+    "text": "Trump’s egotistical passion projects get millions by taking funding from public institutions. Funding allocated to national parks outside the capital region plunged by $854 million.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-22 audit: NPS funding wire contrasting parks outside the DC capital region"
+  },
+  {
+    "id": "tp-nys-capital-region-infrastructure-grants",
+    "text": "More than $5.4 million has been awarded to seven different Capital Region projects through New York State’s County Infrastructure Grant Program.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-22 audit: Cap Region counterpart to NPS outside-capital-region FP"
+  },
+  {
+    "id": "fp-denmark-copenhagen-capital-region-flight",
+    "text": "09-0540 Took off from Copenhagen, Capital Region, Denmark.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-22 audit: Danish Capital Region flight tracker"
+  },
+  {
+    "id": "fp-denmark-hovedstaden-letbane-capital-region",
+    "text": "Capital region light rail reaches full opening with public celebration #Capitalregion #lightrail",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "DR reports that the capital region’s light rail system will open along its full route on Saturday between Ishøj and Lundtofte. The Hovedstadens Letbane light rail system will be celebrated at Gladsaxe Town Hall.",
+    "note": "2026-08-22 audit: Danish Hovedstaden Letbane / Ishøj–Lundtofte capital region"
+  },
+  {
+    "id": "fp-victoria-peers-vancouverisland-capital-region",
+    "text": "The program spoke with Peers Victoria Resources Society about their work supporting sex workers.\n\nListen:\nvancouverislandmentalhealthsociety.org/podcast/vict...",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "Victoria organization Peers talks supporting sex workers Organization offers variety of programming in the capital region",
+    "note": "2026-08-22 audit: Victoria BC Peers / concatenated vancouverisland domain + capital region"
+  },
+  {
+    "id": "tp-greater-victoria-vs-albany-ny-capital-region",
+    "text": "Comparing Greater Victoria’s capital region transit to New York’s Capital Region bus network.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-22 audit: NY Capital Region still keeps when explicit NY anchors present"
+  },
+  {
+    "id": "fp-alberta-capital-region-data-centre",
+    "text": "Pretty sure it wasn’t anticipated to be a project that would double the energy needs for the entire Capital region, or require massive NG resources.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "author_handle": "barbh-ab.bsky.social",
+    "alt_text": "ALBERTA FACES OUTRAGE OVER $13B AI DATA CENTRE\n\nFurious rural residents confronted Tech Minister Nate Glubish over Meta's massive project.\nSource: CBC News\n#AISky #CdnPoli #AbLeg #DataCentres #Meta #AbPoli",
+    "note": "2026-08-22 audit: Alberta / #AbPoli capital region data-centre wire"
+  },
+  {
+    "id": "fp-troy-fautanu-steelers-new-york",
+    "text": "Pittsburgh’s offense struggled badly against New York, but Elandon Roberts, Carson Bruener and Troy Fautanu delivered positive performances in the loss.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-22 audit: NFL Troy Fautanu + New York opponent unlock"
+  },
+  {
+    "id": "fp-helen-of-troy-poetry-new-york-times",
+    "text": "Took me a minute for this one, until I wondered over near poetry for something else. Helen of Troy, 1993",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Helen of Troy, 1993: Poems —The New York Times Book Review, Editors’ Choice",
+    "note": "2026-08-22 audit: Helen of Troy poetry + New York Times Book Review"
+  },
+  {
+    "id": "fp-troy-sc-upstate-south-carolina-gsp",
+    "text": "Severe Thunderstorm Warning issued by NWS Greenville-Spartanburg SC",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "author_handle": "gsp.nws-bot.us",
+    "alt_text": "Southern Greenwood County in Upstate South Carolina... a severe thunderstorm was located 14 miles south of Greenwood, or 6 miles east of Troy, moving east at 20 mph.",
+    "note": "2026-08-22 audit: Troy SC via Upstate South Carolina / GSP NWS (bare upstate was NY context)"
+  },
+  {
+    "id": "fp-new-york-hotel-rotterdam-book",
+    "text": "New York's decision to reinvigorate the public-sector infrastructure that underpins its private-sector economy is one of the most successful government stories of the late 20th century.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "A hand holds a hardcover book: Movement: New York’s Long War to Take Back Its Streets From the Car, in front of the New York Hotel in Rotterdam.",
+    "note": "2026-08-22 audit: Hotel New York in Rotterdam photo + New York book title"
+  },
+  {
+    "id": "tp-rotterdam-ny-town-board",
+    "text": "Town board meeting in Rotterdam, NY tonight at the senior center.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-22 audit: Town of Rotterdam NY counterpart"
+  },
+  {
+    "id": "tp-tri-city-valleycats-bruno-stadium",
+    "text": "Catch the Tri-City ValleyCats at Joseph L. Bruno Stadium tonight before the regular season wraps up.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-22 audit: ValleyCats / Bruno Stadium recall without city token"
+  },
+  {
+    "id": "tp-the-egg-presents",
+    "text": "The Egg presents a jazz night Saturday.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-22 audit: The Egg presents venue cue without Albany co-occurrence"
+  },
+  {
+    "id": "tp-crossgates-commons-7-brew",
+    "text": "7 Brew continues expansion, opening at Crossgates Commons this fall.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-22 audit: Crossgates Commons local landmark without NY token"
+  },
+  {
+    "id": "tp-park-playhouse-washington-park",
+    "text": "Park Playhouse is back in Washington Park — and for the first time every seat is free.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-22 audit: Park Playhouse venue recall"
+  },
+  {
+    "id": "tp-saratoga250-burgoyne",
+    "text": "Wheeler Case's poetry is evidence of how one Patriot interpreted Burgoyne's defeat through faith, fear, and hindsight.\n\nRead it against Saratoga's landscape. #Saratoga250",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-22 audit: #Saratoga250 / Burgoyne Revolutionary War tourism FN"
   }
 ]
