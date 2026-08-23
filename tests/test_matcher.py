@@ -1663,3 +1663,100 @@ def test_valleycats_egg_crossgates_park_playhouse_saratoga250_recall() -> None:
         match_post("Burgoyne's defeat. Read it against Saratoga's landscape. #Saratoga250").matched
         is True
     )
+
+
+def test_bulgaria_japan_michigan_capital_region_not_ny() -> None:
+    bulgaria = match_post(
+        'Bulgarian authorities identified a GPS jamming device in Sofia. '
+        'The device degraded GPS reception in the capital region.'
+    )
+    assert bulgaria.matched is False
+    assert bulgaria.reason == 'hard_negative:bulgaria_capital_region'
+
+    japan = match_post(
+        'A magnitude 5.9 earthquake off the coast of Ibaraki disrupted rail '
+        'services across the capital region.',
+        alt_text='Magnitude 5.9 earthquake strikes eastern Japan',
+    )
+    assert japan.matched is False
+    assert japan.reason == 'hard_negative:japan_capital_region'
+
+    lansing = match_post(
+        'NWS Grand Rapids MI tracked a thunderstorm over Capital Region '
+        'International Airport, or near Lansing, moving east at 30 mph.'
+    )
+    assert lansing.matched is False
+
+    grr = match_post(
+        'Special Weather Statement issued by NWS Grand Rapids MI',
+        alt_text='Thunderstorm over Capital Region International Airport near Lansing',
+        author_handle='grr.nws-bot.us',
+    )
+    assert grr.matched is False
+    assert match_post("Dinner plans in New York's Capital Region tonight.").matched is True
+
+
+def test_albany_county_wy_not_rescued_by_albany_county_strong() -> None:
+    flood = match_post(
+        'Flash Flood Warning for Albany, WY #WYwx FFWCYS. '
+        'Southeastern Albany County in southeastern Wyoming.',
+        alt_text='Flash Flood Warning issued by NWS Cheyenne WY',
+    )
+    assert flood.matched is False
+    assert flood.reason == 'entity_other:albany_county_wy'
+    assert match_post('Albany County legislators meet in downtown #AlbanyNY.').matched is True
+
+
+def test_around_lake_george_not_round_lake() -> None:
+    okeeffe = match_post(
+        'Yellow Hickory Leaves with Daisy',
+        alt_text=(
+            'She frequently depicted leaves, inspired by the examples she found on '
+            'her walks around Lake George in upstate New York.'
+        ),
+    )
+    assert okeeffe.matched is False
+    assert match_post('Farmers market in Round Lake, NY this Saturday.').matched is True
+
+
+def test_brunswick_tulsa_ok_not_brunswick_ny() -> None:
+    jobs = match_post(
+        'Summer internships: Software Engineer Intern @ Ambrook NYC; '
+        'Software Engineer Intern @ Brunswick Tulsa, OK'
+    )
+    assert jobs.matched is False
+    assert jobs.reason == 'hard_negative:brunswick_ok'
+    assert match_post('Zoning hearing in Brunswick, NY next week.').matched is True
+
+
+def test_saratoga_park_montclair_ca_not_saratoga_ny() -> None:
+    park = match_post(
+        "Saratoga Park is on the brink of construction — what's next for "
+        "Montclair's infrastructure? #MontclairSanBernardinoCounty #CA",
+        alt_text='Saratoga Park grant pursuit continues as council reviews capital projects',
+    )
+    assert park.matched is False
+    assert park.reason == 'hard_negative:saratoga_park_ca'
+    assert match_post('Morning run in Saratoga Springs, NY.').matched is True
+
+
+def test_gta_liberty_city_albany_not_albany_ny() -> None:
+    gta = match_post(
+        'Replaying GTA IV with mods.',
+        alt_text=(
+            'An "Albany" with Liberty City (New York) plates from Cousin Roman\'s '
+            'taxi company in Broker (Brooklyn).'
+        ),
+    )
+    assert gta.matched is False
+    assert match_post('ICE activity concerns in #AlbanyNY this week.').matched is True
+
+
+def test_thacher_harness_spac_orchestra_recall() -> None:
+    assert match_post('WildPlay Thacher offers ziplines at Thacher State Park.').matched is True
+    assert (
+        match_post('17 horses killed in Saratoga Springs Harness Track barn fire.').matched is True
+    )
+    spac = match_post('Star Wars night with The Philadelphia Orchestra at SPAC.')
+    assert spac.matched is True
+    assert spac.reason.startswith('event_local_venue')

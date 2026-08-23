@@ -146,6 +146,12 @@ _STRONG_POSITIVE = re.compile(
       | \bsaratoga\b[\s]*[\u2013\u2014\-:]\s*race\s*\d
       | the\s+saratoga\s+special\b
       | battles?\s+of\s+saratoga\b
+      # Harness track / barn-fire wires often omit ", NY".
+      | saratoga\s+springs\s+harness\s+track
+      | harness\s+track[\s\S]{0,40}saratoga\s+springs
+      # Thacher State Park / WildPlay adventure copy often omits ", NY".
+      | thacher\s+state\s+park
+      | wildplay\s+thacher
       # Revolutionary War anniversary / tourism often omits ", NY".
       | \#saratoga250\b
       | \bburgoyne\b[\s\S]{0,120}\bsaratoga\b
@@ -219,12 +225,13 @@ _AMBIGUOUS_PLACE = re.compile(
       | \brensselaer\b
       | saratoga\s+springs
       | \bsaratoga\b
-      | round\s+lake
+      # Leading boundary: do not match inside "around Lake George".
+      | \bround\s+lake\b
       | \bdelmar\b
       | \bravena\b
       | \baltamont\b
-      | sand\s+lake\b
-      | green\s+island\b
+      | \bsand\s+lake\b
+      | \bgreen\s+island\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -298,7 +305,8 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
             california|sacramento|korea|south\s+korea|ukraine|kyiv|kiev|
             sudan|khartoum|virginia|richmond|colombia|bogot[aá]|
             iceland|reykjav[ií]k|finland|helsinki|australia|
-            georgia|atlanta|russia|moscow
+            georgia|atlanta|russia|moscow|bulgaria|sofia|japan|tokyo|
+            michigan|lansing
           )\b
       | ukrainian\s+capital\s+region
       | (?:russian|moscow)\s+capital\s+region
@@ -307,6 +315,9 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
       | finnish\s+capital\s+region
       | australian\s+capital\s+region
       | (?:virginia|richmond)\s+capital\s+region
+      | (?:bulgarian?|sofia)\s+capital\s+region
+      | (?:japanese?|tokyo)\s+capital\s+region
+      | michigan\s+capital\s+region
       | bogot[aá]\s+capital\s+district
       | capital\s+district\s*,?\s*colombia\b
       | icelandic\s+capital\s+district
@@ -341,6 +352,24 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
       | rensselaer\s*,?\s*(?:in|indiana)\b
       # Myth / poetry title — not the City of Troy.
       | helen\s+of\s+troy
+      # Albany County WY NWS — do not let "Albany County" strong override.
+      | albany\s*,\s*(?:wy|wyoming)\b
+      | albany\s+county[\s\S]{0,80}(?:\b(?:wy|wyoming)\b|\#wy\b|\#wywx\b|\blaramie\b|cheyenne)
+      | (?:\b(?:wy|wyoming)\b|\#wy\b|\#wywx\b|\blaramie\b|nws\s+cheyenne)[\s\S]{0,80}albany\s+county
+      # Lansing MI airport — not NY Capital Region.
+      | capital\s+region\s+international\s+airport
+      | capital\s+region\b[\s\S]{0,80}(?:\blansing\b|grand\s+rapids)
+      | (?:\blansing\b|grand\s+rapids|nws\s+grand\s+rapids)[\s\S]{0,80}capital\s+region\b
+      # Sofia / Tokyo "capital region" wires.
+      | (?:bulgarian?|sofia)\s+capital\s+region
+      | (?:japanese?|tokyo)\s+capital\s+region
+      | capital\s+region\s+of\s+(?:bulgaria|sofia|japan|tokyo)\b
+      # GTA Liberty City car named Albany — not Albany NY.
+      | liberty\s+city
+      | \bgta\s*iv?\b
+      # Montclair CA park — not Saratoga Springs NY.
+      | saratoga\s+park[\s\S]{0,120}montclair
+      | montclair[\s\S]{0,120}saratoga\s+park
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -757,6 +786,63 @@ _AB_CAPITAL_REGION = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
+# Bulgaria "capital region" (Sofia GPS / aviation wires).
+_BG_GEO_CUE = (
+    r'\bbulgaria\b|\bbulgarian\b|\bsofia\b|'
+    r'informat\.ro|\#bgpoli\b'
+)
+
+_BG_CAPITAL_REGION = re.compile(
+    rf"""
+    (?:
+        bulgarian\s+capital\s+region
+      | capital\s+region\s+of\s+(?:bulgaria|sofia)\b
+      | capital\s+region\b[\s\S]{{0,200}}(?:{_BG_GEO_CUE})
+      | (?:{_BG_GEO_CUE})[\s\S]{{0,200}}capital\s+region\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Japan "capital region" (Tokyo metro earthquake / rail wires).
+_JP_GEO_CUE = (
+    r'\bjapan\b|\bjapanese\b|\btokyo\b|'
+    r'\bibaraki\b|\bchiba\b|\bsaitama\b|\bkanagawa\b|'
+    r'\byokohama\b|\bosaka\b|\#japan\b'
+)
+
+_JP_CAPITAL_REGION = re.compile(
+    rf"""
+    (?:
+        japanese\s+capital\s+region
+      | capital\s+region\s+of\s+(?:japan|tokyo)\b
+      | capital\s+region\b[\s\S]{{0,200}}(?:{_JP_GEO_CUE})
+      | (?:{_JP_GEO_CUE})[\s\S]{{0,200}}capital\s+region\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Michigan "capital region" (Lansing / Capital Region International Airport).
+_MI_GEO_CUE = (
+    r'\blansing\b|\bmichigan\b|\#miwx\b|'
+    r'grand\s+rapids|nws\s+grand\s+rapids|'
+    r'capital\s+region\s+international\s+airport'
+)
+
+_MI_CAPITAL_REGION = re.compile(
+    rf"""
+    (?:
+        michigan\s+capital\s+region
+      | capital\s+region\s+international\s+airport
+      | capital\s+region\s+of\s+(?:michigan|lansing)\b
+      | capital\s+region\b[\s\S]{{0,200}}(?:{_MI_GEO_CUE})
+      | (?:{_MI_GEO_CUE})[\s\S]{{0,200}}capital\s+region\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
 # Australia "capital region" (Canberra / ACT / Queanbeyan charities).
 _AU_GEO_CUE = (
     r'\bcanberra\b|\bqueanbeyan\b|\baustralia\b|\baustralian\b|'
@@ -926,6 +1012,43 @@ _BRUNSWICK_RECORDS = re.compile(
         \(\s*brunswick\s*,\s*\d{4}\s*\)
       | brunswick\s+records?\b
       | on\s+brunswick\s+(?:records?\b|78s?\b|label\b)
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Brunswick Corporation / Tulsa OK job listings — not Town of Brunswick NY.
+_BRUNSWICK_OK = re.compile(
+    r"""
+    (?:
+        brunswick[\s\S]{0,80}\b(?:tulsa|oklahoma|\bok\b)\b
+      | \b(?:tulsa|oklahoma)\b[\s\S]{0,80}brunswick
+      | brunswick\s*,?\s*ok\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Montclair / San Bernardino "Saratoga Park" — not Saratoga Springs NY.
+_SARATOGA_PARK_CA = re.compile(
+    r"""
+    (?:
+        saratoga\s+park[\s\S]{0,160}(?:montclair|san\s+bernardino|\#montclair|\bca\b)
+      | (?:montclair|san\s+bernardino|\#montclair)[\s\S]{0,160}saratoga\s+park
+      | \#montclairsanbernardinocounty
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# GTA / Liberty City vehicle named Albany — not Albany NY.
+_GTA_ALBANY = re.compile(
+    r"""
+    (?:
+        liberty\s+city
+      | \bgta\s*iv?\b
+      | \brockstar\b[\s\S]{0,120}\balbany\b
+      | \balbany\b[\s\S]{0,120}(?:liberty\s+city|\bgta\b|cousin\s+roman)
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -1125,11 +1248,17 @@ _HARD_NEGATIVE = re.compile(
             canada|denmark|copenhagen|mississippi|louisiana|pennsylvania|
             california|sacramento|korea|south\s+korea|ukraine|kyiv|kiev|
             sudan|khartoum|virginia|richmond|colombia|bogot[aá]|
-            iceland|reykjav[ií]k
+            iceland|reykjav[ií]k|bulgaria|sofia|japan|michigan|lansing
           )\b
       | ukrainian\s+capital\s+region
       | sudan(?:ese)?\s+capital\s+region
       | icelandic\s+capital\s+(?:region|district)
+      | (?:bulgarian?|sofia)\s+capital\s+region
+      | (?:japanese?|tokyo)\s+capital\s+region
+      | michigan\s+capital\s+region
+      | capital\s+region\s+international\s+airport
+      | liberty\s+city
+      | \bgta\s*iv?\b
       | capital\s+district\s+fire\s+and\s+rescue
       | (?:the\s+)?egg\s+and\s+art\s+garden
       | art\s+garden\s+kc\b
@@ -1192,7 +1321,7 @@ _EVENT_CUE = re.compile(
         next\s+(?:friday|saturday|sunday|week)|
         # Require "doors at/open" — bare "doors" matches doorway photography.
         doors(?:\s+at|\s+open)|tickets?|presale|save\s+the\s+date|join\s+us|
-        open\s+mic|festival|concert|comedy\s+night|show\s+starts|
+        open\s+mic|festival|concert|orchestra|philharmonic|comedy\s+night|show\s+starts|
         \d{1,2}:\d{2}\s*(?:am|pm)|(?<!\d)\d{1,2}\s*(?:am|pm)\b|
         january|february|march|april|june|july|august|september|
         october|november|december
@@ -1335,9 +1464,14 @@ _ALBANY_COUNTY_WY = re.compile(
     r"""
     (?:
         albany\s+county(?:\s*,)?\s*(?:wy|wyoming)\b
-      # NWS bots tag state as [WY]; Laramie Valley is WY-only context.
-      | albany\s+county[\s\S]{0,240}(?:\bwyoming\b|\#wy\b|\[wy\]|\blaramie\b)
-      | (?:\#wy\b|\bwyoming\b|\[wy\]|\blaramie\b)[\s\S]{0,240}albany\s+county
+      | albany\s*,\s*(?:wy|wyoming)\b
+      # NWS bots tag state as [WY] / #WYwx; Laramie Valley is WY-only context.
+      | albany\s+county[\s\S]{0,240}(?:
+            \bwyoming\b|\#wy\b|\#wywx\b|\[wy\]|\blaramie\b|cheyenne|nws\s+cheyenne
+        )
+      | (?:
+            \#wy\b|\#wywx\b|\bwyoming\b|\[wy\]|\blaramie\b|cheyenne|nws\s+cheyenne
+        )[\s\S]{0,240}albany\s+county
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -1622,6 +1756,35 @@ def _alberta_capital_region_conflict(haystack: str, author_handle: str | None = 
     return False
 
 
+def _bulgaria_capital_region_conflict(haystack: str) -> bool:
+    """True when 'capital region' refers to Sofia / Bulgaria, not NY."""
+    if not _BG_CAPITAL_REGION.search(haystack):
+        return False
+    return not _ny_capital_region_context(haystack)
+
+
+def _japan_capital_region_conflict(haystack: str) -> bool:
+    """True when 'capital region' refers to Tokyo metro / Japan, not NY."""
+    if not _JP_CAPITAL_REGION.search(haystack):
+        return False
+    return not _ny_capital_region_context(haystack)
+
+
+def _michigan_capital_region_conflict(haystack: str, author_handle: str | None = None) -> bool:
+    """True when 'capital region' refers to Lansing MI airport metro, not NY."""
+    if _ny_capital_region_context(haystack):
+        return False
+    if _MI_CAPITAL_REGION.search(haystack):
+        return True
+    handle = (author_handle or '').strip().lower()
+    # NWS Grand Rapids bots (grr.nws-bot.us) often omit Lansing in short text.
+    if re.search(r'(?<![a-z0-9])grr(?:\.|nws|-)', handle) and re.search(
+        r'capital\s+region\b', haystack, flags=re.IGNORECASE
+    ):
+        return True
+    return False
+
+
 def _australia_capital_region_conflict(haystack: str) -> bool:
     """True when 'capital region' refers to Canberra / ACT, not NY."""
     if not _AU_CAPITAL_REGION.search(haystack):
@@ -1808,6 +1971,51 @@ def _brunswick_records_conflict(haystack: str) -> bool:
         return False
     if re.search(
         r'brunswick\s*,?\s*(?:ny|n\.y\.|new\s+york)\b|town\s+of\s+brunswick',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    return True
+
+
+def _brunswick_ok_conflict(haystack: str) -> bool:
+    """True when Brunswick refers to Tulsa OK / corp jobs, not Town of Brunswick NY."""
+    if not re.search(r'\bbrunswick\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not _BRUNSWICK_OK.search(haystack):
+        return False
+    if re.search(
+        r'brunswick\s*,?\s*(?:ny|n\.y\.|new\s+york)\b|town\s+of\s+brunswick',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    return True
+
+
+def _saratoga_park_ca_conflict(haystack: str) -> bool:
+    """True when Saratoga Park refers to Montclair CA, not Saratoga Springs NY."""
+    if not re.search(r'\bsaratoga\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not _SARATOGA_PARK_CA.search(haystack):
+        return False
+    if re.search(
+        r'saratoga(?:\s+springs)?\s*,?\s*(?:ny|n\.y\.|new\s+york)\b',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    return not _ny_capital_region_context(haystack)
+
+
+def _gta_albany_conflict(haystack: str) -> bool:
+    """True when Albany refers to a GTA / Liberty City vehicle, not Albany NY."""
+    if not re.search(r'\balbany\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not _GTA_ALBANY.search(haystack):
+        return False
+    if re.search(
+        r'albany\s*,?\s*(?:ny|n\.y\.|new\s+york)\b|#albanyny\b',
         haystack,
         flags=re.IGNORECASE,
     ):
@@ -2017,6 +2225,9 @@ def match_post(
     if _HARD_NEGATIVE.search(haystack):
         # Strong NY phrasing can still win over a hard negative only when it is
         # clearly local (e.g. quoting "New Albany" while talking about Albany, NY).
+        # Albany County WY must not be rescued by the bare "Albany County" token.
+        if _albany_county_wy_conflict(haystack):
+            return MatchResult(False, 'entity_other:albany_county_wy')
         if _STRONG_POSITIVE.search(haystack) and not _HARD_NEGATIVE_BLOCKS_STRONG.search(haystack):
             return MatchResult(True, 'strong_positive_over_negative')
         return MatchResult(False, 'hard_negative')
@@ -2064,6 +2275,12 @@ def match_post(
             return MatchResult(False, 'hard_negative:denmark_capital_region')
         if _alberta_capital_region_conflict(haystack, author_handle):
             return MatchResult(False, 'hard_negative:alberta_capital_region')
+        if _bulgaria_capital_region_conflict(haystack):
+            return MatchResult(False, 'hard_negative:bulgaria_capital_region')
+        if _japan_capital_region_conflict(haystack):
+            return MatchResult(False, 'hard_negative:japan_capital_region')
+        if _michigan_capital_region_conflict(haystack, author_handle):
+            return MatchResult(False, 'hard_negative:michigan_capital_region')
         if _australia_capital_region_conflict(haystack):
             return MatchResult(False, 'hard_negative:australia_capital_region')
         if _georgia_atlanta_capital_region_conflict(haystack):
@@ -2150,6 +2367,8 @@ def match_post(
         if term == 'albany':
             if _albany_bay_area_conflict(haystack):
                 return MatchResult(False, 'hard_negative:albany_bay_area')
+            if _gta_albany_conflict(haystack):
+                return MatchResult(False, 'hard_negative:gta_albany')
             if _NY_CONTEXT.search(place_haystack):
                 return MatchResult(True, 'albany_with_ny_context')
             if _STRONG_POSITIVE.search(haystack):
@@ -2182,6 +2401,9 @@ def match_post(
         if term == 'brunswick' and _brunswick_records_conflict(haystack):
             return MatchResult(False, 'hard_negative:brunswick_records')
 
+        if term == 'brunswick' and _brunswick_ok_conflict(haystack):
+            return MatchResult(False, 'hard_negative:brunswick_ok')
+
         if term == 'waterford' and _waterford_ct_conflict(haystack):
             return MatchResult(False, 'hard_negative:waterford_ct')
 
@@ -2198,6 +2420,9 @@ def match_post(
             haystack, author_handle
         ):
             return MatchResult(False, 'hard_negative:disney_saratoga')
+
+        if term in {'saratoga', 'saratoga springs'} and _saratoga_park_ca_conflict(haystack):
+            return MatchResult(False, 'hard_negative:saratoga_park_ca')
 
         if term in {'saratoga', 'saratoga springs'} and _albany_bay_area_conflict(haystack):
             return MatchResult(False, 'hard_negative:albany_bay_area')
