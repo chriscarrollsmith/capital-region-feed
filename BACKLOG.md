@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-076 — Daily feed audit: Bulgaria/Japan/Michigan capital region, Albany WY override, around-Lake, Brunswick Tulsa, Saratoga Park CA, GTA Albany, Thacher/harness/SPAC FNs
-- **Status:** in progress
+- **Status:** done ([#51](https://github.com/chriscarrollsmith/capital-region-feed/pull/51))
 - **Why:** 2026-08-23 audit of last-24h AppView feed (~166 posts since 2026-08-22T09:01Z)
   found active FPs after cherry-picking #49/#50: Sofia/Bulgaria "capital region" GPS
   jamming wires; Tokyo/Ibaraki "capital region" earthquake cards; Lansing MI Capital
