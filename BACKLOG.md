@@ -538,6 +538,31 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-074 — Daily feed audit: Waynedale Loudonville handle, DC go-go capital region, Rotterdam Film Festival, Troy Nyhammer, Brunswick Records, ABR/RentRedi/Saratoga race recall
+- **Status:** done ([#49](https://github.com/chriscarrollsmith/capital-region-feed/pull/49))
+- **Why:** 2026-08-21 audit of last-24h AppView feed (~349 posts since 2026-08-20T09:01Z)
+  found active FPs: Waynedale HS soccer handle vs bare Loudonville (Ohio cues only in
+  body text, not handles); DC go-go "capital region" weekend cards (Banner MoCo/PG
+  handles already gated; zuriberry.com was not); Rotterdam Film Festival trailers
+  unlocked via NYC + ambiguous Rotterdam; Tromsø XI "Troy Nyhammer" matched the
+  `troy`+`ny` strong positive without a word boundary after `ny`; Brunswick Records
+  discographies `(Brunswick, 1925)` + New York studio dates unlocked Town of Brunswick.
+  FNs: bare `Albany Business Review` publisher copy; RentRedi-in-Latham without NY;
+  cross-country pick cards `Saratoga – Race 5` (en dash). Stale European Malta /
+  Stillwater County MT / Troy University rows rematch-drop. AppView `searchPosts`
+  partially 403'd. Intentional keeps include allowlisted News10/Times Union,
+  Cohoes/Saratoga County local news, and residual NYC↔Albany statehouse cards.
+- **Work:**
+  - Gate Loudonville OH via `waynedale` author handles.
+  - Add DC go-go cues to MD/DC capital-region conflict.
+  - Expand Malta/Europe cues for Rotterdam Film Festival / IFFR.
+  - Require `\b` after `ny` in `troy`+`ny` strong positive.
+  - Hard-negative Brunswick Records discography patterns.
+  - Strong positives: Albany Business Review; RentRedi; `Saratoga – Race N`.
+  - Grow eval with 2026-08-21 FP/TP/FN anchors.
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-073 — Daily feed audit: I-787 study N, Troy Aikman, Loudonville OH soccer, NL New York Pizza, River Street off-region, Saratoga/Albany recall
 - **Status:** done ([#48](https://github.com/chriscarrollsmith/capital-region-feed/pull/48); from [#47](https://github.com/chriscarrollsmith/capital-region-feed/pull/47))
 - **Why:** 2026-08-20 audit of last-24h AppView feed (~152 posts since 2026-08-19T09:02Z)

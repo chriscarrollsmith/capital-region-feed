@@ -1497,3 +1497,79 @@ def test_saratoga_race_cards_and_albany_region_recall() -> None:
         '7 Brew Coffee now has five locations in the Albany region and more are on the way.'
     )
     assert region.matched is True
+
+
+def test_waynedale_handle_loudonville_not_ny() -> None:
+    soccer = match_post(
+        "Highlights from Tuesday's 1-0 victory over Loudonville.",
+        author_handle='waynedalesoccer.bsky.social',
+    )
+    assert soccer.matched is False
+    assert soccer.reason == 'hard_negative:loudonville_oh'
+    assert match_post('Road work begins in Loudonville near Albany this week.').matched is True
+
+
+def test_dc_go_go_capital_region_not_ny() -> None:
+    go_go = match_post(
+        'Go-go music has an age problem. Plus, more things to do this weekend.',
+        alt_text=(
+            '7 things to do in the capital region, from a go-go concert to a demolition derby'
+        ),
+        author_handle='zuriberry.com',
+    )
+    assert go_go.matched is False
+    assert go_go.reason == 'hard_negative:md_dc_capital_region'
+    assert match_post("New York's Capital Region flash flood warning until 10pm.").matched is True
+
+
+def test_rotterdam_film_festival_not_rotterdam_ny() -> None:
+    trailer = match_post(
+        "NYC's Hidden Libraries Occult Mystery Thriller 'Chronovisor' Trailer",
+        alt_text='It premiered at the 2026 Rotterdam Film Festival.',
+    )
+    assert trailer.matched is False
+    assert trailer.reason == 'hard_negative:malta_europe'
+    assert match_post('Town board meeting in Rotterdam, NY tonight.').matched is True
+
+
+def test_troy_nyhammer_not_troy_ny() -> None:
+    card = match_post(
+        'Pre-match vibe: Brighton visit Tromso in the Conference League Qual.',
+        alt_text=(
+            'Tromsø IL: Jakob Haugaard, Vetle Skjærvik, Troy Nyhammer\n'
+            'Brighton & Hove Albion: Bart Verbruggen'
+        ),
+    )
+    assert card.matched is False
+    assert match_post('Dinner in Troy, NY tonight.').matched is True
+
+
+def test_brunswick_records_not_brunswick_ny() -> None:
+    shellac = match_post(
+        'The Cotton Pickers - Mishawaka Blues (1925). Recorded in New York, NY 6 Feb. 1925.',
+        alt_text='"Mishawaka Blues" The Cotton Pickers (Brunswick, 1925)',
+    )
+    assert shellac.matched is False
+    assert shellac.reason == 'hard_negative:brunswick_records'
+    assert match_post('Dinner in Brunswick, NY tonight.').matched is True
+
+
+def test_albany_business_review_and_rentredi_recall() -> None:
+    abr = match_post(
+        'Walter Thorne, market president and publisher of the Albany Business Review, '
+        'has announced he will exit the role.'
+    )
+    assert abr.matched is True
+
+    rentredi = match_post(
+        "A few years back, the founder of what's now RentRedi in Latham lost out on "
+        'an apartment because of paperwork.'
+    )
+    assert rentredi.matched is True
+
+    race_card = match_post(
+        'Play the low takeout Cross Country Pick 5 today!\n'
+        'Leg A: Saratoga – Race 5 (3:29 PM ET)\n'
+        'Leg B: Horseshoe Indianapolis – Race 6'
+    )
+    assert race_card.matched is True
