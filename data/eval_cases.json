@@ -4696,5 +4696,170 @@
     "split": "dev",
     "regression": true,
     "note": "2026-08-22 audit: #Saratoga250 / Burgoyne Revolutionary War tourism FN"
+  },
+  {
+    "id": "fp-bulgaria-sofia-capital-region",
+    "text": "Bulgarian authorities identified a GPS jamming device in Sofia. The device degraded GPS reception in the capital region, with aviation among the affected systems.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-23 audit: Sofia/Bulgaria capital region GPS wire"
+  },
+  {
+    "id": "fp-japan-ibaraki-capital-region",
+    "text": "A magnitude 5.9 earthquake off the coast of Ibaraki injured at least five people, burst a water main in Tokyo and disrupted rail services across the capital region.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "Magnitude 5.9 earthquake strikes eastern Japan across Ibaraki, Chiba and Saitama",
+    "note": "2026-08-23 audit: Tokyo metro capital region quake wire"
+  },
+  {
+    "id": "fp-lansing-capital-region-intl-airport",
+    "text": "NWS Grand Rapids MI tracked a strong thunderstorm over Capital Region International Airport, or near Lansing, moving east at 30 mph.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-23 audit: Lansing MI Capital Region International Airport"
+  },
+  {
+    "id": "fp-albany-county-wy-wywx-cheyenne",
+    "text": "Flash Flood Warning for Albany, WY #WYwx FFWCYS. Southeastern Albany County in southeastern Wyoming.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "Flash Flood Warning issued by NWS Cheyenne WY",
+    "note": "2026-08-23 audit: Albany County WY must not be rescued by Albany County strong"
+  },
+  {
+    "id": "fp-around-lake-george-not-round-lake",
+    "text": "Yellow Hickory Leaves with Daisy",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "She frequently depicted leaves, inspired by the examples she found on her walks around Lake George in upstate New York.",
+    "note": "2026-08-23 audit: around Lake must not match Round Lake ambiguous token"
+  },
+  {
+    "id": "fp-brunswick-tulsa-ok-nyc-jobs",
+    "text": "Summer internships: Software Engineer Intern @ Ambrook NYC; Software Engineer Intern @ Brunswick Tulsa, OK",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-23 audit: Brunswick Corp Tulsa unlocked via NYC co-listing"
+  },
+  {
+    "id": "fp-saratoga-park-montclair-ca",
+    "text": "Saratoga Park is on the brink of construction — what's next for Montclair's infrastructure? #MontclairSanBernardinoCounty #CA",
+    "expected": false,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Saratoga Park grant pursuit continues as council reviews capital project lists",
+    "note": "2026-08-23 audit: Montclair CA Saratoga Park classifier keep"
+  },
+  {
+    "id": "fp-gta-liberty-city-albany",
+    "text": "Replaying GTA IV with graphics mods.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "An \"Albany\" with Liberty City (New York) plates from Cousin Roman's taxi company in Broker (Brooklyn).",
+    "note": "2026-08-23 audit: GTA Liberty City car named Albany + New York"
+  },
+  {
+    "id": "tp-ny-capital-region-longhorn",
+    "text": "LongHorn Steakhouse has unveiled plans for a second location in New York's Capital Region.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-23 audit: NY Capital Region counterpart to Sofia/Tokyo/Lansing FPs"
+  },
+  {
+    "id": "tp-round-lake-ny-farmers-market",
+    "text": "Farmers market in Round Lake, NY this Saturday.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-23 audit: true Round Lake NY counterpart to around-Lake FP"
+  },
+  {
+    "id": "tp-brunswick-ny-zoning",
+    "text": "Zoning hearing in Brunswick, NY next week.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-23 audit: Town of Brunswick NY counterpart to Tulsa OK FP"
+  },
+  {
+    "id": "tp-saratoga-springs-ny-run",
+    "text": "Morning run in Saratoga Springs, NY.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-23 audit: Saratoga Springs NY counterpart to Montclair Saratoga Park"
+  },
+  {
+    "id": "fn-saratoga-springs-harness-track",
+    "text": "17 horses killed in Saratoga Springs Harness Track barn fire",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-23 audit: Saratoga Springs Harness Track FN without , NY"
+  },
+  {
+    "id": "fn-thacher-state-park-wildplay",
+    "text": "WildPlay Thacher offers ziplines at Thacher State Park. Adventure for ages 5 and up.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-23 audit: Thacher State Park / WildPlay Thacher FN"
+  },
+  {
+    "id": "fn-spac-philadelphia-orchestra",
+    "text": "Star Wars night with The Philadelphia Orchestra at SPAC.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-23 audit: orchestra + at SPAC event venue FN"
+  },
+  {
+    "id": "tp-albany-county-ny-legislators",
+    "text": "Albany County legislators meet downtown this week. #AlbanyNY",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-23 audit: Albany County NY counterpart to WY flood FP"
   }
 ]

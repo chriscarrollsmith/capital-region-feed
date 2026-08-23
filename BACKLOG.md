@@ -538,6 +538,32 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-076 — Daily feed audit: Bulgaria/Japan/Michigan capital region, Albany WY override, around-Lake, Brunswick Tulsa, Saratoga Park CA, GTA Albany, Thacher/harness/SPAC FNs
+- **Status:** in progress
+- **Why:** 2026-08-23 audit of last-24h AppView feed (~166 posts since 2026-08-22T09:01Z)
+  found active FPs after cherry-picking #49/#50: Sofia/Bulgaria "capital region" GPS
+  jamming wires; Tokyo/Ibaraki "capital region" earthquake cards; Lansing MI Capital
+  Region International Airport / NWS Grand Rapids (`grr.nws`) statements; Albany County
+  WY flash floods kept via `strong_positive_over_negative` (Albany, WY hard-neg rescued
+  by bare `Albany County`); Georgia O'Keeffe "around Lake George" matching ambiguous
+  `round lake` (missing leading word boundary); Brunswick Corp Tulsa OK jobs unlocked
+  by Ambrook NYC co-listing; Montclair CA Saratoga Park via classifier; GTA IV Liberty
+  City car named Albany + New York. FNs: Saratoga Springs Harness Track; Thacher State
+  Park / WildPlay Thacher; Philadelphia Orchestra at SPAC (needed `orchestra` event cue).
+  AppView `searchPosts` 403'd. Intentional keeps include allowlisted News10/Saratoga
+  tourism and Saratoga race cards. Residual: allowlisted non-local; NYC↔Albany
+  statehouse; bare-Albany jobs; person-named Troy fiction.
+- **Work:**
+  - Bulgaria + Japan + Michigan capital-region conflict helpers (`grr` handle gate).
+  - Check Albany County WY before `strong_positive_over_negative`; expand `#wywx` /
+    Cheyenne cues; block strong override in `_HARD_NEGATIVE_BLOCKS_STRONG`.
+  - `\bround\s+lake\b` boundary; Brunswick OK / Saratoga Park CA / GTA Liberty City gates.
+  - Strong/event positives: harness track; Thacher / WildPlay; `orchestra`/`philharmonic`
+    event cues with `at SPAC`.
+  - Grow eval with 2026-08-23 FP/TP/FN anchors.
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-075 — Daily feed audit: Denmark/Alberta capital region, NPS outside CR, Victoria Island Peers, Troy Fautanu/Helen/SC, Rotterdam Hotel NY, ValleyCats/Egg/Crossgates FNs
 - **Status:** done ([#50](https://github.com/chriscarrollsmith/capital-region-feed/pull/50))
 - **Why:** 2026-08-22 audit of last-24h AppView feed (~233 posts since 2026-08-21T09:01Z)
