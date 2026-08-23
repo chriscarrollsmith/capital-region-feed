@@ -1573,3 +1573,93 @@ def test_albany_business_review_and_rentredi_recall() -> None:
         'Leg B: Horseshoe Indianapolis – Race 6'
     )
     assert race_card.matched is True
+
+
+def test_denmark_and_alberta_capital_region_not_ny() -> None:
+    flight = match_post('09-0540 Took off from Copenhagen, Capital Region, Denmark.')
+    assert flight.matched is False
+    assert flight.reason == 'hard_negative:denmark_capital_region'
+
+    letbane = match_post(
+        'Capital region light rail reaches full opening with public celebration',
+        alt_text=(
+            'DR reports that the capital region’s light rail system will open between '
+            'Ishøj and Lundtofte. The Hovedstadens Letbane festival is at Gladsaxe.'
+        ),
+    )
+    assert letbane.matched is False
+    assert letbane.reason == 'hard_negative:denmark_capital_region'
+
+    alberta = match_post(
+        'The project would double the energy needs for the entire Capital region.',
+        alt_text='ALBERTA FACES OUTRAGE #CdnPoli #AbLeg #AbPoli Nate Glubish',
+        author_handle='barbh-ab.bsky.social',
+    )
+    assert alberta.matched is False
+    assert alberta.reason == 'hard_negative:alberta_capital_region'
+
+
+def test_nps_outside_capital_region_and_victoria_island_peers() -> None:
+    nps = match_post(
+        'Funding allocated to national parks outside the capital region plunged by $854 million.'
+    )
+    assert nps.matched is False
+    assert nps.reason == 'hard_negative:md_dc_capital_region'
+
+    peers = match_post(
+        'The program spoke with Peers Victoria Resources Society.\n'
+        'vancouverislandmentalhealthsociety.org/podcast/vict...',
+        alt_text='Organization offers variety of programming in the capital region',
+    )
+    assert peers.matched is False
+    assert peers.reason == 'hard_negative:canadian_capital_region'
+
+
+def test_troy_fautanu_helen_of_troy_and_troy_sc() -> None:
+    fautanu = match_post(
+        'Pittsburgh’s offense struggled badly against New York, but Troy Fautanu '
+        'delivered a positive performance in the loss.'
+    )
+    assert fautanu.matched is False
+
+    helen = match_post(
+        'Helen of Troy, 1993',
+        alt_text='Helen of Troy, 1993: Poems —The New York Times Book Review',
+    )
+    assert helen.matched is False
+
+    gsp = match_post(
+        'Severe Thunderstorm Warning by NWS Greenville-Spartanburg SC',
+        alt_text=(
+            'Southern Greenwood County in Upstate South Carolina... '
+            '6 miles east of Troy, moving east at 20 mph.'
+        ),
+        author_handle='gsp.nws-bot.us',
+    )
+    assert gsp.matched is False
+    assert gsp.reason == 'hard_negative:troy_sc'
+    assert match_post('Dinner in Troy, New York tonight.').matched is True
+
+
+def test_new_york_hotel_rotterdam_not_rotterdam_ny() -> None:
+    hotel = match_post(
+        "New York's decision to reinvigorate public-sector infrastructure.",
+        alt_text='Photo in front of the New York Hotel in Rotterdam.',
+    )
+    assert hotel.matched is False
+    assert hotel.reason == 'hard_negative:malta_europe'
+    assert match_post('Town board meeting in Rotterdam, NY tonight.').matched is True
+
+
+def test_valleycats_egg_crossgates_park_playhouse_saratoga250_recall() -> None:
+    assert (
+        match_post('Catch the Tri-City ValleyCats at Joseph L. Bruno Stadium tonight.').matched
+        is True
+    )
+    assert match_post('The Egg presents a jazz night Saturday.').matched is True
+    assert match_post('7 Brew opening at Crossgates Commons this fall.').matched is True
+    assert match_post('Park Playhouse is back in Washington Park with free seats.').matched is True
+    assert (
+        match_post("Burgoyne's defeat. Read it against Saratoga's landscape. #Saratoga250").matched
+        is True
+    )

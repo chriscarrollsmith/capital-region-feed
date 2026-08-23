@@ -538,6 +538,33 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-075 — Daily feed audit: Denmark/Alberta capital region, NPS outside CR, Victoria Island Peers, Troy Fautanu/Helen/SC, Rotterdam Hotel NY, ValleyCats/Egg/Crossgates FNs
+- **Status:** done ([#50](https://github.com/chriscarrollsmith/capital-region-feed/pull/50))
+- **Why:** 2026-08-22 audit of last-24h AppView feed (~233 posts since 2026-08-21T09:01Z)
+  found active FPs after cherry-picking #49: Danish "Capital Region, Denmark" flight
+  trackers and Hovedstaden Letbane (Ishøj/Lundtofte/Gladsaxe) light-rail wires; Alberta
+  `#AbPoli` / Glubish data-centre "Capital region" cards; NPS funding copy about
+  "national parks outside the capital region"; Victoria BC Peers podcast via concatenated
+  `vancouverisland` domain (spaced `vancouver island` cue missed); NFL Troy Fautanu +
+  New York; Helen of Troy poetry + New York Times Book Review; Troy SC unlocked because
+  bare `\bupstate\b` matched "Upstate South Carolina"; New York Hotel in Rotterdam book
+  photos. FNs: Tri-City ValleyCats / Bruno Stadium; `The Egg presents`; Crossgates
+  Commons; Park Playhouse; `#Saratoga250` / Burgoyne. AppView `searchPosts` 403'd.
+  Intentional keeps include allowlisted News10/Times Union and UAlbany college-fair
+  entity hits. Residual: person-named Troy + nyc-suburb alt fiction; allowlisted
+  non-local; NYC↔Albany statehouse; bare-Albany jobs.
+- **Work:**
+  - Denmark + Alberta capital-region conflict helpers (and `-ab.` handle gate).
+  - Expand Canadian cues (`vancouverisland` / `peers victoria`); MD/DC
+    `national parks outside`.
+  - Narrow `_NY_CONTEXT` bare `upstate` away from Carolinas; Troy SC / GSP handle gate.
+  - Troy Fautanu lookbehind; Helen of Troy hard-negative; New York Hotel Rotterdam.
+  - Strong/event positives: ValleyCats / Bruno Stadium / Crossgates / Park Playhouse /
+    The Egg presents / `#Saratoga250` / Burgoyne.
+  - Grow eval with 2026-08-22 FP/TP/FN anchors.
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-074 — Daily feed audit: Waynedale Loudonville handle, DC go-go capital region, Rotterdam Film Festival, Troy Nyhammer, Brunswick Records, ABR/RentRedi/Saratoga race recall
 - **Status:** done ([#49](https://github.com/chriscarrollsmith/capital-region-feed/pull/49))
 - **Why:** 2026-08-21 audit of last-24h AppView feed (~349 posts since 2026-08-20T09:01Z)
