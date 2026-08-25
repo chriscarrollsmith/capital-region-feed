@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-077 — Daily feed audit: E Greenbush boundary, Brussels slash, Helderberg SA, NBC4, Albany Post Rd, RentRedi spam, 9H-NYC, SoCal #saratoga, Saratoga meet/Schuyler FNs
-- **Status:** in progress
+- **Status:** done ([#54](https://github.com/chriscarrollsmith/capital-region-feed/pull/54))
 - **Why:** 2026-08-25 audit of last-24h AppView feed (~183 posts since 2026-08-24T09:01Z)
   found active FPs after #51: Madison "white Greenbush Bakery" via `e Greenbush` substring;
   Cape Town BP Helderberg / Western Cape; Brussels Times `Brussels/Capital Region` slash;
