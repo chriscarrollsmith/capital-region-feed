@@ -4861,5 +4861,170 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-08-23 audit: Albany County NY counterpart to WY flood FP"
+  },
+  {
+    "id": "fp-white-greenbush-bakery-madison",
+    "text": "Wrapped up my weekend in Madison with a stop at Greenbush Bakery.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "A white Greenbush Bakery, advertising kosher doughnuts.",
+    "note": "2026-08-25 audit: white Greenbush matched E Greenbush abbreviation"
+  },
+  {
+    "id": "tp-e-greenbush-nws-locations",
+    "text": "Locations Impacted Include Albany, E Greenbush, Rensselaer, Chatham, Nassau, Delmar, New Baltimore",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-25 audit: E Greenbush NWS keep after word-boundary fix"
+  },
+  {
+    "id": "fp-helderberg-cape-town-strand",
+    "text": "Congratulations to new members at BP Helderberg in Strand, Cape Town. Western Cape recruitment team.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-25 audit: Cape Town Helderberg vs Helderberg Escarpment"
+  },
+  {
+    "id": "tp-helderberg-escarpment-hike-0825",
+    "text": "Hike the Helderberg Escarpment this weekend near #AlbanyNY.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-25 audit: Helderberg Escarpment keep after Cape Town gate"
+  },
+  {
+    "id": "fp-brussels-slash-capital-region",
+    "text": "Brussels authorities keep the yellow drought alert in place across Brussels/Capital Region despite cooler temperatures.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-25 audit: Brussels/Capital Region slash form"
+  },
+  {
+    "id": "fp-malta-aircraft-reg-9h-nyc",
+    "text": "Aterrizaje Vuelo: AXY361A Aeronave: Lineage 1000 (9H-NYC) Origen: Malta Llegada: Palma de Mallorca (PMI)",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-25 audit: 9H-NYC aircraft reg unlocked Malta via NYC"
+  },
+  {
+    "id": "fp-nbc4-telemundo-capital-region",
+    "text": "www.thedailybeast.com/nbc-news-anc...",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "NBC News Anchor Quits Live on the Air Joseph Olmo has covered the capital region for about seven years, with NBC4 and Telemundo 44.",
+    "note": "2026-08-25 audit: DC NBC4/Telemundo 44 capital region card"
+  },
+  {
+    "id": "fp-old-albany-post-road-garrison",
+    "text": "Discover peaceful living at 298 Old Albany Post Road in beautiful Garrison, NY! #PutnamCounty #HudsonValley",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-25 audit: Old Albany Post Road Putnam County"
+  },
+  {
+    "id": "fp-rentredi-hashtag-spam",
+    "text": "5 Ways Property Management Bleeds Your Budget #rentredi #aitenantcommunication #propertymanagementproductivity",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-25 audit: bare #rentredi SEO spam"
+  },
+  {
+    "id": "tp-rentredi-in-latham-0825",
+    "text": "A few years back, the founder of what's now RentRedi in Latham lost out on an apartment because of paperwork.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-25 audit: RentRedi+Latham keep after spam gate"
+  },
+  {
+    "id": "fp-socal-thoroughbred-saratoga-hashtags",
+    "text": "#heat #losangeles #socal #horses #horseracing #thoroughbreds #delmar #saratoga #mountaineerpark",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "First Post: roasting Southern California generally",
+    "note": "2026-08-25 audit: SoCal #saratoga hashtag stuffing with thoroughbreds"
+  },
+  {
+    "id": "tp-stakes-at-saratoga-del-mar-card",
+    "text": "Check out the likely fields for stakes at Saratoga, Del Mar, Kentucky Downs and Charles Town.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-25 audit: multi-track stakes card still keeps Saratoga"
+  },
+  {
+    "id": "fp-center-square-document-obtained",
+    "text": "",
+    "expected": false,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "A confidential document obtained by The Center Square shows at least 22 Democratic attorneys general plotted litigation against President Donald Trump as early as April 28, 2024.",
+    "note": "2026-08-25 audit: obtained by The Center Square wire card"
+  },
+  {
+    "id": "fn-saratoga-meet-irad-ortiz",
+    "text": "Jockey Irad Ortiz, with lingering foot injury, will miss remainder of Saratoga meet",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-25 audit: Saratoga meet race-wire FN"
+  },
+  {
+    "id": "fn-fort-schuyler-saratoga-campaign",
+    "text": "What happened at Fort Schuyler helps explain what happened at Saratoga. Oriskany, Haudenosaunee political divisions, and Benedict Arnold.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-25 audit: Fort Schuyler / Oriskany Saratoga campaign FN"
+  },
+  {
+    "id": "tp-capital-region-times-union-ulster-card",
+    "text": "There is an epidemic of murder suicides happening in the capital region, it's horrible",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "This is the second domestic murder-suicide the Times Union has reported in less than a week.",
+    "note": "2026-08-25 audit: intentional capital region + Times Union keep (Ulster card still uses CR phrasing)"
   }
 ]
