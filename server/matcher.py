@@ -63,8 +63,9 @@ _STRONG_POSITIVE = re.compile(
       | \bduanesburg\b
       | \bdelanson\b
       # NWS / scanner copy often abbreviates East/North Greenbush.
-      | (?:e\.?|east)\s+greenbush
-      | (?:n\.?|north)\s+greenbush
+      # Leading word boundary: "white Greenbush Bakery" must not match "e Greenbush".
+      | \b(?:e\.?|east)\s+greenbush
+      | \b(?:n\.?|north)\s+greenbush
       | mechanicville
       | burnt\s+hills
       | ballston\s+spa
@@ -146,6 +147,8 @@ _STRONG_POSITIVE = re.compile(
       | \bsaratoga\b[\s]*[\u2013\u2014\-:]\s*race\s*\d
       | the\s+saratoga\s+special\b
       | battles?\s+of\s+saratoga\b
+      # Race-meet wires often omit ", NY" ("remainder of Saratoga meet").
+      | \bsaratoga\s+meet\b
       # Harness track / barn-fire wires often omit ", NY".
       | saratoga\s+springs\s+harness\s+track
       | harness\s+track[\s\S]{0,40}saratoga\s+springs
@@ -156,6 +159,11 @@ _STRONG_POSITIVE = re.compile(
       | \#saratoga250\b
       | \bburgoyne\b[\s\S]{0,120}\bsaratoga\b
       | \bsaratoga\b[\s\S]{0,120}\bburgoyne\b
+      # Saratoga campaign wires often name Fort Schuyler / Oriskany without ", NY".
+      | fort\s+schuyler[\s\S]{0,160}\bsaratoga\b
+      | \bsaratoga\b[\s\S]{0,160}fort\s+schuyler
+      | \boriskany\b[\s\S]{0,160}\bsaratoga\b
+      | \bsaratoga\b[\s\S]{0,160}\boriskany\b
       # City of Rensselaer / RPI (county is already covered above).
       | rensselaer\s+polytechnic
       # Distinctive Saratoga Springs venues (often omit ", NY").
@@ -169,7 +177,9 @@ _STRONG_POSITIVE = re.compile(
       | \bsaratoga\b[\s\S]{0,80}high\s+rock\s+park\b
       | times\s+union\b
       | albany\s+business\s+review\b
-      | \brentredi\b
+      # Local PropTech — require Cap Region place (bare #rentredi is SEO spam).
+      | \brentredi\b[\s\S]{0,80}(?:\blatham\b|\balbany\b|capital\s+region\b|\#albanyny\b)
+      | (?:\blatham\b|\balbany\b|capital\s+region\b|\#albanyny\b)[\s\S]{0,80}\brentredi\b
       # Local business / tourism copy often says "Albany region" without ", NY".
       | albany\s+region\b
       # Crossgates Mall / Commons (Guilderland) — often omit ", NY".
@@ -258,8 +268,9 @@ _NY_CONTEXT = re.compile(
     r"""
     (?:
         (?-i:(?<![a-zA-Z])(?:NY|ny)(?![a-zA-Z]))(?!\s*times\b)
-      # Reject handle TLDs like @socialists.nyc (dot before nyc).
-      | (?<!\.)\bnyc\b
+      # Reject handle TLDs like @socialists.nyc (dot before nyc) and aircraft
+      # registrations such as 9H-NYC (Malta → Palma flight trackers).
+      | (?<![.-])\bnyc\b
       | n\.y\.
       | \bnys\b
       | new\s+york(?!\s+(?:
@@ -293,10 +304,19 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
         albany\s+park
       | new\s+albany(?!\s+bus\s+(?:station|terminal|depot))
       | national\s+capital\s+region
-      | brussels[- ]capital\s+region
+      # Slash form appears in Brussels Times cards ("Brussels/Capital Region").
+      | brussels[- /]capital\s+region
       | canadian\s+capital\s+region
       # Other-state / non-NY newsroom jargon (e.g. Jackson MS bureau).
       | capital\s+region\s+bureau\b
+      # Putnam / Hudson Valley street — not City of Albany.
+      | albany\s+post\s+road
+      # Cape Town suburb / wine region — not Helderberg Escarpment.
+      | helderberg[\s\S]{0,100}(?:cape\s+town|western\s+cape|south\s+africa|\bstrand\b)
+      | (?:cape\s+town|western\s+cape|south\s+africa)[\s\S]{0,100}helderberg
+      # SoCal handicap hashtag stuffing (#delmar #saratoga) — not Race Course NY.
+      | (?:\#socal\b|\#losangeles\b|southern\s+california)[\s\S]{0,200}\#saratoga\b
+      | \#saratoga\b[\s\S]{0,200}(?:\#socal\b|\#losangeles\b|southern\s+california)
       | capital\s+region\s+of\s+(?:
             madrid|spain|belgium|brussels|paris|france|berlin|germany|
             tokyo|seoul|beijing|delhi|ottawa|canberra|rome|italy|
@@ -415,7 +435,9 @@ _MD_DC_GEO_CUE = (
     # NPS funding wires contrast "national parks outside the capital region".
     r'national\s+parks?\s+outside|'
     # DC go-go music listings often omit Maryland / DC place tokens.
-    r'\bgo-go\b|go\s+go\s+(?:music|concert|band)'
+    r'\bgo-go\b|go\s+go\s+(?:music|concert|band)|'
+    # NBC4 / Telemundo 44 are DC-metro stations; AppView cards say "capital region".
+    r'\bnbc\s*4\b|\btelemundo\s*44\b'
 )
 
 # MD/DC "capital region" co-occurring with Maryland / Prince George's cues (not NY).
@@ -1238,9 +1260,18 @@ _HARD_NEGATIVE = re.compile(
       | \btroy\s+jackson\b
       | national\s+capital\s+region
       | national\s+capital\s+district
-      | brussels[- ]capital\s+region
+      # Slash form appears in Brussels Times cards ("Brussels/Capital Region").
+      | brussels[- /]capital\s+region
       | canadian\s+capital\s+region
       | capital\s+region\s+bureau\b
+      # Putnam / Hudson Valley street — not City of Albany.
+      | albany\s+post\s+road
+      # Cape Town suburb / wine region — not Helderberg Escarpment.
+      | helderberg[\s\S]{0,100}(?:cape\s+town|western\s+cape|south\s+africa|\bstrand\b)
+      | (?:cape\s+town|western\s+cape|south\s+africa)[\s\S]{0,100}helderberg
+      # SoCal handicap hashtag stuffing (#delmar #saratoga) — not Race Course NY.
+      | (?:\#socal\b|\#losangeles\b|southern\s+california)[\s\S]{0,200}\#saratoga\b
+      | \#saratoga\b[\s\S]{0,200}(?:\#socal\b|\#losangeles\b|southern\s+california)
       | capital\s+region\s+of\s+(?:
             madrid|spain|belgium|brussels|paris|france|berlin|germany|
             tokyo|seoul|beijing|delhi|ottawa|canberra|rome|italy|
