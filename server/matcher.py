@@ -164,6 +164,14 @@ _STRONG_POSITIVE = re.compile(
       | \bsaratoga\b[\s\S]{0,160}fort\s+schuyler
       | \boriskany\b[\s\S]{0,160}\bsaratoga\b
       | \bsaratoga\b[\s\S]{0,160}\boriskany\b
+      # Maiden / race cards often say "races at Saratoga" without ", NY".
+      | (?:maiden|races?|racing)\s+at\s+saratoga\b
+      | \bat\s+saratoga\b[\s\S]{0,60}(?:maiden|stakes|races?\b)
+      | maiden\s+watch[\s\S]{0,100}\bsaratoga\b
+      | \bsaratoga\b[\s\S]{0,100}maiden\s+watch
+      # CCC battlefield preservation wires often omit ", NY".
+      | \bccc\b[\s\S]{0,80}\bsaratoga\b
+      | \bsaratoga\b[\s\S]{0,80}\bccc\b
       # City of Rensselaer / RPI (county is already covered above).
       | rensselaer\s+polytechnic
       # Distinctive Saratoga Springs venues (often omit ", NY").
@@ -267,7 +275,9 @@ _MULTI_LOCAL_EXCLUDED = frozenset(
 _NY_CONTEXT = re.compile(
     r"""
     (?:
-        (?-i:(?<![a-zA-Z])(?:NY|ny)(?![a-zA-Z]))(?!\s*times\b)
+      # Reject letters AND digits before NY so aircraft type suffixes like
+      # A321-271NY (Wizz Air Malta) do not unlock Cap Region context.
+        (?-i:(?<![a-zA-Z0-9])(?:NY|ny)(?![a-zA-Z]))(?!\s*times\b)
       # Reject handle TLDs like @socialists.nyc (dot before nyc) and aircraft
       # registrations such as 9H-NYC (Malta → Palma flight trackers).
       | (?<![.-])\bnyc\b
@@ -317,6 +327,14 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
       # SoCal handicap hashtag stuffing (#delmar #saratoga) — not Race Course NY.
       | (?:\#socal\b|\#losangeles\b|southern\s+california)[\s\S]{0,200}\#saratoga\b
       | \#saratoga\b[\s\S]{0,200}(?:\#socal\b|\#losangeles\b|southern\s+california)
+      # Louisiana MPO — not NY Capital District Regional Planning Commission (CDRPC).
+      | capital\s+region\s+planning\s+commission
+      # Berlin-Brandenburg / Germany "capital region" (Medienboard wires).
+      | berlin[- /]brandenburg\s+capital\s+region
+      | berlin[- ]brandenburg[\s\S]{0,80}capital\s+region\b
+      | capital\s+region\b[\s\S]{0,80}berlin[- ]brandenburg
+      # NJ street — not Town of Brunswick NY.
+      | brunswick\s+pike\b
       | capital\s+region\s+of\s+(?:
             madrid|spain|belgium|brussels|paris|france|berlin|germany|
             tokyo|seoul|beijing|delhi|ottawa|canberra|rome|italy|
@@ -427,7 +445,8 @@ _CANADIAN_CAPITAL_REGION = re.compile(
 # Avoid bare "montgomery county" — NYS Montgomery County appears in ALY weather.
 _MD_DC_GEO_CUE = (
     # AppView cards often use a curly apostrophe in "George's".
-    r"prince\s+george['\u2019]?s|\bmaryland\b|\#md(?:wx|politics|gov)\b|"
+    r"prince\s+george['\u2019]?s|\bmaryland\b|\#md(?:wx|politics|gov|news)?\b|"
+    r'\#maryland\w*|'
     r'washington(?:\s*,?\s*d\.?c\.?\b)|(?<![\w.])dc\s+metro\b|'
     r'(?<![\w.])dc\s+snipers?\b|national\s+law\s+enforcement\s+museum|'
     r'\bdmv\b|silver\s+spring|\bbethesda\b|\brockville\b|'
@@ -444,8 +463,8 @@ _MD_DC_GEO_CUE = (
 _MD_DC_CAPITAL_REGION = re.compile(
     rf"""
     (?:
-        capital\s+region\b[\s\S]{{0,200}}(?:{_MD_DC_GEO_CUE})
-      | (?:{_MD_DC_GEO_CUE})[\s\S]{{0,200}}capital\s+region\b
+        capital\s+region\b[\s\S]{{0,280}}(?:{_MD_DC_GEO_CUE})
+      | (?:{_MD_DC_GEO_CUE})[\s\S]{{0,280}}capital\s+region\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -454,19 +473,22 @@ _MD_DC_CAPITAL_REGION = re.compile(
 # Louisiana "capital region" (Baton Rouge / WBRZ). Handles like wbrz-mirror /
 # wbrznews2 are checked via author_handle because short copy often omits geo.
 _LA_GEO_CUE = (
-    r'\bbaton\s+rouge\b|\blouisiana\b|\#la(?:wx|politics|gov)\b|'
+    r'\bbaton\s+rouge\b|\blouisiana\b|\#la(?:wx|politics|gov)?\b|'
     r'\bwbrz\b|wbrz\.com|east\s+baton\s+rouge|west\s+feliciana|'
     r'\bfeliciana\b|st\.?\s+mary\s+parish|'
     r'\bascension(?:\s+parish)?\b|\bprairieville\b|\bsorrento\b|'
-    r'\bst\.?\s+amant\b|\bgonzales\b'
+    r'\bst\.?\s+amant\b|\bgonzales\b|'
+    # LA MPO name (NY uses CDRPC — Capital District Regional Planning Commission).
+    r'capital\s+region\s+planning\s+commission|\bcrpc\b'
 )
 
 _LA_CAPITAL_REGION = re.compile(
     rf"""
     (?:
         capital\s+region\s+of\s+louisiana\b
-      | capital\s+region\b[\s\S]{{0,160}}(?:{_LA_GEO_CUE})
-      | (?:{_LA_GEO_CUE})[\s\S]{{0,160}}capital\s+region\b
+      | capital\s+region\s+planning\s+commission
+      | capital\s+region\b[\s\S]{{0,480}}(?:{_LA_GEO_CUE})
+      | (?:{_LA_GEO_CUE})[\s\S]{{0,480}}capital\s+region\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -582,7 +604,8 @@ _SD_CAPITAL_REGION = re.compile(
 
 # Virginia "capital region" (Richmond / Spanberger / Dominion Energy).
 _VA_GEO_CUE = (
-    r'\bvirginia\b|\brichmond\b|\#va(?:wx|politics|gov)\b|'
+    r'\bvirginia\b|\brichmond\b|\#va(?:wx|politics|gov|news)?\b|'
+    r'\#virginia\w*|'
     r'\bspanberger\b|dominion(?:\s+energy)?\b|\bnextera\b|'
     r'hampton\s+roads|northern\s+virginia'
 )
@@ -592,8 +615,46 @@ _VA_CAPITAL_REGION = re.compile(
     (?:
         (?:virginia|richmond)\s+capital\s+region
       | capital\s+region\s+of\s+(?:virginia|richmond)\b
-      | capital\s+region\b[\s\S]{{0,160}}(?:{_VA_GEO_CUE})
-      | (?:{_VA_GEO_CUE})[\s\S]{{0,160}}capital\s+region\b
+      | capital\s+region\b[\s\S]{{0,280}}(?:{_VA_GEO_CUE})
+      | (?:{_VA_GEO_CUE})[\s\S]{{0,280}}capital\s+region\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# VHSL / Richmond-area "Capital District" high-school athletics — not NY.
+_VA_CAPITAL_DISTRICT_CUE = (
+    r'\bhenrico\b|\bhanover\b|mechanicsville|\bashland\b|\batlee\b|'
+    r'\bvarina\b|highland\s+springs|\brichmond\b|\bvirginia\b|'
+    r'\#va(?:wx|politics|gov|news)?\b|\#virginia\w*'
+)
+
+_VA_CAPITAL_DISTRICT = re.compile(
+    rf"""
+    (?:
+        capital\s+district\b[\s\S]{{0,200}}(?:{_VA_CAPITAL_DISTRICT_CUE})
+      | (?:{_VA_CAPITAL_DISTRICT_CUE})[\s\S]{{0,200}}capital\s+district\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Berlin-Brandenburg / Germany "capital region" (Medienboard / games funding).
+# Prefer compound / funding cues over bare "Berlin" (orchestra repertoire posts).
+_DE_GEO_CUE = (
+    r'berlin[- ]brandenburg|\bbrandenburg\b|\bmedienboard\b|hauptstadtregion|'
+    r'\bgermany\b|\bgerman\b|\#brandenburg\b|\#germany\b|'
+    r'berlin[- /]brandenburg'
+)
+
+_DE_CAPITAL_REGION = re.compile(
+    rf"""
+    (?:
+        berlin[- /]brandenburg\s+capital\s+region
+      | (?:german|brandenburg)\s+capital\s+region
+      | capital\s+region\s+of\s+(?:germany|berlin|brandenburg)\b
+      | capital\s+region\b[\s\S]{{0,200}}(?:{_DE_GEO_CUE})
+      | (?:{_DE_GEO_CUE})[\s\S]{{0,200}}capital\s+region\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -976,6 +1037,8 @@ _MALTA_EUROPE = re.compile(
       | \bmalti\b
       | callsign:\s*9ha
       | \b9ha\d+\b
+      | \b9h-[a-z0-9]+\b
+      | wizz\s+air\s+malta
       | malta\s+international
       | malta\s+sends\b
       | wildfires?\s+in\s+portugal
@@ -1272,6 +1335,14 @@ _HARD_NEGATIVE = re.compile(
       # SoCal handicap hashtag stuffing (#delmar #saratoga) — not Race Course NY.
       | (?:\#socal\b|\#losangeles\b|southern\s+california)[\s\S]{0,200}\#saratoga\b
       | \#saratoga\b[\s\S]{0,200}(?:\#socal\b|\#losangeles\b|southern\s+california)
+      # Louisiana MPO — not NY Capital District Regional Planning Commission (CDRPC).
+      | capital\s+region\s+planning\s+commission
+      # Berlin-Brandenburg / Germany "capital region" (Medienboard wires).
+      | berlin[- /]brandenburg\s+capital\s+region
+      | berlin[- ]brandenburg[\s\S]{0,80}capital\s+region\b
+      | capital\s+region\b[\s\S]{0,80}berlin[- ]brandenburg
+      # NJ street — not Town of Brunswick NY.
+      | brunswick\s+pike\b
       | capital\s+region\s+of\s+(?:
             madrid|spain|belgium|brussels|paris|france|berlin|germany|
             tokyo|seoul|beijing|delhi|ottawa|canberra|rome|italy|
@@ -1525,7 +1596,8 @@ def _ny_capital_region_context(haystack: str) -> bool:
         re.search(
             rf"""
             (?:
-                (?-i:(?<![a-zA-Z])(?:NY|ny)(?![a-zA-Z]))
+              # Mirror _NY_CONTEXT: reject digit-prefixed aircraft suffixes (271NY).
+                (?-i:(?<![a-zA-Z0-9])(?:NY|ny)(?![a-zA-Z]))
               | \b(?:nys|new\s+york)\b
               | n\.y\.
               | hudson\s+valley
@@ -1724,6 +1796,20 @@ def _sudan_capital_region_conflict(haystack: str) -> bool:
 def _virginia_capital_region_conflict(haystack: str) -> bool:
     """True when 'capital region' refers to Richmond / Virginia, not NY."""
     if not _VA_CAPITAL_REGION.search(haystack):
+        return False
+    return not _ny_capital_region_context(haystack)
+
+
+def _virginia_capital_district_conflict(haystack: str) -> bool:
+    """True when 'capital district' refers to VHSL Richmond-area athletics, not NY."""
+    if not _VA_CAPITAL_DISTRICT.search(haystack):
+        return False
+    return not _ny_capital_region_context(haystack)
+
+
+def _germany_capital_region_conflict(haystack: str) -> bool:
+    """True when 'capital region' refers to Berlin-Brandenburg / Germany, not NY."""
+    if not _DE_CAPITAL_REGION.search(haystack):
         return False
     return not _ny_capital_region_context(haystack)
 
@@ -2318,6 +2404,10 @@ def match_post(
             return MatchResult(False, 'hard_negative:georgia_atlanta_capital_region')
         if _virginia_capital_region_conflict(haystack):
             return MatchResult(False, 'hard_negative:virginia_capital_region')
+        if _virginia_capital_district_conflict(haystack):
+            return MatchResult(False, 'hard_negative:virginia_capital_district')
+        if _germany_capital_region_conflict(haystack):
+            return MatchResult(False, 'hard_negative:germany_capital_region')
         if _colombia_capital_district_conflict(haystack):
             return MatchResult(False, 'hard_negative:colombia_capital_district')
         if _png_capital_district_conflict(haystack):
