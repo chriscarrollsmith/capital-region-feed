@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-078 — Daily feed audit: Berlin-Brandenburg, VA Capital District, LA CRPC, 271NY Malta, Brunswick Pike, Saratoga maiden/CCC FNs
-- **Status:** in progress
+- **Status:** done ([#55](https://github.com/chriscarrollsmith/capital-region-feed/pull/55))
 - **Why:** 2026-08-26 audit of last-24h AppView feed (~187 posts since 2026-08-25T09:05Z)
   found active FPs after #54 (still open): Berlin-Brandenburg "capital region" games-funding
   wires; Richmond.com VHSL "Capital District" HS football (Henrico/Hanover); VA/MD
