@@ -538,6 +538,28 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-079 — Daily feed audit: Helderberg #CapeTown, Burnt hillside, MI hashtag Troy, Saratoga Terrace, Parx/#saratoga, Long Island #albanyny, Travers/Lark Hall/Mayor FNs
+- **Status:** in progress
+- **Why:** 2026-08-27 audit of last-24h AppView feed (~196 posts since 2026-08-26T09:02Z)
+  found active FPs after #55 (still open): Cape Town municipal alerts with `Helderberg College`
+  + `#CapeTown` (prior SA gate required spaced `cape town` within 100 chars); Huddersfield
+  wildfire alt `Burnt hillside` matched strong `burnt hills` without a trailing word boundary;
+  Michigan metro hashtag dumps (`#Michigan`…`#Troy`…`#Waterford`) unlocked `multi_local_places`
+  beyond the 40-char Troy/MI window; Binghamton `Saratoga Terrace` housing + `#NY`; multi-track
+  thoroughbred hashtag stuffing (`#parxracing`/`#thistledown`/`#horseshoeindy` + `#saratoga`)
+  without `#socal`; Long Island SEO tags with `#albanyny`. FNs: BloodHorse Travers / "wins at
+  Saratoga" / "Saratoga feature"; Lark Hall venue listings; `Albany Mayor` politics. AppView
+  `searchPosts` still 403.
+- **Work:**
+  - Expand Helderberg SA hard-neg (`Helderberg College`, `#capetown`, 280-char window);
+    `burnt hills\b` + hillside/gorse descriptive conflict; widen Michigan `#troy` hashtag
+    window; hard-neg `Saratoga Terrace` and Parx/Thistledown/Assiniboia `#saratoga` stuffing;
+    Long Island `#albany(ny)` hashtag gate; Travers / Saratoga feature / wins-at-Saratoga,
+    Lark Hall, Albany Mayor strong positives.
+  - Grow eval with 2026-08-27 FP/TP/FN anchors (builds on #55 / B-078).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-078 — Daily feed audit: Berlin-Brandenburg, VA Capital District, LA CRPC, 271NY Malta, Brunswick Pike, Saratoga maiden/CCC FNs
 - **Status:** done ([#55](https://github.com/chriscarrollsmith/capital-region-feed/pull/55))
 - **Why:** 2026-08-26 audit of last-24h AppView feed (~187 posts since 2026-08-25T09:05Z)

@@ -5148,5 +5148,187 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-08-26 audit: intentional Capital Region Housing Expo keep"
+  },
+  {
+    "id": "fp-helderberg-college-capetown-hashtag",
+    "text": "Unplanned Maintenance - Burst Pipe in Die Wingerd\nC/O Helderberg College Rd & Hermitage Ave\n#WaterAndSanitation #CapeTown",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-27 audit: Cape Town Helderberg College Rd + #CapeTown"
+  },
+  {
+    "id": "tp-helderberg-escarpment-hike-0827",
+    "text": "Hike the Helderberg Escarpment this weekend near #AlbanyNY.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-27 audit: Cap Region Helderberg counterpart"
+  },
+  {
+    "id": "fp-burnt-hillside-huddersfield",
+    "text": "Still a lot of damage from last year's fire on Castle Hill.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "burnt gorse in front of the Victoria Tower, Castle Hill, Huddersfield Burnt hillside by the Victoria Tower",
+    "note": "2026-08-27 audit: Burnt hillside wildfire alt matched burnt hills"
+  },
+  {
+    "id": "tp-burnt-hills-concert-0827",
+    "text": "Concert tonight in Burnt Hills NY at the high school.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-27 audit: Burnt Hills NY counterpart"
+  },
+  {
+    "id": "fp-michigan-hashtag-troy-waterford",
+    "text": "#Michigan #Detroit #GrandRapids #Warren #SterlingHeights #AnnArbor #Lansing #Dearborn #Livonia #Troy #FarmingtonHills #Wyoming #Flint #Kalamazoo #Waterford #Novi #Pontiac #RoyalOak",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-27 audit: Michigan metro hashtag dump unlocked Troy+Waterford multi_local"
+  },
+  {
+    "id": "tp-troy-ny-dinner-0827",
+    "text": "Dinner in Troy NY tonight.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-27 audit: Troy NY counterpart to Michigan hashtag dump"
+  },
+  {
+    "id": "fp-saratoga-terrace-binghamton",
+    "text": "Binghamton's planning committee reviews the Saratoga Terrace Housing Development pilot agreement. #BinghamtonCityBroomeCounty #NY",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-27 audit: Saratoga Terrace Binghamton + #NY"
+  },
+  {
+    "id": "tp-saratoga-springs-canvass-0827",
+    "text": "Canvass launch at Congress Park in Saratoga Springs NY.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-27 audit: Saratoga Springs NY counterpart"
+  },
+  {
+    "id": "fp-parx-thistledown-saratoga-hashtags",
+    "text": "#nationaldogday #thoroughbreds #parxracing #horseshoeindy #saratoga #thistledown #assiniboia #manitoba",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-27 audit: multi-track thoroughbred hashtag stuffing with #saratoga"
+  },
+  {
+    "id": "tp-stakes-at-saratoga-del-mar-0827",
+    "text": "Check out the likely fields for stakes at Saratoga, Del Mar, Kentucky Downs and Charles Town.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-27 audit: multi-track stakes card still keeps Cap Region Saratoga"
+  },
+  {
+    "id": "fp-longisland-albanyny-hashtag-spam",
+    "text": "IXCHEL Anxiety Relief #usa #longisland #longislandny #longislandnewyork #newyork #longislandrealestate #albany #albanyny #Magnesium",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-27 audit: Long Island SEO tags with #albanyny"
+  },
+  {
+    "id": "tp-long-island-to-albanyny-0827",
+    "text": "Taking the train from Long Island to #AlbanyNY this weekend.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-27 audit: Long Island travel to Cap Region counterpart"
+  },
+  {
+    "id": "tp-travers-saratoga-feature-0827",
+    "text": "Silent Tactic will try for a first grade 1 win in the $1.25 million Saratoga feature after the Travers Stakes draw.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-27 audit FN: Travers / Saratoga feature racing wires"
+  },
+  {
+    "id": "tp-wins-at-saratoga-0827",
+    "text": "Javier Castellano reached 6,000 North American wins Aug. 26 at Saratoga, guiding Starship Lizzy to victory in the finale.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-27 audit FN: wins at Saratoga racing wires"
+  },
+  {
+    "id": "tp-lark-hall-helmet-0827",
+    "text": "Albany: Helmet @ Lark Hall this Friday.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-27 audit FN: Lark Hall venue listing"
+  },
+  {
+    "id": "tp-albany-mayor-0827",
+    "text": "Albany Mayor leaves for Martha's Vineyard day after city workers hurt in explosion at city site.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-27 audit FN: Albany Mayor bare-name politics"
+  },
+  {
+    "id": "tn-malta-independent-byteseu-0827",
+    "text": "The affordable housing crisis – The Malta Independent\n\nPresident of the European Parliament Roberta Metsola advocated for affordable housing.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "The Malta Independent - Bytes Europe",
+    "note": "2026-08-27 audit: European Malta Independent already drops; anchor"
+  },
+  {
+    "id": "tn-nws-shreveport-saratoga-0827",
+    "text": "Special Weather Statement issued August 26 at 9:00PM CDT by NWS Shreveport LA\n\nthunderstorms extending from over Saratoga to near New Boston",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-27 audit: LA Saratoga weather already drops; anchor"
   }
 ]
