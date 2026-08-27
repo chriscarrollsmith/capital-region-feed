@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-079 — Daily feed audit: Helderberg #CapeTown, Burnt hillside, MI hashtag Troy, Saratoga Terrace, Parx/#saratoga, Long Island #albanyny, Travers/Lark Hall/Mayor FNs
-- **Status:** in progress
+- **Status:** done ([#56](https://github.com/chriscarrollsmith/capital-region-feed/pull/56))
 - **Why:** 2026-08-27 audit of last-24h AppView feed (~196 posts since 2026-08-26T09:02Z)
   found active FPs after #55 (still open): Cape Town municipal alerts with `Helderberg College`
   + `#CapeTown` (prior SA gate required spaced `cape town` within 100 chars); Huddersfield
