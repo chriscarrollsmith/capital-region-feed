@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-080 — Daily feed audit: Woodbine/#saratoga, Center Square Rd NJ, Crossgates Tammany, Chippewa River Street, onça-troy; Forego/Jerkens/Albany Exec FNs
-- **Status:** in progress
+- **Status:** done ([#57](https://github.com/chriscarrollsmith/capital-region-feed/pull/57))
 - **Why:** 2026-08-28 audit of last-24h AppView feed (~350 posts since 2026-08-27T09:12Z)
   found active FPs after #56 (still open): multi-track handicap stuffing with `#woodbine` /
   `#charlestownraces` / `#remingtonpark` + `#saratoga` (Parx/SoCal gates missed); classifier
