@@ -5330,5 +5330,188 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-08-27 audit: LA Saratoga weather already drops; anchor"
+  },
+  {
+    "id": "fp-woodbine-charlestown-remington-saratoga-0828",
+    "text": "cynthiapublishing.com/hp_wordpress...\n\n#thursday #horses #horseracing #handicapping #longshots #thoroughbreds #delmar #saratoga #woodbine #charlestownraces #remingtonpark",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-28 audit: multi-track #woodbine/#charlestownraces/#remingtonpark + #saratoga stuffing"
+  },
+  {
+    "id": "tp-stakes-saratoga-delmar-card-0828",
+    "text": "Check out the likely fields for stakes at Saratoga, Del Mar, Kentucky Downs and Charles Town.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-28 audit: multi-track prose card still Cap Region"
+  },
+  {
+    "id": "fp-center-square-rd-nj-0828",
+    "text": "3 NNE Oldmans Twp. [Gloucester Co, NJ] Dept of Highways reports Flash Flood -- Flooding on US 130 South of CR 620/Center Square Rd (Oldmans Twp). #njwx",
+    "expected": false,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-28 audit: Center Square Rd NJ not Albany Center Square"
+  },
+  {
+    "id": "tp-center-square-porchfest-0828",
+    "text": "Center Square Porchfest is this weekend. Maps at noon.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "ambiguous_classifier",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-28 audit: Albany Center Square counterpart"
+  },
+  {
+    "id": "fp-crossgates-tammany-wastewater-0828",
+    "text": "The Crossgates Wastewater Treatment Plant is on track for a major 2027 launch!\n\n#TammanyParish #LA #CitizenPortal #StTammanyParishWastewater",
+    "expected": false,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "Crossgates wastewater plant structure up; mechanical work slated for 2027 startup in St. Tammany Parish.",
+    "note": "2026-08-28 audit: St. Tammany Crossgates wastewater not Crossgates Mall"
+  },
+  {
+    "id": "tp-crossgates-mall-hours-0828",
+    "text": "Holiday hours at Crossgates Mall this weekend.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-28 audit: Crossgates Mall counterpart"
+  },
+  {
+    "id": "fp-river-street-chippewa-falls-0828",
+    "text": "#Wisconsin\nDefend Democracy Rally\nChippewa Falls Wisconsin\nPeace Circle, River (124) and Bridge\n1 North Bridge Street\nChippewa Falls, WI 54729",
+    "expected": false,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Defend Democracy Rally — Chippewa Falls · Mobilize ... corner of Bridge Street and Highway 124 (River Street) in Chippewa Falls",
+    "note": "2026-08-28 audit: Chippewa Falls River Street not Troy corridor"
+  },
+  {
+    "id": "tp-river-street-open-mic-0828",
+    "text": "Open mic tomorrow on River Street — sign-ups start at 6.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "ambiguous_classifier",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-28 audit: Troy River Street counterpart"
+  },
+  {
+    "id": "fp-onca-troy-nymex-0828",
+    "text": "Ouro fecha em leve alta com expectativa por sinalizações do Fed em Jackson Hole",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Na Comex, divisão de metais da New York Mercantile Exchange (Nymex), o ouro para dezembro encerrou em alta de 0,23%, a US$ 4 653,30 por onça-troy",
+    "note": "2026-08-28 audit: Portuguese onça-troy + NY Mercantile not City of Troy"
+  },
+  {
+    "id": "tp-troy-ny-dinner-0828",
+    "text": "Dinner in Troy NY tonight.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-28 audit: Troy NY counterpart"
+  },
+  {
+    "id": "tp-jerkens-memorial-0828",
+    "text": "Mike Welsch previews the Grade 1, $500,000 H. Allen Jerkens Memorial.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-28 audit FN: Jerkens Memorial at Saratoga"
+  },
+  {
+    "id": "tp-forego-stakes-0828",
+    "text": "Book'em Danno looks to go back-to-back in Forego",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-28 audit FN: Forego at Saratoga"
+  },
+  {
+    "id": "tp-grade1-runners-at-saratoga-0828",
+    "text": "Chris Gracie is tied to three Grade 1 runners at Saratoga on Aug. 29.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-28 audit FN: Grade 1 runners at Saratoga"
+  },
+  {
+    "id": "tp-albany-amsterdam-hiring-0828",
+    "text": "LASNNY is hiring a Disability Advocacy Staff Attorney (Albany/Amsterdam) to represent low-income clients.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-28 audit FN: Albany/Amsterdam Legal Aid"
+  },
+  {
+    "id": "tp-albany-exec-0828",
+    "text": "ALBANY EXEC, DA investigating possible fraud within county employee benefits",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-28 audit FN: Albany Exec county politics"
+  },
+  {
+    "id": "tp-south-albany-airport-0828",
+    "text": "Kathy Hochul's Sikorsky just touched down at 4B0 (South Albany).",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-28 audit FN: South Albany Airport"
+  },
+  {
+    "id": "tp-corinth-saratoga-springs-storm-0828",
+    "text": "Severe Thunderstorm 7 Miles S of Corinth or 7 Miles NW of Saratoga Springs Moving E. Locations Impacted Include Corinth, Wilton, Greenfield.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-28 audit FN: Corinth + Saratoga Springs storm cluster"
+  },
+  {
+    "id": "tp-skidmore-at-saratoga-0828",
+    "text": "Good luck to SO ANGELINA entered TODAY in the Skidmore at #Saratoga!",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-28 audit FN: Skidmore stakes at Saratoga"
   }
 ]
