@@ -181,6 +181,18 @@ def test_center_square_wire_byline_is_not_local_micro() -> None:
     )
     assert nj_rd.matched is False
 
+    # Prose attribution "The Center Square reports …" (no paren/dash byline).
+    reports = match_post(
+        'Dem AGs Planned Trump Lawsuits Months Before Election — Now They’re Fighting '
+        'to Keep the Emails Hidden',
+        alt_text=(
+            'The Center Square reports that Democratic attorneys general began '
+            'coordinating potential litigation against a second Trump administration '
+            'in April 2024…'
+        ),
+    )
+    assert reports.matched is False
+
 
 def test_crossgates_tammany_and_chippewa_river_street_not_local_micro() -> None:
     la = match_post(

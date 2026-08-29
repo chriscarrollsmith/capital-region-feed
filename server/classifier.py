@@ -98,6 +98,7 @@ _CENTER_SQUARE_WIRE = re.compile(
         \(\s*the\s+center\s+square\s*\)
       | [-–—]\s*the\s+center\s+square\b
       | \band\s+the\s+center\s+square\b
+      | the\s+center\s+square\s+reports\b
       | (?:reporting\s+by|according\s+to(?:\s+reporting\s+by)?|
             (?:document\s+)?obtained\s+by)\b
         [\s\S]{0,100}the\s+center\s+square\b

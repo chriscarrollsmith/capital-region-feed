@@ -2123,3 +2123,128 @@ def test_lark_hall_and_albany_mayor_recall() -> None:
         ).matched
         is True
     )
+
+
+def test_sun_times_union_not_times_union() -> None:
+    suntimes = match_post(
+        'Support the Sun-Times union',
+        alt_text='Join us in demanding no layoffs from Chicago Public Media. Sun-Times Guild.',
+    )
+    assert suntimes.matched is False
+    assert (
+        match_post('Times Union coverage of the Travers at Saratoga Race Course.').matched is True
+    )
+
+
+def test_newtonville_ma_mbta_not_colonie() -> None:
+    villages = match_post(
+        'Newton Highlands ≠ Newtonville ≠ West Newton. Know before you search.',
+        alt_text="Newton MA's 13 Villages: The Complete Buyer's Guide to Boston's Garden City",
+    )
+    assert villages.matched is False
+    assert villages.reason == 'hard_negative:newtonville_ma'
+
+    mbta = match_post('Train 534 is running 15 minutes late at Newtonville. #MBTA #WorcesterLine')
+    assert mbta.matched is False
+    assert mbta.reason == 'hard_negative:newtonville_ma'
+    assert match_post('Road work on Newtonville Avenue in Colonie near #AlbanyNY.').matched is True
+
+
+def test_dc_capital_district_not_ny() -> None:
+    dc = match_post(
+        'Trump has ruined not only the White House, but the entire Capital district, '
+        'Washington, D.C., & many of its buildings, monuments, & parks.'
+    )
+    assert dc.matched is False
+    assert dc.reason == 'hard_negative:md_dc_capital_region'
+    assert match_post("New York's Capital District sees strong job growth.").matched is True
+
+
+def test_french_capital_region_not_ny() -> None:
+    paris = match_post(
+        'France DESTRUCTION',
+        alt_text=(
+            'Severe weather chaos in Paris! The French capital region was destroyed by a storm.'
+        ),
+    )
+    assert paris.matched is False
+    assert paris.reason == 'hard_negative:france_capital_region'
+    assert (
+        match_post('French exchange students visit the Capital Region this fall. #AlbanyNY').matched
+        is True
+    )
+
+
+def test_iceland_kringlan_capital_region_window() -> None:
+    iceland = match_post(
+        'Long queues form at Kringlan polling station #elections #Iceland #voting',
+        alt_text=(
+            'mbl.is reported, as many capital-area residents appeared eager to vote. '
+            'A similar queue was reported earlier outside the premises of the District '
+            'Commissioner of the Capital Region.'
+        ),
+    )
+    assert iceland.matched is False
+    assert iceland.reason == 'hard_negative:iceland_capital_region'
+
+
+def test_green_island_sangha_long_island_not_village() -> None:
+    sangha = match_post(
+        'Long Island, New York: This Sunday, Green Island Sangha will sit together '
+        'at the Mindfulness Center at Adelphi University.'
+    )
+    assert sangha.matched is False
+    assert sangha.reason == 'hard_negative:green_island_other'
+    assert match_post('Village of Green Island, NY holds budget hearing.').matched is True
+
+
+def test_ct_east_hartford_capital_district_not_ny() -> None:
+    job = match_post('Roving Personal Banker Capital District - 144783-CT-East Hartford Job')
+    assert job.matched is False
+    assert job.reason == 'hard_negative:ct_capital_district'
+
+
+def test_albany_county_library_wyoming_not_ny() -> None:
+    lib = match_post(
+        'Join us September 29 at 6:30 at the Albany County Library.',
+        author_handle='wyomingpublicmedia.bsky.social',
+    )
+    assert lib.matched is False
+    assert lib.reason == 'entity_other:albany_county_wy'
+    assert match_post('Albany County legislators meet in downtown #AlbanyNY.').matched is True
+
+
+def test_brunswick_schools_nyc_not_brunswick_ny() -> None:
+    schools = match_post(
+        '',
+        alt_text=(
+            'Kidder student and teacher take Brunswick Schools global at NBA Hoops '
+            'championship, June 22-25 in New York City.'
+        ),
+    )
+    assert schools.matched is False
+    assert schools.reason == 'hard_negative:brunswick_schools_other'
+    assert match_post('Zoning hearing in Brunswick, NY next week.').matched is True
+
+
+def test_rensselaer_sheriff_and_latham_halfmoon_hq_recall() -> None:
+    assert (
+        match_post(
+            'Caribbean immigration advocates praise lawsuit against Rensselaer sheriff '
+            'for violating law against ICE'
+        ).matched
+        is True
+    )
+    assert (
+        match_post(
+            'Banking giant to build new regional HQ in Latham. Spending $23 million on '
+            'a new regional office in Latham.'
+        ).matched
+        is True
+    )
+    assert (
+        match_post(
+            'Auto wholesaler buys, renovates new Halfmoon HQ at its new Halfmoon location.'
+        ).matched
+        is True
+    )

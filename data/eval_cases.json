@@ -5513,5 +5513,221 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-08-28 audit FN: Skidmore stakes at Saratoga"
+  },
+  {
+    "id": "fp-sun-times-union-0829",
+    "text": "Support the Sun-Times union",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Join us in demanding no layoffs from Chicago Public Media. Sun-Times Guild logo.",
+    "note": "2026-08-29 audit FP: Sun-Times union matched Times Union"
+  },
+  {
+    "id": "tp-times-union-travers-0829",
+    "text": "Times Union coverage of the Travers at Saratoga Race Course.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-29 TP counterpart: Times Union"
+  },
+  {
+    "id": "fp-newtonville-boston-0829",
+    "text": "Newton Highlands ≠ Newtonville ≠ West Newton. Know before you search.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "Newton MA's 13 Villages: The Complete Buyer's Guide to Boston's Garden City",
+    "note": "2026-08-29 audit FP: Boston Newtonville strong positive"
+  },
+  {
+    "id": "fp-newtonville-mbta-0829",
+    "text": "Train 534 is running 15 minutes late at Newtonville. #MBTA #WorcesterLine",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-29 audit FP: MBTA Newtonville"
+  },
+  {
+    "id": "tp-newtonville-colonie-0829",
+    "text": "Road work on Newtonville Avenue in Colonie near #AlbanyNY.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-29 TP counterpart: Colonie Newtonville"
+  },
+  {
+    "id": "fp-dc-capital-district-0829",
+    "text": "Trump has ruined not only the White House, but the entire Capital district, Washington, D.C., & many of its buildings, monuments, & parks.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-29 audit FP: DC Capital district"
+  },
+  {
+    "id": "tp-ny-capital-district-0829",
+    "text": "New York's Capital District sees strong job growth.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-29 TP counterpart: NY Capital District"
+  },
+  {
+    "id": "fp-french-capital-region-0829",
+    "text": "France DESTRUCTION",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "Severe weather chaos in Paris! The French capital region was destroyed by a storm and hail",
+    "note": "2026-08-29 audit FP: French capital region Paris"
+  },
+  {
+    "id": "tp-french-students-capital-region-0829",
+    "text": "French exchange students visit the Capital Region this fall. #AlbanyNY",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-29 TP counterpart: French + Cap Region"
+  },
+  {
+    "id": "fp-iceland-kringlan-capital-region-0829",
+    "text": "Long queues form at Kringlan polling station #elections #Iceland #voting",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "mbl.is reported, as many capital-area residents appeared eager to vote. A similar queue was reported earlier outside the premises of the District Commissioner of the Capital Region.",
+    "note": "2026-08-29 audit FP: Iceland Capital Region beyond prior 160-char window"
+  },
+  {
+    "id": "fp-green-island-sangha-0829",
+    "text": "Long Island, New York: This Sunday, Green Island Sangha will sit together at the Mindfulness Center at Adelphi University.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-29 audit FP: Green Island Sangha Long Island"
+  },
+  {
+    "id": "tp-green-island-village-0829",
+    "text": "Village of Green Island, NY holds budget hearing.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-29 TP counterpart: Village of Green Island"
+  },
+  {
+    "id": "fp-center-square-reports-0829",
+    "text": "Dem AGs Planned Trump Lawsuits Months Before Election — Now They’re Fighting to Keep the Emails Hidden",
+    "expected": false,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "The Center Square reports that Democratic attorneys general began coordinating potential litigation against a second Trump administration in April 2024…",
+    "note": "2026-08-29 audit FP: The Center Square reports wire"
+  },
+  {
+    "id": "tp-center-square-porchfest-0829",
+    "text": "Center Square Porchfest is this weekend. Maps at noon.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "ambiguous_classifier",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-29 TP counterpart: Albany Center Square event"
+  },
+  {
+    "id": "fp-ct-east-hartford-capital-district-0829",
+    "text": "Roving Personal Banker Capital District - 144783-CT-East Hartford Job",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-29 audit FP: CT Capital District bank job"
+  },
+  {
+    "id": "fp-albany-county-library-wy-0829",
+    "text": "Join us September 29 at 6:30 at the Albany County Library.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "author_handle": "wyomingpublicmedia.bsky.social",
+    "note": "2026-08-29 audit FP: Albany County Library Wyoming"
+  },
+  {
+    "id": "fp-brunswick-schools-nyc-0829",
+    "text": "Kidder student and teacher take Brunswick Schools global at NBA Hoops championship, June 22-25 in New York City.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-29 audit FP: Brunswick Schools OH + NYC"
+  },
+  {
+    "id": "tp-brunswick-ny-zoning-0829",
+    "text": "Zoning hearing in Brunswick, NY next week.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-29 TP counterpart: Town of Brunswick NY"
+  },
+  {
+    "id": "tp-rensselaer-sheriff-0829",
+    "text": "Caribbean immigration advocates praise lawsuit against Rensselaer sheriff for violating law against ICE",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-29 audit FN: Rensselaer sheriff ICE suit"
+  },
+  {
+    "id": "tp-latham-regional-hq-0829",
+    "text": "Banking giant to build new regional HQ in Latham. Spending $23 million on a new regional office in Latham.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-29 audit FN: Latham regional HQ"
+  },
+  {
+    "id": "tp-halfmoon-hq-0829",
+    "text": "Auto wholesaler buys, renovates new Halfmoon HQ at its new Halfmoon location.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-29 audit FN: Halfmoon HQ"
   }
 ]
