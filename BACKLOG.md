@@ -538,6 +538,26 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-077 — Daily feed audit: E Greenbush boundary, Brussels slash, Helderberg SA, NBC4, Albany Post Rd, RentRedi spam, 9H-NYC, SoCal #saratoga, Saratoga meet/Schuyler FNs
+- **Status:** done ([#54](https://github.com/chriscarrollsmith/capital-region-feed/pull/54))
+- **Why:** 2026-08-25 audit of last-24h AppView feed (~183 posts since 2026-08-24T09:01Z)
+  found active FPs after #51: Madison "white Greenbush Bakery" via `e Greenbush` substring;
+  Cape Town BP Helderberg / Western Cape; Brussels Times `Brussels/Capital Region` slash;
+  Malta→Palma flight tracker unlocked by aircraft reg `9H-NYC`; Daily Beast NBC4/Telemundo 44
+  DC "capital region" card; Old Albany Post Road (Garrison/Putnam); bare `#rentredi` SEO spam;
+  SoCal `#thoroughbreds #delmar #saratoga` hashtag stuffing; Instapundit "document obtained by
+  The Center Square" classifier micro. FNs: `Saratoga meet` race wires; Fort Schuyler / Oriskany
+  Saratoga campaign posts. ~37 stale AppView rows already rematch-drop (Malta ID weather /
+  East Troy Phish / Latham & Watkins).
+- **Work:**
+  - Word-bound `E`/`N` Greenbush abbreviations; Helderberg+Cape Town hard-neg; Brussels `/`
+    capital-region; strip hyphenated aircraft regs from NYC context; NBC4/Telemundo 44 MD/DC cues;
+    Albany Post Road hard-neg; RentRedi requires Latham/Albany/CR; SoCal+#saratoga blocks strong;
+    Center Square "obtained by" scrub; `Saratoga meet` + Fort Schuyler/Oriskany strong positives.
+  - Grow eval with 2026-08-25 FP/TP/FN anchors.
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-076 — Daily feed audit: Bulgaria/Japan/Michigan capital region, Albany WY override, around-Lake, Brunswick Tulsa, Saratoga Park CA, GTA Albany, Thacher/harness/SPAC FNs
 - **Status:** done ([#51](https://github.com/chriscarrollsmith/capital-region-feed/pull/51))
 - **Why:** 2026-08-23 audit of last-24h AppView feed (~166 posts since 2026-08-22T09:01Z)

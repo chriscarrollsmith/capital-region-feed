@@ -1760,3 +1760,108 @@ def test_thacher_harness_spac_orchestra_recall() -> None:
     spac = match_post('Star Wars night with The Philadelphia Orchestra at SPAC.')
     assert spac.matched is True
     assert spac.reason.startswith('event_local_venue')
+
+
+def test_white_greenbush_not_e_greenbush_abbreviation() -> None:
+    madison = match_post(
+        'Wrapped up my weekend in Madison with a stop at Greenbush Bakery.',
+        alt_text='A white Greenbush Bakery, advertising kosher doughnuts.',
+    )
+    assert madison.matched is False
+    assert match_post('Road work on Route 4 in East Greenbush this week.').matched is True
+    assert (
+        match_post('Locations Impacted Include Albany, E Greenbush, Rensselaer, Delmar').matched
+        is True
+    )
+
+
+def test_helderberg_cape_town_not_helderberg_escarpment() -> None:
+    cape = match_post(
+        'Congratulations to new members at BP Helderberg in Strand, Cape Town. '
+        'Western Cape recruitment team.'
+    )
+    assert cape.matched is False
+    assert match_post('Hike the Helderberg Escarpment this weekend near #AlbanyNY.').matched is True
+
+
+def test_brussels_slash_capital_region_is_hard_negative() -> None:
+    slash = match_post(
+        'Brussels authorities keep the yellow drought alert in place across '
+        'Brussels/Capital Region despite cooler temperatures.'
+    )
+    assert slash.matched is False
+
+
+def test_malta_aircraft_reg_9h_nyc_not_ny_context() -> None:
+    flight = match_post(
+        'Aterrizaje Vuelo: AXY361A Aeronave: Lineage 1000 (9H-NYC) '
+        'Origen: Malta Llegada: Palma de Mallorca (PMI)'
+    )
+    assert flight.matched is False
+    assert flight.reason == 'ambiguous_no_context:malta'
+
+
+def test_nbc4_telemundo_capital_region_is_md_dc() -> None:
+    card = match_post(
+        'www.thedailybeast.com/nbc-news-anc...',
+        alt_text=(
+            'NBC News Anchor Quits Live on the Air Joseph Olmo has covered the '
+            'capital region for about seven years, with NBC4 and Telemundo 44.'
+        ),
+    )
+    assert card.matched is False
+    assert card.reason == 'hard_negative:md_dc_capital_region'
+
+
+def test_old_albany_post_road_not_albany_ny() -> None:
+    listing = match_post(
+        'Discover peaceful living at 298 Old Albany Post Road in beautiful '
+        'Garrison, NY! #PutnamCounty #HudsonValley'
+    )
+    assert listing.matched is False
+    assert match_post('Walking tour of downtown #AlbanyNY this Saturday.').matched is True
+
+
+def test_rentredi_hashtag_spam_needs_local_place() -> None:
+    spam = match_post(
+        '5 Ways Property Management Bleeds Your Budget #rentredi '
+        '#aitenantcommunication #propertymanagementproductivity'
+    )
+    assert spam.matched is False
+    assert (
+        match_post(
+            "A few years back, the founder of what's now RentRedi in Latham "
+            'lost out on an apartment because of paperwork.'
+        ).matched
+        is True
+    )
+
+
+def test_socal_saratoga_hashtag_stuffing_not_race_course() -> None:
+    socal = match_post(
+        'cynthiapublishing.com/hp_wordpress...\n'
+        '#heat #losangeles #socal #horses #horseracing #thoroughbreds '
+        '#delmar #saratoga #mountaineerpark',
+        alt_text='First Post: roasting Southern California generally',
+    )
+    assert socal.matched is False
+    assert (
+        match_post(
+            'Check out the likely fields for stakes at Saratoga, Del Mar, '
+            'Kentucky Downs and Charles Town.'
+        ).matched
+        is True
+    )
+
+
+def test_saratoga_meet_and_fort_schuyler_campaign_recall() -> None:
+    meet = match_post(
+        'Jockey Irad Ortiz, with lingering foot injury, will miss remainder of Saratoga meet'
+    )
+    assert meet.matched is True
+
+    campaign = match_post(
+        'What happened at Fort Schuyler helps explain what happened at Saratoga. '
+        'Oriskany, Haudenosaunee political divisions, and Benedict Arnold.'
+    )
+    assert campaign.matched is True

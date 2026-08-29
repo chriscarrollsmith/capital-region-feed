@@ -97,7 +97,8 @@ _CENTER_SQUARE_WIRE = re.compile(
         \(\s*the\s+center\s+square\s*\)
       | [-–—]\s*the\s+center\s+square\b
       | \band\s+the\s+center\s+square\b
-      | (?:reporting\s+by|according\s+to(?:\s+reporting\s+by)?)\b
+      | (?:reporting\s+by|according\s+to(?:\s+reporting\s+by)?|
+            (?:document\s+)?obtained\s+by)\b
         [\s\S]{0,100}the\s+center\s+square\b
       | washington\s+state\s+standard[\s\S]{0,60}the\s+center\s+square\b
     )

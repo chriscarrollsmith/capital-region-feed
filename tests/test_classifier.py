@@ -146,6 +146,19 @@ def test_center_square_wire_byline_is_not_local_micro() -> None:
     )
     assert conjunction.matched is False
 
+    # "document obtained by The Center Square" Instapundit-style cards.
+    obtained = match_post(
+        '',
+        alt_text=(
+            'SHOW ME THE MAN AND I’LL SHOW YOU THE CRIME: AGs conceal records tied '
+            'to longstanding plans to sue Trump. “A ‘confidential’ document obtained '
+            'by The Center Square shows at least 22 Democratic attorneys general '
+            'plotted litigation against President Donald Trump as early as April 28, '
+            '2024 — three months before Vice President'
+        ),
+    )
+    assert obtained.matched is False
+
     # Hollywood Squares / Paul Lynde "center square" is not Albany Center Square.
     hollywood = match_post(
         "Good ol' Paul Lynde. One of the funniest guys EV-ER.",
