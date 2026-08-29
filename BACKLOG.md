@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-081 — Daily feed audit: Sun-Times/Times Union, Newtonville MA, DC Capital district, French/Iceland CR, Green Island Sangha, Center Square reports, CT Capital District, Albany County Library WY, Brunswick Schools; Rensselaer sheriff / Latham–Halfmoon HQ FNs
-- **Status:** in progress
+- **Status:** done ([#58](https://github.com/chriscarrollsmith/capital-region-feed/pull/58))
 - **Why:** 2026-08-29 audit of last-24h AppView feed (~204 posts since 2026-08-28T09:00Z)
   found active FPs after #57 (still open): Chicago `Sun-Times union` matched `times union`;
   Boston Newtonville / MBTA Worcester Line matched Colonie `newtonville`; DC
