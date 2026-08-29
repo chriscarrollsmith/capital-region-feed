@@ -214,8 +214,17 @@ _STRONG_POSITIVE = re.compile(
       | \bthe\s+egg\s+presents\b
       | high\s+rock\s+park[\s\S]{0,80}\bsaratoga\b
       | \bsaratoga\b[\s\S]{0,80}high\s+rock\s+park\b
-      | times\s+union\b
+      # Local paper — reject hyphenated "Sun-Times union" (Chicago).
+      | (?<![\w-])times\s+union\b
       | albany\s+business\s+review\b
+      # County sheriff ICE wires often omit "County" / ", NY".
+      | rensselaer\s+sheriff\b
+      # Biz-journal HQ copy often omits ", NY" for Cap Region Latham / Halfmoon.
+      | (?:regional\s+)?(?:office|hq)\s+in\s+latham\b
+      | latham[\s\S]{0,60}(?:regional\s+)?(?:office|hq)\b
+      | halfmoon\s+hq\b
+      | (?:office|hq)\s+in\s+halfmoon\b
+      | new\s+halfmoon\s+(?:location|hq)\b
       # Local PropTech — require Cap Region place (bare #rentredi is SEO spam).
       | \brentredi\b[\s\S]{0,80}(?:\blatham\b|\balbany\b|capital\s+region\b|\#albanyny\b)
       | (?:\blatham\b|\balbany\b|capital\s+region\b|\#albanyny\b)[\s\S]{0,80}\brentredi\b
@@ -396,6 +405,7 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
       | (?:russian|moscow)\s+capital\s+region
       | sudan(?:ese)?\s+capital\s+region
       | icelandic\s+capital\s+region
+      | french\s+capital\s+region
       | finnish\s+capital\s+region
       | australian\s+capital\s+region
       | (?:virginia|richmond)\s+capital\s+region
@@ -505,12 +515,13 @@ _MD_DC_GEO_CUE = (
     r'\bnbc\s*4\b|\btelemundo\s*44\b'
 )
 
-# MD/DC "capital region" co-occurring with Maryland / Prince George's cues (not NY).
+# MD/DC "capital region/district" co-occurring with Maryland / DC cues (not NY).
+# AppView cards say "Capital district, Washington, D.C." as well as "capital region".
 _MD_DC_CAPITAL_REGION = re.compile(
     rf"""
     (?:
-        capital\s+region\b[\s\S]{{0,280}}(?:{_MD_DC_GEO_CUE})
-      | (?:{_MD_DC_GEO_CUE})[\s\S]{{0,280}}capital\s+region\b
+        capital\s+(?:region|district)\b[\s\S]{{0,280}}(?:{_MD_DC_GEO_CUE})
+      | (?:{_MD_DC_GEO_CUE})[\s\S]{{0,280}}capital\s+(?:region|district)\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -825,10 +836,11 @@ _IN_ALBANY_SARATOGA = re.compile(
 )
 
 # Iceland "capital region" / "capital district" (Reykjavik Police / mbl.is mirrors).
+# Window 280 covers mbl.is → "District Commissioner of the Capital Region" card distance.
 _IS_GEO_CUE = (
     r'\biceland\b|\bicelandic\b|\breykjav[ií]k\b|'
     r'\#iceland\b|\#reykjav[ií]k\b|mbl\.is|'
-    r'miklabraut|grens[aá]svegur'
+    r'miklabraut|grens[aá]svegur|\bkringlan\b'
 )
 
 _IS_CAPITAL_REGION = re.compile(
@@ -836,10 +848,87 @@ _IS_CAPITAL_REGION = re.compile(
     (?:
         icelandic\s+capital\s+(?:region|district)
       | capital\s+(?:region|district)\s+of\s+(?:iceland|reykjav[ií]k)\b
-      | capital\s+(?:region|district)\b[\s\S]{{0,160}}(?:{_IS_GEO_CUE})
-      | (?:{_IS_GEO_CUE})[\s\S]{{0,160}}capital\s+(?:region|district)\b
+      | capital\s+(?:region|district)\b[\s\S]{{0,280}}(?:{_IS_GEO_CUE})
+      | (?:{_IS_GEO_CUE})[\s\S]{{0,280}}capital\s+(?:region|district)\b
       # Reykjavik emergency services branding.
       | capital\s+district\s+fire\s+and\s+rescue
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Paris / France "capital region" (YouTube storm cards: "French capital region").
+_FR_GEO_CUE = (
+    r'\bfrance\b|\bfrench\b|\bparis\b|'
+    r'\#france\b|\#paris\b|\#french\b'
+)
+
+_FR_CAPITAL_REGION = re.compile(
+    rf"""
+    (?:
+        french\s+capital\s+region
+      | capital\s+region\s+of\s+(?:france|paris)\b
+      | capital\s+region\b[\s\S]{{0,200}}(?:{_FR_GEO_CUE})
+      | (?:{_FR_GEO_CUE})[\s\S]{{0,200}}capital\s+region\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Boston Newton village / MBTA Worcester Line — not Colonie Newtonville.
+_NEWTONVILLE_MA = re.compile(
+    r"""
+    (?:
+        newtonville[\s\S]{0,220}(?:
+            \bboston\b|\bmbta\b|\#mbta\b|newton\s+ma\b|newton\s+highlands|
+            west\s+newton|worcester\s+line|garden\s+city
+        )
+      | (?:
+            \bboston\b|\bmbta\b|\#mbta\b|newton\s+ma\b|newton\s+highlands|
+            west\s+newton|worcester\s+line
+        )[\s\S]{0,220}newtonville
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# CT bank-job "Capital District" (East Hartford) — not NY Capital District.
+_CT_CAPITAL_DISTRICT = re.compile(
+    r"""
+    (?:
+        capital\s+district[\s\S]{0,140}(?:
+            east\s+hartford|\bhartford\b|\bconnecticut\b|(?<![a-z0-9])ct-
+        )
+      | (?:
+            east\s+hartford|\bhartford\b|\bconnecticut\b|(?<![a-z0-9])ct-
+        )[\s\S]{0,140}capital\s+district
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Long Island / Adelphi "Green Island Sangha" — not Village of Green Island NY.
+_GREEN_ISLAND_OTHER = re.compile(
+    r"""
+    (?:
+        green\s+island\s+sangha
+      | green\s+island[\s\S]{0,160}(?:adelphi|long\s+island|plum\s+village)
+      | (?:adelphi|long\s+island|plum\s+village)[\s\S]{0,160}green\s+island
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Brunswick Schools (OH) + NYC tournament cards — not Town of Brunswick NY.
+_BRUNSWICK_SCHOOLS_OTHER = re.compile(
+    r"""
+    (?:
+        brunswick\s+schools?\b[\s\S]{0,220}(?:
+            new\s+york\s+city|nba\s+math\s+hoops|\bcleveland\b
+        )
+      | (?:
+            new\s+york\s+city|nba\s+math\s+hoops|\bcleveland\b
+        )[\s\S]{0,220}brunswick\s+schools?\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -1631,6 +1720,8 @@ _ALBANY_COUNTY_WY = re.compile(
     (?:
         albany\s+county(?:\s*,)?\s*(?:wy|wyoming)\b
       | albany\s*,\s*(?:wy|wyoming)\b
+      # Laramie public library branding — Cap Region uses Albany Public Library.
+      | albany\s+county\s+library\b
       # NWS bots tag state as [WY] / #WYwx; Laramie Valley is WY-only context.
       | albany\s+county[\s\S]{0,240}(?:
             \bwyoming\b|\#wy\b|\#wywx\b|\[wy\]|\blaramie\b|cheyenne|nws\s+cheyenne
@@ -1644,9 +1735,13 @@ _ALBANY_COUNTY_WY = re.compile(
 )
 
 
-def _albany_county_wy_conflict(haystack: str) -> bool:
+def _albany_county_wy_conflict(haystack: str, author_handle: str | None = None) -> bool:
     """True when Albany County cues point at Wyoming, not NY."""
-    if not _ALBANY_COUNTY_WY.search(haystack):
+    handle = (author_handle or '').strip().lower()
+    wy_handle = bool(re.search(r'wyomingpublicmedia|\bwpm\b', handle))
+    if not _ALBANY_COUNTY_WY.search(haystack) and not (
+        wy_handle and re.search(r'albany\s+county', haystack, flags=re.IGNORECASE)
+    ):
         return False
     # Explicit NY state context wins (comparison posts, etc.).
     if re.search(r'\b(?:ny|new\s+york)\b', haystack, flags=re.IGNORECASE):
@@ -1694,7 +1789,7 @@ def _canadian_capital_region_conflict(haystack: str, author_handle: str | None =
 
 
 def _md_dc_capital_region_conflict(haystack: str, author_handle: str | None = None) -> bool:
-    """True when 'capital region' refers to MD/DC metro, not NY."""
+    """True when 'capital region/district' refers to MD/DC metro, not NY."""
     if _ny_capital_region_context(haystack):
         return False
     if _MD_DC_CAPITAL_REGION.search(haystack):
@@ -1702,7 +1797,7 @@ def _md_dc_capital_region_conflict(haystack: str, author_handle: str | None = No
     # Maryland Banner / MoCo community media often omit "Maryland" in the body.
     handle = (author_handle or '').strip().lower()
     if re.search(r'banner(?:moco|pgcounty)|marylandbanner|\bmymcmedia\b', handle) and re.search(
-        r'capital\s+region\b', haystack, flags=re.IGNORECASE
+        r'capital\s+(?:region|district)\b', haystack, flags=re.IGNORECASE
     ):
         return True
     return False
@@ -1890,6 +1985,65 @@ def _iceland_capital_region_conflict(haystack: str) -> bool:
     if not _IS_CAPITAL_REGION.search(haystack):
         return False
     return not _ny_capital_region_context(haystack)
+
+
+def _france_capital_region_conflict(haystack: str) -> bool:
+    """True when 'capital region' refers to Paris / France, not NY."""
+    if not _FR_CAPITAL_REGION.search(haystack):
+        return False
+    return not _ny_capital_region_context(haystack)
+
+
+def _newtonville_ma_conflict(haystack: str) -> bool:
+    """True when Newtonville refers to Boston Newton / MBTA, not Colonie NY."""
+    if not re.search(r'\bnewtonville\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not _NEWTONVILLE_MA.search(haystack):
+        return False
+    if re.search(
+        r'newtonville\s*,?\s*(?:ny|n\.y\.|new\s+york)\b|\#albanyny\b|colonie',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    return not _ny_capital_region_context(haystack)
+
+
+def _ct_capital_district_conflict(haystack: str) -> bool:
+    """True when 'capital district' refers to CT bank territory, not NY."""
+    if not _CT_CAPITAL_DISTRICT.search(haystack):
+        return False
+    return not _ny_capital_region_context(haystack)
+
+
+def _green_island_other_conflict(haystack: str) -> bool:
+    """True when Green Island refers to LI sangha / Adelphi, not the village."""
+    if not re.search(r'green\s+island', haystack, flags=re.IGNORECASE):
+        return False
+    if not _GREEN_ISLAND_OTHER.search(haystack):
+        return False
+    if re.search(
+        r'green\s+island\s*,?\s*(?:ny|n\.y\.|new\s+york)\b|village\s+of\s+green\s+island',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    return True
+
+
+def _brunswick_schools_other_conflict(haystack: str) -> bool:
+    """True when Brunswick Schools refers to OH + NYC events, not Brunswick NY."""
+    if not re.search(r'\bbrunswick\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not _BRUNSWICK_SCHOOLS_OTHER.search(haystack):
+        return False
+    if re.search(
+        r'brunswick\s*,?\s*(?:ny|n\.y\.|new\s+york)\b|town\s+of\s+brunswick',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    return True
 
 
 def _egg_kansas_city_conflict(haystack: str) -> bool:
@@ -2407,14 +2561,16 @@ def match_post(
         # Strong NY phrasing can still win over a hard negative only when it is
         # clearly local (e.g. quoting "New Albany" while talking about Albany, NY).
         # Albany County WY must not be rescued by the bare "Albany County" token.
-        if _albany_county_wy_conflict(haystack):
+        if _albany_county_wy_conflict(haystack, author_handle):
             return MatchResult(False, 'entity_other:albany_county_wy')
         if _STRONG_POSITIVE.search(haystack) and not _HARD_NEGATIVE_BLOCKS_STRONG.search(haystack):
             return MatchResult(True, 'strong_positive_over_negative')
         return MatchResult(False, 'hard_negative')
 
     if entity is not None and entity.region == 'capital_ny':
-        if entity.entity_id == 'albany_county_ny' and _albany_county_wy_conflict(haystack):
+        if entity.entity_id == 'albany_county_ny' and _albany_county_wy_conflict(
+            haystack, author_handle
+        ):
             return MatchResult(False, 'entity_other:albany_county_wy')
         if entity.entity_id == 'watervliet_ny' and _watervliet_mi_conflict(haystack):
             return MatchResult(False, 'entity_other:watervliet_mi')
@@ -2424,7 +2580,7 @@ def match_post(
 
     if _STRONG_POSITIVE.search(haystack):
         # Bare "Albany County" is also a strong token; still drop WY-tagged posts.
-        if _albany_county_wy_conflict(haystack):
+        if _albany_county_wy_conflict(haystack, author_handle):
             return MatchResult(False, 'entity_other:albany_county_wy')
         if _watervliet_mi_conflict(haystack):
             return MatchResult(False, 'entity_other:watervliet_mi')
@@ -2450,6 +2606,8 @@ def match_post(
             return MatchResult(False, 'hard_negative:sudan_capital_region')
         if _iceland_capital_region_conflict(haystack):
             return MatchResult(False, 'hard_negative:iceland_capital_region')
+        if _france_capital_region_conflict(haystack):
+            return MatchResult(False, 'hard_negative:france_capital_region')
         if _finland_capital_region_conflict(haystack):
             return MatchResult(False, 'hard_negative:finland_capital_region')
         if _denmark_capital_region_conflict(haystack):
@@ -2484,6 +2642,10 @@ def match_post(
             return MatchResult(False, 'hard_negative:loudonville_oh')
         if _clifton_park_uk_conflict(haystack, author_handle):
             return MatchResult(False, 'hard_negative:clifton_park_uk')
+        if _newtonville_ma_conflict(haystack):
+            return MatchResult(False, 'hard_negative:newtonville_ma')
+        if _ct_capital_district_conflict(haystack):
+            return MatchResult(False, 'hard_negative:ct_capital_district')
         return MatchResult(True, 'strong_positive')
 
     if _COLONIE_LOCAL.search(haystack):
@@ -2588,6 +2750,12 @@ def match_post(
 
         if term == 'brunswick' and _brunswick_ok_conflict(haystack):
             return MatchResult(False, 'hard_negative:brunswick_ok')
+
+        if term == 'brunswick' and _brunswick_schools_other_conflict(haystack):
+            return MatchResult(False, 'hard_negative:brunswick_schools_other')
+
+        if term == 'green island' and _green_island_other_conflict(haystack):
+            return MatchResult(False, 'hard_negative:green_island_other')
 
         if term == 'waterford' and _waterford_ct_conflict(haystack):
             return MatchResult(False, 'hard_negative:waterford_ct')
