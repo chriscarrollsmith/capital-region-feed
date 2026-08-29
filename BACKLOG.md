@@ -538,6 +538,28 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-081 — Daily feed audit: Sun-Times/Times Union, Newtonville MA, DC Capital district, French/Iceland CR, Green Island Sangha, Center Square reports, CT Capital District, Albany County Library WY, Brunswick Schools; Rensselaer sheriff / Latham–Halfmoon HQ FNs
+- **Status:** in progress
+- **Why:** 2026-08-29 audit of last-24h AppView feed (~204 posts since 2026-08-28T09:00Z)
+  found active FPs after #57 (still open): Chicago `Sun-Times union` matched `times union`;
+  Boston Newtonville / MBTA Worcester Line matched Colonie `newtonville`; DC
+  `Capital district, Washington, D.C.` lacked capital-district coverage in the MD/DC gate;
+  Paris `French capital region` YouTube cards; Iceland `Capital Region` + Kringlan/mbl.is
+  beyond the prior 160-char window; Long Island `Green Island Sangha` + Adelphi unlocked by
+  NY context; classifier micros for prose `The Center Square reports`; CT East Hartford
+  bank-job `Capital District`; Wyoming `Albany County Library` (WPM) without WY place tokens;
+  Brunswick Schools OH + NYC tournament cards. FNs: bare `Rensselaer sheriff` ICE suit;
+  BizJournals Latham regional HQ / Halfmoon HQ without `, NY`. AppView `searchPosts` still 403.
+- **Work:**
+  - Guard `times union` with hyphen lookbehind; Newtonville MA/MBTA conflict; extend MD/DC
+    gate to capital district; French capital-region conflict; widen Iceland window + Kringlan;
+    Green Island Sangha/Adelphi/LI hard-neg; scrub `The Center Square reports`; CT Capital
+    District conflict; Albany County Library / WPM WY gate; Brunswick Schools+NYC conflict;
+    strong positives for Rensselaer sheriff and Latham/Halfmoon HQ copy.
+  - Grow eval with 2026-08-29 FP/TP/FN anchors (builds on #57 / B-080).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-080 — Daily feed audit: Woodbine/#saratoga, Center Square Rd NJ, Crossgates Tammany, Chippewa River Street, onça-troy; Forego/Jerkens/Albany Exec FNs
 - **Status:** done ([#57](https://github.com/chriscarrollsmith/capital-region-feed/pull/57))
 - **Why:** 2026-08-28 audit of last-24h AppView feed (~350 posts since 2026-08-27T09:12Z)
