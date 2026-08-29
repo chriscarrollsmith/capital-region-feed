@@ -174,6 +174,40 @@ def test_center_square_wire_byline_is_not_local_micro() -> None:
     assert porch.matched is True
     assert porch.reason == 'classifier:local_micro'
 
+    # Gloucester Co "Center Square Rd" flash-flood copy is not Albany Center Square.
+    nj_rd = match_post(
+        '3 NNE Oldmans Twp. [Gloucester Co, NJ] Dept of Highways reports Flash Flood '
+        '-- Flooding on US 130 South of CR 620/Center Square Rd (Oldmans Twp). #njwx'
+    )
+    assert nj_rd.matched is False
+
+
+def test_crossgates_tammany_and_chippewa_river_street_not_local_micro() -> None:
+    la = match_post(
+        'The Crossgates Wastewater Treatment Plant is on track for a major 2027 launch!\n\n'
+        '#TammanyParish #LA #CitizenPortal #StTammanyParishWastewater',
+        alt_text=(
+            'Crossgates wastewater plant structure up; mechanical work slated for 2027 '
+            'startup in St. Tammany Parish.'
+        ),
+    )
+    assert la.matched is False
+
+    wi = match_post(
+        '#Wisconsin\nDefend Democracy Rally\nChippewa Falls Wisconsin\n'
+        'Peace Circle, River (124) and Bridge\n1 North Bridge Street\n'
+        'Chippewa Falls, WI 54729',
+        alt_text=(
+            'Defend Democracy Rally — Chippewa Falls · Mobilize Citizens gathering '
+            'every week on Peace Circle in Chippewa Falls (roundabout on the corner '
+            'of Bridge Street and Highway 124 (River Street) in Chippewa Falls'
+        ),
+    )
+    assert wi.matched is False
+
+    assert match_post('Holiday hours at Crossgates Mall this weekend.').matched is True
+    assert match_post('Open mic tomorrow on River Street — sign-ups start at 6.').matched is True
+
 
 def test_classify_drops_bare_albany_event_without_micro() -> None:
     decision = classify_candidate(

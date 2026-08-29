@@ -538,6 +538,25 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-080 — Daily feed audit: Woodbine/#saratoga, Center Square Rd NJ, Crossgates Tammany, Chippewa River Street, onça-troy; Forego/Jerkens/Albany Exec FNs
+- **Status:** done ([#57](https://github.com/chriscarrollsmith/capital-region-feed/pull/57))
+- **Why:** 2026-08-28 audit of last-24h AppView feed (~350 posts since 2026-08-27T09:12Z)
+  found active FPs after #56 (still open): multi-track handicap stuffing with `#woodbine` /
+  `#charlestownraces` / `#remingtonpark` + `#saratoga` (Parx/SoCal gates missed); classifier
+  micros for Gloucester Co `Center Square Rd`, St. Tammany `Crossgates Wastewater` + `#LA`,
+  and Chippewa Falls `River Street` + `#Wisconsin`; Portuguese `onça-troy` gold wires unlocked
+  by New York Mercantile Exchange. FNs: H. Allen Jerkens / Forego / Grade 1 at Saratoga /
+  Skidmore; `Albany/Amsterdam` Legal Aid; `ALBANY EXEC`; South Albany Airport; Corinth +
+  Saratoga Springs storm cluster. AppView `searchPosts` still 403.
+- **Work:**
+  - Extend multi-track `#saratoga` hard-neg with Woodbine/Charlestown/Remington; scrub
+    Center Square Rd, Crossgates+Tammany/LA, River Street+Wisconsin from classifier micros;
+    guard `onça-troy` / `onza-troy` in `_TROY_PLACE`; strong positives for named stakes /
+    Grade 1 at Saratoga / Albany Exec / South Albany / Albany/Amsterdam / Corinth+Springs.
+  - Grow eval with 2026-08-28 FP/TP/FN anchors (builds on #56 / B-079).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-079 — Daily feed audit: Helderberg #CapeTown, Burnt hillside, MI hashtag Troy, Saratoga Terrace, Parx/#saratoga, Long Island #albanyny, Travers/Lark Hall/Mayor FNs
 - **Status:** done ([#56](https://github.com/chriscarrollsmith/capital-region-feed/pull/56))
 - **Why:** 2026-08-27 audit of last-24h AppView feed (~196 posts since 2026-08-26T09:02Z)

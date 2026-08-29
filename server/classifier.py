@@ -65,7 +65,8 @@ _CAP_REGION_HINT = re.compile(
     (?:
         capital\s+(?:region|district)\b
       | \balbany\b
-      | (?<!\d\s)(?<![\w.])troy(?![\w@.-])(?!\s*(?:oz|ounces?|ozt|weight)\b)
+      | (?<!\d\s)(?<![\w.])(?<!on[cç]a[- ])(?<!onza[- ])(?<!ounce[- ])
+        troy(?![\w@.-])(?!\s*(?:oz|ounces?|ozt|weight)\b)
       | \bschenectady\b
       | \bcolonie\b
       | \bguilderland\b
@@ -107,6 +108,7 @@ _CENTER_SQUARE_WIRE = re.compile(
 )
 
 # Hollywood Squares / Paul Lynde "center square" — not the Albany neighborhood.
+# "Center Square Rd/Road/St" is a street name elsewhere (e.g. Gloucester Co, NJ).
 _HOLLYWOOD_CENTER_SQUARE = re.compile(
     r"""
     (?:
@@ -115,6 +117,7 @@ _HOLLYWOOD_CENTER_SQUARE = re.compile(
       | \#?gameshow\s*squares\b
       | paul\s+lynde
       | center\s+square\s+on\b
+      | center\s+square\s+(?:rd|road|st|street)\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -135,6 +138,29 @@ _RIVER_STREET_OTHER = re.compile(
       | river\s+street[\s\S]{0,120}(?:\#va\b|\bvirginia\b)
       | (?:\#va\b|\bvirginia\b)[\s\S]{0,120}river\s+street
       | \bcitizenportal\b
+      | chippewa\s+falls[\s\S]{0,160}river\s+street
+      | river\s+street[\s\S]{0,160}chippewa\s+falls
+      | (?:\#wisconsin\b|\bwisconsin\b)[\s\S]{0,160}river\s+street
+      | river\s+street[\s\S]{0,160}(?:\#wisconsin\b|\bwisconsin\b)
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# St. Tammany / Louisiana "Crossgates" wastewater — not Crossgates Mall.
+_CROSSGATES_OTHER = re.compile(
+    r"""
+    (?:
+        crossgates\s+wastewater
+      | wastewater[\s\S]{0,80}crossgates
+      | crossgates[\s\S]{0,160}(?:
+            tammany|\#tammanyparish\b|\#sttammany|
+            \#la\b|\blouisiana\b|citizenportal|citizen\s+portal
+          )
+      | (?:
+            tammany|\#tammanyparish\b|\#sttammany|
+            \#la\b|\blouisiana\b|citizenportal|citizen\s+portal
+          )[\s\S]{0,160}crossgates
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -148,15 +174,18 @@ def _local_micro_hits(haystack: str) -> list[str]:
     """Return micro-signal hits eligible for classifier features."""
     # Scrub wire bylines before matching so they cannot unlock event+micro keeps.
     scan = _CENTER_SQUARE_WIRE.sub(' ', haystack)
-    # Hollywood Squares / Paul Lynde must not unlock Albany Center Square micros.
+    # Hollywood Squares / Paul Lynde / "Center Square Rd" must not unlock micros.
     if _HOLLYWOOD_CENTER_SQUARE.search(scan):
         scan = re.sub(r'center\s+square', ' ', scan, flags=re.IGNORECASE)
     hits = list(_DISTINCTIVE_LOCAL_MICRO.findall(scan))
     if _CAP_REGION_HINT.search(scan):
         hits.extend(_COLLISION_LOCAL_MICRO.findall(scan))
-    # Drop River Street when Canadian literary-press cues dominate the card.
+    # Drop River Street when Canadian literary-press / off-region cues dominate.
     if _RIVER_STREET_OTHER.search(scan):
         hits = [h for h in hits if 'river' not in h.lower() or 'street' not in h.lower()]
+    # Drop Crossgates when Louisiana / Tammany wastewater cues dominate.
+    if _CROSSGATES_OTHER.search(scan):
+        hits = [h for h in hits if 'crossgates' not in h.lower()]
     return hits
 
 

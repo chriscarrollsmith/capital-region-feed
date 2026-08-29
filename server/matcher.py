@@ -117,9 +117,29 @@ _STRONG_POSITIVE = re.compile(
       | travers\s+stakes\b
       | midsummer\s+derby\b
       | saratoga\s+feature\b
+      # Named Grade 1 / meet stakes at the Race Course often omit ", NY".
+      | (?:h\.?\s*allen\s+)?jerkens(?:\s+memorial)?\b
+      | \bgrade\s+[123i]+\s+forego\b
+      | \b(?:the\s+)?forego\s+stakes\b
+      | \bin\s+(?:the\s+)?forego\b
+      | \bballerina\s+stakes\b
+      | personal\s+ensign(?:\s+stakes)?\b
+      | \bskidmore(?:\s+stakes)?\b[\s\S]{0,80}\bsaratoga\b
+      | \bsaratoga\b[\s\S]{0,80}\bskidmore(?:\s+stakes)?\b
+      # "Grade 1 runners at Saratoga" wires omit the word "stakes".
+      | grade\s+[123i]+\b[\s\S]{0,80}\bat\s+saratoga\b
+      | at\s+saratoga\b[\s\S]{0,80}grade\s+[123i]+\b
       # Win / victory wires: "6,000 wins … at Saratoga" without Race Course.
       | \b(?:wins?|won|victory)\b[\s\S]{0,80}\bat\s+saratoga\b
       | \bat\s+saratoga\b[\s\S]{0,80}\b(?:wins?|won|victory)\b
+      # Legal Aid / county-exec / South Albany Airport copy often omits ", NY".
+      | albany\s*/\s*amsterdam\b
+      | albany\s+exec(?:utive)?\b
+      | albany\s+county\s+exec(?:utive)?\b
+      | south\s+albany\b
+      # NWS / storm copy: Corinth NY cluster with Saratoga Springs (no ", NY").
+      | \bcorinth\b[\s\S]{0,100}saratoga\s+springs\b
+      | saratoga\s+springs\b[\s\S]{0,100}\bcorinth\b
       # SPAC / #SPAC next to Saratoga (avoid bare SPAC webinars without venue).
       | \#?spac\b[\s\S]{0,200}\bsaratoga\b
       | \bsaratoga\b[\s\S]{0,200}\#?spac\b
@@ -225,10 +245,12 @@ _STRONG_POSITIVE = re.compile(
 # Includes Cap Region micro-toponyms that collide with personal names,
 # other U.S./world places, or common phrases (e.g. "green islands").
 # ``troy`` ignores email local-parts (``troy@…``), hyphenated names/domains
-# (``troy-caperton``), troy weight (oz / "10.8 troy"), "Donna Troy",
-# broadcaster "Troy Aikman", and NFL "Troy Fautanu".
+# (``troy-caperton``), troy weight (oz / "10.8 troy" / Portuguese ``onça-troy``),
+# "Donna Troy", broadcaster "Troy Aikman", and NFL "Troy Fautanu".
 _TROY_PLACE = (
-    r'(?<!\d\s)(?<![\w.])(?<!donna\s)troy(?![\w@.-])'
+    r'(?<!\d\s)(?<![\w.])(?<!donna\s)'
+    r'(?<!on[cç]a[- ])(?<!onza[- ])(?<!ounce[- ])'
+    r'troy(?![\w@.-])'
     r'(?!\s*(?:oz|ounces?|ozt|weight|aikman|fautanu)\b)'
 )
 
@@ -341,9 +363,11 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
       | (?:\#socal\b|\#losangeles\b|southern\s+california)[\s\S]{0,200}\#saratoga\b
       | \#saratoga\b[\s\S]{0,200}(?:\#socal\b|\#losangeles\b|southern\s+california)
       | (?:\#parxracing\b|\#thistledown\b|\#horseshoeindy\b|
-         \#assiniboia(?:downs)?\b|\#mountaineerpark\b)[\s\S]{0,200}\#saratoga\b
+         \#assiniboia(?:downs)?\b|\#mountaineerpark\b|
+         \#woodbine\b|\#charlestownraces\b|\#remingtonpark\b)[\s\S]{0,200}\#saratoga\b
       | \#saratoga\b[\s\S]{0,200}(?:\#parxracing\b|\#thistledown\b|
-         \#horseshoeindy\b|\#assiniboia(?:downs)?\b|\#mountaineerpark\b)
+         \#horseshoeindy\b|\#assiniboia(?:downs)?\b|\#mountaineerpark\b|
+         \#woodbine\b|\#charlestownraces\b|\#remingtonpark\b)
       # Long Island SEO hashtag stuffing with #albany / #albanyny — not Cap Region.
       | (?:\#longisland(?:ny|newyork)?\b|\#longislandrealestate\b)[\s\S]{0,200}\#albany(?:ny|_ny)?\b
       | \#albany(?:ny|_ny)?\b[\s\S]{0,200}(?:\#longisland(?:ny|newyork)?\b|\#longislandrealestate\b)
@@ -1365,9 +1389,11 @@ _HARD_NEGATIVE = re.compile(
       | (?:\#socal\b|\#losangeles\b|southern\s+california)[\s\S]{0,200}\#saratoga\b
       | \#saratoga\b[\s\S]{0,200}(?:\#socal\b|\#losangeles\b|southern\s+california)
       | (?:\#parxracing\b|\#thistledown\b|\#horseshoeindy\b|
-         \#assiniboia(?:downs)?\b|\#mountaineerpark\b)[\s\S]{0,200}\#saratoga\b
+         \#assiniboia(?:downs)?\b|\#mountaineerpark\b|
+         \#woodbine\b|\#charlestownraces\b|\#remingtonpark\b)[\s\S]{0,200}\#saratoga\b
       | \#saratoga\b[\s\S]{0,200}(?:\#parxracing\b|\#thistledown\b|
-         \#horseshoeindy\b|\#assiniboia(?:downs)?\b|\#mountaineerpark\b)
+         \#horseshoeindy\b|\#assiniboia(?:downs)?\b|\#mountaineerpark\b|
+         \#woodbine\b|\#charlestownraces\b|\#remingtonpark\b)
       # Long Island SEO hashtag stuffing with #albany / #albanyny — not Cap Region.
       | (?:\#longisland(?:ny|newyork)?\b|\#longislandrealestate\b)[\s\S]{0,200}\#albany(?:ny|_ny)?\b
       | \#albany(?:ny|_ny)?\b[\s\S]{0,200}(?:\#longisland(?:ny|newyork)?\b|\#longislandrealestate\b)

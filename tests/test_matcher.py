@@ -2026,6 +2026,69 @@ def test_parx_thistledown_saratoga_hashtag_stuffing_not_race_course() -> None:
     )
 
 
+def test_woodbine_charlestown_remington_saratoga_hashtag_stuffing() -> None:
+    spam = match_post(
+        'cynthiapublishing.com/hp_wordpress...\n'
+        '#thursday #horses #horseracing #handicapping #longshots #thoroughbreds '
+        '#delmar #saratoga #woodbine #charlestownraces #remingtonpark'
+    )
+    assert spam.matched is False
+    assert (
+        match_post(
+            'Check out the likely fields for stakes at Saratoga, Del Mar, '
+            'Kentucky Downs and Charles Town.'
+        ).matched
+        is True
+    )
+
+
+def test_onca_troy_nymex_not_city_of_troy() -> None:
+    gold = match_post(
+        'Ouro fecha em leve alta com expectativa por sinalizações do Fed em Jackson Hole',
+        alt_text=(
+            'Na Comex, divisão de metais da New York Mercantile Exchange (Nymex), '
+            'o ouro para dezembro encerrou em alta de 0,23%, a US$ 4 653,30 por onça-troy'
+        ),
+    )
+    assert gold.matched is False
+    assert match_post('Dinner in Troy NY tonight.').matched is True
+
+
+def test_forego_jerkens_grade1_saratoga_and_albany_exec_recall() -> None:
+    assert (
+        match_post('Mike Welsch previews the Grade 1, $500,000 H. Allen Jerkens Memorial.').matched
+        is True
+    )
+    assert match_post("Book'em Danno looks to go back-to-back in Forego").matched is True
+    assert (
+        match_post('Chris Gracie is tied to three Grade 1 runners at Saratoga on Aug. 29.').matched
+        is True
+    )
+    assert (
+        match_post(
+            'LASNNY is hiring a Disability Advocacy Staff Attorney (Albany/Amsterdam).'
+        ).matched
+        is True
+    )
+    assert (
+        match_post(
+            'ALBANY EXEC, DA investigating possible fraud within county employee benefits'
+        ).matched
+        is True
+    )
+    assert (
+        match_post("Kathy Hochul's Sikorsky just touched down at 4B0 (South Albany).").matched
+        is True
+    )
+    assert (
+        match_post(
+            'Severe Thunderstorm 7 Miles S of Corinth or 7 Miles NW of Saratoga Springs '
+            'Moving E. Locations Impacted Include Corinth, Wilton, Greenfield.'
+        ).matched
+        is True
+    )
+
+
 def test_long_island_albany_hashtag_stuffing_not_local() -> None:
     spam = match_post(
         'IXCHEL Anxiety Relief #usa #longisland #longislandny #longislandnewyork '
