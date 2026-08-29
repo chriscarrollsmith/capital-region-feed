@@ -67,7 +67,8 @@ _STRONG_POSITIVE = re.compile(
       | \b(?:e\.?|east)\s+greenbush
       | \b(?:n\.?|north)\s+greenbush
       | mechanicville
-      | burnt\s+hills
+      # Word boundary after "hills" so "Burnt hillside" (wildfire terrain) does not match.
+      | burnt\s+hills\b
       | ballston\s+spa
       # Cap Region Clifton Park — UK cricket ground gated in conflict helper.
       | clifton\s+park
@@ -87,9 +88,12 @@ _STRONG_POSITIVE = re.compile(
       | altamont(?:\s*,)?\s*ny\b
       | empire\s+state\s+plaza
       | albany\s+capital\s+center
+      | albany\s+mayor\b
       | university\s+at\s+albany
       | \bualbany\b
       | suny\s+albany
+      # Albany music venue — often listed as "Albany: … @ Lark Hall" without ", NY".
+      | lark\s+hall\b
       # Interstate 787 — require I-/interstate/route prefix. Bare "on 787" matches
       # medical PR ("Study on 787 Brain Tumor Patients").
       | \b(?:i-?|interstate\s+|route\s+|ny\s+)787\b
@@ -109,6 +113,13 @@ _STRONG_POSITIVE = re.compile(
       | national\s+museum\s+of\s+racing
       # Horse-racing debut copy often omits "Race Course".
       | debut\s+at\s+saratoga\b
+      # Travers / Midsummer Derby / "Saratoga feature" wires often omit ", NY".
+      | travers\s+stakes\b
+      | midsummer\s+derby\b
+      | saratoga\s+feature\b
+      # Win / victory wires: "6,000 wins … at Saratoga" without Race Course.
+      | \b(?:wins?|won|victory)\b[\s\S]{0,80}\bat\s+saratoga\b
+      | \bat\s+saratoga\b[\s\S]{0,80}\b(?:wins?|won|victory)\b
       # SPAC / #SPAC next to Saratoga (avoid bare SPAC webinars without venue).
       | \#?spac\b[\s\S]{0,200}\bsaratoga\b
       | \bsaratoga\b[\s\S]{0,200}\#?spac\b
@@ -321,12 +332,23 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
       | capital\s+region\s+bureau\b
       # Putnam / Hudson Valley street — not City of Albany.
       | albany\s+post\s+road
-      # Cape Town suburb / wine region — not Helderberg Escarpment.
-      | helderberg[\s\S]{0,100}(?:cape\s+town|western\s+cape|south\s+africa|\bstrand\b)
-      | (?:cape\s+town|western\s+cape|south\s+africa)[\s\S]{0,100}helderberg
-      # SoCal handicap hashtag stuffing (#delmar #saratoga) — not Race Course NY.
+      # Cape Town suburb / wine region / municipal alerts — not Helderberg Escarpment.
+      # Prefer #capetown / Helderberg College; window covers text→hashtag distance.
+      | helderberg\s+college\b
+      | helderberg[\s\S]{0,280}(?:cape\s+town|\#capetown\b|western\s+cape|south\s+africa|\bstrand\b)
+      | (?:cape\s+town|\#capetown\b|western\s+cape|south\s+africa)[\s\S]{0,280}helderberg
+      # SoCal / multi-track handicap hashtag stuffing — not Race Course NY.
       | (?:\#socal\b|\#losangeles\b|southern\s+california)[\s\S]{0,200}\#saratoga\b
       | \#saratoga\b[\s\S]{0,200}(?:\#socal\b|\#losangeles\b|southern\s+california)
+      | (?:\#parxracing\b|\#thistledown\b|\#horseshoeindy\b|
+         \#assiniboia(?:downs)?\b|\#mountaineerpark\b)[\s\S]{0,200}\#saratoga\b
+      | \#saratoga\b[\s\S]{0,200}(?:\#parxracing\b|\#thistledown\b|
+         \#horseshoeindy\b|\#assiniboia(?:downs)?\b|\#mountaineerpark\b)
+      # Long Island SEO hashtag stuffing with #albany / #albanyny — not Cap Region.
+      | (?:\#longisland(?:ny|newyork)?\b|\#longislandrealestate\b)[\s\S]{0,200}\#albany(?:ny|_ny)?\b
+      | \#albany(?:ny|_ny)?\b[\s\S]{0,200}(?:\#longisland(?:ny|newyork)?\b|\#longislandrealestate\b)
+      # Binghamton housing development — not Saratoga Race Course / Springs.
+      | saratoga\s+terrace\b
       # Louisiana MPO — not NY Capital District Regional Planning Commission (CDRPC).
       | capital\s+region\s+planning\s+commission
       # Berlin-Brandenburg / Germany "capital region" (Medienboard wires).
@@ -744,6 +766,7 @@ _STILLWATER_ROAD_NORTH = re.compile(
 )
 
 # Troy, Michigan (Detroit suburb) — not Troy NY, even when NYC/Ithaca appear.
+# Hashtag metro dumps (#Michigan … #Troy) need a wider window than "Troy, MI".
 _TROY_MICHIGAN = re.compile(
     r"""
     (?:
@@ -752,6 +775,8 @@ _TROY_MICHIGAN = re.compile(
       | troy\s*/\s*detroit\b
       | (?<![\w.])troy(?![\w@.-])[\s\S]{0,40}\b(?:mi|michigan)\b
       | \b(?:mi|michigan)\b[\s\S]{0,40}(?<![\w.])troy(?![\w@.-])
+      | \#troy\b[\s\S]{0,280}(?:\#michigan\b|\#detroit\b|\#grandrapids\b)
+      | (?:\#michigan\b|\#detroit\b|\#grandrapids\b)[\s\S]{0,280}\#troy\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -979,13 +1004,15 @@ _JP_CAPITAL_DISTRICT = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
-# Image alt-text "drought/burnt hills" — not the town of Burnt Hills.
+# Image alt-text "drought/burnt hills" / "Burnt hillside" — not the town of Burnt Hills.
 _BURNT_HILLS_DESCRIPTIVE = re.compile(
     r"""
     (?:
-        (?:drought|wildfire|scorched|charred|brown)\b[\s\S]{0,40}burnt\s+hills
-      | burnt\s+hills\b[\s\S]{0,40}(?:drought|wildfire|scorched|charred)
+        (?:drought|wildfire|scorched|charred|brown|fire|gorse)\b[\s\S]{0,60}burnt\s+hills
+      | burnt\s+hills(?:ide)?\b[\s\S]{0,60}(?:drought|wildfire|scorched|
+         charred|fire|gorse|huddersfield)
       | drought\s*/\s*burnt\s+hills
+      | burnt\s+hillside\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -1329,12 +1356,23 @@ _HARD_NEGATIVE = re.compile(
       | capital\s+region\s+bureau\b
       # Putnam / Hudson Valley street — not City of Albany.
       | albany\s+post\s+road
-      # Cape Town suburb / wine region — not Helderberg Escarpment.
-      | helderberg[\s\S]{0,100}(?:cape\s+town|western\s+cape|south\s+africa|\bstrand\b)
-      | (?:cape\s+town|western\s+cape|south\s+africa)[\s\S]{0,100}helderberg
-      # SoCal handicap hashtag stuffing (#delmar #saratoga) — not Race Course NY.
+      # Cape Town suburb / wine region / municipal alerts — not Helderberg Escarpment.
+      # Prefer #capetown / Helderberg College; window covers text→hashtag distance.
+      | helderberg\s+college\b
+      | helderberg[\s\S]{0,280}(?:cape\s+town|\#capetown\b|western\s+cape|south\s+africa|\bstrand\b)
+      | (?:cape\s+town|\#capetown\b|western\s+cape|south\s+africa)[\s\S]{0,280}helderberg
+      # SoCal / multi-track handicap hashtag stuffing — not Race Course NY.
       | (?:\#socal\b|\#losangeles\b|southern\s+california)[\s\S]{0,200}\#saratoga\b
       | \#saratoga\b[\s\S]{0,200}(?:\#socal\b|\#losangeles\b|southern\s+california)
+      | (?:\#parxracing\b|\#thistledown\b|\#horseshoeindy\b|
+         \#assiniboia(?:downs)?\b|\#mountaineerpark\b)[\s\S]{0,200}\#saratoga\b
+      | \#saratoga\b[\s\S]{0,200}(?:\#parxracing\b|\#thistledown\b|
+         \#horseshoeindy\b|\#assiniboia(?:downs)?\b|\#mountaineerpark\b)
+      # Long Island SEO hashtag stuffing with #albany / #albanyny — not Cap Region.
+      | (?:\#longisland(?:ny|newyork)?\b|\#longislandrealestate\b)[\s\S]{0,200}\#albany(?:ny|_ny)?\b
+      | \#albany(?:ny|_ny)?\b[\s\S]{0,200}(?:\#longisland(?:ny|newyork)?\b|\#longislandrealestate\b)
+      # Binghamton housing development — not Saratoga Race Course / Springs.
+      | saratoga\s+terrace\b
       # Louisiana MPO — not NY Capital District Regional Planning Commission (CDRPC).
       | capital\s+region\s+planning\s+commission
       # Berlin-Brandenburg / Germany "capital region" (Medienboard wires).

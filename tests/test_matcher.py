@@ -1967,3 +1967,96 @@ def test_saratoga_meet_and_fort_schuyler_campaign_recall() -> None:
         'Oriskany, Haudenosaunee political divisions, and Benedict Arnold.'
     )
     assert campaign.matched is True
+
+
+def test_helderberg_college_capetown_hashtag_not_escarpment() -> None:
+    cape = match_post(
+        'Unplanned Maintenance - Burst Pipe in Die Wingerd\n'
+        'C/O Helderberg College Rd & Hermitage Ave\n'
+        '#WaterAndSanitation #CapeTown'
+    )
+    assert cape.matched is False
+    assert match_post('Hike the Helderberg Escarpment this weekend near #AlbanyNY.').matched is True
+
+
+def test_burnt_hillside_wildfire_alt_not_burnt_hills_ny() -> None:
+    fire = match_post(
+        "Still a lot of damage from last year's fire on Castle Hill.",
+        alt_text=(
+            'burnt gorse in front of the Victoria Tower, Castle Hill, Huddersfield '
+            'Burnt hillside by the Victoria Tower'
+        ),
+    )
+    assert fire.matched is False
+    assert match_post('Concert tonight in Burnt Hills NY at the high school.').matched is True
+
+
+def test_michigan_hashtag_troy_waterford_not_multi_local() -> None:
+    spam = match_post(
+        '#Michigan #Detroit #GrandRapids #Warren #SterlingHeights #AnnArbor '
+        '#Lansing #Dearborn #Livonia #Troy #FarmingtonHills #Wyoming #Flint '
+        '#Kalamazoo #Waterford #Novi #Pontiac #RoyalOak'
+    )
+    assert spam.matched is False
+    assert spam.reason == 'hard_negative:troy_michigan'
+    assert match_post('Dinner in Troy NY tonight.').matched is True
+
+
+def test_saratoga_terrace_binghamton_not_saratoga_ny() -> None:
+    terrace = match_post(
+        "Binghamton's planning committee reviews the Saratoga Terrace Housing "
+        'Development pilot agreement. #BinghamtonCityBroomeCounty #NY'
+    )
+    assert terrace.matched is False
+    assert match_post('Canvass launch at Congress Park in Saratoga Springs NY.').matched is True
+
+
+def test_parx_thistledown_saratoga_hashtag_stuffing_not_race_course() -> None:
+    spam = match_post(
+        '#nationaldogday #thoroughbreds #parxracing #horseshoeindy #saratoga '
+        '#thistledown #assiniboia #manitoba'
+    )
+    assert spam.matched is False
+    assert (
+        match_post(
+            'Check out the likely fields for stakes at Saratoga, Del Mar, '
+            'Kentucky Downs and Charles Town.'
+        ).matched
+        is True
+    )
+
+
+def test_long_island_albany_hashtag_stuffing_not_local() -> None:
+    spam = match_post(
+        'IXCHEL Anxiety Relief #usa #longisland #longislandny #longislandnewyork '
+        '#newyork #longislandrealestate #albany #albanyny #Magnesium'
+    )
+    assert spam.matched is False
+    assert (
+        match_post('Taking the train from Long Island to #AlbanyNY this weekend.').matched is True
+    )
+
+
+def test_travers_saratoga_feature_and_wins_at_saratoga_recall() -> None:
+    travers = match_post(
+        'Silent Tactic will try for a first grade 1 win in the $1.25 million '
+        'Saratoga feature after the Travers Stakes draw.'
+    )
+    assert travers.matched is True
+
+    wins = match_post(
+        'Javier Castellano reached 6,000 North American wins Aug. 26 at Saratoga, '
+        'guiding Starship Lizzy to victory in the finale.'
+    )
+    assert wins.matched is True
+
+
+def test_lark_hall_and_albany_mayor_recall() -> None:
+    assert match_post('Albany: Helmet @ Lark Hall this Friday.').matched is True
+    assert (
+        match_post(
+            "Albany Mayor leaves for Martha's Vineyard day after city workers hurt "
+            'in explosion at city site.'
+        ).matched
+        is True
+    )
