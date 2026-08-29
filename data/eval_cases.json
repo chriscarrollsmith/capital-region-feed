@@ -5026,5 +5026,127 @@
     "regression": true,
     "alt_text": "This is the second domestic murder-suicide the Times Union has reported in less than a week.",
     "note": "2026-08-25 audit: intentional capital region + Times Union keep (Ulster card still uses CR phrasing)"
+  },
+  {
+    "id": "fp-berlin-brandenburg-capital-region",
+    "text": "Announced at the Medienboard Berlin-Brandenburg Sundowner, the Berlin-Brandenburg capital region will have one million euros more for games funding.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-26 audit: Berlin-Brandenburg capital region games funding"
+  },
+  {
+    "id": "tp-capital-region-berlin-repertoire-albanyny",
+    "text": "Capital Region orchestra plays Berlin repertoire this weekend in #AlbanyNY.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-26 audit: Cap Region + Berlin repertoire keep"
+  },
+  {
+    "id": "fp-richmond-va-capital-district-hs",
+    "text": "Breaking down the Capital District: Season previews for Armstrong, Atlee, Varina, Highland Springs, Patrick Henry (Ashland), Mechanicsville, Henrico and Hanover.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-26 audit: VHSL Capital District Henrico/Hanover"
+  },
+  {
+    "id": "tp-capital-district-henrico-visit-albanyny",
+    "text": "Capital District students from Henrico County visited #AlbanyNY on a class trip.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-26 audit: Cap District + Henrico visit with #AlbanyNY"
+  },
+  {
+    "id": "fp-va-md-capital-region-hashtag-sweep",
+    "text": "Huge Number of Illegal Immigrants Arrested in Massive Capital Region Sweep #CapitalRegion #VirginiaNews #MarylandNews",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Govs Spanberger, Moore Going to Be Big Mad As ICE Swoops Down on VA and MD",
+    "note": "2026-08-26 audit: VA/MD CapitalRegion hashtag sweep"
+  },
+  {
+    "id": "fp-la-crpc-gonzales-capital-region-planning",
+    "text": "Gonzales council greenlit a Highway 44 grant. #GonzalesAscensionParish #LA #CitizenPortal",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "Council authorized submission of a Capital Region Planning Commission carbon-reduction grant application.",
+    "note": "2026-08-26 audit: LA CRPC Capital Region Planning Commission"
+  },
+  {
+    "id": "fp-aircraft-a321-271ny-wizz-air-malta",
+    "text": "A321-271NY, Wizz Air Malta, D-AVYQ, 9H-XLG (MSN 13123) | Fourth Flight XFW-XFW - Customer Acceptance Flight",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-26 audit: aircraft type suffix 271NY unlocking Malta"
+  },
+  {
+    "id": "fp-brunswick-pike-lawrenceville-nj",
+    "text": "BLUE BOX: 2542 BRUNSWICK PIKE, LAWRENCEVILLE NJ 08648 BLUE BOX: 1342 CENTRAL AVE, FAR ROCKAWAY NY 11691",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-26 audit: Brunswick Pike NJ + Far Rockaway NY USPS dump"
+  },
+  {
+    "id": "tp-town-of-brunswick-ny-board",
+    "text": "Town of Brunswick NY planning board meets Thursday about the solar overlay.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-26 audit: Town of Brunswick NY counterpart"
+  },
+  {
+    "id": "fn-saratoga-maiden-watch-races",
+    "text": "American History and Forever Carina lead this week’s Maiden Watch after Aug. 22 maiden special weight races at Saratoga.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-26 audit: Maiden Watch races at Saratoga FN"
+  },
+  {
+    "id": "fn-ccc-arrived-at-saratoga",
+    "text": "In 1939, the CCC arrived at Saratoga. Young men cleared vegetation, removed fences, built roads and trails.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-26 audit: CCC battlefield preservation at Saratoga FN"
+  },
+  {
+    "id": "tp-capital-region-housing-expo-tonko",
+    "text": "Tonight: LASNNY will be at the Capital Region Housing Expo, hosted by Congressman Paul Tonko.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-26 audit: intentional Capital Region Housing Expo keep"
   }
 ]

@@ -538,6 +538,26 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-078 — Daily feed audit: Berlin-Brandenburg, VA Capital District, LA CRPC, 271NY Malta, Brunswick Pike, Saratoga maiden/CCC FNs
+- **Status:** done ([#55](https://github.com/chriscarrollsmith/capital-region-feed/pull/55))
+- **Why:** 2026-08-26 audit of last-24h AppView feed (~187 posts since 2026-08-25T09:05Z)
+  found active FPs after #54 (still open): Berlin-Brandenburg "capital region" games-funding
+  wires; Richmond.com VHSL "Capital District" HS football (Henrico/Hanover); VA/MD
+  `#CapitalRegion` sweeps where `#VirginiaNews`/`#MarylandNews` lacked word boundaries and
+  geo windows were too tight; Louisiana Gonzales/Ascension "Capital Region Planning
+  Commission" (CRPC) with cues >160 chars from the phrase; Wizz Air Malta unlocked by
+  aircraft type suffix `A321-271NY`; USPS `Brunswick Pike` NJ dumps unlocked by Far
+  Rockaway `NY`. FNs: Maiden Watch / races at Saratoga; CCC battlefield preservation at
+  Saratoga. AppView `searchPosts` still 403.
+- **Work:**
+  - Germany Berlin-Brandenburg capital-region hard-neg + conflict helper; VHSL Capital
+    District conflict (NY-aware); expand VA/MD windows + `#virginia*`/`#maryland*` hashtags;
+    LA CRPC / `#la` / wider window; reject digit-prefixed `NY` aircraft suffixes; Brunswick
+    Pike hard-neg; Wizz Air Malta / `9H-` cues; Saratoga maiden/CCC strong positives.
+  - Grow eval with 2026-08-26 FP/TP/FN anchors (builds on #54 / B-077).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-077 — Daily feed audit: E Greenbush boundary, Brussels slash, Helderberg SA, NBC4, Albany Post Rd, RentRedi spam, 9H-NYC, SoCal #saratoga, Saratoga meet/Schuyler FNs
 - **Status:** done ([#54](https://github.com/chriscarrollsmith/capital-region-feed/pull/54))
 - **Why:** 2026-08-25 audit of last-24h AppView feed (~183 posts since 2026-08-24T09:01Z)

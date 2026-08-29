@@ -516,6 +516,105 @@ def test_virginia_capital_region_is_hard_negative() -> None:
     assert keep.matched is True
 
 
+def test_virginia_capital_district_hs_athletics_is_hard_negative() -> None:
+    vhs = match_post(
+        'Breaking down the Capital District: Season previews for Armstrong, Atlee, '
+        'Varina, Highland Springs, Patrick Henry (Ashland), Mechanicsville, Henrico '
+        'and Hanover.'
+    )
+    assert vhs.matched is False
+    assert vhs.reason == 'hard_negative:virginia_capital_district'
+
+    # Hashtag-only VA/MD "Capital Region" sweeps (word boundaries miss #VirginiaNews).
+    sweep = match_post(
+        'Huge Number of Illegal Immigrants Arrested in Massive Capital Region Sweep '
+        '#CapitalRegion #VirginiaNews #MarylandNews',
+        alt_text='Govs Spanberger, Moore Going to Be Big Mad As ICE Swoops Down on VA and MD',
+    )
+    assert sweep.matched is False
+    assert sweep.reason in {
+        'hard_negative:virginia_capital_region',
+        'hard_negative:md_dc_capital_region',
+    }
+
+    keep = match_post(
+        'Capital District students from Henrico County visited #AlbanyNY on a class trip.'
+    )
+    assert keep.matched is True
+
+
+def test_germany_berlin_brandenburg_capital_region_is_hard_negative() -> None:
+    de = match_post(
+        'Announced at the Medienboard Berlin-Brandenburg Sundowner, Berlin State '
+        'Secretary Michael Biel has revealed that the Berlin-Brandenburg capital '
+        'region will have one million euros more for games funding.'
+    )
+    assert de.matched is False
+    assert de.reason == 'hard_negative'
+
+    keep = match_post('Capital Region orchestra plays Berlin repertoire this weekend in #AlbanyNY.')
+    assert keep.matched is True
+
+
+def test_louisiana_crpc_capital_region_planning_commission_is_hard_negative() -> None:
+    crpc = match_post(
+        'Gonzales council just greenlit a crucial $1.35 million grant application '
+        'to enhance traffic signals on Highway 44. #GonzalesAscensionParish #LA',
+        alt_text=(
+            'Council authorized submission of a Capital Region Planning Commission '
+            'carbon-reduction grant application to upgrade three traffic signals.'
+        ),
+    )
+    assert crpc.matched is False
+    assert crpc.reason == 'hard_negative'
+
+    keep = match_post(
+        'Capital Region exporters shipped goods to Louisiana through the Port of Albany '
+        '(#AlbanyNY).'
+    )
+    assert keep.matched is True
+
+
+def test_aircraft_type_suffix_ny_does_not_unlock_malta() -> None:
+    jet = match_post(
+        'A321-271NY, Wizz Air Malta, D-AVYQ, 9H-XLG (MSN 13123) | Fourth Flight '
+        'XFW-XFW - Customer Acceptance Flight'
+    )
+    assert jet.matched is False
+    assert jet.reason in {'hard_negative:malta_europe', 'ambiguous_no_context:malta'}
+
+    keep = match_post('Malta, NY town board meets about the solar farm tonight.')
+    assert keep.matched is True
+
+
+def test_brunswick_pike_nj_is_hard_negative() -> None:
+    pike = match_post(
+        'BLUE BOX: 2542 BRUNSWICK PIKE, LAWRENCEVILLE NJ 08648 '
+        'BLUE BOX: 1342 CENTRAL AVE, FAR ROCKAWAY NY 11691'
+    )
+    assert pike.matched is False
+    assert pike.reason == 'hard_negative'
+
+    keep = match_post('Town of Brunswick NY planning board meets Thursday.')
+    assert keep.matched is True
+
+
+def test_saratoga_maiden_watch_and_ccc_are_strong_positive() -> None:
+    maiden = match_post(
+        'American History and Forever Carina lead this week’s Maiden Watch after '
+        'Aug. 22 maiden special weight races at Saratoga.'
+    )
+    assert maiden.matched is True
+    assert maiden.reason == 'strong_positive'
+
+    ccc = match_post(
+        'In 1939, the CCC arrived at Saratoga. Young men cleared vegetation, '
+        'removed fences, built roads and trails.'
+    )
+    assert ccc.matched is True
+    assert ccc.reason == 'strong_positive'
+
+
 def test_disney_saratoga_springs_not_multi_local() -> None:
     disney = match_post(
         'Room-by-room tour of the new Treehouse Villas at Saratoga Springs is out.\n'
@@ -1798,7 +1897,10 @@ def test_malta_aircraft_reg_9h_nyc_not_ny_context() -> None:
         'Origen: Malta Llegada: Palma de Mallorca (PMI)'
     )
     assert flight.matched is False
-    assert flight.reason == 'ambiguous_no_context:malta'
+    assert flight.reason in {
+        'ambiguous_no_context:malta',
+        'hard_negative:malta_europe',
+    }
 
 
 def test_nbc4_telemundo_capital_region_is_md_dc() -> None:
