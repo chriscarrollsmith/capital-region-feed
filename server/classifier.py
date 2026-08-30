@@ -143,6 +143,15 @@ _RIVER_STREET_OTHER = re.compile(
       | river\s+street[\s\S]{0,160}chippewa\s+falls
       | (?:\#wisconsin\b|\bwisconsin\b)[\s\S]{0,160}river\s+street
       | river\s+street[\s\S]{0,160}(?:\#wisconsin\b|\bwisconsin\b)
+      # Boston Open Streets / Mattapan — not Troy's River Street corridor.
+      | (?:
+            \bboston\b|\bmattapan\b|blue\s+hill\s+avenue|babson\s+street|
+            \.boston\.gov\b|open\s+streets\s+boston
+          )[\s\S]{0,280}river\s+street
+      | river\s+street[\s\S]{0,280}(?:
+            \bboston\b|\bmattapan\b|blue\s+hill\s+avenue|babson\s+street|
+            \.boston\.gov\b|open\s+streets\s+boston
+          )
     )
     """,
     re.IGNORECASE | re.VERBOSE,

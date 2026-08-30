@@ -2248,3 +2248,94 @@ def test_rensselaer_sheriff_and_latham_halfmoon_hq_recall() -> None:
         ).matched
         is True
     )
+
+
+def test_boston_mattapan_river_street_not_troy_corridor() -> None:
+    boston = match_post(
+        'Open Streets Boston returns to Mattapan two weeks from today!\n\n'
+        'On Saturday, September 12, Blue Hill Avenue between River Street and '
+        'Babson Street will transform into a car-free pedestrian zone.'
+    )
+    assert boston.matched is False
+    assert match_post('Open mic tomorrow on River Street — sign-ups start at 6.').matched is True
+
+
+def test_bethlehem_pa_steel_unesco_not_town_of_bethlehem() -> None:
+    pa = match_post(
+        'My birthplace. I grew up there, then moved on to upstate NY.',
+        alt_text=(
+            'An American steel town with serious Christmas spirit. Bethlehem '
+            'showcases its industrial heritage and is home to one of the newest '
+            'UNESCO sites in the US.'
+        ),
+    )
+    assert pa.matched is False
+    assert pa.reason == 'hard_negative:bethlehem_pa'
+    assert match_post('Town of Bethlehem, NY board meeting tonight.').matched is True
+
+
+def test_troy_person_name_and_jana_not_troy_ny() -> None:
+    person = match_post(
+        'Thoughts on Jana from Last Page First clique accusations',
+        alt_text=(
+            'And No Jana and Troy, Just Because My 3rd Cousin Built Malls in '
+            'New York State Doesn’t Mean I Know Leslie Wexner.'
+        ),
+    )
+    assert person.matched is False
+    assert person.reason == 'hard_negative:troy_person_name'
+    assert match_post('Dinner in Troy, New York tonight.').matched is True
+    assert match_post('Drive between Albany and Troy, NY this weekend.').matched is True
+
+
+def test_schenectady_style_cuisine_not_city() -> None:
+    food = match_post(
+        'We set up at Anaheim and Marine in Wilmington! Try our new '
+        'Schenectady-style black bean eggrolls!'
+    )
+    assert food.matched is False
+    assert food.reason == 'hard_negative:schenectady_style'
+    assert match_post('Schenectady City Council meets Tuesday at City Hall.').matched is True
+
+
+def test_albany_state_university_not_ualbany() -> None:
+    asu = match_post(
+        'How learning a language helps our brains',
+        alt_text=(
+            'Dr Lou Stelling, professor at Albany State University in New York’s '
+            'capital city, gave an excellent talk about language learning.'
+        ),
+    )
+    assert asu.matched is False
+    assert asu.reason == 'entity_other:albany_georgia'
+    assert (
+        match_post('University at Albany professor gave a talk on language learning.').matched
+        is True
+    )
+
+
+def test_capital_rep_travers_day_and_saratoga_campaign_recall() -> None:
+    assert (
+        match_post(
+            'Check out #LastAmericanNewspaper at #CapitalRep in #Albany Sept. 25-Oct. 18.'
+        ).matched
+        is True
+    )
+    assert (
+        match_post("It's Travers Day at Saratoga. The main event is at 6:35 p.m.").matched is True
+    )
+    assert (
+        match_post('Bears Cup in Saratoga was ROCKIN this morning. Travers weekend.').matched
+        is True
+    )
+    assert (
+        match_post(
+            'Historical markers remind us that the Saratoga Campaign unfolded across '
+            'a much larger landscape.'
+        ).matched
+        is True
+    )
+    assert (
+        match_post('I spoke ahead of the Travers about the lessons of the long meet.').matched
+        is True
+    )

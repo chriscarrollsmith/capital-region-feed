@@ -25,7 +25,13 @@
     {
       "id": "albany_georgia",
       "region": "other",
-      "surfaces": ["albany, ga", "albany ga", "albany, georgia", "albany georgia"]
+      "surfaces": [
+        "albany, ga",
+        "albany ga",
+        "albany, georgia",
+        "albany georgia",
+        "albany state university"
+      ]
     },
     {
       "id": "albany_texas",
