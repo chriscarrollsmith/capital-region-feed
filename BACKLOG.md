@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-082 — Daily feed audit: Boston River Street, Bethlehem PA steel/UNESCO, person Troy, Schenectady-style, Albany State U; CapitalRep / Travers Day / Saratoga Campaign FNs
-- **Status:** in progress
+- **Status:** done ([#59](https://github.com/chriscarrollsmith/capital-region-feed/pull/59))
 - **Why:** 2026-08-30 audit of last-24h AppView feed (~183 posts since 2026-08-29T09:10Z)
   found active FPs after #58: Boston Open Streets `River Street` / Mattapan unlocked
   `classifier:local_micro`; Bethlehem PA CNN steel/UNESCO/Christmas card unlocked by
