@@ -538,6 +538,25 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-082 — Daily feed audit: Boston River Street, Bethlehem PA steel/UNESCO, person Troy, Schenectady-style, Albany State U; CapitalRep / Travers Day / Saratoga Campaign FNs
+- **Status:** in progress
+- **Why:** 2026-08-30 audit of last-24h AppView feed (~183 posts since 2026-08-29T09:10Z)
+  found active FPs after #58: Boston Open Streets `River Street` / Mattapan unlocked
+  `classifier:local_micro`; Bethlehem PA CNN steel/UNESCO/Christmas card unlocked by
+  "upstate NY"; person-named `Jana and Troy` unlocked by New York State; Wilmington
+  `Schenectady-style` food; `Albany State University` (GA) card wrongly saying capital
+  city. FNs: `#CapitalRep` / Proctors Collaborative without event cue; `Travers Day` /
+  `Travers weekend` / `ahead of the Travers`; bare `Saratoga Campaign`. ~23 stale AppView
+  rows already rematch-drop (Malta/Scotia OR/Troy Perry). AppView `searchPosts` still 403.
+- **Work:**
+  - Scrub Boston/Mattapan/Blue Hill River Street from classifier micros; expand Bethlehem PA
+    heritage cues; person-name `and Troy,` conflict; Schenectady-style cuisine gate; gazetteer
+    + hard-neg Albany State University; strong positives for CapitalRep / Travers Day|weekend /
+    Saratoga Campaign.
+  - Grow eval with 2026-08-30 FP/TP/FN anchors.
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-081 — Daily feed audit: Sun-Times/Times Union, Newtonville MA, DC Capital district, French/Iceland CR, Green Island Sangha, Center Square reports, CT Capital District, Albany County Library WY, Brunswick Schools; Rensselaer sheriff / Latham–Halfmoon HQ FNs
 - **Status:** done ([#58](https://github.com/chriscarrollsmith/capital-region-feed/pull/58))
 - **Why:** 2026-08-29 audit of last-24h AppView feed (~204 posts since 2026-08-28T09:00Z)

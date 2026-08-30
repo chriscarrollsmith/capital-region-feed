@@ -5729,5 +5729,168 @@
     "split": "dev",
     "regression": true,
     "note": "2026-08-29 audit FN: Halfmoon HQ"
+  },
+  {
+    "id": "fp-boston-mattapan-river-street-0830",
+    "text": "Open Streets Boston returns to Mattapan two weeks from today!\n\nOn Saturday, September 12, Blue Hill Avenue between River Street and Babson Street will transform into a car-free pedestrian zone for residents and visitors to enjoy.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-30 audit: Boston Open Streets River Street not Troy corridor"
+  },
+  {
+    "id": "tp-river-street-open-mic-0830",
+    "text": "Open mic tomorrow on River Street — sign-ups start at 6.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-30 audit: Troy River Street counterpart"
+  },
+  {
+    "id": "fp-bethlehem-pa-steel-unesco-0830",
+    "text": "My birthplace. I grew up there, then moved on to upstate NY for a while.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "An American steel town with serious Christmas spirit. Bethlehem showcases its industrial heritage and is home to one of the newest UNESCO sites in the US.",
+    "note": "2026-08-30 audit: Bethlehem PA steel/UNESCO card unlocked by upstate NY"
+  },
+  {
+    "id": "tp-bethlehem-ny-board-0830",
+    "text": "Town of Bethlehem, NY board meeting tonight at town hall.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-30 audit: Town of Bethlehem NY counterpart"
+  },
+  {
+    "id": "fp-troy-person-jana-0830",
+    "text": "Thoughts on Jana from Last Page First clique accusations",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "And No Jana and Troy, Just Because My 3rd Cousin Built Malls in New York State Doesn’t Mean I Know Leslie Wexner.",
+    "note": "2026-08-30 audit: person-named Troy unlocked by New York State"
+  },
+  {
+    "id": "tp-troy-ny-dinner-0830",
+    "text": "Dinner in Troy, New York tonight.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-30 audit: Troy NY counterpart"
+  },
+  {
+    "id": "fp-schenectady-style-wilmington-0830",
+    "text": "We set up at Anaheim and Marine in Wilmington! Try our new Schenectady-style black bean eggrolls!",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-30 audit: Schenectady-style cuisine in Wilmington CA"
+  },
+  {
+    "id": "tp-schenectady-council-0830",
+    "text": "Schenectady City Council meets Tuesday at City Hall.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-30 audit: bare Schenectady counterpart"
+  },
+  {
+    "id": "fp-albany-state-university-0830",
+    "text": "How learning a language helps our brains",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "Dr Lou Stelling, professor at Albany State University in New York’s capital city, gave an excellent talk about language learning.",
+    "note": "2026-08-30 audit: Albany State University (GA) mislabeled as capital city"
+  },
+  {
+    "id": "tp-ualbany-professor-0830",
+    "text": "University at Albany professor gave a talk on language learning downtown.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-30 audit: UAlbany counterpart"
+  },
+  {
+    "id": "tp-capital-rep-hashtag-0830",
+    "text": "Check out #LastAmericanNewspaper at #CapitalRep in #Albany Sept. 25-Oct. 18.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-30 audit: Capital Rep hashtag FN without Proctors event cue"
+  },
+  {
+    "id": "tp-travers-day-saratoga-0830",
+    "text": "It's Travers Day at Saratoga. The main event is at 6:35 p.m.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-30 audit: Travers Day without stakes wording"
+  },
+  {
+    "id": "tp-travers-weekend-bears-cup-0830",
+    "text": "Bears Cup in Saratoga was ROCKIN this morning. Travers weekend.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-30 audit: Travers weekend race-meet FN"
+  },
+  {
+    "id": "tp-saratoga-campaign-0830",
+    "text": "Historical markers remind us that the Saratoga Campaign unfolded across a much larger landscape.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-30 audit: Saratoga Campaign without , NY"
+  },
+  {
+    "id": "tp-ahead-of-the-travers-0830",
+    "text": "I spoke ahead of the Travers about the lessons of the long meet.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-30 audit: ahead of the Travers wire FN"
+  },
+  {
+    "id": "tn-bare-albany-stray-cats-0830",
+    "text": "Downtown Albany has a lot of stray cats, I think because many of the houses have mouse problems",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": false,
+    "note": "2026-08-30 audit: known bare-Albany lifestyle residual (B-050)"
   }
 ]
