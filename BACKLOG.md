@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-083 — Daily feed audit: Troy Deeney/Mt Kisco, 99 River Street film, New Brunswick URL/`tartomány` NY; Albany Med / Amtrak ALB / Saratoga breeze / BJ's Rotterdam FNs
-- **Status:** in progress
+- **Status:** done ([#60](https://github.com/chriscarrollsmith/capital-region-feed/pull/60))
 - **Why:** 2026-08-31 audit of last-24h AppView feed (~116 posts since 2026-08-30T09:02Z)
   found active FPs after #59 (still open): footballer `Troy Deeney` + vocative
   `Welcome to Mt Kisco, NY, Troy.` unlocked `ambiguous_with_context:troy`; boxing-movie
