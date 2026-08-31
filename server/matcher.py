@@ -232,6 +232,21 @@ _STRONG_POSITIVE = re.compile(
       | albany\s+business\s+review\b
       # County sheriff ICE wires often omit "County" / ", NY".
       | rensselaer\s+sheriff\b
+      # Albany Med / AMC trauma wires often omit ", NY".
+      | albany\s+medical\s+center\b
+      | albany\s+med(?:ical)?\s+health\s+system\b
+      | albany\s+med\b
+      # Amtrak station code ALB (Albany–Rensselaer); not Cascades Albany (ALY).
+      | amtrak[\s\S]{0,160}albany\s*\(\s*alb\s*\)
+      | albany\s*\(\s*alb\s*\)[\s\S]{0,160}amtrak
+      | stopped\s+in\s+albany\s*\(\s*alb\s*\)
+      # Workout / immortality race-meet copy often omits "Race Course" / ", NY".
+      | \bbreeze\b[\s\S]{0,80}\bat\s+saratoga\b
+      | \bat\s+saratoga\b[\s\S]{0,80}\bbreeze\b
+      | saratoga\s+immortality\b
+      # BJ's Wholesale Club warehouse wires for Town of Rotterdam NY.
+      | bj['\u2019]?s\b[\s\S]{0,120}\brotterdam\b
+      | \brotterdam\b[\s\S]{0,120}bj['\u2019]?s\b
       # Biz-journal HQ copy often omits ", NY" for Cap Region Latham / Halfmoon.
       | (?:regional\s+)?(?:office|hq)\s+in\s+latham\b
       | latham[\s\S]{0,60}(?:regional\s+)?(?:office|hq)\b
@@ -268,12 +283,13 @@ _STRONG_POSITIVE = re.compile(
 # other U.S./world places, or common phrases (e.g. "green islands").
 # ``troy`` ignores email local-parts (``troy@…``), hyphenated names/domains
 # (``troy-caperton``), troy weight (oz / "10.8 troy" / Portuguese ``onça-troy``),
-# "Donna Troy", broadcaster "Troy Aikman", and NFL "Troy Fautanu".
+# "Donna Troy", broadcaster "Troy Aikman", NFL "Troy Fautanu", and footballer
+# "Troy Deeney".
 _TROY_PLACE = (
     r'(?<!\d\s)(?<![\w.])(?<!donna\s)'
     r'(?<!on[cç]a[- ])(?<!onza[- ])(?<!ounce[- ])'
     r'troy(?![\w@.-])'
-    r'(?!\s*(?:oz|ounces?|ozt|weight|aikman|fautanu)\b)'
+    r'(?!\s*(?:oz|ounces?|ozt|weight|aikman|fautanu|deeney)\b)'
 )
 
 _AMBIGUOUS_PLACE = re.compile(
@@ -286,8 +302,9 @@ _AMBIGUOUS_PLACE = re.compile(
       # Town of Scotia — not the province inside "Nova Scotia".
       | (?<!nova\s)\bscotia\b
       | \bbethlehem\b
-      # Town of Brunswick — not the province inside "New Brunswick".
-      | (?<!new\s)\bbrunswick\b
+      # Town of Brunswick — not the province inside "New Brunswick" / URL
+      # slug "new-brunswick-…".
+      | (?<!new[\s-])\bbrunswick\b
       | \bgalway\b
       | \bstillwater\b
       | \bwaterford\b
@@ -332,7 +349,9 @@ _NY_CONTEXT = re.compile(
     (?:
       # Reject letters AND digits before NY so aircraft type suffixes like
       # A321-271NY (Wizz Air Malta) do not unlock Cap Region context.
-        (?-i:(?<![a-zA-Z0-9])(?:NY|ny)(?![a-zA-Z]))(?!\s*times\b)
+      # Use Unicode ``\w`` so non-ASCII letters (e.g. Hungarian tartomány)
+      # cannot leave a bare ``ny`` token.
+        (?-i:(?<!\w)(?:NY|ny)(?!\w))(?!\s*times\b)
       # Reject handle TLDs like @socialists.nyc (dot before nyc) and aircraft
       # registrations such as 9H-NYC (Malta → Palma flight trackers).
       | (?<![.-])\bnyc\b
@@ -1454,6 +1473,11 @@ _TROY_PERSON_NAME = re.compile(
     (?:
         \band\s+troy,
       | \bjana\s+and\s+troy\b
+      | \btroy\s+deeney\b
+      # Vocative "Welcome to Mt Kisco, NY, Troy." — not City of Troy.
+      | welcome\s+to\b[^.]{0,100},\s*troy\.
+      | mt\.?\s*kisco[\s\S]{0,100}\btroy\b
+      | \btroy\b[\s\S]{0,100}mt\.?\s*kisco
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -1798,8 +1822,9 @@ def _ny_capital_region_context(haystack: str) -> bool:
         re.search(
             rf"""
             (?:
-              # Mirror _NY_CONTEXT: reject digit-prefixed aircraft suffixes (271NY).
-                (?-i:(?<![a-zA-Z0-9])(?:NY|ny)(?![a-zA-Z]))
+              # Mirror _NY_CONTEXT: reject digit-prefixed aircraft suffixes (271NY)
+              # and Unicode letters (e.g. Hungarian tartomány …ny).
+                (?-i:(?<!\w)(?:NY|ny)(?!\w))
               | \b(?:nys|new\s+york)\b
               | n\.y\.
               | hudson\s+valley
@@ -2422,7 +2447,7 @@ def _schenectady_style_conflict(haystack: str) -> bool:
 
 
 def _troy_person_name_conflict(haystack: str) -> bool:
-    """True when Troy is a person name in 'X and Troy,' address form."""
+    """True when Troy is a person name / Westchester vocative, not the city."""
     if not _TROY_PERSON_NAME.search(haystack):
         return False
     # Real place mentions still keep.
