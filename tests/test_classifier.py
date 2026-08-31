@@ -221,6 +221,15 @@ def test_crossgates_tammany_and_chippewa_river_street_not_local_micro() -> None:
     assert match_post('Open mic tomorrow on River Street — sign-ups start at 6.').matched is True
 
 
+def test_boston_open_streets_river_street_not_local_micro() -> None:
+    boston = match_post(
+        'Open Streets Boston returns to Mattapan!\n\n'
+        'Blue Hill Avenue between River Street and Babson Street will be car-free.'
+    )
+    assert boston.matched is False
+    assert match_post('Art walk on River Street in Troy this Saturday at noon.').matched is True
+
+
 def test_classify_drops_bare_albany_event_without_micro() -> None:
     decision = classify_candidate(
         "Don't miss the Albany Veterans Day Parade this Saturday downtown!",

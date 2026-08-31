@@ -46,7 +46,8 @@ _STRONG_POSITIVE = re.compile(
       | schenectady\s+county
       | saratoga\s+county
       # Word-boundary: reject hashtag stuffing like #schenectadyparkcleanup.
-      | \bschenectady\b
+      # Negative lookahead: cuisine "Schenectady-style" is not the city.
+      | \bschenectady\b(?![\s-]+style\b)
       | \bguilderland\b
       | \bniskayuna\b
       | \bwatervliet\b
@@ -94,6 +95,10 @@ _STRONG_POSITIVE = re.compile(
       | suny\s+albany
       # Albany music venue — often listed as "Albany: … @ Lark Hall" without ", NY".
       | lark\s+hall\b
+      # Capital Repertory Theatre (Albany) — hashtag #CapitalRep often omits venue cues.
+      | \#?capitalrep\b
+      | capital\s+rep(?:ertory)?\b
+      | proctors\s+collaborative\b
       # Interstate 787 — require I-/interstate/route prefix. Bare "on 787" matches
       # medical PR ("Study on 787 Brain Tumor Patients").
       | \b(?:i-?|interstate\s+|route\s+|ny\s+)787\b
@@ -115,8 +120,16 @@ _STRONG_POSITIVE = re.compile(
       | debut\s+at\s+saratoga\b
       # Travers / Midsummer Derby / "Saratoga feature" wires often omit ", NY".
       | travers\s+stakes\b
+      | travers\s+(?:day|weekend)\b
+      | \bthe\s+travers\b
+      | \bahead\s+of\s+(?:the\s+)?travers\b
+      | \bwins?\s+(?:the\s+)?travers\b
+      | travers\s+at\s+saratoga\b
       | midsummer\s+derby\b
       | saratoga\s+feature\b
+      # Revolutionary War campaign / battlefield copy often omits ", NY".
+      | saratoga\s+campaign\b
+      | battles?\s+of\s+saratoga\b
       # Named Grade 1 / meet stakes at the Race Course often omit ", NY".
       | (?:h\.?\s*allen\s+)?jerkens(?:\s+memorial)?\b
       | \bgrade\s+[123i]+\s+forego\b
@@ -355,6 +368,7 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
     (?:
         albany\s+park
       | new\s+albany(?!\s+bus\s+(?:station|terminal|depot))
+      | albany\s+state\s+university
       | national\s+capital\s+region
       # Slash form appears in Brussels Times cards ("Brussels/Capital Region").
       | brussels[- /]capital\s+region
@@ -1413,6 +1427,33 @@ _BETHLEHEM_PA = re.compile(
         bethlehem\s*,?\s*(?:pa|pennsylvania)\b
       | bethlehem[\s\S]{0,160}\b(?:pa|pennsylvania|philly|philadelphia)\b
       | \b(?:pa|pennsylvania|philly|philadelphia)\b[\s\S]{0,160}bethlehem
+      # Travel/heritage cards often omit ", PA" (CNN steel town / UNESCO / SteelStacks).
+      | bethlehem[\s\S]{0,220}(?:
+            steel(?:stacks|town|\s+town)?|unesco|lehigh\s+valley|
+            christmas\s+spirit|industrial\s+heritage|snow\s+globe
+          )
+      | (?:
+            steel(?:stacks|town|\s+town)?|unesco|lehigh\s+valley|
+            christmas\s+spirit|industrial\s+heritage
+          )[\s\S]{0,220}bethlehem
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Cuisine adjective "Schenectady-style …" (LA food trucks) — not the city.
+_SCHENECTADY_STYLE = re.compile(
+    r'\bschenectady[\s-]+style\b',
+    re.IGNORECASE,
+)
+
+# Conversational "Firstname and Troy," person address — not the city.
+# Keep Cap Region place lists ("Albany and Troy, NY") via the NY/place rescue below.
+_TROY_PERSON_NAME = re.compile(
+    r"""
+    (?:
+        \band\s+troy,
+      | \bjana\s+and\s+troy\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -1449,6 +1490,8 @@ _HARD_NEGATIVE = re.compile(
             kentucky|indiana|ohio|wyoming|illinois|wisconsin|vermont
           )\b
       | albany\s+road
+      # Georgia HBCU — not University at Albany / SUNY Albany.
+      | albany\s+state\s+university
       # California city / racetrack (not Delmar, NY).
       | \bdel\s+mar\b
       # Street name elsewhere (e.g. Rochester / Salem IL) — not the Town of Delmar.
@@ -2373,6 +2416,33 @@ def _bethlehem_pa_conflict(haystack: str) -> bool:
     return True
 
 
+def _schenectady_style_conflict(haystack: str) -> bool:
+    """True when Schenectady is a cuisine adjective (…-style), not the city."""
+    return bool(_SCHENECTADY_STYLE.search(haystack))
+
+
+def _troy_person_name_conflict(haystack: str) -> bool:
+    """True when Troy is a person name in 'X and Troy,' address form."""
+    if not _TROY_PERSON_NAME.search(haystack):
+        return False
+    # Real place mentions still keep.
+    if re.search(
+        r"""
+        (?:
+            \btroy\s*,?\s*(?:ny|n\.y\.|new\s+york)\b
+          | \bin\s+troy\b
+          | city\s+of\s+troy
+          | troy\s+(?:street|avenue|ave)\b
+          | \balbany\s+and\s+troy\b
+        )
+        """,
+        haystack,
+        flags=re.IGNORECASE | re.VERBOSE,
+    ):
+        return False
+    return True
+
+
 def _waterford_ct_conflict(haystack: str) -> bool:
     """True when Waterford refers to Connecticut, not Waterford NY."""
     if not re.search(r'\bwaterford\b', haystack, flags=re.IGNORECASE):
@@ -2576,6 +2646,8 @@ def match_post(
             return MatchResult(False, 'entity_other:watervliet_mi')
         if entity.entity_id == 'rensselaer_county_ny' and _rensselaer_roblox_conflict(haystack):
             return MatchResult(False, 'hard_negative:rensselaer_roblox')
+        if entity.entity_id == 'schenectady_ny' and _schenectady_style_conflict(haystack):
+            return MatchResult(False, 'hard_negative:schenectady_style')
         return MatchResult(True, f'entity_local:{entity.entity_id}')
 
     if _STRONG_POSITIVE.search(haystack):
@@ -2586,6 +2658,8 @@ def match_post(
             return MatchResult(False, 'entity_other:watervliet_mi')
         if _rensselaer_roblox_conflict(haystack):
             return MatchResult(False, 'hard_negative:rensselaer_roblox')
+        if _schenectady_style_conflict(haystack):
+            return MatchResult(False, 'hard_negative:schenectady_style')
         if _canadian_capital_region_conflict(haystack, author_handle):
             return MatchResult(False, 'hard_negative:canadian_capital_region')
         if _md_dc_capital_region_conflict(haystack, author_handle):
@@ -2705,6 +2779,8 @@ def match_post(
                 return MatchResult(False, 'hard_negative:troy_michigan')
             if _troy_sc_conflict(haystack, author_handle) and 'troy' in multi_eligible:
                 return MatchResult(False, 'hard_negative:troy_sc')
+            if _troy_person_name_conflict(haystack) and 'troy' in multi_eligible:
+                return MatchResult(False, 'hard_negative:troy_person_name')
             return MatchResult(True, 'multi_local_places')
 
         # Prefer a non-collision token when several ambiguous names appear but
@@ -2791,6 +2867,9 @@ def match_post(
 
         if term == 'troy' and _troy_sc_conflict(haystack, author_handle):
             return MatchResult(False, 'hard_negative:troy_sc')
+
+        if term == 'troy' and _troy_person_name_conflict(haystack):
+            return MatchResult(False, 'hard_negative:troy_person_name')
 
         if _NY_CONTEXT.search(place_haystack) or _STRONG_POSITIVE.search(haystack):
             return MatchResult(True, f'ambiguous_with_context:{term}')
