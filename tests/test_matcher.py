@@ -2339,3 +2339,64 @@ def test_capital_rep_travers_day_and_saratoga_campaign_recall() -> None:
         match_post('I spoke ahead of the Travers about the lessons of the long meet.').matched
         is True
     )
+
+
+def test_troy_deeney_mt_kisco_not_troy_ny() -> None:
+    deeney = match_post(
+        'Why is Troy Deeney at my local in watching the game?  Welcome to Mt Kisco, NY, Troy.'
+    )
+    assert deeney.matched is False
+    assert match_post('Dinner in Troy, New York tonight.').matched is True
+    assert match_post('Drive between Albany and Troy, NY this weekend.').matched is True
+
+
+def test_hungarian_new_brunswick_url_not_brunswick_ny() -> None:
+    hu = match_post(
+        'New Brunswick: Okostelefon-tilalom az iskolákban szeptembertől\n\n'
+        'New Brunswick tartomány új rendeletet vezet be az iskolákban.\n\n'
+        'https://itouch.hu/new-brunswick-okostelefon-tilalom-az-iskolakban-szeptembertol/'
+    )
+    assert hu.matched is False
+    assert match_post('Town of Brunswick, NY board meeting Thursday.').matched is True
+
+
+def test_albany_med_amtrak_alb_saratoga_breeze_and_bjs_rotterdam_recall() -> None:
+    assert (
+        match_post('The man was flown to Albany Medical Center with serious injuries.').matched
+        is True
+    )
+    assert (
+        match_post(
+            'Mayfield schools will offer telemedicine through the Albany Med Health System.'
+        ).matched
+        is True
+    )
+    assert (
+        match_post(
+            'AMTRAK Maple Leaf (63) NYP->TWO Alert: Train 63 is currently stopped in '
+            'Albany (ALB) due to a mechanical assessment.'
+        ).matched
+        is True
+    )
+    # Cascades uses Albany, Oregon station code ALY — must stay dropped.
+    assert (
+        match_post(
+            'AMTRAK Cascades (504) EUG->SEA Alert: delay south of Albany (ALY) '
+            'due to a signal outage.'
+        ).matched
+        is False
+    )
+    assert (
+        match_post(
+            'Stirring Words died after a cardiac event while warming up to breeze '
+            'Friday at Saratoga.'
+        ).matched
+        is True
+    )
+    assert match_post("Golden Tempo's chance for Saratoga immortality has arrived.").matched is True
+    assert (
+        match_post(
+            "BJ's Wholesale Club is gearing up to open a new warehouse in Rotterdam."
+        ).matched
+        is True
+    )

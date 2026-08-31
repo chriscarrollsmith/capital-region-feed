@@ -152,6 +152,16 @@ _RIVER_STREET_OTHER = re.compile(
             \bboston\b|\bmattapan\b|blue\s+hill\s+avenue|babson\s+street|
             \.boston\.gov\b|open\s+streets\s+boston
           )
+      # 1953 film noir / boxing-movie podcast — not Troy's corridor.
+      | \b99\s+river\s+street\b
+      | (?:
+            \#?filmnoir\b|film\s+noir|\#?filmsky\b|\#?moviesky\b|
+            boxing\s+movie(?:\s+podcast)?
+          )[\s\S]{0,200}river\s+street
+      | river\s+street[\s\S]{0,200}(?:
+            \#?filmnoir\b|film\s+noir|\#?filmsky\b|\#?moviesky\b|
+            boxing\s+movie(?:\s+podcast)?
+          )
     )
     """,
     re.IGNORECASE | re.VERBOSE,

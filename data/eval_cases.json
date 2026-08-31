@@ -5892,5 +5892,165 @@
     "split": "holdout",
     "regression": false,
     "note": "2026-08-30 audit: known bare-Albany lifestyle residual (B-050)"
+  },
+  {
+    "id": "fp-troy-deeney-mt-kisco-0831",
+    "text": "Why is Troy Deeney at my local in watching the game? Welcome to Mt Kisco, NY, Troy.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-31 audit: footballer Troy Deeney + Westchester Mt Kisco vocative unlocked ambiguous Troy via NY"
+  },
+  {
+    "id": "tp-troy-ny-dinner-0831",
+    "text": "Dinner in Troy, New York tonight.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-31 audit: Troy NY counterpart to Troy Deeney / Mt Kisco FP"
+  },
+  {
+    "id": "fp-99-river-street-film-noir-0831",
+    "text": "Out tomorrow on the Boxing Movie Podcast: a #filmnoir classic, 99 River Street. #filmsky #moviesky",
+    "expected": false,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-31 audit: 1953 film noir title unlocked classifier River Street micro"
+  },
+  {
+    "id": "tp-river-street-open-mic-0831",
+    "text": "Open mic tomorrow on River Street — sign-ups start at 6.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-31 audit: Troy corridor River Street counterpart to film-noir FP"
+  },
+  {
+    "id": "fp-new-brunswick-hungary-url-0831",
+    "text": "New Brunswick: Okostelefon-tilalom az iskolákban szeptembertől\n\nNew Brunswick tartomány új rendeletet vezet be az iskolákban.\n\nhttps://itouch.hu/new-brunswick-okostelefon-tilalom-az-iskolakban-szeptembertol/",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-31 audit: Canadian New Brunswick via hyphen URL slug + Hungarian tartomány false NY token"
+  },
+  {
+    "id": "tp-brunswick-ny-board-0831",
+    "text": "Town of Brunswick, NY board meeting Thursday.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-31 audit: Town of Brunswick NY counterpart to New Brunswick FP"
+  },
+  {
+    "id": "tp-albany-medical-center-0831",
+    "text": "The man was flown to Albany Medical Center with serious injuries.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-31 audit FN: Albany Medical Center trauma wires omit , NY"
+  },
+  {
+    "id": "tp-albany-med-health-system-0831",
+    "text": "Mayfield schools will offer telemedicine through the Albany Med Health System.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-31 audit FN: Albany Med Health System without placename context"
+  },
+  {
+    "id": "tp-amtrak-albany-alb-0831",
+    "text": "AMTRAK Maple Leaf (63) NYP->TWO Alert: Train 63 is currently stopped in Albany (ALB) due to a mechanical assessment.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-31 audit FN: Amtrak station code ALB is Albany-Rensselaer"
+  },
+  {
+    "id": "tn-amtrak-cascades-albany-aly-0831",
+    "text": "AMTRAK Cascades (504) EUG->SEA Alert: delay south of Albany (ALY) due to a signal outage.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-31 audit: Cascades Albany Oregon ALY must stay dropped"
+  },
+  {
+    "id": "tp-breeze-at-saratoga-0831",
+    "text": "Stirring Words died after a cardiac event while warming up to breeze Friday at Saratoga.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-31 audit FN: workout breeze at Saratoga race-meet copy"
+  },
+  {
+    "id": "tp-saratoga-immortality-0831",
+    "text": "Golden Tempo's chance for Saratoga immortality has arrived.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-31 audit FN: Saratoga immortality Travers-week phrasing"
+  },
+  {
+    "id": "tp-bjs-rotterdam-warehouse-0831",
+    "text": "BJ's Wholesale Club is gearing up to open a new warehouse in Rotterdam.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-31 audit FN: BJ's warehouse in Town of Rotterdam NY"
+  },
+  {
+    "id": "tn-bare-albany-tallahassee-0831",
+    "text": "Special Weather Statement by NWS Tallahassee FL: strong thunderstorm near Turner City, or 8 miles northeast of Albany, moving southwest.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-31 audit: bare Albany GA thunderstorm correctly dropped"
+  },
+  {
+    "id": "tn-troy-women-soccer-0831",
+    "text": "FT: Jacksonville State Women 4 - 3 Troy Women. Fine margins make the difference as Jacksonville State claims victory over Troy Women!",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-08-31 audit: NCAA Troy Women soccer correctly ambiguous_no_context"
+  },
+  {
+    "id": "tn-brunswick-group-tokyo-0831",
+    "text": "Brunswick Group Appoints Kensuke Iwabuchi as Senior Advisor in Tokyo #Brunswick_Group",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-08-31 audit: Brunswick Group PR firm correctly ambiguous_no_context"
   }
 ]

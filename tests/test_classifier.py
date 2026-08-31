@@ -230,6 +230,15 @@ def test_boston_open_streets_river_street_not_local_micro() -> None:
     assert match_post('Art walk on River Street in Troy this Saturday at noon.').matched is True
 
 
+def test_film_noir_99_river_street_not_local_micro() -> None:
+    film = match_post(
+        'Out tomorrow on the Boxing Movie Podcast: a #filmnoir classic, 99 River Street. '
+        '#filmsky #moviesky'
+    )
+    assert film.matched is False
+    assert match_post('Open mic tomorrow on River Street — sign-ups start at 6.').matched is True
+
+
 def test_classify_drops_bare_albany_event_without_micro() -> None:
     decision = classify_candidate(
         "Don't miss the Albany Veterans Day Parade this Saturday downtown!",
