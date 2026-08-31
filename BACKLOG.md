@@ -538,6 +538,26 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-083 — Daily feed audit: Troy Deeney/Mt Kisco, 99 River Street film, New Brunswick URL/`tartomány` NY; Albany Med / Amtrak ALB / Saratoga breeze / BJ's Rotterdam FNs
+- **Status:** in progress
+- **Why:** 2026-08-31 audit of last-24h AppView feed (~116 posts since 2026-08-30T09:02Z)
+  found active FPs after #59 (still open): footballer `Troy Deeney` + vocative
+  `Welcome to Mt Kisco, NY, Troy.` unlocked `ambiguous_with_context:troy`; boxing-movie
+  podcast `99 River Street` / `#filmnoir` unlocked `classifier:local_micro`; Hungarian
+  `New Brunswick` card kept via `new-brunswick-…` URL slug (hyphen bypasses `new `
+  lookbehind) plus false `ny` inside `tartomány` unlocking `_NY_CONTEXT`. FNs from
+  allowlisted local media without placename: `Albany Medical Center` / `Albany Med Health
+  System`; Amtrak Maple Leaf `stopped in Albany (ALB)`; workout `breeze … at Saratoga` /
+  `Saratoga immortality`; `BJ's` warehouse in Town of Rotterdam. AppView `searchPosts`
+  still 403. Folded onto #59 branch.
+- **Work:**
+  - Unicode `\w` gates for bare `NY`/`ny`; `new-` lookbehind for Brunswick; Troy Deeney /
+    Mt Kisco person conflict; scrub 99 River Street / film-noir micros; strong positives for
+    Albany Med, Amtrak ALB, Saratoga breeze/immortality, BJ's Rotterdam.
+  - Grow eval with 2026-08-31 FP/TP/FN anchors (builds on #59 / B-082).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-082 — Daily feed audit: Boston River Street, Bethlehem PA steel/UNESCO, person Troy, Schenectady-style, Albany State U; CapitalRep / Travers Day / Saratoga Campaign FNs
 - **Status:** done ([#59](https://github.com/chriscarrollsmith/capital-region-feed/pull/59))
 - **Why:** 2026-08-30 audit of last-24h AppView feed (~183 posts since 2026-08-29T09:10Z)
