@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-084 — Daily feed audit: Latham & Watkins office, Oregon Mid-Willamette South/West Albany; LASNNY / Amtrak ALB window / Saratoga Special / 1777 FNs
-- **Status:** in progress
+- **Status:** done ([#61](https://github.com/chriscarrollsmith/capital-region-feed/pull/61))
 - **Why:** 2026-09-01 audit of last-24h AppView feed (~180 posts since 2026-08-31T09:01Z)
   found active FPs after #60: law-firm `Latham & Watkins' Hong Kong Office` matched the
   reverse `latham…office|hq` HQ strong; OregonLive Mid-Willamette / South Albany & West
