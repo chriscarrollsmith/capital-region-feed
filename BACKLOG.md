@@ -538,6 +538,25 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-084 — Daily feed audit: Latham & Watkins office, Oregon Mid-Willamette South/West Albany; LASNNY / Amtrak ALB window / Saratoga Special / 1777 FNs
+- **Status:** in progress
+- **Why:** 2026-09-01 audit of last-24h AppView feed (~180 posts since 2026-08-31T09:01Z)
+  found active FPs after #60: law-firm `Latham & Watkins' Hong Kong Office` matched the
+  reverse `latham…office|hq` HQ strong; OregonLive Mid-Willamette / South Albany & West
+  Albany HS football cards matched `south albany` strong. FNs: `LASNNY` foreclosure
+  attorney (bare Albany); Amtrak Empire Service status where `Albany (ALB)` sits >160 chars
+  below the `AMTRAK` header (and `NYP->ALB` arrows); DRF `Grade 2 Saratoga Special` without
+  leading `the`; America 250 `1777` / Saratoga turning-point posts. ~22 stale AppView rows
+  already rematch-drop (Malta / Saratoga CA / Waterford IE). AppView `searchPosts` still 403.
+- **Work:**
+  - Hard-neg + blocks-strong for Latham & Watkins and Oregon Mid-Willamette / South|West
+    Albany HS; narrow Latham HQ strong to `office|hq in Latham` / Latham regional HQ (no
+    Watkins); add Latham Circle/Farms; widen Amtrak↔Albany(ALB) window + Empire Service /
+    NYP→ALB arrows; `\blasnny\b`; optional `the`/Grade 2 on Saratoga Special; `1777`↔Saratoga.
+  - Grow eval with 2026-09-01 FP/TP/FN anchors.
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-083 — Daily feed audit: Troy Deeney/Mt Kisco, 99 River Street film, New Brunswick URL/`tartomány` NY; Albany Med / Amtrak ALB / Saratoga breeze / BJ's Rotterdam FNs
 - **Status:** done ([#60](https://github.com/chriscarrollsmith/capital-region-feed/pull/60))
 - **Why:** 2026-08-31 audit of last-24h AppView feed (~116 posts since 2026-08-30T09:02Z)
