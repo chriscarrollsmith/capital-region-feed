@@ -2400,3 +2400,71 @@ def test_albany_med_amtrak_alb_saratoga_breeze_and_bjs_rotterdam_recall() -> Non
         ).matched
         is True
     )
+
+
+def test_latham_watkins_office_not_latham_hq() -> None:
+    firm = match_post(
+        "Leading Capital Markets and M&A Partners Strengthen Latham & Watkins' "
+        'Hong Kong Office #China #Hong_Kong #Latham_Watkins'
+    )
+    assert firm.matched is False
+    assert firm.reason == 'hard_negative'
+    assert (
+        match_post(
+            'Banking giant to build new regional HQ in Latham. Spending $23 million on '
+            'a new regional office in Latham.'
+        ).matched
+        is True
+    )
+    assert match_post('Traffic backed up at Latham Circle this afternoon.').matched is True
+
+
+def test_oregon_south_west_albany_not_south_albany_ny() -> None:
+    oregon = match_post(
+        '',
+        alt_text=(
+            'Mid-Willamette Conference football preview: 2026 team outlooks, predicted '
+            'order of finish Breaking down the 5A Mid-Willamette, including Dallas, '
+            'Corvallis, Crescent Valley, Lebanon, Silverton, South Albany and West Albany'
+        ),
+    )
+    assert oregon.matched is False
+    assert oregon.reason == 'hard_negative'
+    assert (
+        match_post("Kathy Hochul's Sikorsky just touched down at 4B0 (South Albany).").matched
+        is True
+    )
+    assert match_post('Construction starts in South Albany near the airport.').matched is True
+
+
+def test_lasnny_amtrak_window_saratoga_special_and_1777_recall() -> None:
+    assert (
+        match_post(
+            'Help keep families in their homes. LASNNY is hiring a Foreclosure Prevention '
+            'Attorney in Albany to represent homeowners facing foreclosure.'
+        ).matched
+        is True
+    )
+    assert (
+        match_post(
+            'AMTRAK Empire Service (233) NYP->ALB [2026-08-31] Alert:\n'
+            'Delay Notification: As of 2:07 PM ET Empire Service Train 233 is operating '
+            'approximately 40 minutes late into Albany (ALB) due to rail congestion '
+            'along the route.'
+        ).matched
+        is True
+    )
+    assert (
+        match_post(
+            'Twinkle Town, the impressive six-length winner of the Grade 2 Saratoga '
+            'Special on Aug. 1 who was scheduled to run in Sunday’s Grade 1 Hopeful.'
+        ).matched
+        is True
+    )
+    assert (
+        match_post(
+            'In 1777, no one knew Saratoga would become a turning point. An American '
+            'army was still being built.'
+        ).matched
+        is True
+    )
