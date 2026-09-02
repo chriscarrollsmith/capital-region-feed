@@ -2468,3 +2468,118 @@ def test_lasnny_amtrak_window_saratoga_special_and_1777_recall() -> None:
         ).matched
         is True
     )
+
+
+def test_seattle_times_union_not_times_union() -> None:
+    seattle = match_post(
+        'Help the Seattle Times union keep AI out of the newsroom.',
+        alt_text=(
+            'Save Seattle journalism. Members of The Seattle Times Union are being '
+            'asked to tell these essential stories.'
+        ),
+    )
+    assert seattle.matched is False
+    assert seattle.reason == 'hard_negative'
+    assert match_post('Times Union coverage of downtown #AlbanyNY redevelopment.').matched is True
+
+
+def test_helderberg_southafrica_hashtag_not_escarpment() -> None:
+    sa = match_post(
+        "Montego's Bags o Wags partners with Sweet Paws to support Helderberg "
+        'community caregivers #southafrica',
+        alt_text='Sweet Paws Rescue and Care in the Helderberg community.',
+    )
+    assert sa.matched is False
+    assert sa.reason == 'hard_negative'
+    assert match_post('Hike the Helderberg Escarpment this weekend near #AlbanyNY.').matched is True
+
+
+def test_schaghticoke_rd_kent_ct_not_town() -> None:
+    ct = match_post(
+        'South Cascades along Schaghticoke Rd., Kent, CT. Roadside…60 feet. '
+        '#Connecticut #NewEngland #waterfalls'
+    )
+    assert ct.matched is False
+    assert ct.reason == 'hard_negative:schaghticoke_ct'
+    assert match_post('Town of Schaghticoke, NY board meeting tonight.').matched is True
+
+
+def test_watervliet_mi_bridgman_hs_ratings_not_ny() -> None:
+    mi = match_post(
+        '2026 Ratings: Bridgman. BOYS TEAM RATINGS Buchanan Red Arrow Watervliet '
+        'Hartford Bloomingdale.'
+    )
+    assert mi.matched is False
+    assert mi.reason == 'entity_other:watervliet_mi'
+    assert match_post('Watervliet, NY water main break on 19th Street.').matched is True
+
+
+def test_troy_pa_bradford_nws_not_troy_ny() -> None:
+    pa = match_post(
+        'Tornado Warning issued by NWS Binghamton NY',
+        alt_text=(
+            'Western Bradford County in northeastern Pennsylvania. At 631 PM EDT, '
+            'a severe thunderstorm was located over Springfield, or over Troy, '
+            'moving southeast at 25 mph.'
+        ),
+    )
+    assert pa.matched is False
+    assert pa.reason == 'hard_negative:troy_pa'
+    assert (
+        match_post(
+            'Democrats and Republicans in Troy, New York, took on a national '
+            'Catholic health system.'
+        ).matched
+        is True
+    )
+
+
+def test_rotterdam_world_city_architecture_not_ny() -> None:
+    arch = match_post(
+        'Ten architecture and design events this month in Detroit, NYC, LA, '
+        'San Francisco, Houston, London, Hong Kong, Paris, and Rotterdam.',
+        alt_text='architecture & design events available in Paris and Rotterdam.',
+    )
+    assert arch.matched is False
+    assert arch.reason == 'hard_negative:malta_europe'
+    assert match_post('Meal Train for Rotterdam Community Center Free Food Fridge').matched is True
+
+
+def test_troy_johnson_founder_not_troy_ny() -> None:
+    person = match_post(
+        'The Future of Book Publishing from the WSJ Future of Everything Festival',
+        alt_text=(
+            'The festival was held in New York City on May 18, 2022. In this clip, '
+            "AALBC.com's Founder, Troy Johnson discusses publishing."
+        ),
+    )
+    assert person.matched is False
+    assert person.reason == 'hard_negative:troy_person_name'
+    assert match_post('Dinner in Troy, New York tonight.').matched is True
+
+
+def test_albany_riverfront_powers_park_saratoga_derby_liberty_recall() -> None:
+    assert (
+        match_post(
+            'Critically Acclaimed Jazz Artists set to Perform at Albany Riverfront '
+            'Jazz Festival returning to Jennings Landing.'
+        ).matched
+        is True
+    )
+    assert match_post("The second jam, held at Troy's Powers Park on August 15.").matched is True
+    assert (
+        match_post('Saratoga Derby winner Glacius returns in Saturday Nashville Derby.').matched
+        is True
+    )
+    assert (
+        match_post("Ben Weaver is working in George Weaver's Saratoga barn this meet.").matched
+        is True
+    )
+    assert (
+        match_post(
+            "The Liberty Park redevelopment in Albany will team two of the region's "
+            'biggest development companies.'
+        ).matched
+        is True
+    )
+    assert match_post('Campaign to keep the Burdett Birth Center open.').matched is True
