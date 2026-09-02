@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-085 — Daily feed audit: Seattle Times union, Helderberg #southafrica, Schaghticoke Rd CT, Watervliet MI HS, Troy PA, Rotterdam world cities, Troy Johnson; Riverfront Jazz / Powers Park / Saratoga Derby FNs
-- **Status:** in progress
+- **Status:** done ([#62](https://github.com/chriscarrollsmith/capital-region-feed/pull/62))
 - **Why:** 2026-09-02 audit of last-24h AppView feed (~228 posts since 2026-09-01T09:03Z)
   found active FPs after #61 (still open): `Seattle Times union` / `Seattle Times Union`
   matched `times union` strong; Cape/SA `Helderberg` + `#southafrica` (no space) bypassed
