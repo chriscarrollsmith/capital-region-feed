@@ -538,6 +538,29 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-085 — Daily feed audit: Seattle Times union, Helderberg #southafrica, Schaghticoke Rd CT, Watervliet MI HS, Troy PA, Rotterdam world cities, Troy Johnson; Riverfront Jazz / Powers Park / Saratoga Derby FNs
+- **Status:** in progress
+- **Why:** 2026-09-02 audit of last-24h AppView feed (~228 posts since 2026-09-01T09:03Z)
+  found active FPs after #61 (still open): `Seattle Times union` / `Seattle Times Union`
+  matched `times union` strong; Cape/SA `Helderberg` + `#southafrica` (no space) bypassed
+  `south africa` hard-neg; Kent CT `Schaghticoke Rd.` matched bare `schaghticoke` strong;
+  Bridgman/Buchanan/Red Arrow HS ratings kept `entity_local:watervliet_ny` without MI tokens;
+  NWS Binghamton `Bradford County` / `over Troy` unlocked by Binghamton NY; Archinect
+  world-city architecture list unlocked NL Rotterdam via NYC; AALBC `Founder, Troy Johnson`
+  unlocked by New York City. FNs: Albany Riverfront Jazz / Jennings Landing; Troy Powers
+  Park; Saratoga Derby / Saratoga barn; Liberty Park Albany; Burdett Birth Center; Rotterdam
+  Community Center. ~53 stale AppView rows already rematch-drop (Malta/Brunswick/Stillwater).
+  AppView `searchPosts` still often 403. Folded onto #61 branch.
+- **Work:**
+  - Seattle Times lookbehind + hard-neg; Helderberg `#southafrica`/`Sweet Paws` gates;
+    Schaghticoke CT conflict; Watervliet MI HS cues; Troy PA Bradford conflict; Rotterdam
+    world-city/`archinect` malta-europe cues; Troy Johnson / founder person conflict;
+    strong positives for Riverfront Jazz, Powers Park, Saratoga Derby/barn, Liberty Park,
+    Burdett, Rotterdam Community Center.
+  - Grow eval with 2026-09-02 FP/TP/FN anchors (builds on #61 / B-084).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-084 — Daily feed audit: Latham & Watkins office, Oregon Mid-Willamette South/West Albany; LASNNY / Amtrak ALB window / Saratoga Special / 1777 FNs
 - **Status:** done ([#61](https://github.com/chriscarrollsmith/capital-region-feed/pull/61))
 - **Why:** 2026-09-01 audit of last-24h AppView feed (~180 posts since 2026-08-31T09:01Z)

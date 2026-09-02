@@ -6212,5 +6212,210 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-09-01 audit TP: Capital District After Dark actual-play"
+  },
+  {
+    "id": "fp-seattle-times-union-0902",
+    "text": "Help the Seattle Times union keep AI out of the newsroom and give them pay they deserve.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Save Seattle journalism. Members of The Seattle Times Union are being asked to tell these essential stories.",
+    "note": "2026-09-02 audit: Seattle Times guild matched times union strong"
+  },
+  {
+    "id": "tp-times-union-albany-counterpart-0902",
+    "text": "Times Union coverage of downtown #AlbanyNY redevelopment and Liberty Park.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-02 counterpart to Seattle Times union FP"
+  },
+  {
+    "id": "fp-helderberg-southafrica-hashtag-0902",
+    "text": "Montego's Bags o Wags partners with Sweet Paws to donate pet food and support Helderberg community caregivers #pressrelease #africa #southafrica",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "Sweet Paws Rescue and Care in the Helderberg community.",
+    "note": "2026-09-02 audit: #southafrica lacked space so helderberg hard-neg missed"
+  },
+  {
+    "id": "tp-helderberg-escarpment-counterpart-0902",
+    "text": "Hike the Helderberg Escarpment this weekend near #AlbanyNY.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-02 counterpart to SA Helderberg FP"
+  },
+  {
+    "id": "fp-schaghticoke-rd-kent-ct-0902",
+    "text": "South Cascades along Schaghticoke Rd., Kent, CT. Roadside waterfall. #Connecticut #NewEngland #waterfalls",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-02 audit: bare schaghticoke strong matched CT road"
+  },
+  {
+    "id": "tp-schaghticoke-ny-counterpart-0902",
+    "text": "Town of Schaghticoke, NY board meeting tonight at town hall.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-02 counterpart to Schaghticoke Rd CT FP"
+  },
+  {
+    "id": "fp-watervliet-bridgman-hs-0902",
+    "text": "2026 Ratings: Bridgman. BOYS TEAM RATINGS Buchanan 150.9 Red Arrow 121.7 Watervliet 97.5 Bloomingdale 91.3",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-02 audit: MI HS ratings without MI token kept watervliet_ny"
+  },
+  {
+    "id": "tp-watervliet-ny-counterpart-0902",
+    "text": "Watervliet, NY water main break on 19th Street closed the block.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-02 counterpart to Watervliet MI FP"
+  },
+  {
+    "id": "fp-troy-pa-bradford-nws-0902",
+    "text": "Tornado Warning issued by NWS Binghamton NY",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Western Bradford County in northeastern Pennsylvania. Storm located over Springfield, or over Troy, moving southeast at 25 mph.",
+    "note": "2026-09-02 audit: Binghamton NY unlocked Troy PA"
+  },
+  {
+    "id": "tp-troy-ny-birthing-counterpart-0902",
+    "text": "Democrats and Republicans in Troy, New York, took on a national Catholic health system and kept the county's last birthing center open.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-02 counterpart to Troy PA FP"
+  },
+  {
+    "id": "fp-rotterdam-archinect-world-cities-0902",
+    "text": "Ten curated architecture and design events this month in Detroit, NYC, LA, San Francisco, Houston, London, Hong Kong, Paris, and Rotterdam.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "architecture & design events available to the community in Paris and Rotterdam.",
+    "note": "2026-09-02 audit: NYC unlocked NL Rotterdam in world-city list"
+  },
+  {
+    "id": "tp-rotterdam-community-center-0902",
+    "text": "Meal Train for Rotterdam Community Center Free Food Fridge is still going. Any unopened food item helps.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-02 FN: Town of Rotterdam Community Center"
+  },
+  {
+    "id": "fp-troy-johnson-founder-nyc-0902",
+    "text": "The Future of Book Publishing from the WSJ Future of Everything Festival",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "The festival was held in New York City on May 18, 2022. In this clip, AALBC.com's Founder, Troy Johnson discusses publishing.",
+    "note": "2026-09-02 audit: Founder Troy Johnson unlocked by NYC"
+  },
+  {
+    "id": "fn-albany-riverfront-jazz-0902",
+    "text": "Critically Acclaimed Jazz Artists set to Perform at Albany Riverfront Jazz Festival. The festival returns to Jennings Landing September 5.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-02 FN: Albany Riverfront Jazz / Jennings Landing"
+  },
+  {
+    "id": "fn-troy-powers-park-0902",
+    "text": "The second jam of the summer, held at Troy's Powers Park on August 15, featured tributes to Styx and the Rolling Stones.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-02 FN: Troy Powers Park concert"
+  },
+  {
+    "id": "fn-saratoga-derby-0902",
+    "text": "Saratoga Derby winner Glacius returns in Saturday's Nashville Derby.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-02 FN: named Saratoga Derby stakes"
+  },
+  {
+    "id": "fn-saratoga-barn-0902",
+    "text": "Ben Weaver is working in George Weaver's Saratoga barn after leaving engineering to pursue a training career.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-02 FN: Saratoga barn race-meet copy"
+  },
+  {
+    "id": "fn-liberty-park-albany-0902",
+    "text": "The Liberty Park redevelopment in Albany will team two of the region's biggest development companies.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-02 FN: Liberty Park Albany redevelopment"
+  },
+  {
+    "id": "fn-burdett-birth-center-0902",
+    "text": "State funding will help keep the Burdett Birth Center open after community pressure.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-02 FN: Burdett Birth Center Troy landmark"
+  },
+  {
+    "id": "tn-bare-albany-job-cvs-0902",
+    "text": "Store Associate - 01791 - CVS Albany, L.L.C. Job listing without state context.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-02 residual bare Albany job spam still fail-closed"
   }
 ]
