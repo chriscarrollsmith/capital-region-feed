@@ -231,9 +231,27 @@ _STRONG_POSITIVE = re.compile(
       | \bthe\s+egg\s+presents\b
       | high\s+rock\s+park[\s\S]{0,80}\bsaratoga\b
       | \bsaratoga\b[\s\S]{0,80}high\s+rock\s+park\b
-      # Local paper — reject hyphenated "Sun-Times union" (Chicago).
-      | (?<![\w-])times\s+union\b
+      # Local paper — reject hyphenated "Sun-Times union" (Chicago) and
+      # "Seattle Times union" / "Seattle Times Union" guild phrasing.
+      | (?<!seattle\s)(?<![\w-])times\s+union\b
       | albany\s+business\s+review\b
+      # Albany Riverfront Jazz Festival / Jennings Landing often omit ", NY".
+      | albany\s+riverfront\s+jazz
+      | jennings\s+landing\b
+      # Town of Rotterdam community orgs often omit ", NY".
+      | rotterdam\s+community\s+center\b
+      # Troy Powers Park concert copy often omits ", NY".
+      | \btroy['\u2019]?s\s+powers\s+park\b
+      | powers\s+park[\s\S]{0,80}\btroy\b
+      | \btroy\b[\s\S]{0,80}powers\s+park\b
+      # Named Saratoga Race Course stakes / barn copy often omits ", NY".
+      | saratoga\s+derby\b
+      | saratoga\s+barn\b
+      # Albany Liberty Park redevelopment wires often omit ", NY".
+      | liberty\s+park[\s\S]{0,80}\balbany\b
+      | \balbany\b[\s\S]{0,80}liberty\s+park\b
+      # Burdett Birth Center (Troy) NPR wires sometimes drop the city qualifier.
+      | burdett\s+birth(?:ing)?\s+center\b
       # County sheriff ICE wires often omit "County" / ", NY".
       | rensselaer\s+sheriff\b
       # Albany Med / AMC trauma wires often omit ", NY".
@@ -411,10 +429,20 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
       # Putnam / Hudson Valley street — not City of Albany.
       | albany\s+post\s+road
       # Cape Town suburb / wine region / municipal alerts — not Helderberg Escarpment.
-      # Prefer #capetown / Helderberg College; window covers text→hashtag distance.
+      # Prefer #capetown / #southafrica / Helderberg College; window covers text→hashtag.
       | helderberg\s+college\b
-      | helderberg[\s\S]{0,280}(?:cape\s+town|\#capetown\b|western\s+cape|south\s+africa|\bstrand\b)
-      | (?:cape\s+town|\#capetown\b|western\s+cape|south\s+africa)[\s\S]{0,280}helderberg
+      | helderberg[\s\S]{0,280}(?:
+            cape\s+town|\#capetown\b|western\s+cape|south\s+africa|
+            \#southafrica\b|\#africa\b|\bstrand\b|sweet\s+paws|pressportal\.co\.za
+          )
+      | (?:
+            cape\s+town|\#capetown\b|western\s+cape|south\s+africa|
+            \#southafrica\b|\#africa\b|sweet\s+paws|pressportal\.co\.za
+          )[\s\S]{0,280}helderberg
+      # Seattle newspaper guild — not Albany Times Union.
+      | seattle\s+times(?:\s+union)?\b
+      | seattle[\s\S]{0,100}times\s+union\b
+      | times\s+union[\s\S]{0,100}seattle
       # SoCal / multi-track handicap hashtag stuffing — not Race Course NY.
       | (?:\#socal\b|\#losangeles\b|southern\s+california)[\s\S]{0,200}\#saratoga\b
       | \#saratoga\b[\s\S]{0,200}(?:\#socal\b|\#losangeles\b|southern\s+california)
@@ -1286,6 +1314,12 @@ _MALTA_EUROPE = re.compile(
       | new\s+york\s+hotel[\s\S]{0,60}\brotterdam\b
       | \brotterdam\b[\s\S]{0,60}new\s+york\s+hotel
       | hotel\s+new\s+york[\s\S]{0,60}\brotterdam\b
+      # World-city architecture/design calendars list NL Rotterdam next to NYC.
+      | archinect\.com
+      | architecture\s+(?:&|and)\s+design[\s\S]{0,160}\brotterdam\b
+      | \brotterdam\b[\s\S]{0,160}architecture\s+(?:&|and)\s+design
+      | \b(?:paris|london|hong\s+kong|detroit)\b[\s\S]{0,220}\brotterdam\b
+      | \brotterdam\b[\s\S]{0,220}\b(?:paris|london|hong\s+kong|detroit)\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -1419,13 +1453,16 @@ _SCOTIA_MONTREAL = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
-# Watervliet, Michigan (jobs / hospital listings) — not Watervliet NY.
+# Watervliet, Michigan (jobs / hospital / HS ratings) — not Watervliet NY.
 _WATERVLIET_MI = re.compile(
     r"""
     (?:
         watervliet\s*,?\s*(?:mi|michigan)\b
       | watervliet[\s\S]{0,80}\b(?:mi|michigan)\b
       | \b(?:mi|michigan)\b[\s\S]{0,80}watervliet
+      # SW Michigan HS ratings cards often omit ", MI".
+      | watervliet[\s\S]{0,160}\b(?:bridgman|buchanan|red\s+arrow|bloomingdale)\b
+      | \b(?:bridgman|buchanan|red\s+arrow|bloomingdale)\b[\s\S]{0,160}watervliet
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -1502,10 +1539,49 @@ _TROY_PERSON_NAME = re.compile(
         \band\s+troy,
       | \bjana\s+and\s+troy\b
       | \btroy\s+deeney\b
+      | \btroy\s+johnson\b
+      # Bylines / founder intros: "Founder, Troy Johnson".
+      | founder[,\s]+troy\b
       # Vocative "Welcome to Mt Kisco, NY, Troy." — not City of Troy.
       | welcome\s+to\b[^.]{0,100},\s*troy\.
       | mt\.?\s*kisco[\s\S]{0,100}\btroy\b
       | \btroy\b[\s\S]{0,100}mt\.?\s*kisco
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Troy, Pennsylvania (Bradford County / NWS Binghamton) — not City of Troy NY.
+_TROY_PA = re.compile(
+    r"""
+    (?:
+        troy\s*,?\s*(?:pa|pennsylvania)\b
+      | \bbradford\s+county\b
+      | western\s+bradford
+      | over\s+springfield,\s+or\s+over\s+troy\b
+      | \btroy\b[\s\S]{0,120}\bbradford\b
+      | \bbradford\b[\s\S]{0,120}\btroy\b
+      | \btroy\b[\s\S]{0,100}\bnortheastern\s+pennsylvania\b
+      | \bnortheastern\s+pennsylvania\b[\s\S]{0,100}\btroy\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Schaghticoke Road in Kent, CT — not the Town of Schaghticoke NY.
+_SCHAGHTICOKE_CT = re.compile(
+    r"""
+    (?:
+        schaghticoke\s+(?:rd\.?|road|ave(?:nue)?|st(?:reet)?)\b[\s\S]{0,120}\b(?:
+            ct\b|connecticut|\#connecticut\b|kent
+          )
+      | \b(?:ct\b|connecticut|\#connecticut\b|kent)\b[\s\S]{0,120}schaghticoke\s+(?:
+            rd\.?|road|ave(?:nue)?|st(?:reet)?
+          )\b
+      | schaghticoke[\s\S]{0,120}\#(?:connecticut|newengland)\b
+      | \#(?:connecticut|newengland)\b[\s\S]{0,120}schaghticoke
+      | schaghticoke[\s\S]{0,80}\bkent\b[\s\S]{0,40}\bct\b
+      | \bkent\b[\s\S]{0,40}\bct\b[\s\S]{0,80}schaghticoke
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -1565,10 +1641,20 @@ _HARD_NEGATIVE = re.compile(
       # Putnam / Hudson Valley street — not City of Albany.
       | albany\s+post\s+road
       # Cape Town suburb / wine region / municipal alerts — not Helderberg Escarpment.
-      # Prefer #capetown / Helderberg College; window covers text→hashtag distance.
+      # Prefer #capetown / #southafrica / Helderberg College; window covers text→hashtag.
       | helderberg\s+college\b
-      | helderberg[\s\S]{0,280}(?:cape\s+town|\#capetown\b|western\s+cape|south\s+africa|\bstrand\b)
-      | (?:cape\s+town|\#capetown\b|western\s+cape|south\s+africa)[\s\S]{0,280}helderberg
+      | helderberg[\s\S]{0,280}(?:
+            cape\s+town|\#capetown\b|western\s+cape|south\s+africa|
+            \#southafrica\b|\#africa\b|\bstrand\b|sweet\s+paws|pressportal\.co\.za
+          )
+      | (?:
+            cape\s+town|\#capetown\b|western\s+cape|south\s+africa|
+            \#southafrica\b|\#africa\b|sweet\s+paws|pressportal\.co\.za
+          )[\s\S]{0,280}helderberg
+      # Seattle newspaper guild — not Albany Times Union.
+      | seattle\s+times(?:\s+union)?\b
+      | seattle[\s\S]{0,100}times\s+union\b
+      | times\s+union[\s\S]{0,100}seattle
       # SoCal / multi-track handicap hashtag stuffing — not Race Course NY.
       | (?:\#socal\b|\#losangeles\b|southern\s+california)[\s\S]{0,200}\#saratoga\b
       | \#saratoga\b[\s\S]{0,200}(?:\#socal\b|\#losangeles\b|southern\s+california)
@@ -2510,6 +2596,42 @@ def _troy_person_name_conflict(haystack: str) -> bool:
     return True
 
 
+def _troy_pa_conflict(haystack: str) -> bool:
+    """True when Troy refers to Bradford County PA, not City of Troy NY."""
+    if not re.search(r'\btroy\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not _TROY_PA.search(haystack):
+        return False
+    if re.search(
+        r"""
+        (?:
+            \btroy\s*,?\s*(?:ny|n\.y\.|new\s+york)\b
+          | city\s+of\s+troy
+          | \bin\s+troy,\s*n
+        )
+        """,
+        haystack,
+        flags=re.IGNORECASE | re.VERBOSE,
+    ):
+        return False
+    return True
+
+
+def _schaghticoke_ct_conflict(haystack: str) -> bool:
+    """True when Schaghticoke is a Kent CT road, not the Town of Schaghticoke NY."""
+    if not re.search(r'\bschaghticoke\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not _SCHAGHTICOKE_CT.search(haystack):
+        return False
+    if re.search(
+        r'schaghticoke\s*,?\s*(?:ny|n\.y\.|new\s+york)\b|town\s+of\s+schaghticoke',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    return True
+
+
 def _waterford_ct_conflict(haystack: str) -> bool:
     """True when Waterford refers to Connecticut, not Waterford NY."""
     if not re.search(r'\bwaterford\b', haystack, flags=re.IGNORECASE):
@@ -2787,6 +2909,8 @@ def match_post(
             return MatchResult(False, 'hard_negative:newtonville_ma')
         if _ct_capital_district_conflict(haystack):
             return MatchResult(False, 'hard_negative:ct_capital_district')
+        if _schaghticoke_ct_conflict(haystack):
+            return MatchResult(False, 'hard_negative:schaghticoke_ct')
         return MatchResult(True, 'strong_positive')
 
     if _COLONIE_LOCAL.search(haystack):
@@ -2848,6 +2972,8 @@ def match_post(
                 return MatchResult(False, 'hard_negative:troy_sc')
             if _troy_person_name_conflict(haystack) and 'troy' in multi_eligible:
                 return MatchResult(False, 'hard_negative:troy_person_name')
+            if _troy_pa_conflict(haystack) and 'troy' in multi_eligible:
+                return MatchResult(False, 'hard_negative:troy_pa')
             return MatchResult(True, 'multi_local_places')
 
         # Prefer a non-collision token when several ambiguous names appear but
@@ -2937,6 +3063,9 @@ def match_post(
 
         if term == 'troy' and _troy_person_name_conflict(haystack):
             return MatchResult(False, 'hard_negative:troy_person_name')
+
+        if term == 'troy' and _troy_pa_conflict(haystack):
+            return MatchResult(False, 'hard_negative:troy_pa')
 
         if _NY_CONTEXT.search(place_haystack) or _STRONG_POSITIVE.search(haystack):
             return MatchResult(True, f'ambiguous_with_context:{term}')
