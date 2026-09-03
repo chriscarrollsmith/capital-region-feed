@@ -6417,5 +6417,129 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-09-02 residual bare Albany job spam still fail-closed"
+  },
+  {
+    "id": "fp-nyt-times-union-0903",
+    "text": "Unionized New York Times staffers are speaking out against a potential partnership.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "New York Times Union Demands Company Abandon Kalshi Talks",
+    "note": "2026-09-03 FP: New York Times Union matched times union strong"
+  },
+  {
+    "id": "tp-times-union-albanyny-0903",
+    "text": "Times Union coverage of downtown #AlbanyNY redevelopment.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-03 TP counterpart for NYT Times Union gate"
+  },
+  {
+    "id": "fp-troy-road-ithaca-0903",
+    "text": "The Ithaca Planning Board approved the community solar project on Troy Road. #EastIthacaTompkinsCounty #NY",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-03 FP: Ithaca Troy Road unlocked by NY"
+  },
+  {
+    "id": "tp-troy-road-albanyny-0903",
+    "text": "Road work on Troy Road near #AlbanyNY starts Monday.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-03 TP counterpart: Cap Region Troy Road"
+  },
+  {
+    "id": "fp-nws-binghamton-near-troy-0903",
+    "text": "Severe Thunderstorm Warning issued by NWS Binghamton NY. Storm over Springfield, or near Troy, moving southeast at 30 mph.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-03 FP: NWS Binghamton near Troy (PA) after over Troy gate"
+  },
+  {
+    "id": "tp-troy-ny-birthing-0903",
+    "text": "Democrats and Republicans in Troy, New York, took on a national Catholic health system.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-03 TP counterpart for Troy PA near-Troy gate"
+  },
+  {
+    "id": "fp-troy-achilles-film-0903",
+    "text": "Troy Achilles Speech to Myrmidons [HD]",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "ALL Democrats: NY Rep Jeffries, NY Sen Schumer follow the Mag 7.",
+    "note": "2026-09-03 FP: film Troy Achilles unlocked by NY politicians"
+  },
+  {
+    "id": "fp-troy-brad-pitt-2004-0903",
+    "text": "Brad Pitt in Troy (2004). Watching in New York tonight.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-03 FP: Brad Pitt Troy (2004) film title"
+  },
+  {
+    "id": "tp-troy-ny-dinner-0903",
+    "text": "Dinner in Troy, New York tonight.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-03 TP counterpart for Troy film person gate"
+  },
+  {
+    "id": "fn-yaddo-saratoga-0903",
+    "text": "The Yaddo Mansion in Saratoga, 2025.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-03 FN: Yaddo artist colony with bare Saratoga"
+  },
+  {
+    "id": "fn-rotterdamcc-allowlist-0903",
+    "text": "Don't forget, Rotterdam! Sister Harmony Group this Friday — free concert.",
+    "expected": true,
+    "signal": "author",
+    "bucket": "local_org_no_placename",
+    "split": "dev",
+    "regression": true,
+    "author_handle": "rotterdamcc.bsky.social",
+    "author_did": "did:plc:4larojxjaliyaswc47za27zi",
+    "note": "2026-09-03 FN: Rotterdam Community Center allowlist for no-placename concert copy"
+  },
+  {
+    "id": "tn-seattle-times-union-0903",
+    "text": "Help the Seattle Times union keep AI out of the newsroom.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-03 TN: Seattle Times union still gated after NYT Times Union lookbehind"
   }
 ]
