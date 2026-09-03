@@ -538,6 +538,27 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-086 — Daily feed audit: New York Times Union, Ithaca Troy Road, NWS near Troy, Troy Achilles film; Yaddo / Rotterdam CC FNs
+- **Status:** done ([#63](https://github.com/chriscarrollsmith/capital-region-feed/pull/63))
+- **Why:** 2026-09-03 audit of last-24h AppView feed (~203 posts since 2026-09-02T09:01Z)
+  found active FPs after #62 (still open): Front Office Sports / Kalshi cards titled
+  `New York Times Union Demands…` matched `times union` strong (York lookbehind gap after
+  Seattle gate); Ithaca/Tompkins `Troy Road` solar wires unlocked by `#NY`; NWS Binghamton
+  `over Springfield, or near Troy` bypassed the `over Troy` Bradford PA gate; YouTube
+  `Troy Achilles Speech` / Brad Pitt `Troy (2004)` unlocked by NY politician names. FNs:
+  `Yaddo` mansion with bare Saratoga; `@rotterdamcc.bsky.social` concert copy saying only
+  "Don't forget, Rotterdam!" (community-center strong requires the full phrase). ~49 stale
+  AppView rows already rematch-drop (Malta/Waterford/Troy MI weather). AppView `searchPosts`
+  still often 403. Folded onto #62 branch.
+- **Work:**
+  - `(?<!york\s)` Times Union lookbehind + `new york times(?: union)?` hard-neg;
+    Ithaca/Tompkins Troy Road conflict; expand Troy PA `near Troy` / NWS Binghamton cues;
+    Troy Achilles / Myrmidons / Brad Pitt / `(2004)` person-film conflict; `\byaddo\b`
+    strong; allowlist Rotterdam Community Center handle+DID.
+  - Grow eval with 2026-09-03 FP/TP/FN anchors (builds on #62 / B-085).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-085 — Daily feed audit: Seattle Times union, Helderberg #southafrica, Schaghticoke Rd CT, Watervliet MI HS, Troy PA, Rotterdam world cities, Troy Johnson; Riverfront Jazz / Powers Park / Saratoga Derby FNs
 - **Status:** done ([#62](https://github.com/chriscarrollsmith/capital-region-feed/pull/62))
 - **Why:** 2026-09-02 audit of last-24h AppView feed (~228 posts since 2026-09-01T09:03Z)

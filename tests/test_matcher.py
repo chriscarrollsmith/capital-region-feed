@@ -2583,3 +2583,69 @@ def test_albany_riverfront_powers_park_saratoga_derby_liberty_recall() -> None:
         is True
     )
     assert match_post('Campaign to keep the Burdett Birth Center open.').matched is True
+
+
+def test_new_york_times_union_not_times_union() -> None:
+    nyt = match_post(
+        'Unionized New York Times staffers are speaking out against Kalshi.',
+        alt_text='New York Times Union Demands Company Abandon Kalshi Talks',
+    )
+    assert nyt.matched is False
+    assert nyt.reason == 'hard_negative'
+    assert match_post('Times Union coverage of downtown #AlbanyNY redevelopment.').matched is True
+
+
+def test_troy_road_ithaca_not_troy_ny() -> None:
+    ithaca = match_post(
+        'The Ithaca Planning Board approved the community solar project on Troy Road. '
+        '#EastIthacaTompkinsCounty #NY'
+    )
+    assert ithaca.matched is False
+    assert ithaca.reason == 'hard_negative:troy_road_ithaca'
+    assert match_post('Road work on Troy Road near #AlbanyNY starts Monday.').matched is True
+
+
+def test_troy_pa_near_troy_nws_binghamton() -> None:
+    pa = match_post(
+        'Severe Thunderstorm Warning issued by NWS Binghamton NY. '
+        'Storm over Springfield, or near Troy, moving southeast at 30 mph.'
+    )
+    assert pa.matched is False
+    assert pa.reason == 'hard_negative:troy_pa'
+    assert (
+        match_post(
+            'Democrats and Republicans in Troy, New York, took on a national '
+            'Catholic health system.'
+        ).matched
+        is True
+    )
+
+
+def test_troy_achilles_film_not_troy_ny() -> None:
+    film = match_post(
+        'Troy Achilles Speech to Myrmidons [HD]',
+        alt_text='ALL Democrats: NY Rep Jeffries, NY Sen Schumer follow the Mag 7.',
+    )
+    assert film.matched is False
+    assert film.reason == 'hard_negative:troy_person_name'
+    pitt = match_post('Brad Pitt in Troy (2004). Watching in New York tonight.')
+    assert pitt.matched is False
+    assert pitt.reason == 'hard_negative:troy_person_name'
+    assert match_post('Dinner in Troy, New York tonight.').matched is True
+
+
+def test_yaddo_saratoga_and_rotterdamcc_allowlist() -> None:
+    assert match_post('The Yaddo Mansion in Saratoga, 2025.').matched is True
+    from server.allowlists import load_allowlist_dids, load_allowlist_handles
+
+    dids = load_allowlist_dids()
+    handles = load_allowlist_handles()
+    kept = match_post(
+        "Don't forget, Rotterdam! Sister Harmony Group this Friday.",
+        author_did='did:plc:4larojxjaliyaswc47za27zi',
+        author_handle='rotterdamcc.bsky.social',
+        allowlist_dids=dids,
+        allowlist_handles=handles,
+    )
+    assert kept.matched is True
+    assert kept.reason == 'allowlist_did'
