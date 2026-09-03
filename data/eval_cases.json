@@ -6052,5 +6052,165 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-08-31 audit: Brunswick Group PR firm correctly ambiguous_no_context"
+  },
+  {
+    "id": "fp-latham-watkins-hk-office-0901",
+    "text": "Leading Capital Markets and M&A Partners Strengthen Latham & Watkins' Hong Kong Office #China #Hong_Kong #Latham_Watkins",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-01 audit FP: Latham & Watkins … Office matched latham…office HQ strong"
+  },
+  {
+    "id": "tp-latham-regional-hq-counterpart-0901",
+    "text": "Banking giant to build new regional HQ in Latham. Spending $23 million on a new regional office in Latham.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-01 audit TP counterpart for Latham HQ (keep after Watkins gate)"
+  },
+  {
+    "id": "tp-latham-circle-0901",
+    "text": "Traffic backed up at Latham Circle this afternoon after a fender-bender.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-01 audit TP: Latham Circle landmark"
+  },
+  {
+    "id": "fp-oregon-mid-willamette-south-albany-0901",
+    "text": "Mid-Willamette Conference football preview includes Dallas, Corvallis, Crescent Valley, Lebanon, Silverton, South Albany and West Albany.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-01 audit FP: Oregon 5A Mid-Willamette South/West Albany HS"
+  },
+  {
+    "id": "fp-oregon-south-albany-high-0901",
+    "text": "South Albany High School homecoming parade in Oregon this Friday.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-01 audit FP: South Albany High School OR"
+  },
+  {
+    "id": "tp-south-albany-airport-counterpart-0901",
+    "text": "Kathy Hochul's Sikorsky just touched down at 4B0 (South Albany).",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-01 audit TP counterpart: South Albany Airport NY"
+  },
+  {
+    "id": "fn-lasnny-attorney-albany-0901",
+    "text": "Help keep families in their homes. LASNNY is hiring a Foreclosure Prevention Attorney in Albany to represent homeowners facing foreclosure. Excellent benefits and mission-driven work.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-01 audit FN: LASNNY org acronym without , NY"
+  },
+  {
+    "id": "fn-amtrak-empire-albany-alb-window-0901",
+    "text": "AMTRAK Empire Service (233) NYP->ALB Alert: Delay Notification: As of 2:07 PM ET Empire Service Train 233 is operating approximately 40 minutes late into Albany (ALB) due to rail congestion along the route.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-01 audit FN: Amtrak header >160 chars from Albany (ALB)"
+  },
+  {
+    "id": "fn-amtrak-nyp-alb-arrow-0901",
+    "text": "AMTRAK Empire Service (233) NYP->ALB delayed approximately 40 minutes.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-01 audit FN: NYP->ALB station-code arrow"
+  },
+  {
+    "id": "tn-amtrak-cascades-aly-0901",
+    "text": "AMTRAK Cascades (504) EUG->SEA Alert: delay south of Albany (ALY) due to a signal outage.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-01 audit TN: Cascades Albany OR station ALY stays dropped"
+  },
+  {
+    "id": "fn-grade2-saratoga-special-0901",
+    "text": "Twinkle Town, the impressive six-length winner of the Grade 2 Saratoga Special on Aug. 1 who was scheduled to run in Sunday’s Grade 1 Hopeful.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-01 audit FN: Grade 2 Saratoga Special without leading the"
+  },
+  {
+    "id": "fn-saratoga-1777-turning-point-0901",
+    "text": "In 1777, no one knew Saratoga would become a turning point. An American army was still being built.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-01 audit FN: America 250 / 1777 Saratoga turning point"
+  },
+  {
+    "id": "tp-latham-farms-0901",
+    "text": "Meet us at Latham Farms for the weekend farmers market pop-up.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-01 audit TP: Latham Farms plaza"
+  },
+  {
+    "id": "tn-saratoga-springs-utah-ksl-0901",
+    "text": "Via KSL 5 News: Semi-tractor driver charged in Saratoga Springs crash that killed 13-year-old boy #Utah",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-01 audit TN: Saratoga Springs UT without NY context"
+  },
+  {
+    "id": "tn-malta-europe-bytes-0901",
+    "text": "RSM Malta appoints Ludwig Micallef as Director for Digital Transformation & AI",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-01 audit TN: Malta Europe company wire"
+  },
+  {
+    "id": "tp-capital-district-after-dark-0901",
+    "text": "Tonight we return to the Capital District. Capital District: After Dark — Season 2 premieres at 9 PM ET with They Are Counting Troy First.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-01 audit TP: Capital District After Dark actual-play"
   }
 ]

@@ -189,8 +189,12 @@ _STRONG_POSITIVE = re.compile(
       | @\s*saratoga\b[\s\S]{0,80}\bstakes\b
       # Cross-country pick cards: "Saratoga – Race 5" (en/em dash or colon).
       | \bsaratoga\b[\s]*[\u2013\u2014\-:]\s*race\s*\d
-      | the\s+saratoga\s+special\b
+      # DRF / stakes wires omit "the" ("Grade 2 Saratoga Special").
+      | (?:the\s+|grade\s+[12]\s+)?saratoga\s+special\b
       | battles?\s+of\s+saratoga\b
+      # America 250 / Revolutionary War copy often omits ", NY".
+      | \b1777\b[\s\S]{0,100}\bsaratoga\b
+      | \bsaratoga\b[\s\S]{0,100}\b1777\b
       # Race-meet wires often omit ", NY" ("remainder of Saratoga meet").
       | \bsaratoga\s+meet\b
       # Harness track / barn-fire wires often omit ", NY".
@@ -237,9 +241,14 @@ _STRONG_POSITIVE = re.compile(
       | albany\s+med(?:ical)?\s+health\s+system\b
       | albany\s+med\b
       # Amtrak station code ALB (Albany–Rensselaer); not Cascades Albany (ALY).
-      | amtrak[\s\S]{0,160}albany\s*\(\s*alb\s*\)
-      | albany\s*\(\s*alb\s*\)[\s\S]{0,160}amtrak
+      # Status bots put the station code far below the Amtrak header (~160–220 chars).
+      | amtrak[\s\S]{0,240}albany\s*\(\s*alb\s*\)
+      | albany\s*\(\s*alb\s*\)[\s\S]{0,240}amtrak
       | stopped\s+in\s+albany\s*\(\s*alb\s*\)
+      | empire\s+service[\s\S]{0,160}albany\s*\(\s*alb\s*\)
+      | albany\s*\(\s*alb\s*\)[\s\S]{0,160}empire\s+service
+      | amtrak[\s\S]{0,80}(?:nyp|nyc)\s*->\s*alb\b
+      | amtrak[\s\S]{0,80}alb\s*->\s*(?:nyp|nyc)\b
       # Workout / immortality race-meet copy often omits "Race Course" / ", NY".
       | \bbreeze\b[\s\S]{0,80}\bat\s+saratoga\b
       | \bat\s+saratoga\b[\s\S]{0,80}\bbreeze\b
@@ -247,9 +256,14 @@ _STRONG_POSITIVE = re.compile(
       # BJ's Wholesale Club warehouse wires for Town of Rotterdam NY.
       | bj['\u2019]?s\b[\s\S]{0,120}\brotterdam\b
       | \brotterdam\b[\s\S]{0,120}bj['\u2019]?s\b
+      # Legal Aid Society of Northeastern NY — org handle/acronym without ", NY".
+      | \blasnny\b
       # Biz-journal HQ copy often omits ", NY" for Cap Region Latham / Halfmoon.
+      # Require "… in Latham" (or Latham regional HQ) — not "Latham & Watkins' … Office".
       | (?:regional\s+)?(?:office|hq)\s+in\s+latham\b
-      | latham[\s\S]{0,60}(?:regional\s+)?(?:office|hq)\b
+      | \blatham\b(?![\s\S]{0,40}watkins)[\s\S]{0,40}regional\s+(?:office|hq)\b
+      | \blatham\s+circle\b
+      | \blatham\s+farms\b
       | halfmoon\s+hq\b
       | (?:office|hq)\s+in\s+halfmoon\b
       | new\s+halfmoon\s+(?:location|hq)\b
@@ -460,6 +474,20 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
       | capital\s+region\s+cancer\s+relief
       | rise\s+above\s*[-–—]?\s*capital\s+region
       | hauptstadtregion
+      # Law firm — not Town of Latham NY HQ wires.
+      | latham\s*(?:&|and)\s*watkins
+      # Oregon 5A Mid-Willamette / South Albany & West Albany high schools.
+      | mid[- ]?willamette
+      | west\s+albany\s+high(?:\s+school)?
+      | south\s+albany\s+high(?:\s+school)?
+      | (?:south|west)\s+albany\b[\s\S]{0,200}(?:
+            \boregon\b|\#oregon\b|corvallis|crescent\s+valley|
+            \blebanon\b|silverton|mid[- ]?willamette|\.oregonlive\.
+          )
+      | (?:
+            \boregon\b|\#oregon\b|corvallis|crescent\s+valley|
+            \blebanon\b|silverton|mid[- ]?willamette|\.oregonlive\.
+          )[\s\S]{0,200}(?:south|west)\s+albany\b
       | disney(?:['\u2019]?s)?\s+saratoga\s+springs
       | watervliet\s*,?\s*(?:mi|michigan)\b
       | troy\s*,?\s*(?:mi|michigan)\b
@@ -1590,6 +1618,20 @@ _HARD_NEGATIVE = re.compile(
       | capital\s+region\s+water\b
       | pennsylvania\s+capital\s+region
       | hauptstadtregion
+      # Law firm — not Town of Latham NY HQ wires.
+      | latham\s*(?:&|and)\s*watkins
+      # Oregon 5A Mid-Willamette / South Albany & West Albany high schools.
+      | mid[- ]?willamette
+      | west\s+albany\s+high(?:\s+school)?
+      | south\s+albany\s+high(?:\s+school)?
+      | (?:south|west)\s+albany\b[\s\S]{0,200}(?:
+            \boregon\b|\#oregon\b|corvallis|crescent\s+valley|
+            \blebanon\b|silverton|mid[- ]?willamette|\.oregonlive\.
+          )
+      | (?:
+            \boregon\b|\#oregon\b|corvallis|crescent\s+valley|
+            \blebanon\b|silverton|mid[- ]?willamette|\.oregonlive\.
+          )[\s\S]{0,200}(?:south|west)\s+albany\b
       | jc\s+latham
       | saratoga\s+springs\s*,\s*ut\b
       | saratoga\s+springs\s+ut\b
