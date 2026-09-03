@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-086 — Daily feed audit: New York Times Union, Ithaca Troy Road, NWS near Troy, Troy Achilles film; Yaddo / Rotterdam CC FNs
-- **Status:** in progress
+- **Status:** done ([#63](https://github.com/chriscarrollsmith/capital-region-feed/pull/63))
 - **Why:** 2026-09-03 audit of last-24h AppView feed (~203 posts since 2026-09-02T09:01Z)
   found active FPs after #62 (still open): Front Office Sports / Kalshi cards titled
   `New York Times Union Demands…` matched `times union` strong (York lookbehind gap after
