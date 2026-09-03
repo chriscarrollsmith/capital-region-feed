@@ -231,9 +231,9 @@ _STRONG_POSITIVE = re.compile(
       | \bthe\s+egg\s+presents\b
       | high\s+rock\s+park[\s\S]{0,80}\bsaratoga\b
       | \bsaratoga\b[\s\S]{0,80}high\s+rock\s+park\b
-      # Local paper — reject hyphenated "Sun-Times union" (Chicago) and
-      # "Seattle Times union" / "Seattle Times Union" guild phrasing.
-      | (?<!seattle\s)(?<![\w-])times\s+union\b
+      # Local paper — reject hyphenated "Sun-Times union" (Chicago),
+      # "Seattle Times union", and "New York Times Union" guild phrasing.
+      | (?<!york\s)(?<!seattle\s)(?<![\w-])times\s+union\b
       | albany\s+business\s+review\b
       # Albany Riverfront Jazz Festival / Jennings Landing often omit ", NY".
       | albany\s+riverfront\s+jazz
@@ -244,6 +244,8 @@ _STRONG_POSITIVE = re.compile(
       | \btroy['\u2019]?s\s+powers\s+park\b
       | powers\s+park[\s\S]{0,80}\btroy\b
       | \btroy\b[\s\S]{0,80}powers\s+park\b
+      # Yaddo artist colony (Saratoga Springs) often pairs with bare Saratoga.
+      | \byaddo\b
       # Named Saratoga Race Course stakes / barn copy often omits ", NY".
       | saratoga\s+derby\b
       | saratoga\s+barn\b
@@ -439,10 +441,12 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
             cape\s+town|\#capetown\b|western\s+cape|south\s+africa|
             \#southafrica\b|\#africa\b|sweet\s+paws|pressportal\.co\.za
           )[\s\S]{0,280}helderberg
-      # Seattle newspaper guild — not Albany Times Union.
+      # Seattle / New York Times guild phrasing — not Albany Times Union.
       | seattle\s+times(?:\s+union)?\b
       | seattle[\s\S]{0,100}times\s+union\b
       | times\s+union[\s\S]{0,100}seattle
+      | new\s+york\s+times(?:\s+union)?\b
+      | times\s+union[\s\S]{0,100}new\s+york\s+times
       # SoCal / multi-track handicap hashtag stuffing — not Race Course NY.
       | (?:\#socal\b|\#losangeles\b|southern\s+california)[\s\S]{0,200}\#saratoga\b
       | \#saratoga\b[\s\S]{0,200}(?:\#socal\b|\#losangeles\b|southern\s+california)
@@ -1546,6 +1550,14 @@ _TROY_PERSON_NAME = re.compile(
       | welcome\s+to\b[^.]{0,100},\s*troy\.
       | mt\.?\s*kisco[\s\S]{0,100}\btroy\b
       | \btroy\b[\s\S]{0,100}mt\.?\s*kisco
+      # Film / mythic Troy (Achilles, Brad Pitt 2004) — not City of Troy.
+      | \btroy\s+achilles\b
+      | \bachilles\b[\s\S]{0,40}\btroy\b
+      | \btroy\b[\s\S]{0,40}\bachilles\b
+      | \bmyrmidons?\b
+      | brad\s+pitt[\s\S]{0,80}\btroy\b
+      | \btroy\b[\s\S]{0,80}brad\s+pitt
+      | \btroy\s*\(\s*2004\s*\)
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -1558,11 +1570,31 @@ _TROY_PA = re.compile(
         troy\s*,?\s*(?:pa|pennsylvania)\b
       | \bbradford\s+county\b
       | western\s+bradford
-      | over\s+springfield,\s+or\s+over\s+troy\b
+      # NWS wording varies: "over Troy" or "near Troy" after Springfield.
+      | over\s+springfield,\s+or\s+(?:over|near)\s+troy\b
       | \btroy\b[\s\S]{0,120}\bbradford\b
       | \bbradford\b[\s\S]{0,120}\btroy\b
       | \btroy\b[\s\S]{0,100}\bnortheastern\s+pennsylvania\b
       | \bnortheastern\s+pennsylvania\b[\s\S]{0,100}\btroy\b
+      # NWS Binghamton CWA covers Troy PA; Troy NY is Albany CWA.
+      | nws\s+binghamton[\s\S]{0,360}\b(?:over|near)\s+troy\b
+      | \b(?:over|near)\s+troy\b[\s\S]{0,360}nws\s+binghamton
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Ithaca / Tompkins "Troy Road" solar/planning wires — not City of Troy NY.
+# Hashtag alternatives must not sit behind ``\b`` (``#`` is non-word).
+_TROY_ROAD_ITHACA = re.compile(
+    r"""
+    (?:
+        troy\s+road\b[\s\S]{0,400}(?:
+            \b(?:ithaca|tompkins)\b|\#eastithaca(?:tompkinscounty)?\b
+          )
+      | (?:
+            \b(?:ithaca|tompkins)\b|\#eastithaca(?:tompkinscounty)?\b
+          )[\s\S]{0,400}troy\s+road\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -1651,10 +1683,12 @@ _HARD_NEGATIVE = re.compile(
             cape\s+town|\#capetown\b|western\s+cape|south\s+africa|
             \#southafrica\b|\#africa\b|sweet\s+paws|pressportal\.co\.za
           )[\s\S]{0,280}helderberg
-      # Seattle newspaper guild — not Albany Times Union.
+      # Seattle / New York Times guild phrasing — not Albany Times Union.
       | seattle\s+times(?:\s+union)?\b
       | seattle[\s\S]{0,100}times\s+union\b
       | times\s+union[\s\S]{0,100}seattle
+      | new\s+york\s+times(?:\s+union)?\b
+      | times\s+union[\s\S]{0,100}new\s+york\s+times
       # SoCal / multi-track handicap hashtag stuffing — not Race Course NY.
       | (?:\#socal\b|\#losangeles\b|southern\s+california)[\s\S]{0,200}\#saratoga\b
       | \#saratoga\b[\s\S]{0,200}(?:\#socal\b|\#losangeles\b|southern\s+california)
@@ -2578,12 +2612,12 @@ def _troy_person_name_conflict(haystack: str) -> bool:
     """True when Troy is a person name / Westchester vocative, not the city."""
     if not _TROY_PERSON_NAME.search(haystack):
         return False
-    # Real place mentions still keep.
+    # Real place mentions still keep. Bare "in Troy" is too loose for film titles
+    # like "Brad Pitt in Troy (2004)".
     if re.search(
         r"""
         (?:
             \btroy\s*,?\s*(?:ny|n\.y\.|new\s+york)\b
-          | \bin\s+troy\b
           | city\s+of\s+troy
           | troy\s+(?:street|avenue|ave)\b
           | \balbany\s+and\s+troy\b
@@ -2608,6 +2642,27 @@ def _troy_pa_conflict(haystack: str) -> bool:
             \btroy\s*,?\s*(?:ny|n\.y\.|new\s+york)\b
           | city\s+of\s+troy
           | \bin\s+troy,\s*n
+        )
+        """,
+        haystack,
+        flags=re.IGNORECASE | re.VERBOSE,
+    ):
+        return False
+    return True
+
+
+def _troy_road_ithaca_conflict(haystack: str) -> bool:
+    """True when Troy Road is an Ithaca/Tompkins street, not City of Troy NY."""
+    if not re.search(r'troy\s+road\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not _TROY_ROAD_ITHACA.search(haystack):
+        return False
+    if re.search(
+        r"""
+        (?:
+            \btroy\s*,?\s*(?:ny|n\.y\.|new\s+york)\b
+          | city\s+of\s+troy
+          | \bin\s+troy\b
         )
         """,
         haystack,
@@ -2974,6 +3029,8 @@ def match_post(
                 return MatchResult(False, 'hard_negative:troy_person_name')
             if _troy_pa_conflict(haystack) and 'troy' in multi_eligible:
                 return MatchResult(False, 'hard_negative:troy_pa')
+            if _troy_road_ithaca_conflict(haystack) and 'troy' in multi_eligible:
+                return MatchResult(False, 'hard_negative:troy_road_ithaca')
             return MatchResult(True, 'multi_local_places')
 
         # Prefer a non-collision token when several ambiguous names appear but
@@ -3066,6 +3123,9 @@ def match_post(
 
         if term == 'troy' and _troy_pa_conflict(haystack):
             return MatchResult(False, 'hard_negative:troy_pa')
+
+        if term == 'troy' and _troy_road_ithaca_conflict(haystack):
+            return MatchResult(False, 'hard_negative:troy_road_ithaca')
 
         if _NY_CONTEXT.search(place_haystack) or _STRONG_POSITIVE.search(haystack):
             return MatchResult(True, f'ambiguous_with_context:{term}')

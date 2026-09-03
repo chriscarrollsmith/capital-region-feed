@@ -79,6 +79,8 @@ renslibrary.bsky.social
 opma.bsky.social
 cooperscavegames.bsky.social
 historianchris.bsky.social
+# Town of Rotterdam community center (often omits ", NY" in concert copy).
+rotterdamcc.bsky.social
 
 # Saratoga tourism / race-course guides (local-only posting).
 saratogany.bsky.social
