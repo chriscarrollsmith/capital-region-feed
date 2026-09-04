@@ -538,6 +538,24 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-087 — Daily feed audit: Albany wire Albuquerque, Ithaca/Tompkins Albany contrast; Glens Falls / Empire Underground FNs
+- **Status:** in progress
+- **Why:** 2026-09-04 audit of last-24h AppView feed (~204 posts since 2026-09-03T09:02Z)
+  found active FPs: GlobeNewswire `ALBANY, N.Y.` dateline for a Curia Albuquerque /
+  New Mexico facility ribbon-cutting matched `albany, n.y.` strong; Ithaca/Tompkins
+  poet-laureate copy unlocked `albany_with_ny_context` via "New York" while Albany was
+  only a bureaucracy contrast. FNs: `GLENS FALLS NY` climate bots and Glens Falls sports
+  (no strong token); Empire Underground show/tour copy without a city qualifier. ~49
+  stale AppView rows already rematch-drop (Malta/Brunswick/Bethlehem PA weather plus
+  Seattle Times Union / MD-DC capital region banners gated earlier). AppView `searchPosts`
+  still often 403.
+- **Work:**
+  - `_albany_wire_remote_conflict` after strong / Albany-with-context; Ithaca/Tompkins
+    Albany contrast conflict; `\bglens\s+falls\b` and `empire underground` strong (+ venue).
+  - Grow eval with 2026-09-04 FP/TP/FN anchors (builds on #63 / B-086).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-086 — Daily feed audit: New York Times Union, Ithaca Troy Road, NWS near Troy, Troy Achilles film; Yaddo / Rotterdam CC FNs
 - **Status:** done ([#63](https://github.com/chriscarrollsmith/capital-region-feed/pull/63))
 - **Why:** 2026-09-03 audit of last-24h AppView feed (~203 posts since 2026-09-02T09:01Z)
