@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-087 — Daily feed audit: Albany wire Albuquerque, Ithaca/Tompkins Albany contrast; Glens Falls / Empire Underground FNs
-- **Status:** in progress
+- **Status:** done ([#64](https://github.com/chriscarrollsmith/capital-region-feed/pull/64))
 - **Why:** 2026-09-04 audit of last-24h AppView feed (~204 posts since 2026-09-03T09:02Z)
   found active FPs: GlobeNewswire `ALBANY, N.Y.` dateline for a Curia Albuquerque /
   New Mexico facility ribbon-cutting matched `albany, n.y.` strong; Ithaca/Tompkins
