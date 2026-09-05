@@ -152,6 +152,15 @@ _RIVER_STREET_OTHER = re.compile(
             \bboston\b|\bmattapan\b|blue\s+hill\s+avenue|babson\s+street|
             \.boston\.gov\b|open\s+streets\s+boston
           )
+      # PA traffic cams (I-81 / PA 307 River Street) — not Troy's corridor.
+      | (?:
+            \bi-?81\b|\bpa\s*307\b|\#pa\b|\bpennsylvania\b|
+            patraffic|traffic\s+cams?\b|\bscranton\b|wilkes[- ]barre
+          )[\s\S]{0,280}river\s+street
+      | river\s+street[\s\S]{0,280}(?:
+            \bi-?81\b|\bpa\s*307\b|\#pa\b|\bpennsylvania\b|
+            patraffic|traffic\s+cams?\b|\bscranton\b|wilkes[- ]barre
+          )
       # 1953 film noir / boxing-movie podcast — not Troy's corridor.
       | \b99\s+river\s+street\b
       | (?:
