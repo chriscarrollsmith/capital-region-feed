@@ -6663,5 +6663,137 @@
     "split": "dev",
     "regression": true,
     "note": "2026-09-04 audit: UAlbany football TP counterpart"
+  },
+  {
+    "id": "fp-brussels-municipality-capital-region-0905",
+    "text": "The City of Brussels is now the seventh municipality in the Capital Region to throw its weight behind the Region's legal proceedings.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "City of Brussels joins other municipalities in the fight against RNP-07L overflights",
+    "note": "2026-09-05 audit: Brussels Times Capital Region != NY"
+  },
+  {
+    "id": "tp-capital-region-brussels-twinning-0905",
+    "text": "Capital Region mayors meet partners in Brussels for a twinning trip with #AlbanyNY officials.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-05 audit: NY Cap Region + Brussels twinning still keeps"
+  },
+  {
+    "id": "fp-delhi-imd-capital-region-0905",
+    "text": "IMD Red Alert Delhi Issued: Heavy Rains and Severe Waterlogging!",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "IMD red alert Delhi brings heavy rain and severe waterlogging to the capital region, disrupting flights and transit. #India #DelhiRain",
+    "note": "2026-09-05 audit: Delhi/India capital region card"
+  },
+  {
+    "id": "tp-capital-region-flood-albany-0905",
+    "text": "Flood advisory for the Capital Region tonight near #AlbanyNY.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-05 audit: NY Capital Region counterpart to Delhi FP"
+  },
+  {
+    "id": "fp-pa-i81-river-street-traffic-cam-0905",
+    "text": "I-81 @ EXIT 184 (PA 307 RIVER STREET)\n🕒 2:42 AM - 2:43 AM ET (3x speed)\n🌡️ 65°F | Clear\n\n📍: 41.393290,-75.650790",
+    "expected": false,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-05 audit: PA traffic cam River Street unlocked classifier micro"
+  },
+  {
+    "id": "tp-river-street-open-mic-0905",
+    "text": "Open mic tomorrow on River Street — sign-ups start at 6.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "ambiguous_classifier",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-05 audit: Troy River Street counterpart"
+  },
+  {
+    "id": "fp-schenectady-multi-state-hashtag-spam-0905",
+    "text": "Fire up @\nSnap: funkykush.85\n\n#Creek #Frederick #Maryland #Oshkosh #Wisconsin #Pittsburg #Palo-Alto #Bossier-City #Louisiana #Portland #Maine #Schenectady #New-York",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-05 audit: multi-state hashtag stuffing with #Schenectady"
+  },
+  {
+    "id": "tp-schenectady-city-council-0905",
+    "text": "Schenectady City Council meets Tuesday at City Hall.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-05 audit: real Schenectady counterpart"
+  },
+  {
+    "id": "fp-albany-fm-bandscan-nyc-0905",
+    "text": "Drove to Mt Greylock Summit with family. Did FM Bandscan on the way down: VT, NH, Boston, Albany, Springfield, CT. No NYC or HV. #fmdx #dx",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-05 audit: FM DX city list unlocked by NYC token"
+  },
+  {
+    "id": "tp-albany-fm-bandscan-albanyny-0905",
+    "text": "FM bandscan from downtown #AlbanyNY caught WRPI tonight.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-05 audit: local FM DX counterpart"
+  },
+  {
+    "id": "fn-empac-presents-0905",
+    "text": "EMPAC presents a new media installation this week.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-05 audit: RPI EMPAC without Troy qualifier"
+  },
+  {
+    "id": "fn-albany-pine-bush-preserve-0905",
+    "text": "Albany Pine Bush Preserve trail conditions after rain.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-05 audit: Pine Bush Preserve without extra NY token"
+  },
+  {
+    "id": "fn-proctors-sold-out-0905",
+    "text": "Sold out night at Proctors — what a show.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-05 audit: sold-out venue cue for Proctors"
   }
 ]

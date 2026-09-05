@@ -538,6 +538,28 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-088 — Daily feed audit: Brussels/Delhi capital region, PA River Street cams, Schenectady hashtag spam, Albany bandscan; EMPAC / Pine Bush / Proctors sold-out FNs
+- **Status:** in progress
+- **Why:** 2026-09-05 audit of last-24h AppView feed (~198 posts since 2026-09-04T09:00Z)
+  found active FPs: Brussels Times "municipality in the Capital Region" / RNP-07L (Belgian
+  Capital Region) matched bare `capital region` strong; Delhi IMD flood cards used
+  "capital region" in the AppView description; PA traffic cams (`I-81` / `PA 307 RIVER
+  STREET`) unlocked `classifier:local_micro` via Troy's River Street micro; multi-state
+  hashtag stuffing kept via `entity_local:schenectady_ny`; FM `#fmdx` bandscan city lists
+  unlocked bare Albany via the `NYC` token in "No NYC". FNs: EMPAC / Albany Pine Bush
+  Preserve without city qualifiers; Proctors "sold out" nights lacked an event cue.
+  ~41 stale AppView rows already rematch-drop (Malta/Brunswick/Troy bare). AppView
+  `searchPosts` still often 403.
+- **Work:**
+  - Belgium / India capital-region co-occurrence conflicts; PA River Street traffic-cam
+    classifier gate; Schenectady multi-state hashtag spam conflict; Albany FM bandscan
+    conflict before `albany_with_ny_context`.
+  - Strong positives for EMPAC / Albany Pine Bush Preserve; `sold out` event cue for
+    Proctors venue matching.
+  - Grow eval with 2026-09-05 FP/TP/FN anchors (builds on #64 / B-087).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-087 — Daily feed audit: Albany wire Albuquerque, Ithaca/Tompkins Albany contrast; Glens Falls / Empire Underground FNs
 - **Status:** done ([#64](https://github.com/chriscarrollsmith/capital-region-feed/pull/64))
 - **Why:** 2026-09-04 audit of last-24h AppView feed (~204 posts since 2026-09-03T09:02Z)
