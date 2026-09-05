@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-088 — Daily feed audit: Brussels/Delhi capital region, PA River Street cams, Schenectady hashtag spam, Albany bandscan; EMPAC / Pine Bush / Proctors sold-out FNs
-- **Status:** in progress
+- **Status:** done ([#65](https://github.com/chriscarrollsmith/capital-region-feed/pull/65))
 - **Why:** 2026-09-05 audit of last-24h AppView feed (~198 posts since 2026-09-04T09:00Z)
   found active FPs: Brussels Times "municipality in the Capital Region" / RNP-07L (Belgian
   Capital Region) matched bare `capital region` strong; Delhi IMD flood cards used
