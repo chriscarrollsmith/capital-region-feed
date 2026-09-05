@@ -230,6 +230,17 @@ def test_boston_open_streets_river_street_not_local_micro() -> None:
     assert match_post('Art walk on River Street in Troy this Saturday at noon.').matched is True
 
 
+def test_pa_traffic_cam_river_street_not_local_micro() -> None:
+    pa = match_post(
+        'I-81 @ EXIT 184 (PA 307 RIVER STREET)\n'
+        '🕒 2:42 AM - 2:43 AM ET (3x speed)\n'
+        '🌡️ 65°F | Clear\n\n'
+        '📍: 41.393290,-75.650790'
+    )
+    assert pa.matched is False
+    assert match_post('Open mic tomorrow on River Street — sign-ups start at 6.').matched is True
+
+
 def test_film_noir_99_river_street_not_local_micro() -> None:
     film = match_post(
         'Out tomorrow on the Boxing Movie Podcast: a #filmnoir classic, 99 River Street. '

@@ -2649,3 +2649,111 @@ def test_yaddo_saratoga_and_rotterdamcc_allowlist() -> None:
     )
     assert kept.matched is True
     assert kept.reason == 'allowlist_did'
+
+
+def test_albany_wire_remote_albuquerque_not_local() -> None:
+    remote = match_post(
+        'ALBANY, N.Y., Sept. 03, 2026 (GLOBE NEWSWIRE) — Curia Global, Inc. '
+        'today announced the grand opening of its expanded campus in '
+        'Albuquerque, New Mexico.'
+    )
+    assert remote.matched is False
+    assert remote.reason == 'hard_negative:albany_wire_remote'
+    assert (
+        match_post(
+            'ALBANY, N.Y. (WRGB) — Lawmakers met in the state Capitol about housing.'
+        ).matched
+        is True
+    )
+    assert match_post('ALBANY, N.Y. — A new brewery opens on Lark Street downtown.').matched is True
+
+
+def test_albany_ithaca_contrast_not_cap_region() -> None:
+    poem = match_post(
+        'I decided to become The Poet Laureate Of Tompkins County, New York. '
+        "I don't want to stray again - Not up to Albany, Where the bureaucracy "
+        'Survives. Ithaca is where The hearts and souls Of New York Naturally reside.'
+    )
+    assert poem.matched is False
+    assert poem.reason == 'hard_negative:albany_ithaca_contrast'
+    assert (
+        match_post(
+            'Jules Netherland traveled from the Bronx to the New York state Capitol '
+            'in Albany several times to lobby for medical aid in dying.'
+        ).matched
+        is True
+    )
+
+
+def test_glens_falls_and_empire_underground_keep() -> None:
+    assert match_post('GLENS FALLS NY Sep 3 Climate Report: High: 82 Low: 59').matched is True
+    assert match_post('Glens Falls boys soccer beat Ichabod Crane 3-0').matched is True
+    assert match_post('Show tonight at Empire Underground').matched is True
+    assert (
+        match_post('Moon Tooth announce East Coast dates: Nov. 21 @ Empire Underground').matched
+        is True
+    )
+    assert match_post('Tickets on sale for Saturday at Empire Underground').matched is True
+
+
+def test_brussels_municipality_capital_region_is_belgium() -> None:
+    brussels = match_post(
+        'The City of Brussels is now the seventh municipality in the Capital Region '
+        'to throw its weight behind the Region’s legal proceedings.',
+        alt_text=(
+            'City of Brussels joins other municipalities in the fight against RNP-07L overflights'
+        ),
+    )
+    assert brussels.matched is False
+    assert brussels.reason == 'hard_negative:belgium_capital_region'
+    assert (
+        match_post(
+            'Capital Region mayors meet partners in Brussels for a twinning trip '
+            'with #AlbanyNY officials.'
+        ).matched
+        is True
+    )
+
+
+def test_delhi_imd_capital_region_is_india() -> None:
+    delhi = match_post(
+        'IMD Red Alert Delhi Issued: Heavy Rains and Severe Waterlogging!',
+        alt_text=(
+            'IMD red alert Delhi brings heavy rain and severe waterlogging to the '
+            'capital region, disrupting flights and transit. #India #DelhiRain'
+        ),
+    )
+    assert delhi.matched is False
+    assert delhi.reason == 'hard_negative:india_capital_region'
+    assert (
+        match_post('Flood advisory for the Capital Region tonight near #AlbanyNY.').matched is True
+    )
+
+
+def test_schenectady_multi_state_hashtag_spam_drops() -> None:
+    spam = match_post(
+        'Fire up @\nSnap: funkykush.85\n\n'
+        '#Creek #Frederick #Maryland #Oshkosh #Wisconsin #Pittsburg '
+        '#Palo-Alto #Bossier-City #Louisiana #Portland #Maine '
+        '#Schenectady #New-York'
+    )
+    assert spam.matched is False
+    assert spam.reason == 'hard_negative:schenectady_hashtag_spam'
+    assert match_post('Schenectady City Council meets Tuesday at City Hall.').matched is True
+
+
+def test_albany_fm_bandscan_nyc_not_ny_context() -> None:
+    dx = match_post(
+        'Drove to Mt Greylock Summit with family. Did FM Bandscan on the way down: '
+        'VT, NH, Boston, Albany, Springfield, CT. No NYC or HV. #fmdx #dx'
+    )
+    assert dx.matched is False
+    assert dx.reason == 'hard_negative:albany_bandscan'
+    assert match_post('FM bandscan from downtown #AlbanyNY caught WRPI tonight.').matched is True
+
+
+def test_empac_and_pine_bush_and_proctors_sold_out_keep() -> None:
+    assert match_post('EMPAC presents a new media installation this week.').matched is True
+    assert match_post('Albany Pine Bush Preserve trail conditions after rain.').matched is True
+    assert match_post('Sold out night at Proctors — what a show.').matched is True
+    assert match_post('Proctors is a beautiful historic building downtown.').matched is False

@@ -246,6 +246,17 @@ _STRONG_POSITIVE = re.compile(
       | \btroy\b[\s\S]{0,80}powers\s+park\b
       # Yaddo artist colony (Saratoga Springs) often pairs with bare Saratoga.
       | \byaddo\b
+      # Glens Falls (Warren County / Cap Region media market) — climate bots and
+      # local sports often omit ", NY" beyond the city+state token order.
+      | \bglens\s+falls\b
+      # Albany music venue — tour posters often say "@ Empire Underground" alone.
+      | empire\s+underground\b
+      # RPI Experimental Media and Performing Arts Center — listings often omit Troy.
+      | \bempac\b
+      | experimental\s+media\s+and\s+performing\s+arts\s+center\b
+      # Albany Pine Bush Preserve — trail/habitat copy often drops ", NY".
+      | albany\s+pine\s+bush(?:\s+preserve)?\b
+      | pine\s+bush\s+preserve\b
       # Named Saratoga Race Course stakes / barn copy often omits ", NY".
       | saratoga\s+derby\b
       | saratoga\s+barn\b
@@ -963,6 +974,49 @@ _FR_CAPITAL_REGION = re.compile(
       | capital\s+region\s+of\s+(?:france|paris)\b
       | capital\s+region\b[\s\S]{{0,200}}(?:{_FR_GEO_CUE})
       | (?:{_FR_GEO_CUE})[\s\S]{{0,200}}capital\s+region\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Brussels / Belgium "Capital Region" (Brussels Times municipality / RNP-07L cards).
+# Hyphen and slash forms are already hard-negatives; this catches co-occurrence
+# ("City of Brussels … municipality in the Capital Region").
+_BE_GEO_CUE = (
+    r'\bbrussels\b|\bbelgium\b|\bbelgian\b|'
+    r'\#brussels\b|\#belgium\b|\#belgian\b|'
+    r'brussels\s+times|rnp-?07l\b|brusselsairport|'
+    r'flanders\b|wallonia\b|anderlecht\b|schaerbeek\b'
+)
+
+_BE_CAPITAL_REGION = re.compile(
+    rf"""
+    (?:
+        brussels[- /]capital\s+region
+      | belgian\s+capital\s+region
+      | capital\s+region\s+of\s+(?:belgium|brussels)\b
+      | capital\s+region\b[\s\S]{{0,280}}(?:{_BE_GEO_CUE})
+      | (?:{_BE_GEO_CUE})[\s\S]{{0,280}}capital\s+region\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Delhi / India "capital region" (IMD flood cards; not NY Capital Region).
+_IN_GEO_CUE = (
+    r'\bdelhi\b|\bindia\b|\bindian\b|new\s+delhi\b|'
+    r'\#delhi\b|\#india\b|\#indian\b|\#delhirain\b|'
+    r'\#innews\b|imd\s+red\s+alert|\bimd\b[\s\S]{0,40}\bdelhi\b|'
+    r'noida\b|gurugram\b|gurgaon\b|ncr\s+delhi\b'
+)
+
+_IN_CAPITAL_REGION = re.compile(
+    rf"""
+    (?:
+        (?:indian|delhi)\s+capital\s+region
+      | capital\s+region\s+of\s+(?:india|delhi)\b
+      | capital\s+region\b[\s\S]{{0,280}}(?:{_IN_GEO_CUE})
+      | (?:{_IN_GEO_CUE})[\s\S]{{0,280}}capital\s+region\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -1805,6 +1859,8 @@ _EVENT_CUE = re.compile(
         next\s+(?:friday|saturday|sunday|week)|
         # Require "doors at/open" — bare "doors" matches doorway photography.
         doors(?:\s+at|\s+open)|tickets?|presale|save\s+the\s+date|join\s+us|
+        # "Sold out night at Proctors" is a venue event without "tickets".
+        sold\s+out|
         open\s+mic|festival|concert|orchestra|philharmonic|comedy\s+night|show\s+starts|
         \d{1,2}:\d{2}\s*(?:am|pm)|(?<!\d)\d{1,2}\s*(?:am|pm)\b|
         january|february|march|april|june|july|august|september|
@@ -1839,6 +1895,9 @@ _LOCAL_EVENT_VENUE = re.compile(
       | \bcap\s+rep\b
       | albany\s+civic\s+(?:theater|theatre)
       | park\s+playhouse\b
+      | empire\s+underground\b
+      | \bempac\b
+      | experimental\s+media\s+and\s+performing\s+arts\s+center\b
       | joseph\s+l\.?\s+bruno\s+stadium
       | \bbruno\s+stadium\b
       | tri-?city\s+valleycats\b
@@ -2220,6 +2279,20 @@ def _iceland_capital_region_conflict(haystack: str) -> bool:
 def _france_capital_region_conflict(haystack: str) -> bool:
     """True when 'capital region' refers to Paris / France, not NY."""
     if not _FR_CAPITAL_REGION.search(haystack):
+        return False
+    return not _ny_capital_region_context(haystack)
+
+
+def _belgium_capital_region_conflict(haystack: str) -> bool:
+    """True when 'capital region' refers to Brussels / Belgium, not NY."""
+    if not _BE_CAPITAL_REGION.search(haystack):
+        return False
+    return not _ny_capital_region_context(haystack)
+
+
+def _india_capital_region_conflict(haystack: str) -> bool:
+    """True when 'capital region' refers to Delhi / India, not NY."""
+    if not _IN_CAPITAL_REGION.search(haystack):
         return False
     return not _ny_capital_region_context(haystack)
 
@@ -2608,6 +2681,69 @@ def _schenectady_style_conflict(haystack: str) -> bool:
     return bool(_SCHENECTADY_STYLE.search(haystack))
 
 
+_SCHENECTADY_REMOTE_HASHTAGS = re.compile(
+    r"""
+    \#(?:
+        maryland|wisconsin|louisiana|arkansas|oshkosh|frederick|
+        portland|maine|palo-?alto|bossier(?:-city)?|camarilla|
+        pittsburg|creek|south-sanfrancisco|north-littlerock|davis
+    )\b
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+
+def _schenectady_hashtag_spam_conflict(haystack: str) -> bool:
+    """True when Schenectady appears in multi-state hashtag stuffing, not local copy."""
+    if not re.search(r'\#schenectady\b|\bschenectady\b', haystack, flags=re.IGNORECASE):
+        return False
+    remote = {m.group(0).lower() for m in _SCHENECTADY_REMOTE_HASHTAGS.finditer(haystack)}
+    if len(remote) < 2:
+        return False
+    if re.search(
+        r"""
+        (?:
+            schenectady\s*,?\s*(?:ny|n\.y\.|new\s+york)\b
+          | schenectady\s+county\b
+          | \bproctors\b
+          | \#albanyny\b
+          | capital\s+(?:region|district)\b
+        )
+        """,
+        haystack,
+        flags=re.IGNORECASE | re.VERBOSE,
+    ):
+        return False
+    return True
+
+
+def _albany_bandscan_conflict(haystack: str) -> bool:
+    """True when bare Albany is an FM DX / bandscan market list unlocked by NYC."""
+    if not re.search(
+        r'\#fmdx\b|bandscan|fm\s+dx\b|fm\s+band\s*scan',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    if not re.search(r'\balbany\b', haystack, flags=re.IGNORECASE):
+        return False
+    if re.search(
+        r"""
+        (?:
+            albany\s*,?\s*(?:ny|n\.y\.|new\s+york)\b
+          | \#albanyny\b
+          | capital\s+(?:region|district)\b
+          | \bschenectady\b
+          | \btroy\s*,?\s*(?:ny|n\.y\.)\b
+        )
+        """,
+        haystack,
+        flags=re.IGNORECASE | re.VERBOSE,
+    ):
+        return False
+    return True
+
+
 def _troy_person_name_conflict(haystack: str) -> bool:
     """True when Troy is a person name / Westchester vocative, not the city."""
     if not _TROY_PERSON_NAME.search(haystack):
@@ -2663,6 +2799,97 @@ def _troy_road_ithaca_conflict(haystack: str) -> bool:
             \btroy\s*,?\s*(?:ny|n\.y\.|new\s+york)\b
           | city\s+of\s+troy
           | \bin\s+troy\b
+        )
+        """,
+        haystack,
+        flags=re.IGNORECASE | re.VERBOSE,
+    ):
+        return False
+    return True
+
+
+_ALBANY_WIRE_REMOTE = re.compile(
+    r"""
+    (?:
+        \balbuquerque\b
+      | \bnew\s+mexico\b
+      | \bphoenix\b
+      | \barizona\b
+      | \bdenver\b
+      | \bcolorado\b
+      | \bhouston\b
+      | \bdallas\b
+      | \bsan\s+francisco\b
+      | \blos\s+angeles\b
+      | \bseattle\b
+      | \bmiami\b
+      | \batlanta\b
+      | \bminneapolis\b
+      | \bdetroit\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+_ALBANY_WIRE_LOCAL_RESCUE = re.compile(
+    r"""
+    (?:
+        empire\s+state\s+plaza
+      | lark\s+(?:street|hall)\b
+      | \bualbany\b
+      | university\s+at\s+albany
+      | capital\s+(?:region|district)\b
+      | \bschenectady\b
+      | \btroy\s*,?\s*(?:ny|n\.y\.)\b
+      | city\s+of\s+(?:albany|troy)\b
+      | albany\s+medical
+      | mvp\s+arena
+      | \bproctors\b
+      | empire\s+underground\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+
+def _albany_wire_remote_conflict(haystack: str) -> bool:
+    """True when an Albany, N.Y. wire dateline fronts a remote-city story.
+
+    Press wires often open with the HQ dateline (ALBANY, N.Y.) while the body
+    is about an Albuquerque / Phoenix / etc. facility. Keep Cap Region body
+    cues as rescue so local Albany copy is not dropped.
+    """
+    if not re.search(
+        r'\balbany,?\s*(?:n\.?\s*y\.?|new\s+york)\b',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    if not _ALBANY_WIRE_REMOTE.search(haystack):
+        return False
+    if _ALBANY_WIRE_LOCAL_RESCUE.search(haystack):
+        return False
+    return True
+
+
+def _albany_ithaca_contrast_conflict(haystack: str) -> bool:
+    """True when Albany is only a contrast to Ithaca/Tompkins, not Cap Region news."""
+    if not re.search(r'\balbany\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not re.search(r'\b(?:ithaca|tompkins(?:\s+county)?)\b', haystack, flags=re.IGNORECASE):
+        return False
+    # Explicit Cap Region anchors (beyond bare Albany + New York) keep.
+    if re.search(
+        r"""
+        (?:
+            albany\s*,?\s*(?:ny|n\.y\.)\b
+          | \bualbany\b
+          | university\s+at\s+albany
+          | capital\s+(?:region|district)\b
+          | \bschenectady\b
+          | empire\s+state\s+plaza
+          | new\s+york\s+state\s+capitol
+          | state\s+capitol\s+in\s+albany
         )
         """,
         haystack,
@@ -2892,6 +3119,8 @@ def match_post(
             return MatchResult(False, 'hard_negative:rensselaer_roblox')
         if entity.entity_id == 'schenectady_ny' and _schenectady_style_conflict(haystack):
             return MatchResult(False, 'hard_negative:schenectady_style')
+        if entity.entity_id == 'schenectady_ny' and _schenectady_hashtag_spam_conflict(haystack):
+            return MatchResult(False, 'hard_negative:schenectady_hashtag_spam')
         return MatchResult(True, f'entity_local:{entity.entity_id}')
 
     if _STRONG_POSITIVE.search(haystack):
@@ -2904,6 +3133,8 @@ def match_post(
             return MatchResult(False, 'hard_negative:rensselaer_roblox')
         if _schenectady_style_conflict(haystack):
             return MatchResult(False, 'hard_negative:schenectady_style')
+        if _schenectady_hashtag_spam_conflict(haystack):
+            return MatchResult(False, 'hard_negative:schenectady_hashtag_spam')
         if _canadian_capital_region_conflict(haystack, author_handle):
             return MatchResult(False, 'hard_negative:canadian_capital_region')
         if _md_dc_capital_region_conflict(haystack, author_handle):
@@ -2926,6 +3157,10 @@ def match_post(
             return MatchResult(False, 'hard_negative:iceland_capital_region')
         if _france_capital_region_conflict(haystack):
             return MatchResult(False, 'hard_negative:france_capital_region')
+        if _belgium_capital_region_conflict(haystack):
+            return MatchResult(False, 'hard_negative:belgium_capital_region')
+        if _india_capital_region_conflict(haystack):
+            return MatchResult(False, 'hard_negative:india_capital_region')
         if _finland_capital_region_conflict(haystack):
             return MatchResult(False, 'hard_negative:finland_capital_region')
         if _denmark_capital_region_conflict(haystack):
@@ -2966,6 +3201,8 @@ def match_post(
             return MatchResult(False, 'hard_negative:ct_capital_district')
         if _schaghticoke_ct_conflict(haystack):
             return MatchResult(False, 'hard_negative:schaghticoke_ct')
+        if _albany_wire_remote_conflict(haystack):
+            return MatchResult(False, 'hard_negative:albany_wire_remote')
         return MatchResult(True, 'strong_positive')
 
     if _COLONIE_LOCAL.search(haystack):
@@ -3042,6 +3279,12 @@ def match_post(
                 return MatchResult(False, 'hard_negative:albany_bay_area')
             if _gta_albany_conflict(haystack):
                 return MatchResult(False, 'hard_negative:gta_albany')
+            if _albany_ithaca_contrast_conflict(haystack):
+                return MatchResult(False, 'hard_negative:albany_ithaca_contrast')
+            if _albany_wire_remote_conflict(haystack):
+                return MatchResult(False, 'hard_negative:albany_wire_remote')
+            if _albany_bandscan_conflict(haystack):
+                return MatchResult(False, 'hard_negative:albany_bandscan')
             if _NY_CONTEXT.search(place_haystack):
                 return MatchResult(True, 'albany_with_ny_context')
             if _STRONG_POSITIVE.search(haystack):
