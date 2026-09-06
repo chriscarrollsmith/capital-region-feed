@@ -46,8 +46,9 @@ _STRONG_POSITIVE = re.compile(
       | schenectady\s+county
       | saratoga\s+county
       # Word-boundary: reject hashtag stuffing like #schenectadyparkcleanup.
-      # Negative lookahead: cuisine "Schenectady-style" is not the city.
-      | \bschenectady\b(?![\s-]+style\b)
+      # Negative lookahead: cuisine "Schenectady-style" and Brooklyn
+      # "Schenectady Ave" are not the city.
+      | \bschenectady\b(?![\s-]+style\b)(?!\s+(?:ave(?:nue)?|av|st(?:reet)?)\b)
       | \bguilderland\b
       | \bniskayuna\b
       | \bwatervliet\b
@@ -257,6 +258,23 @@ _STRONG_POSITIVE = re.compile(
       # Albany Pine Bush Preserve — trail/habitat copy often drops ", NY".
       | albany\s+pine\s+bush(?:\s+preserve)?\b
       | pine\s+bush\s+preserve\b
+      # Opera Saratoga / race-meet spa nicknames often omit ", NY".
+      | opera\s+saratoga\b
+      | \#thespa\b
+      | \bthe\s+spa\b[\s\S]{0,80}\bsaratoga\b
+      | \bsaratoga\b[\s\S]{0,80}\bthe\s+spa\b
+      | \bsaratoga\s+summer\s+meet\b
+      | with\s+anticipation\s+stakes\b
+      | \bsaratoga\b[\s\S]{0,80}with\s+anticipation\b
+      | with\s+anticipation\b[\s\S]{0,80}\bsaratoga\b
+      # Distinctive Albany campuses / plazas often omit ", NY".
+      | massry\s+(?:center|school|hall)\b
+      | harriman\s+(?:state\s+office\s+)?campus\b
+      | (?:w\.?\s+averell\s+)?harriman\s+state\s+office\s+campus\b
+      | quackenbush\s+square\b
+      | peebles\s+island(?:\s+state\s+park)?\b
+      | corning\s+preserve\b
+      | new\s+york\s+state\s+museum\b
       # Named Saratoga Race Course stakes / barn copy often omits ", NY".
       | saratoga\s+derby\b
       | saratoga\s+barn\b
@@ -1378,6 +1396,15 @@ _MALTA_EUROPE = re.compile(
       | \brotterdam\b[\s\S]{0,160}architecture\s+(?:&|and)\s+design
       | \b(?:paris|london|hong\s+kong|detroit)\b[\s\S]{0,220}\brotterdam\b
       | \brotterdam\b[\s\S]{0,220}\b(?:paris|london|hong\s+kong|detroit)\b
+      # Dutch domestic news (AD.nl) often names Rotterdam + Den Haag without
+      # the English word "Netherlands".
+      | \bden\s+haag\b
+      | \bthe\s+hague\b
+      | \bnederland(?:er|se)?\b
+      | \#nederland\b
+      | \bahoy\s+rotterdam\b
+      | ad\.nl/
+      | \bbinnenland\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -1481,6 +1508,11 @@ _GALWAY_IRELAND = re.compile(
       | wild\s+atlantic\s+way
       | \bdingle\b
       | \bkinsale\b
+      # Multi-city walking / tourism lists pair Galway with Dublin (and often
+      # London/Paris) while NYC only unlocks Cap Region Galway NY.
+      | \bdublin\b
+      | galway[\s\S]{0,220}\b(?:london|paris|berlin|edinburgh|glasgow)\b
+      | \b(?:london|paris|berlin|edinburgh|glasgow)\b[\s\S]{0,220}galway
       # LOI fixture lists often omit "Ireland" / "United".
       | \#derrycityfc\b
       | derry\s+city
@@ -1578,6 +1610,20 @@ _BETHLEHEM_PA = re.compile(
             steel(?:stacks|town|\s+town)?|unesco|lehigh\s+valley|
             christmas\s+spirit|industrial\s+heritage
           )[\s\S]{0,220}bethlehem
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Person surname Bethlehem (Dutch toxicologist Corine Bethlehem, etc.) — not the town.
+# Negative lookbehinds keep "Town of Bethlehem" / "in Bethlehem" as place mentions.
+_BETHLEHEM_PERSON_NAME = re.compile(
+    r"""
+    (?:
+        toxicoloog[\s\S]{0,60}\bbethlehem\b
+      | \bbethlehem\b[\s\S]{0,40}legt\s+uit
+      | (?<!town\sof\s)(?<!city\sof\s)(?<!of\s)(?<!in\s)(?<!near\s)(?<!from\s)
+        (?<!,\s)\b[a-z]+\s+bethlehem\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -1712,6 +1758,8 @@ _HARD_NEGATIVE = re.compile(
       | delmar\s+(?:st(?:reet)?|ave(?:nue)?)\b
       # Brooklyn / NYC street — not the City of Troy.
       | troy\s+(?:ave(?:nue)?|st(?:reet)?)\b
+      # Brooklyn / NYC street — not the City of Schenectady.
+      | schenectady\s+(?:ave(?:nue)?|av|st(?:reet)?)\b
       # Brooklyn subway (Saratoga Av on the 3) — not Saratoga Springs.
       | saratoga\s+av(?:e(?:nue)?)?\b
       # PubMed journal abbreviation — not Albany NY local news.
@@ -2676,6 +2724,50 @@ def _bethlehem_pa_conflict(haystack: str) -> bool:
     return True
 
 
+def _bethlehem_person_name_conflict(haystack: str) -> bool:
+    """True when Bethlehem is a person surname, not Town of Bethlehem NY."""
+    if not re.search(r'\bbethlehem\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not _BETHLEHEM_PERSON_NAME.search(haystack):
+        return False
+    if re.search(
+        r"""
+        (?:
+            bethlehem\s*,?\s*(?:ny|n\.y\.|new\s+york|pa|pennsylvania)\b
+          | town\s+of\s+bethlehem
+          | city\s+of\s+bethlehem
+        )
+        """,
+        haystack,
+        flags=re.IGNORECASE | re.VERBOSE,
+    ):
+        return False
+    return True
+
+
+def _schenectady_avenue_conflict(haystack: str) -> bool:
+    """True when Schenectady is a street name (Brooklyn), not the city."""
+    if not re.search(
+        r'\bschenectady\s+(?:ave(?:nue)?|av|st(?:reet)?)\b',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    if re.search(
+        r"""
+        (?:
+            schenectady\s*,?\s*(?:ny|n\.y\.|new\s+york)\b
+          | schenectady\s+county\b
+          | city\s+of\s+schenectady
+        )
+        """,
+        haystack,
+        flags=re.IGNORECASE | re.VERBOSE,
+    ):
+        return False
+    return True
+
+
 def _schenectady_style_conflict(haystack: str) -> bool:
     """True when Schenectady is a cuisine adjective (…-style), not the city."""
     return bool(_SCHENECTADY_STYLE.search(haystack))
@@ -3121,6 +3213,8 @@ def match_post(
             return MatchResult(False, 'hard_negative:schenectady_style')
         if entity.entity_id == 'schenectady_ny' and _schenectady_hashtag_spam_conflict(haystack):
             return MatchResult(False, 'hard_negative:schenectady_hashtag_spam')
+        if entity.entity_id == 'schenectady_ny' and _schenectady_avenue_conflict(haystack):
+            return MatchResult(False, 'hard_negative:schenectady_avenue')
         return MatchResult(True, f'entity_local:{entity.entity_id}')
 
     if _STRONG_POSITIVE.search(haystack):
@@ -3135,6 +3229,8 @@ def match_post(
             return MatchResult(False, 'hard_negative:schenectady_style')
         if _schenectady_hashtag_spam_conflict(haystack):
             return MatchResult(False, 'hard_negative:schenectady_hashtag_spam')
+        if _schenectady_avenue_conflict(haystack):
+            return MatchResult(False, 'hard_negative:schenectady_avenue')
         if _canadian_capital_region_conflict(haystack, author_handle):
             return MatchResult(False, 'hard_negative:canadian_capital_region')
         if _md_dc_capital_region_conflict(haystack, author_handle):
@@ -3268,11 +3364,18 @@ def match_post(
                 return MatchResult(False, 'hard_negative:troy_pa')
             if _troy_road_ithaca_conflict(haystack) and 'troy' in multi_eligible:
                 return MatchResult(False, 'hard_negative:troy_road_ithaca')
+            if _bethlehem_person_name_conflict(haystack) and 'bethlehem' in multi_eligible:
+                return MatchResult(False, 'hard_negative:bethlehem_person_name')
             return MatchResult(True, 'multi_local_places')
 
-        # Prefer a non-collision token when several ambiguous names appear but
-        # multi-local did not fire (e.g. Saratoga + DelMar racing tags).
-        term = sorted(distinct, key=lambda name: (name in _MULTI_LOCAL_EXCLUDED, name))[0]
+        # Prefer a non-collision, more-specific token when several ambiguous names
+        # appear but multi-local did not fire (e.g. Saratoga + DelMar racing tags,
+        # or nested "saratoga" ⊂ "saratoga springs").
+        candidates = multi_eligible if multi_eligible else distinct
+        term = sorted(
+            candidates,
+            key=lambda name: (name in _MULTI_LOCAL_EXCLUDED, -len(name), name),
+        )[0]
         # Bare "albany" is the noisiest token; require NY/local context.
         if term == 'albany':
             if _albany_bay_area_conflict(haystack):
@@ -3313,6 +3416,9 @@ def match_post(
 
         if term == 'bethlehem' and _bethlehem_pa_conflict(haystack):
             return MatchResult(False, 'hard_negative:bethlehem_pa')
+
+        if term == 'bethlehem' and _bethlehem_person_name_conflict(haystack):
+            return MatchResult(False, 'hard_negative:bethlehem_person_name')
 
         if term == 'brunswick' and _brunswick_records_conflict(haystack):
             return MatchResult(False, 'hard_negative:brunswick_records')

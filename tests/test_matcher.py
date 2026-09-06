@@ -2757,3 +2757,75 @@ def test_empac_and_pine_bush_and_proctors_sold_out_keep() -> None:
     assert match_post('Albany Pine Bush Preserve trail conditions after rain.').matched is True
     assert match_post('Sold out night at Proctors — what a show.').matched is True
     assert match_post('Proctors is a beautiful historic building downtown.').matched is False
+
+
+def test_dutch_rotterdam_bethlehem_person_not_multi_local() -> None:
+    dutch = match_post(
+        'Gifmoorden lijken maar zelden voor te komen. Toch werden zowel Rotterdam '
+        'als Den Haag deze zomer opgeschrikt door opzienbarende zaken. '
+        'Toxicoloog Corine Bethlehem legt uit waarom gif zo’n angstaanjagend '
+        'effectief moordmiddel kan zijn.'
+    )
+    assert dutch.matched is False
+    assert dutch.reason in {
+        'hard_negative:malta_europe',
+        'hard_negative:bethlehem_person_name',
+    }
+    short = match_post('Rotterdam. Toxicoloog Corine Bethlehem legt uit.')
+    assert short.matched is False
+    assert short.reason == 'hard_negative:bethlehem_person_name'
+    assert match_post('Town of Bethlehem NY board meeting tonight.').matched is True
+    assert match_post('Tonight at Rotterdam Square Mall in Rotterdam, NY').matched is True
+
+
+def test_galway_dublin_city_walk_list_not_galway_ny() -> None:
+    walk = match_post(
+        'Walked London, Birmingham, Glasgow, Edinburgh, NYC, DC, Berlin, '
+        'Galway, Dublin, Paris, Wellfleet etc'
+    )
+    assert walk.matched is False
+    assert walk.reason == 'hard_negative:galway_ireland'
+    assert match_post('Galway NY high school soccer tonight').matched is True
+
+
+def test_schenectady_avenue_not_city() -> None:
+    ave = match_post('Schenectady Ave.')
+    assert ave.matched is False
+    assert ave.reason == 'hard_negative'
+    assert match_post('Schenectady Avenue in Brooklyn').matched is False
+    assert match_post('Schenectady was built by General Electric.').matched is True
+
+
+def test_opera_saratoga_thespa_and_with_anticipation_recall() -> None:
+    opera = match_post(
+        'Mary Birnbaum, currently the General and Artistic Director of '
+        "Saratoga Springs' Opera Saratoga, will transition to an advisory role."
+    )
+    assert opera.matched is True
+    spa = match_post(
+        'Last 3 Days of the Saratoga summer meet! Prints available. #Saratoga #TheSpa #horseracing'
+    )
+    assert spa.matched is True
+    stakes = match_post(
+        "Saratoga: Liam's Law holds off heavily favored stablemate to win the With Anticipation."
+    )
+    assert stakes.matched is True
+
+
+def test_massry_harriman_quackenbush_peebles_corning_nysm_recall() -> None:
+    assert (
+        match_post('HVCC Foundation is acquiring the Massry Center for the Arts.').matched is True
+    )
+    assert match_post('Renovations continue at the Harriman Campus.').matched is True
+    assert match_post('Brunch at Quackenbush Square this Saturday.').matched is True
+    assert match_post('Peebles Island State Park hike tomorrow.').matched is True
+    assert match_post('Walk along the Corning Preserve trail.').matched is True
+    assert match_post('New exhibit opens at the New York State Museum.').matched is True
+
+
+def test_nested_saratoga_springs_prefers_longer_token() -> None:
+    """Nested saratoga ⊂ saratoga springs must not pick bare saratoga alphabetically."""
+    both = match_post("Visiting Saratoga Springs' downtown shops near Broadway.")
+    assert both.matched is False
+    assert both.reason == 'ambiguous_no_context:saratoga springs'
+    assert match_post('Saratoga Springs, NY city council meets Tuesday.').matched is True
