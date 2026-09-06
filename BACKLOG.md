@@ -538,6 +538,29 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-089 — Daily feed audit: Dutch Rotterdam/Bethlehem person, Galway+Dublin walks, Schenectady Ave; Opera Saratoga / Massry / Harriman FNs
+- **Status:** in progress
+- **Why:** 2026-09-06 audit of last-24h AppView feed (~198 posts since 2026-09-05T09:03Z)
+  found active FPs after #65 (still open): Dutch AD.nl poison wires kept via
+  `multi_local_places` when Rotterdam + Den Haag co-occurred with surname
+  `Corine Bethlehem`; multi-city walking lists kept Ireland `Galway` via incidental
+  `NYC` + `Dublin`; bare `Schenectady Ave.` kept as `entity_local:schenectady_ny`
+  (Brooklyn avenue). FNs: Opera Saratoga / `#TheSpa` summer meet / With Anticipation
+  stakes; Massry Center, Harriman Campus, Quackenbush Square, Peebles Island,
+  Corning Preserve, NYS Museum. Nested `saratoga` ⊂ `saratoga springs` also picked
+  bare `saratoga` alphabetically. ~54 stale AppView rows already rematch-drop
+  (Malta/Rotterdam/Troy bare). AppView `searchPosts` still often 403. Waterford NY
+  viral video cluster was true-positive.
+- **Work:**
+  - Expand malta-europe Den Haag / Nederland / AD.nl cues; Bethlehem person-name
+    conflict; Galway+Dublin / multi-city tourism conflict; Schenectady Ave hard-neg
+    + strong-token exclusion; prefer longer nested ambiguous tokens; strong positives
+    for Opera Saratoga / TheSpa / With Anticipation / Massry / Harriman / Quackenbush /
+    Peebles / Corning Preserve / NYS Museum.
+  - Grow eval with 2026-09-06 FP/TP/FN anchors (builds on #65 / B-088).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-088 — Daily feed audit: Brussels/Delhi capital region, PA River Street cams, Schenectady hashtag spam, Albany bandscan; EMPAC / Pine Bush / Proctors sold-out FNs
 - **Status:** done ([#65](https://github.com/chriscarrollsmith/capital-region-feed/pull/65))
 - **Why:** 2026-09-05 audit of last-24h AppView feed (~198 posts since 2026-09-04T09:00Z)
