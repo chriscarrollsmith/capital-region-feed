@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-089 — Daily feed audit: Dutch Rotterdam/Bethlehem person, Galway+Dublin walks, Schenectady Ave; Opera Saratoga / Massry / Harriman FNs
-- **Status:** in progress
+- **Status:** done ([#66](https://github.com/chriscarrollsmith/capital-region-feed/pull/66))
 - **Why:** 2026-09-06 audit of last-24h AppView feed (~198 posts since 2026-09-05T09:03Z)
   found active FPs after #65 (still open): Dutch AD.nl poison wires kept via
   `multi_local_places` when Rotterdam + Den Haag co-occurred with surname
