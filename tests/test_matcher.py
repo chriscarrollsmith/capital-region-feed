@@ -2829,3 +2829,71 @@ def test_nested_saratoga_springs_prefers_longer_token() -> None:
     assert both.matched is False
     assert both.reason == 'ambiguous_no_context:saratoga springs'
     assert match_post('Saratoga Springs, NY city council meets Tuesday.').matched is True
+
+
+def test_cardiff_wales_capital_region_not_ny() -> None:
+    card = match_post(
+        'Major infrastructure and regeneration projects across south-east Wales '
+        'could gain access to investment expertise and capital under a new '
+        "partnership with the UK's National Wealth Fund.",
+        alt_text=(
+            'Cardiff Capital Region to gain access to UK National Wealth Fund '
+            'Nation.Cymru staff report.'
+        ),
+        author_handle='nation.cymru',
+    )
+    assert card.matched is False
+    assert card.reason in {
+        'hard_negative',
+        'hard_negative:uk_wales_capital_region',
+    }
+    # Body "Capital Region" + Wales without the Cardiff phrase.
+    wales = match_post(
+        'Investment across south-east Wales for the Capital Region.',
+    )
+    assert wales.matched is False
+    assert wales.reason == 'hard_negative:uk_wales_capital_region'
+    handle_only = match_post(
+        'A Capital Region partnership with the National Wealth Fund.',
+        author_handle='nation.cymru',
+    )
+    assert handle_only.matched is False
+    assert handle_only.reason == 'hard_negative:uk_wales_capital_region'
+    assert (
+        match_post('Anyone in the Capital District/Saratoga area, Mohawk Valley?').matched is True
+    )
+
+
+def test_fai_cup_waterford_galway_not_multi_local() -> None:
+    fai = match_post(
+        'Gonna be a Waterford/Galway final, calling it now. With the Blues to '
+        'prevail and get our hands on only our 3rd FAI Cup.'
+    )
+    assert fai.matched is False
+    assert fai.reason == 'hard_negative:galway_ireland'
+    assert match_post('Drive from Galway to Waterford for the farmers market.').matched is True
+
+
+def test_siege_of_troy_film_not_troy_ny() -> None:
+    siege = match_post(
+        'Did you ever feel that King of New York could have done with a bit more '
+        'Wing Chun? That the siege of Troy might have been handled a bit more '
+        'successfully if the Greeks had a bazooka?',
+        alt_text='Father Joe Review – Venice Film Festival',
+    )
+    assert siege.matched is False
+    assert siege.reason == 'hard_negative:troy_person_name'
+    assert match_post('Dinner in Troy, New York tonight.').matched is True
+
+
+def test_hopeful_stakes_and_worktab_saratoga_recall() -> None:
+    hopeful = match_post(
+        'Saratoga: The Good Life is 2-for-2 after his 4-length triumph in the '
+        'Grade 1 Hopeful Stakes.'
+    )
+    assert hopeful.matched is True
+    worktab = match_post(
+        'Magnitude returned to the worktab at Saratoga on Sept. 6, breezing a '
+        'half-mile in his first move since the Whitney.'
+    )
+    assert worktab.matched is True
