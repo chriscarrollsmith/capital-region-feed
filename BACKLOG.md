@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-090 — Daily feed audit: Cardiff/Wales capital region, FAI Cup Waterford/Galway, siege of Troy; Hopeful/worktab Saratoga FNs
-- **Status:** in progress
+- **Status:** done ([#67](https://github.com/chriscarrollsmith/capital-region-feed/pull/67))
 - **Why:** 2026-09-07 audit of last-24h AppView feed (~149 posts since 2026-09-06T09:00Z)
   found active FPs after #66 (still open): Nation.Cymru `Cardiff Capital Region` /
   south-east Wales National Wealth Fund cards matched bare `capital region` strong;
