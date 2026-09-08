@@ -5884,14 +5884,14 @@
     "note": "2026-08-30 audit: ahead of the Travers wire FN"
   },
   {
-    "id": "tn-bare-albany-stray-cats-0830",
+    "id": "tp-downtown-albany-stray-cats-0908",
     "text": "Downtown Albany has a lot of stray cats, I think because many of the houses have mouse problems",
-    "expected": false,
+    "expected": true,
     "signal": "text",
-    "bucket": "precision_gate",
+    "bucket": "strong_local",
     "split": "holdout",
-    "regression": false,
-    "note": "2026-08-30 audit: known bare-Albany lifestyle residual (B-050)"
+    "regression": true,
+    "note": "2026-09-08: downtown Albany is Cap Region (closes former bare-Albany residual tn-bare-albany-stray-cats-0830)"
   },
   {
     "id": "fp-troy-deeney-mt-kisco-0831",
@@ -7119,5 +7119,136 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-09-07 audit: Hopeful Stakes at Saratoga already-strong counterpart"
+  },
+  {
+    "id": "fp-castor-troy-bethlehem-wrestling-0908",
+    "text": "More NXT Releases according to Pro Wrestling Illustrious:\n* Bryceton Cleese\n* Axel Rainstorm\n* Castor Troy\n* Bethlehem Jesusface\n* Oaklynnsleigh Zee",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-08 audit: Face/Off Castor Troy + wrestling Bethlehem unlocked multi_local_places"
+  },
+  {
+    "id": "tp-troy-ny-castor-street-0908",
+    "text": "Castor Street reopen in Troy, New York next week after water-main work.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-08 audit: Cap Region Troy counterpart to Castor Troy wrestling FP"
+  },
+  {
+    "id": "fp-clifton-park-catonsville-wmar-0908",
+    "text": "Volunteers clean up part of Clifton Park on 9/11 in tribute to a young woman from Catonsville who perished on Flight 93.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "Tribute to 9/11 victim from Catonsville — www.wmar2news.com",
+    "note": "2026-09-08 audit: Baltimore Clifton Park WMAR card matched bare clifton park strong"
+  },
+  {
+    "id": "tp-clifton-park-ny-farmers-market-0908",
+    "text": "Farmers market opens Saturday in Clifton Park near #AlbanyNY.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-08 audit: Cap Region Clifton Park counterpart to MD FP"
+  },
+  {
+    "id": "fp-newtonville-nj-mlk-center-0908",
+    "text": "Opening Reception 10/10/2026 at the Dr. Martin Luther King Jr. Center Newtonville NJ.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-08 audit: Newtonville NJ heritage museum matched bare newtonville strong"
+  },
+  {
+    "id": "tp-newtonville-colonie-avenue-0908",
+    "text": "Road work on Newtonville Avenue in Colonie near #AlbanyNY.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-08 audit: Colonie Newtonville counterpart to NJ FP"
+  },
+  {
+    "id": "fp-pine-hills-orlando-wesh-0908",
+    "text": "Flash Flood Warning in effect until 7:30 PM for west central Orange County, including Orlando, Ocoee, Windermere, and Pine Hills, where 2-3 inches have already fallen. Stay with #weshwx for updates.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-08 audit: Orlando Pine Hills flood unlocked classifier:local_micro"
+  },
+  {
+    "id": "tp-pine-hills-block-party-0908",
+    "text": "Block party this Saturday in Pine Hills — bring a dish.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-08 audit: Albany Pine Hills counterpart to Orlando flood FP"
+  },
+  {
+    "id": "tp-downtown-albany-conversions-0908",
+    "text": "Investors are lining up apartment conversions of two downtown Albany buildings after state funding awards.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-08 audit FN: downtown Albany redevelopment without , NY"
+  },
+  {
+    "id": "tp-troy-iron-nail-factory-0908",
+    "text": "1800s Factory RUINS and FORGOTTEN Tunnel (Troy Iron and Nail Factory)",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-08 audit FN: Troy Iron and Nail Factory tourism without , NY"
+  },
+  {
+    "id": "tp-saratoga-america250-0908",
+    "text": "I explore that question through Saratoga and America250.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-08 audit FN: bare Saratoga + America250 Revolutionary tourism"
+  },
+  {
+    "id": "tp-funny-cide-stakes-0908",
+    "text": "Scramjet stayed perfect in two starts to win the Funny Cide Stakes on closing day.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-08 audit: Funny Cide Stakes is Cap Region Saratoga Race Course"
+  },
+  {
+    "id": "tp-gio-ponti-stakes-0908",
+    "text": "Siyouincanada took the Gio Ponti on the last card of the meet.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-08 audit: Gio Ponti Stakes is Cap Region Saratoga Race Course"
   }
 ]
