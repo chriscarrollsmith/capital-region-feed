@@ -250,6 +250,16 @@ def test_film_noir_99_river_street_not_local_micro() -> None:
     assert match_post('Open mic tomorrow on River Street — sign-ups start at 6.').matched is True
 
 
+def test_orlando_pine_hills_flood_not_local_micro() -> None:
+    fl = match_post(
+        'Flash Flood Warning in effect until 7:30 PM for west central Orange County, '
+        'including Orlando, Ocoee, Windermere, and Pine Hills, where 2-3 inches have '
+        'already fallen. Stay with #weshwx for updates.'
+    )
+    assert fl.matched is False
+    assert match_post('Block party this Saturday in Pine Hills — bring a dish.').matched is True
+
+
 def test_classify_drops_bare_albany_event_without_micro() -> None:
     decision = classify_candidate(
         "Don't miss the Albany Veterans Day Parade this Saturday downtown!",
