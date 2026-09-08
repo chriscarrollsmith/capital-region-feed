@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-091 — Daily feed audit: Castor Troy/Bethlehem wrestling, Clifton Park MD, Newtonville NJ, Orlando Pine Hills; downtown Albany / Troy Iron / America250 FNs
-- **Status:** in progress
+- **Status:** done ([#68](https://github.com/chriscarrollsmith/capital-region-feed/pull/68))
 - **Why:** 2026-09-08 audit of last-24h AppView feed (~169 posts since 2026-09-07T09:03Z)
   found active FPs after #67 (still open): NXT release list `Castor Troy` +
   `Bethlehem Jesusface` unlocked `multi_local_places`; Baltimore/Catonsville
