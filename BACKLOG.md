@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-092 — Daily feed audit: Metro Manila / CRTPA capital region, Clark Hall→Lark Hall, Travers brothers, Stillwater OK, Erasmusbrug Rotterdam; Tipsy Taco Latham FN
-- **Status:** in progress
+- **Status:** done ([#69](https://github.com/chriscarrollsmith/capital-region-feed/pull/69))
 - **Why:** 2026-09-09 audit of last-24h AppView feed (~154 posts since 2026-09-08T09:03Z)
   found active FPs after #68 (still open): Straits Times `capital region of Metro Manila`
   matched bare `capital region` strong; Tallahassee `Capital Region Transportation
