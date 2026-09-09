@@ -2948,3 +2948,100 @@ def test_america250_and_funny_cide_gio_ponti_saratoga_recall() -> None:
     assert funny.matched is True
     gio = match_post('Siyouincanada took the Gio Ponti on the last card of the meet.')
     assert gio.matched is True
+
+
+def test_philippines_metro_manila_capital_region_not_ny() -> None:
+    manila = match_post(
+        'Jobless rate climbs as growth slows.',
+        alt_text=(
+            'Philippine jobless rate surges to 4-year high as growth slows '
+            'The capital region of Metro Manila logged the highest jobless rate '
+            'of 8.2 per cent.'
+        ),
+    )
+    assert manila.matched is False
+    assert manila.reason in {
+        'hard_negative',
+        'hard_negative:philippines_capital_region',
+    }
+    assert (
+        match_post(
+            'Capital Region students visited Metro Manila on exchange before '
+            'returning to #AlbanyNY.'
+        ).matched
+        is True
+    )
+
+
+def test_florida_crtpa_capital_region_not_ny() -> None:
+    crtpa = match_post(
+        'Today we visited the Orchard Pond Greenway with the team from Capital '
+        'Region Transportation Planning Agency to look at SunTrail upgrades. '
+        'CRTPA will hold another public meeting soon.'
+    )
+    assert crtpa.matched is False
+    assert crtpa.reason in {
+        'hard_negative',
+        'hard_negative:florida_crtpa_capital_region',
+    }
+    orchard = match_post(
+        'Capital Region trail planners toured Orchard Pond Greenway near Tallahassee.'
+    )
+    assert orchard.matched is False
+    assert orchard.reason == 'hard_negative:florida_crtpa_capital_region'
+    assert match_post('Capital Region trail planners met in Saratoga County.').matched is True
+
+
+def test_clark_hall_not_lark_hall() -> None:
+    guelph = match_post(
+        '33 years ago today Fugazi played Peter Clark Hall University of Guelph, '
+        'Guelph, ON, Canada with Burn 51 and Shudder to Think.',
+        alt_text='location map',
+    )
+    assert guelph.matched is False
+    assert match_post('Albany: Helmet @ Lark Hall this Friday.').matched is True
+
+
+def test_travers_brothers_not_travers_stakes() -> None:
+    creed = match_post(
+        'Edward recruits Lucy to the Jackdaw and helps Assassins Rhona Dinsmore '
+        'and the Travers brothers.',
+        alt_text="Assassin's Creed: Black Flag Resynced | Part 5",
+    )
+    assert creed.matched is False
+    assert (
+        match_post("It's Travers Day at Saratoga. The main event is at 6:35 p.m.").matched is True
+    )
+
+
+def test_stillwater_ok_acars_not_stillwater_ny() -> None:
+    acars = match_post(
+        'Air to Ground Message: NYC CREW who got taken off. '
+        'Area: Stillwater, OK, USA Type: Airbus A319'
+    )
+    assert acars.matched is False
+    assert acars.reason == 'hard_negative:stillwater_ok'
+    assert match_post('Stillwater, NY town board meets Tuesday.').matched is True
+
+
+def test_erasmusbrug_rotterdam_not_rotterdam_ny() -> None:
+    dutch = match_post(
+        'Brooklyn Bridge en Ponte Vecchio naast bruggetje over de Dommel',
+        alt_text=(
+            'De Ponte Vecchio in Florence, de Brooklyn Bridge in New York, '
+            'het viaduct in Millau en de Erasmusbrug in Rotterdam: wat heeft '
+            'dat te maken met het simpele nieuwe bruggetje over de Dommel in '
+            'Den Bosch?'
+        ),
+    )
+    assert dutch.matched is False
+    assert dutch.reason == 'hard_negative:malta_europe'
+    assert match_post('New bakery opens in Rotterdam, NY this weekend.').matched is True
+
+
+def test_tipsy_taco_latham_recall() -> None:
+    tipsy = match_post(
+        'Tipsy Taco Cantina in Latham is getting a different name and a new menu.',
+        alt_text='Latham restaurant to get different name, new menu',
+    )
+    assert tipsy.matched is True
