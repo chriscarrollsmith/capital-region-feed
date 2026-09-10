@@ -152,6 +152,15 @@ _RIVER_STREET_OTHER = re.compile(
             \bboston\b|\bmattapan\b|blue\s+hill\s+avenue|babson\s+street|
             \.boston\.gov\b|open\s+streets\s+boston
           )
+      # PA traffic cams (I-81 / PA 307 River Street) — not Troy's corridor.
+      | (?:
+            \bi-?81\b|\bpa\s*307\b|\#pa\b|\bpennsylvania\b|
+            patraffic|traffic\s+cams?\b|\bscranton\b|wilkes[- ]barre
+          )[\s\S]{0,280}river\s+street
+      | river\s+street[\s\S]{0,280}(?:
+            \bi-?81\b|\bpa\s*307\b|\#pa\b|\bpennsylvania\b|
+            patraffic|traffic\s+cams?\b|\bscranton\b|wilkes[- ]barre
+          )
       # 1953 film noir / boxing-movie podcast — not Troy's corridor.
       | \b99\s+river\s+street\b
       | (?:
@@ -186,6 +195,23 @@ _CROSSGATES_OTHER = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
+# Orlando / Orange County FL "Pine Hills" flood wires — not Albany's Pine Hills.
+_PINE_HILLS_FL = re.compile(
+    r"""
+    (?:
+        pine\s+hills[\s\S]{0,280}(?:
+            \borlando\b|\bocoee\b|\bwindermere\b|\#weshwx\b|\bwesh\b|
+            orange\s+county|\bflorida\b|\#flwx\b|\#florida\b
+          )
+      | (?:
+            \borlando\b|\bocoee\b|\bwindermere\b|\#weshwx\b|\bwesh\b|
+            orange\s+county|\bflorida\b|\#flwx\b|\#florida\b
+          )[\s\S]{0,280}pine\s+hills
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
 # Back-compat alias for tests / callers that imported ``_LOCAL_MICRO``.
 _LOCAL_MICRO = _DISTINCTIVE_LOCAL_MICRO
 
@@ -206,6 +232,9 @@ def _local_micro_hits(haystack: str) -> list[str]:
     # Drop Crossgates when Louisiana / Tammany wastewater cues dominate.
     if _CROSSGATES_OTHER.search(scan):
         hits = [h for h in hits if 'crossgates' not in h.lower()]
+    # Drop Pine Hills when Orlando / Orange County FL flood cues dominate.
+    if _PINE_HILLS_FL.search(scan):
+        hits = [h for h in hits if 'pine' not in h.lower() or 'hills' not in h.lower()]
     return hits
 
 
