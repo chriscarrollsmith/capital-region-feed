@@ -108,6 +108,8 @@ _STRONG_POSITIVE = re.compile(
       | local\s*518
       # Prefer #518ny / #518area — bare #518 collides with train/jersey numbers.
       | \#518(?:ny|area)\b
+      # Hashtag forms omit the space inside "capital region/district".
+      | \#capital(?:region|district)\b
       | reddit\.com/r/albany\b
       | \br/albany\b
       | saratoga\s+springs\s+police
@@ -356,6 +358,31 @@ _STRONG_POSITIVE = re.compile(
       | park\s+playhouse\b
       # Town of New Scotland — not "a new Scotland" / "New Scotland Shirt".
       | new\s+scotland(?:\s*,?\s*ny\b|\s+town\b)
+      # New Scotland Avenue (Albany) sports-bar / corridor copy often omits ", NY".
+      | new\s+scotland\s+ave(?:nue)?\b
+      | recovery\s+sports\s+grill\b
+      # Distinctive Cap Region restaurants / festivals often omit ", NY".
+      | albany\s+ale\s*(?:&|and)\s*oyster
+      | autumn\s+glow\s+festival
+      | saratoga\s+pumpkinfest\b
+      | pumpkinfest[\s\S]{0,40}\bsaratoga\b
+      | \bsaratoga\b[\s\S]{0,40}pumpkinfest
+      # Thruway incident wires for Town of Rotterdam often omit ", NY".
+      | thruway[\s\S]{0,80}\brotterdam\b
+      | \brotterdam\b[\s\S]{0,80}thruway
+      # Scotia-Glenville school / sports copy often omits ", NY".
+      | scotia-?glenville\b
+      # Whitney / Section 2 high-school wires often omit Race Course / ", NY".
+      | whitney\s+day[\s\S]{0,60}\bsaratoga\b
+      | \bsaratoga\b[\s\S]{0,60}whitney\s+day\b
+      | \bwhitney\b[\s\S]{0,40}\bat\s+saratoga\b
+      | at\s+saratoga\b[\s\S]{0,40}\bwhitney\b
+      | christian\s+brothers\s+academy\b
+      | section\s+2[\s\S]{0,100}saratoga\s+springs\b
+      | saratoga\s+springs[\s\S]{0,100}(?:christian\s+brothers|section\s+2)\b
+      # Albany / Delmar care-facility wires often omit ", NY".
+      | albany\s+center\s+for\s+independent\s+living\b
+      | delmar\s+center\s+for\s+rehabilitation\b
       # Distinctive Cap Region named events (not bare "Albany this weekend").
       | \beufuria\b
       | black\s+paw-?rade
@@ -1518,6 +1545,13 @@ _MALTA_EUROPE = re.compile(
       | \bbrabant(?:s)?\b
       | brabantsdagblad
       | ponte\s+vecchio
+      # IFFR / festival discovery copy: "discovered in Rotterdam" + Venice/Tribeca.
+      | discovered\s+in\s+rotterdam\b
+      | filmmaker[\s\S]{0,100}\brotterdam\b
+      | \brotterdam\b[\s\S]{0,100}filmmaker
+      | \brotterdam\b[\s\S]{0,200}(?:tribeca|jeddah|\#?venice\d*|venice\s+film)
+      | (?:tribeca|jeddah|\#?venice\d*|venice\s+film)[\s\S]{0,200}\brotterdam\b
+      | georgian\s+filmmaker
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -1677,7 +1711,8 @@ _WATERVLIET_MI = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
-# Loudonville, Ohio (hashtag civic lists / high-school soccer) — not Loudonville NY.
+# Loudonville, Ohio (hashtag civic lists / high-school soccer / NWS CLE) —
+# not Loudonville NY.
 _LOUDONVILLE_OH = re.compile(
     r"""
     (?:
@@ -1688,6 +1723,12 @@ _LOUDONVILLE_OH = re.compile(
       | golden\s+bears[\s\S]{0,80}loudonville
       | loudonville[\s\S]{0,80}golden\s+bears
       | \bohsaa\b
+      # NWS Cleveland CWA: "over Loudonville, or 16 miles south of Ashland".
+      | nws\s+cleveland
+      | cleveland\s+oh[\s\S]{0,360}loudonville
+      | loudonville[\s\S]{0,360}cleveland\s+oh
+      | loudonville[\s\S]{0,80}(?:south\s+of\s+)?ashland\b
+      | (?:south\s+of\s+)?ashland[\s\S]{0,80}loudonville
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -1746,6 +1787,24 @@ _BETHLEHEM_PA = re.compile(
             steel(?:stacks|town|\s+town)?|unesco|lehigh\s+valley|
             christmas\s+spirit|industrial\s+heritage
           )[\s\S]{0,220}bethlehem
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Academic author surname Latham ("Monica Latham, … Routledge") — not Town of Latham.
+# Keep "in Latham" / "Latham, NY" / Tipsy Taco Latham HQ wires as place mentions.
+_LATHAM_PERSON_NAME = re.compile(
+    r"""
+    (?:
+        \bmonica\s+latham\b
+      | \b[a-z]+\s+latham\s*,\s*[\"“]
+      | \blatham\b[\s\S]{0,100}\broutledge\b
+      | \broutledge\b[\s\S]{0,100}\blatham\b
+      | \blatham\b[\s\S]{0,60}\bisbn\b
+      | \bisbn\b[\s\S]{0,100}\blatham\b
+      | virginia\s+woolf[\s\S]{0,80}\blatham\b
+      | \blatham\b[\s\S]{0,80}virginia\s+woolf
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -2941,6 +3000,31 @@ def _bethlehem_person_name_conflict(haystack: str) -> bool:
     return True
 
 
+def _latham_person_name_conflict(haystack: str) -> bool:
+    """True when Latham is an academic/author surname, not Town of Latham NY."""
+    if not re.search(r'\blatham\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not _LATHAM_PERSON_NAME.search(haystack):
+        return False
+    if re.search(
+        r"""
+        (?:
+            latham\s*,?\s*(?:ny|n\.y\.|new\s+york)\b
+          | town\s+of\s+latham
+          | (?:in|near|from|@)\s+latham\b
+          | tipsy\s+taco[\s\S]{0,40}\blatham\b
+          | \blatham\b[\s\S]{0,40}tipsy\s+taco
+          | (?:office|hq)\s+in\s+latham\b
+          | \blatham\s+(?:circle|farms)\b
+        )
+        """,
+        haystack,
+        flags=re.IGNORECASE | re.VERBOSE,
+    ):
+        return False
+    return True
+
+
 def _schenectady_avenue_conflict(haystack: str) -> bool:
     """True when Schenectady is a street name (Brooklyn), not the city."""
     if not re.search(
@@ -3590,6 +3674,8 @@ def match_post(
                 return MatchResult(False, 'hard_negative:troy_road_ithaca')
             if _bethlehem_person_name_conflict(haystack) and 'bethlehem' in multi_eligible:
                 return MatchResult(False, 'hard_negative:bethlehem_person_name')
+            if _latham_person_name_conflict(haystack) and 'latham' in multi_eligible:
+                return MatchResult(False, 'hard_negative:latham_person_name')
             return MatchResult(True, 'multi_local_places')
 
         # Prefer a non-collision, more-specific token when several ambiguous names
@@ -3643,6 +3729,9 @@ def match_post(
 
         if term == 'bethlehem' and _bethlehem_person_name_conflict(haystack):
             return MatchResult(False, 'hard_negative:bethlehem_person_name')
+
+        if term == 'latham' and _latham_person_name_conflict(haystack):
+            return MatchResult(False, 'hard_negative:latham_person_name')
 
         if term == 'brunswick' and _brunswick_records_conflict(haystack):
             return MatchResult(False, 'hard_negative:brunswick_records')
