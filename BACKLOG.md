@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-093 — Daily feed audit: Monica Latham, Loudonville OH/Ashland, Rotterdam filmmaker; #capitaldistrict / festivals FNs
-- **Status:** in progress
+- **Status:** done ([#70](https://github.com/chriscarrollsmith/capital-region-feed/pull/70))
 - **Why:** 2026-09-10 audit of last-24h AppView feed (~173 posts since 2026-09-09T09:03Z)
   found active FPs after #69 (still open): academic `Monica Latham` + `New York: Routledge`
   unlocked `ambiguous_with_context:latham`; NWS Cleveland `Loudonville` / Ashland matched
