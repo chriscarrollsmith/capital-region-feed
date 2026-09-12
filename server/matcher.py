@@ -142,6 +142,8 @@ _STRONG_POSITIVE = re.compile(
       # Burgoyne / Stillwater battlefield tourism often omits ", NY".
       | \bburgoyne\b[\s\S]{0,120}\bstillwater\b
       | \bstillwater\b[\s\S]{0,120}\bburgoyne\b
+      | \b1777\b[\s\S]{0,120}\bstillwater\b
+      | \bstillwater\b[\s\S]{0,120}\b1777\b
       # Albany Pine Bush Observatory (not only the Preserve trails).
       | pine\s+bush\s+observatory\b
       # Town of Halfmoon civic copy often omits ", NY".

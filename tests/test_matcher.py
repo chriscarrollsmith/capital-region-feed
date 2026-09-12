@@ -3238,6 +3238,13 @@ def test_brook_tavern_stillwater_burgoyne_and_section2_recall() -> None:
         ).matched
         is True
     )
+    assert (
+        match_post(
+            'Stand at Stillwater today and the landscape looks quiet. In Sept. 1777, '
+            'thousands of soldiers were preparing for battle.'
+        ).matched
+        is True
+    )
     assert match_post('Section 2 football: Shaker vs Colonie at 7 tonight.').matched is True
     assert match_post('Pine Bush Observatory open house this weekend.').matched is True
     assert match_post('Town of Halfmoon board meeting tonight.').matched is True
