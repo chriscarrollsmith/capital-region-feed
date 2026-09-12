@@ -21,7 +21,7 @@
   },
   {
     "id": "tp-schenectady-nun",
-    "text": "Sister Maria Rosa Querini, a 91-year-old nun at St. Anthony\u2019s Church in Schenectady, received the 2026 Brenda H. Thomas Good Neighbor Award.",
+    "text": "Sister Maria Rosa Querini, a 91-year-old nun at St. Anthony’s Church in Schenectady, received the 2026 Brenda H. Thomas Good Neighbor Award.",
     "expected": true,
     "signal": "text",
     "bucket": "strong_local",
@@ -30,7 +30,7 @@
   },
   {
     "id": "tp-capital-region-homelessness",
-    "text": "Homelessness falls in NY but Capital Region sees sharp increases. A homeless person\u2019s belongings are seen under I-787.",
+    "text": "Homelessness falls in NY but Capital Region sees sharp increases. A homeless person’s belongings are seen under I-787.",
     "expected": true,
     "signal": "text",
     "bucket": "strong_local",
@@ -50,7 +50,7 @@
   },
   {
     "id": "tp-music-haven-schenectady",
-    "text": "Tomorrow! WEXT\u2019s second annual Local 518 Music Fest at #MusicHaven in Schenectady\u2019s Central Park beginning at 2pm!",
+    "text": "Tomorrow! WEXT’s second annual Local 518 Music Fest at #MusicHaven in Schenectady’s Central Park beginning at 2pm!",
     "expected": true,
     "signal": "event",
     "bucket": "regional_event",
@@ -69,7 +69,7 @@
   },
   {
     "id": "fp-french-colonie",
-    "text": "Nous sommes une colonie num\u00e9rique des \u00c9tats-Unis, \u00e9pisode 43.",
+    "text": "Nous sommes une colonie numérique des États-Unis, épisode 43.",
     "expected": false,
     "signal": "text",
     "bucket": "skyfeed_fp",
@@ -87,7 +87,7 @@
   },
   {
     "id": "fp-jc-latham",
-    "text": "The Titans\u2019 biggest JC Latham question has nothing to do with the training camp PUP list",
+    "text": "The Titans’ biggest JC Latham question has nothing to do with the training camp PUP list",
     "expected": false,
     "signal": "text",
     "bucket": "skyfeed_fp",
@@ -98,7 +98,7 @@
     "id": "tp-eufuria-black-pawrade",
     "text": "Heading up to Eufuria in Albany! Excited to experience the Black Pawrade",
     "expected": true,
-    "note": "Eufuria / Black Pawrade are Cap Region\u2013specific named events (B-050); was precision_gate under older keyword-only policy",
+    "note": "Eufuria / Black Pawrade are Cap Region–specific named events (B-050); was precision_gate under older keyword-only policy",
     "signal": "event",
     "bucket": "regional_event",
     "split": "dev",
@@ -188,7 +188,7 @@
   },
   {
     "id": "fp-new-albany-ceo",
-    "text": "Starting to think we should imprison all New Albany CEOs until we figure out what\u2019s going on.",
+    "text": "Starting to think we should imprison all New Albany CEOs until we figure out what’s going on.",
     "expected": false,
     "signal": "text",
     "bucket": "skyfeed_fp",
@@ -243,7 +243,7 @@
   },
   {
     "id": "fp-french-colonie-vacances",
-    "text": "Les minibus transportaient 16 enfants d'une m\u00eame colonie de vacances qui revenaient du Puy du Fou",
+    "text": "Les minibus transportaient 16 enfants d'une même colonie de vacances qui revenaient du Puy du Fou",
     "expected": false,
     "signal": "text",
     "bucket": "skyfeed_fp",
@@ -270,7 +270,7 @@
   },
   {
     "id": "tp-times-union-capital-region",
-    "text": "Homelessness fell statewide but surged across much of the Capital Region, with Columbia-Greene region recording New York\u2019s largest increase.",
+    "text": "Homelessness fell statewide but surged across much of the Capital Region, with Columbia-Greene region recording New York’s largest increase.",
     "author_handle": "timesunion.com",
     "expected": true,
     "signal": "text",
@@ -280,7 +280,7 @@
   },
   {
     "id": "fp-jc-latham-bust",
-    "text": "Titans it\u2019s time to move on from JC Latham. Dudes a bust",
+    "text": "Titans it’s time to move on from JC Latham. Dudes a bust",
     "expected": false,
     "signal": "text",
     "bucket": "skyfeed_fp",
@@ -326,7 +326,7 @@
   },
   {
     "id": "fp-minnesota-albany-baseball",
-    "text": "Legion baseball playoffs: Cold Spring hangs on for 8-7 win over Pierz; Willmar ends Albany\u2019s season",
+    "text": "Legion baseball playoffs: Cold Spring hangs on for 8-7 win over Pierz; Willmar ends Albany’s season",
     "expected": false,
     "note": "Minnesota Albany",
     "signal": "text",
@@ -356,7 +356,7 @@
   },
   {
     "id": "tp-troy-ny",
-    "text": "Coffee crawl this weekend in Troy, NY \u2014 starting at the farmers market.",
+    "text": "Coffee crawl this weekend in Troy, NY — starting at the farmers market.",
     "expected": true,
     "signal": "text",
     "bucket": "strong_local",
@@ -412,7 +412,7 @@
   },
   {
     "id": "fp-capital-region-of-madrid",
-    "text": "State of emergency. Wild fires in southern Europe: Around 90,000 people evacuated. The state of emergency in Spain applies to the capital region of Madrid and the nearby province of \u00c1vila. In France, the Atlantic coast is affected.",
+    "text": "State of emergency. Wild fires in southern Europe: Around 90,000 people evacuated. The state of emergency in Spain applies to the capital region of Madrid and the nearby province of Ávila. In France, the Atlantic coast is affected.",
     "expected": false,
     "note": "Spanish Comunidad de Madrid, not NY Capital Region",
     "signal": "text",
@@ -583,7 +583,7 @@
   },
   {
     "id": "fn-event-mvp-arena-albany",
-    "text": "Concert announced at MVP Arena in Albany NY \u2014 September 12. Presale starts Monday.",
+    "text": "Concert announced at MVP Arena in Albany NY — September 12. Presale starts Monday.",
     "expected": true,
     "signal": "event",
     "bucket": "regional_event",
@@ -593,7 +593,7 @@
   },
   {
     "id": "fn-event-troy-farmers-market",
-    "text": "Troy, NY Waterfront Farmers Market is back this Sunday 9am\u20132pm. Live music at noon.",
+    "text": "Troy, NY Waterfront Farmers Market is back this Sunday 9am–2pm. Live music at noon.",
     "expected": true,
     "signal": "event",
     "bucket": "regional_event",
@@ -820,7 +820,7 @@
   },
   {
     "id": "fp-event-offregion-msg",
-    "text": "Concert announced at Madison Square Garden \u2014 September 12. Presale starts Monday.",
+    "text": "Concert announced at Madison Square Garden — September 12. Presale starts Monday.",
     "expected": false,
     "signal": "event",
     "bucket": "precision_gate",
@@ -872,7 +872,7 @@
   },
   {
     "id": "tp-soft-prior-bare-albany",
-    "text": "Concert in Albany this weekend \u2014 who is going?",
+    "text": "Concert in Albany this weekend — who is going?",
     "author_did": "did:plc:softpriorlocal000000000001",
     "soft_prior": true,
     "expected": true,
@@ -919,7 +919,7 @@
   },
   {
     "id": "tn-soft-prior-no-placename",
-    "text": "Newsletter is out for subscribers \u2014 thanks for reading!",
+    "text": "Newsletter is out for subscribers — thanks for reading!",
     "author_did": "did:plc:softpriorlocal000000000001",
     "soft_prior": true,
     "expected": false,
@@ -931,7 +931,7 @@
   },
   {
     "id": "tp-clf-pine-hills-block-party",
-    "text": "Pine Hills block party this Saturday \u2014 bring a dish!",
+    "text": "Pine Hills block party this Saturday — bring a dish!",
     "expected": true,
     "signal": "event",
     "bucket": "ambiguous_classifier",
@@ -951,7 +951,7 @@
   },
   {
     "id": "tp-clf-river-street-open-mic",
-    "text": "Open mic tomorrow on River Street \u2014 sign-ups start at 6.",
+    "text": "Open mic tomorrow on River Street — sign-ups start at 6.",
     "expected": true,
     "signal": "event",
     "bucket": "ambiguous_classifier",
@@ -961,7 +961,7 @@
   },
   {
     "id": "tp-clf-crossgates-holiday-hours",
-    "text": "Tonight at Crossgates \u2014 holiday hours extended until 9pm.",
+    "text": "Tonight at Crossgates — holiday hours extended until 9pm.",
     "expected": true,
     "signal": "event",
     "bucket": "ambiguous_classifier",
@@ -1037,7 +1037,7 @@
   },
   {
     "id": "fp-entity-albany-park",
-    "text": "Street festival vibes in Albany Park this weekend \u2014 come through.",
+    "text": "Street festival vibes in Albany Park this weekend — come through.",
     "expected": false,
     "note": "Gazetteer other-region entity (Chicago)",
     "signal": "text",
@@ -1111,7 +1111,7 @@
   },
   {
     "id": "at://did:plc:cf2yh7biwon3rlz37db3g4ch/app.bsky.feed.post/3mriz4x6ivk23",
-    "text": "I\u2019m about to tell \u2018em in Albany, New York.",
+    "text": "I’m about to tell ‘em in Albany, New York.",
     "expected": true,
     "signal": "text",
     "bucket": "strong_local",
@@ -1126,7 +1126,7 @@
   },
   {
     "id": "at://did:plc:t3cdmuggt6xacodh4f4qtgqq/app.bsky.feed.post/3mriyfkykvp2c",
-    "text": "On July 26, 1788, New York became the 11th state of the USA. Famous for New York City, the Statue of Liberty, Broadway, and beautiful parks, it is a popular place to visit. The New York State Museum in Albany shares the state\u2019s rich history and culture.\n\n#RouteTripUSA",
+    "text": "On July 26, 1788, New York became the 11th state of the USA. Famous for New York City, the Statue of Liberty, Broadway, and beautiful parks, it is a popular place to visit. The New York State Museum in Albany shares the state’s rich history and culture.\n\n#RouteTripUSA",
     "expected": true,
     "signal": "text",
     "bucket": "strong_local",
@@ -1153,7 +1153,7 @@
   },
   {
     "id": "at://did:plc:bm3s6owtkhcpunxmsovidfhd/app.bsky.feed.post/3mripuq3tts2s",
-    "text": "there are so many arguments of strict constructionism.\n\nThe Four Horsemen vs. the FDR New Dealers is the preeminent example: the sky did not fall.\n\nThe key distinction here is Mamdani is a mayor of the world\u2019s economics capital.\n\nThey\u2019ve never went bankrupt in Albany: NYC almost did in the \u201870s. \ud83e\uddd0\ud83e\uddd0\ud83e\uddd0",
+    "text": "there are so many arguments of strict constructionism.\n\nThe Four Horsemen vs. the FDR New Dealers is the preeminent example: the sky did not fall.\n\nThe key distinction here is Mamdani is a mayor of the world’s economics capital.\n\nThey’ve never went bankrupt in Albany: NYC almost did in the ‘70s. 🧐🧐🧐",
     "expected": true,
     "signal": "text",
     "bucket": "strong_local",
@@ -1168,7 +1168,7 @@
   },
   {
     "id": "at://did:plc:lqik2sra2dgux2l64a3otsuw/app.bsky.feed.post/3mrhmsl3pjs27",
-    "text": "Goons who threatened Indian girls and women at protest being treated like royals by cops to politicians \ud83d\ude47\ud83c\udffb\u200d\u2640\ufe0f while innocent civilians at peaceful protests have CRPF, latthis and tear gas \ud83d\udc81\ud83c\udffb\u200d\u2640\ufe0f here cops are their bodyguards incase they are stopped from violence \ud83d\udc81\ud83c\udffb\u200d\u2640\ufe0f\n\nwww.instagram.com/reel/DbNSptE...",
+    "text": "Goons who threatened Indian girls and women at protest being treated like royals by cops to politicians 🙇🏻‍♀️ while innocent civilians at peaceful protests have CRPF, latthis and tear gas 💁🏻‍♀️ here cops are their bodyguards incase they are stopped from violence 💁🏻‍♀️\n\nwww.instagram.com/reel/DbNSptE...",
     "expected": false,
     "signal": "text",
     "bucket": "global_negative",
@@ -1183,7 +1183,7 @@
   },
   {
     "id": "at://did:plc:pn57ik4fjcbkxoaknvmb4zo5/app.bsky.feed.post/3mrd2pk2ads2g",
-    "text": "EUFURIA! \ud83e\udd29\ud83d\udc3e\ud83d\udc95\n-\nWho will be in the Capital Region this weekend? I won\u2019t be attending this con, but make sure to come tell my assistant that you said hi (and to ask about my cardboard cut out \ud83e\udd23)!!",
+    "text": "EUFURIA! 🤩🐾💕\n-\nWho will be in the Capital Region this weekend? I won’t be attending this con, but make sure to come tell my assistant that you said hi (and to ask about my cardboard cut out 🤣)!!",
     "expected": true,
     "signal": "event",
     "bucket": "regional_event",
@@ -1210,7 +1210,7 @@
   },
   {
     "id": "at://did:plc:fmtw7ykc5h4yg3akmdmwcoqf/app.bsky.feed.post/3mr6q6rg4bs2t",
-    "text": "I\u2019ll be suiting and hanging out at Eufuria in Albany this weekend. Feel free to ask for photos!\n\n#Eufuria #Eufuria26 #fursuit",
+    "text": "I’ll be suiting and hanging out at Eufuria in Albany this weekend. Feel free to ask for photos!\n\n#Eufuria #Eufuria26 #fursuit",
     "expected": true,
     "signal": "event",
     "bucket": "regional_event",
@@ -1222,7 +1222,7 @@
   },
   {
     "id": "at://did:plc:fuz6utfgzwwmap3a2qfod4ud/app.bsky.feed.post/3mqozbsvwjg2r",
-    "text": "Empire State Plaza Convention Center has something dark and filled with horrors planned this weekend. https://www.news10.com/news/albany-county/gothic-market-coming-to-empire-state-plaza-in-albany/\u00a0 ",
+    "text": "Empire State Plaza Convention Center has something dark and filled with horrors planned this weekend. https://www.news10.com/news/albany-county/gothic-market-coming-to-empire-state-plaza-in-albany/  ",
     "expected": true,
     "signal": "event",
     "bucket": "regional_event",
@@ -1249,7 +1249,7 @@
   },
   {
     "id": "at://did:plc:jxe57jskj4ucvmvjcd5ojyq6/app.bsky.feed.post/3mowazwuvjk2f",
-    "text": "\ud83d\udca1 The iconic GE sign is shining again over Schenectady! Celebrating its 100th anniversary tonight was especially meaningful \u2014 my dad came to this county, worked here for 30+ years. A symbol of innovation, opportunity, generations who helped build the Electric City \u2728 @GEVernova",
+    "text": "💡 The iconic GE sign is shining again over Schenectady! Celebrating its 100th anniversary tonight was especially meaningful — my dad came to this county, worked here for 30+ years. A symbol of innovation, opportunity, generations who helped build the Electric City ✨ @GEVernova",
     "expected": true,
     "signal": "event",
     "bucket": "regional_event",
@@ -1279,7 +1279,7 @@
   },
   {
     "id": "at://did:plc:rwwffrdsbcz6e5w23qgdeswk/app.bsky.feed.post/3mocdaagluk2t",
-    "text": "They\u2019re partying in Schenectady tonight* as Union\u2019s own lifts the Stanley Cup 12 years after winning a natty\n\n* - no they\u2019re not; they got work tomorrow",
+    "text": "They’re partying in Schenectady tonight* as Union’s own lifts the Stanley Cup 12 years after winning a natty\n\n* - no they’re not; they got work tomorrow",
     "expected": true,
     "signal": "event",
     "bucket": "regional_event",
@@ -1342,7 +1342,7 @@
   },
   {
     "id": "at://did:plc:fn3nr3wqpkn436j2qy2wbvqt/app.bsky.feed.post/3mriduchzzv2m",
-    "text": "\ud83c\udfb8 Rock the Block is bringing live music, local vendors, food, and plenty of downtown energy to Albany. Grab your friends and make a night of it! \ud83c\udf89 \u27a1\ufe0f Learn more. ",
+    "text": "🎸 Rock the Block is bringing live music, local vendors, food, and plenty of downtown energy to Albany. Grab your friends and make a night of it! 🎉 ➡️ Learn more. ",
     "expected": true,
     "signal": "author",
     "bucket": "local_org_no_placename",
@@ -1354,7 +1354,7 @@
   },
   {
     "id": "at://did:plc:fn3nr3wqpkn436j2qy2wbvqt/app.bsky.feed.post/3mrhzs6kfpp2y",
-    "text": "\ud83c\udfa1 Nothing says summer like fair food, live music, and carnival rides. Discover local and regional fairs near Albany that are worth adding to your calendar. \ud83c\udfa0 \u27a1\ufe0f Check out the list. ",
+    "text": "🎡 Nothing says summer like fair food, live music, and carnival rides. Discover local and regional fairs near Albany that are worth adding to your calendar. 🎠 ➡️ Check out the list. ",
     "expected": true,
     "signal": "author",
     "bucket": "local_org_no_placename",
@@ -1366,7 +1366,7 @@
   },
   {
     "id": "at://did:plc:fn3nr3wqpkn436j2qy2wbvqt/app.bsky.feed.post/3mrht3hpp2i2n",
-    "text": "\ud83e\udd7e Ready to explore Albany on two feet or two wheels? From scenic trails to easygoing paths, these hike and bike spots make it simple to get outside and enjoy the Capital Region. \ud83d\udeb4 \u27a1\ufe0f Check out the list. ",
+    "text": "🥾 Ready to explore Albany on two feet or two wheels? From scenic trails to easygoing paths, these hike and bike spots make it simple to get outside and enjoy the Capital Region. 🚴 ➡️ Check out the list. ",
     "expected": true,
     "signal": "author",
     "bucket": "local_org_no_placename",
@@ -1378,7 +1378,7 @@
   },
   {
     "id": "at://did:plc:wdssbrxji4hmcgl3pfr5ym5r/app.bsky.feed.post/3mrfpypjrvj27",
-    "text": "#BREAKING: The basketball superstar made the announcement on social media Friday, saying it will be his \u201clast decision\u201d and that it comes after he strongly considered retirement. MORE AT: wnyt.com",
+    "text": "#BREAKING: The basketball superstar made the announcement on social media Friday, saying it will be his “last decision” and that it comes after he strongly considered retirement. MORE AT: wnyt.com",
     "expected": true,
     "signal": "author",
     "bucket": "local_org_no_placename",
@@ -1390,7 +1390,7 @@
   },
   {
     "id": "fp-albany-ga-cbs-sunday-morning-listings",
-    "text": "\"Sunday Morning\" show times \u2013 CBS News  Stations carrying CBS News' \"Sunday Morning\": CITY - STATION - AIR TIME Abilene, TX - KTAB - 8 a.m.Albany, GA - WSWG - 9 a.m.",
+    "text": "\"Sunday Morning\" show times – CBS News  Stations carrying CBS News' \"Sunday Morning\": CITY - STATION - AIR TIME Abilene, TX - KTAB - 8 a.m.Albany, GA - WSWG - 9 a.m.",
     "expected": false,
     "signal": "text",
     "bucket": "precision_gate",
@@ -1400,8 +1400,8 @@
   },
   {
     "id": "fp-madrid-hauptstadtregion-german-alt",
-    "text": "State of emergency. Wild fires in southern Europe: Around 90,000 people evacuated. The state of emergency in Spain applies to the capital region of Madrid and the nearby province of \u00c1vila.",
-    "alt_text": "Waldbr\u00e4nde in S\u00fcdeuropa: Rund 90.000 Menschen evakuiert Der Notstand in Spanien gilt f\u00fcr die Hauptstadtregion Madrid und die nahe gelegene Provinz \u00c1vila.",
+    "text": "State of emergency. Wild fires in southern Europe: Around 90,000 people evacuated. The state of emergency in Spain applies to the capital region of Madrid and the nearby province of Ávila.",
+    "alt_text": "Waldbrände in Südeuropa: Rund 90.000 Menschen evakuiert Der Notstand in Spanien gilt für die Hauptstadtregion Madrid und die nahe gelegene Provinz Ávila.",
     "langs": [
       "de"
     ],
@@ -1476,8 +1476,8 @@
   },
   {
     "id": "fp-lady-ravena-personal-name",
-    "text": "Come see Me next week in Edinburgh. Also offering appointments with My vanilla friend at \u00a3300ph.",
-    "alt_text": "Edinburgh Appointments - Lady Ravena Rates:1 hour \u00a3200",
+    "text": "Come see Me next week in Edinburgh. Also offering appointments with My vanilla friend at £300ph.",
+    "alt_text": "Edinburgh Appointments - Lady Ravena Rates:1 hour £200",
     "expected": false,
     "signal": "text",
     "bucket": "precision_gate",
@@ -1488,7 +1488,7 @@
   {
     "id": "fp-long-embed-chicago-review-no-local-cue",
     "text": "",
-    "alt_text": "Review: Benson Boone is a Wanted Man \u2014 but who is he really? It took approximately 13-and-a-half-minutes for a backflip on Friday night at the Chicago Theatre. The crowd in Illinois was roaring for the Midwest dates on the Wanted Man Tour.",
+    "alt_text": "Review: Benson Boone is a Wanted Man — but who is he really? It took approximately 13-and-a-half-minutes for a backflip on Friday night at the Chicago Theatre. The crowd in Illinois was roaring for the Midwest dates on the Wanted Man Tour.",
     "expected": false,
     "signal": "text",
     "bucket": "precision_gate",
@@ -1568,7 +1568,7 @@
   },
   {
     "id": "fp-ny-times-abbrev-troy-jackson",
-    "text": "After Democratic Shake-Up, Susan Collins Holds Enormous Cash Edge in Maine \u2013 ny times. Troy Jackson secures the Democratic nomination.",
+    "text": "After Democratic Shake-Up, Susan Collins Holds Enormous Cash Edge in Maine – ny times. Troy Jackson secures the Democratic nomination.",
     "expected": false,
     "signal": "text",
     "bucket": "precision_gate",
@@ -1608,7 +1608,7 @@
   },
   {
     "id": "fp-metra-hash-518-train-number",
-    "text": "\ud83d\ude86 Metra \u00b7 past hour\n\n\ud83d\udc0c Delays\n\n15\u201329 min\n\u2022 BNSF: #2035\n\u2022 Union Pacific North: #834\n\u2022 Union Pacific West: #518\n\nPer Metra realtime data.",
+    "text": "🚆 Metra · past hour\n\n🐌 Delays\n\n15–29 min\n• BNSF: #2035\n• Union Pacific North: #834\n• Union Pacific West: #518\n\nPer Metra realtime data.",
     "expected": false,
     "signal": "text",
     "bucket": "precision_gate",
@@ -1650,7 +1650,7 @@
   },
   {
     "id": "fp-central-ave-hackensack-forum",
-    "text": "Please attend the forum entitled \u201cThe Attack On Voting Rights And The War On Black People,\u201d on Thursday, August 6, 2026, 7:00pm at Logan Family Life Center, 274 Central Avenue, Hackensack, NJ.",
+    "text": "Please attend the forum entitled “The Attack On Voting Rights And The War On Black People,” on Thursday, August 6, 2026, 7:00pm at Logan Family Life Center, 274 Central Avenue, Hackensack, NJ.",
     "expected": false,
     "signal": "text",
     "bucket": "ambiguous_classifier",
@@ -1660,7 +1660,7 @@
   },
   {
     "id": "fp-34th-street-minneapolis-gallery",
-    "text": "SNAKPAK Studio and Gallery (and Free Museum) 3704 East 34th Street Minneapolis, Minn 55406 Hours: Friday 10 am - 3 pm Saturday 10 am - 3 pm Sunday 10 am - 3 pm Solving Yesterday\u2019s Problems Tomorrow",
+    "text": "SNAKPAK Studio and Gallery (and Free Museum) 3704 East 34th Street Minneapolis, Minn 55406 Hours: Friday 10 am - 3 pm Saturday 10 am - 3 pm Sunday 10 am - 3 pm Solving Yesterday’s Problems Tomorrow",
     "expected": false,
     "signal": "text",
     "bucket": "ambiguous_classifier",
@@ -1680,7 +1680,7 @@
   },
   {
     "id": "fp-central-ave-li-traffic-cam",
-    "text": "NY878 at Central Avenue \ud83d\udd52 6:10 AM - 6:13 AM ET (8x speed) \ud83c\udf21\ufe0f 59\u00b0F | Clear  \ud83d\udccd: 40.610543,-73.743211",
+    "text": "NY878 at Central Avenue 🕒 6:10 AM - 6:13 AM ET (8x speed) 🌡️ 59°F | Clear  📍: 40.610543,-73.743211",
     "expected": false,
     "signal": "text",
     "bucket": "ambiguous_classifier",
@@ -1690,7 +1690,7 @@
   },
   {
     "id": "fp-4th-street-guyana-kingdom-hall",
-    "text": "\ud83c\uddec\ud83c\uddfe - Kingdom Hall of Jehovah's Witnesses, 4th Street, Bartica East Central, Guyana #Guyana #PlacesOfWorship",
+    "text": "🇬🇾 - Kingdom Hall of Jehovah's Witnesses, 4th Street, Bartica East Central, Guyana #Guyana #PlacesOfWorship",
     "expected": false,
     "signal": "text",
     "bucket": "ambiguous_classifier",
@@ -1718,7 +1718,7 @@
     "split": "dev",
     "regression": true,
     "alt_text": "A 1976 black-and-white photo of a doorway in New York.",
-    "note": "2026-07-26 feed FP: NYC doorway photo; bare 'doors' + 14th\u21924th substring"
+    "note": "2026-07-26 feed FP: NYC doorway photo; bare 'doors' + 14th→4th substring"
   },
   {
     "id": "tp-central-ave-albany-crash",
@@ -1742,7 +1742,7 @@
   },
   {
     "id": "tp-hash-518ny-area-tag",
-    "text": "Food truck Friday in the lot \u2014 come hang #518ny",
+    "text": "Food truck Friday in the lot — come hang #518ny",
     "expected": true,
     "signal": "text",
     "bucket": "strong_local",
@@ -1830,7 +1830,7 @@
     "bucket": "ambiguous_classifier",
     "split": "dev",
     "regression": true,
-    "alt_text": "GOP makes political push in House races amid lawmaker controversies (The Center Square) \u2013 Months out from the upcoming general election in November, a number of races for the Illinois House of Representatives are gaining momentum",
+    "alt_text": "GOP makes political push in House races amid lawmaker controversies (The Center Square) – Months out from the upcoming general election in November, a number of races for the Illinois House of Representatives are gaining momentum",
     "note": "2026-07-27 audit: The Center Square wire + month cue is not Albany Center Square"
   },
   {
@@ -1944,7 +1944,7 @@
     "bucket": "ambiguous_classifier",
     "split": "holdout",
     "regression": true,
-    "alt_text": "(The Center Square) \u2013 A number of races for the Illinois House of Representatives are gaining attention statewide",
+    "alt_text": "(The Center Square) – A number of races for the Illinois House of Representatives are gaining attention statewide",
     "note": "2026-07-27 audit: wire byline alone never keeps"
   },
   {
@@ -2015,7 +2015,7 @@
     "bucket": "skyfeed_fp",
     "split": "dev",
     "regression": true,
-    "alt_text": "Mary Robinson: Trailblazer for Global Justice \u2014 Cois Coiribe is University of Galway's online publication.",
+    "alt_text": "Mary Robinson: Trailblazer for Global Justice — Cois Coiribe is University of Galway's online publication.",
     "note": "2026-07-28 audit: University of Galway card + New York world mention"
   },
   {
@@ -2062,7 +2062,7 @@
   },
   {
     "id": "tp-washington-park-farmers-market-weekend",
-    "text": "Washington Park Farmers Market is this weekend \u2014 arrive before 10 am for the best produce.",
+    "text": "Washington Park Farmers Market is this weekend — arrive before 10 am for the best produce.",
     "expected": true,
     "signal": "text",
     "bucket": "ambiguous_classifier",
@@ -2174,7 +2174,7 @@
   },
   {
     "id": "tp-proctors-comedy-saturday",
-    "text": "Comedy night at Proctors this Saturday \u2014 tickets on sale.",
+    "text": "Comedy night at Proctors this Saturday — tickets on sale.",
     "expected": true,
     "signal": "event",
     "bucket": "regional_event",
@@ -2184,7 +2184,7 @@
   },
   {
     "id": "fp-malta-europe-job-board",
-    "text": "Italent Plus is #hiring a It Manager!\n\n\ud83c\udf0e Malta, Europe\n\u23f0 onsite\n\n#jobalert #jobsearch",
+    "text": "Italent Plus is #hiring a It Manager!\n\n🌎 Malta, Europe\n⏰ onsite\n\n#jobalert #jobsearch",
     "expected": false,
     "signal": "text",
     "bucket": "skyfeed_fp",
@@ -2234,7 +2234,7 @@
   },
   {
     "id": "fp-md-prince-georges-capital-region",
-    "text": "7 things to do in the capital region, from Karol G to wine and jazz\n\nThings to do across Montgomery and Prince George\u2019s counties this week include festivals.",
+    "text": "7 things to do in the capital region, from Karol G to wine and jazz\n\nThings to do across Montgomery and Prince George’s counties this week include festivals.",
     "expected": false,
     "signal": "text",
     "bucket": "precision_gate",
@@ -2254,7 +2254,7 @@
   },
   {
     "id": "tp-spac-saratoga-springs-performing",
-    "text": "This week\u2019s grateful deadcast visits Saratoga Springs Performing Arts Center \u201985.",
+    "text": "This week’s grateful deadcast visits Saratoga Springs Performing Arts Center ’85.",
     "expected": true,
     "signal": "event",
     "bucket": "regional_event",
@@ -2397,7 +2397,7 @@
   },
   {
     "id": "fp-troy-hyphenated-artist-nyc",
-    "text": "Snow in New York print sold to a friend in Weldon, California. See troy-caperton.pixels.com \u2014 email troy@example.com",
+    "text": "Snow in New York print sold to a friend in Weldon, California. See troy-caperton.pixels.com — email troy@example.com",
     "expected": false,
     "signal": "text",
     "bucket": "precision_gate",
@@ -2417,7 +2417,7 @@
   },
   {
     "id": "tp-wire-saratoga-springs-n-y",
-    "text": "SARATOGA SPRINGS, N.Y. \u2014 Local Knowledge wins the Amsterdam Stakes at the race meet.",
+    "text": "SARATOGA SPRINGS, N.Y. — Local Knowledge wins the Amsterdam Stakes at the race meet.",
     "expected": true,
     "signal": "text",
     "bucket": "strong_local",
@@ -2427,7 +2427,7 @@
   },
   {
     "id": "tp-wire-albany-n-y-capitol",
-    "text": "ALBANY, N.Y. (WRGB) \u2014 Lawmakers met in the state Capitol about single-payer healthcare.",
+    "text": "ALBANY, N.Y. (WRGB) — Lawmakers met in the state Capitol about single-payer healthcare.",
     "expected": true,
     "signal": "text",
     "bucket": "strong_local",
@@ -2437,7 +2437,7 @@
   },
   {
     "id": "tp-wire-malta-n-y",
-    "text": "MALTA, N.Y. (WNYT) \u2013 Saratoga County deputies found a missing Wilton resident.",
+    "text": "MALTA, N.Y. (WNYT) – Saratoga County deputies found a missing Wilton resident.",
     "expected": true,
     "signal": "text",
     "bucket": "strong_local",
@@ -2507,7 +2507,7 @@
   },
   {
     "id": "tp-rotterdam-ny-fire-open-house",
-    "text": "Rotterdam, NY fire department open house this weekend \u2014 bring the kids.",
+    "text": "Rotterdam, NY fire department open house this weekend — bring the kids.",
     "expected": true,
     "signal": "text",
     "bucket": "strong_local",
@@ -2670,7 +2670,7 @@
   },
   {
     "id": "tp-clifton-park-route-9-retail",
-    "text": "New shop opens on Route 9 in Clifton Park this weekend \u2014 locals love it.",
+    "text": "New shop opens on Route 9 in Clifton Park this weekend — locals love it.",
     "expected": true,
     "signal": "text",
     "bucket": "strong_local",
@@ -2768,7 +2768,7 @@
     "bucket": "precision_gate",
     "split": "holdout",
     "regression": true,
-    "alt_text": "Tuesday, August 4th, 2026 - 10:00 PM Cin\u00e9ma Banque Scotia Montr\u00e9al",
+    "alt_text": "Tuesday, August 4th, 2026 - 10:00 PM Cinéma Banque Scotia Montréal",
     "note": "2026-08-05 audit: Banque Scotia Montreal cinema card + New York plot"
   },
   {
@@ -2968,14 +2968,14 @@
   },
   {
     "id": "fp-bogota-capital-district",
-    "text": "98-0002 Landed near Bogota, Bogot\u00e1 Capital District, Colombia. Apx. flt. time 0 min.",
+    "text": "98-0002 Landed near Bogota, Bogotá Capital District, Colombia. Apx. flt. time 0 min.",
     "expected": false,
     "signal": "text",
     "bucket": "precision_gate",
     "split": "dev",
     "regression": true,
     "author_handle": "usairforcevip.bsky.social",
-    "note": "2026-08-07 audit: Bogot\u00e1 Capital District flight tracker vs NY Capital District"
+    "note": "2026-08-07 audit: Bogotá Capital District flight tracker vs NY Capital District"
   },
   {
     "id": "tp-capital-district-colombia-aid",
@@ -2996,7 +2996,7 @@
     "split": "dev",
     "regression": true,
     "author_handle": "bannerpgcounty.bsky.social",
-    "alt_text": "Here\u2019s your weekend guide for things to do in the capital region, including free musical theater performances at the Olney Theatre Center and a water lantern festival in National Harbor.",
+    "alt_text": "Here’s your weekend guide for things to do in the capital region, including free musical theater performances at the Olney Theatre Center and a water lantern festival in National Harbor.",
     "note": "2026-08-07 audit: Maryland Banner PG County capital region + Olney/National Harbor"
   },
   {
@@ -3050,7 +3050,7 @@
     "bucket": "precision_gate",
     "split": "dev",
     "regression": true,
-    "alt_text": "Opinion | Abigail Spanberger: Why I\u2019m intervening in the Dominion-NextEra merger",
+    "alt_text": "Opinion | Abigail Spanberger: Why I’m intervening in the Dominion-NextEra merger",
     "note": "2026-08-07 audit: Virginia Spanberger/Dominion Capital region"
   },
   {
@@ -3122,7 +3122,7 @@
     "bucket": "ambiguous_classifier",
     "split": "dev",
     "regression": true,
-    "alt_text": "Illinois Quick Hits: SBA approves disaster declaration for 6 counties (The Center Square) \u2013 The U.S. Small Business Administration has approved a disaster declaration for flooding in northeastern Illinois from July 2-4.",
+    "alt_text": "Illinois Quick Hits: SBA approves disaster declaration for 6 counties (The Center Square) – The U.S. Small Business Administration has approved a disaster declaration for flooding in northeastern Illinois from July 2-4.",
     "note": "2026-08-08 audit: Center Square wire dash/paren byline + July event cue"
   },
   {
@@ -3133,7 +3133,7 @@
     "bucket": "ambiguous_classifier",
     "split": "holdout",
     "regression": true,
-    "alt_text": "Paul Lynde, center square on \u201cThe Hollywood Squares\u201d (1968\u20131981). #gamespotsquares #centersquare June 13, 2026",
+    "alt_text": "Paul Lynde, center square on “The Hollywood Squares” (1968–1981). #gamespotsquares #centersquare June 13, 2026",
     "note": "2026-08-08 audit: Hollywood Squares center square is not Albany Center Square"
   },
   {
@@ -3256,7 +3256,7 @@
     "bucket": "precision_gate",
     "split": "dev",
     "regression": true,
-    "alt_text": "Mayoral Election Systems in the 50 Largest U.S. Cities - Reinvent Albany looked at how the 50 most populous cities select their mayors. New York City\u2019s election process is unique.",
+    "alt_text": "Mayoral Election Systems in the 50 Largest U.S. Cities - Reinvent Albany looked at how the 50 most populous cities select their mayors. New York City’s election process is unique.",
     "note": "2026-08-08 audit: Reinvent Albany NYC advocacy org is not Cap Region Albany"
   },
   {
@@ -3267,7 +3267,7 @@
     "bucket": "strong_local",
     "split": "holdout",
     "regression": true,
-    "note": "2026-08-08 audit: NYC\u2192Albany move still keeps via albany_with_ny_context"
+    "note": "2026-08-08 audit: NYC→Albany move still keeps via albany_with_ny_context"
   },
   {
     "id": "fp-iceland-capital-region-mbl",
@@ -3303,7 +3303,7 @@
   },
   {
     "id": "fp-japan-capital-district-senryu",
-    "text": "\u842c\u6b73\u306e\u8db3\u99c4\u306b\u5e9c\u4e0b\u306e\u971c\u67f1\nCelebrating \u201cBanzai!\u201d in wooden clogs\u2014the frost columns of the capital district\n\n- Kenkabo Inoue\n\n#senryu",
+    "text": "萬歳の足駄に府下の霜柱\nCelebrating “Banzai!” in wooden clogs—the frost columns of the capital district\n\n- Kenkabo Inoue\n\n#senryu",
     "expected": false,
     "signal": "text",
     "bucket": "precision_gate",
@@ -3350,7 +3350,7 @@
     "bucket": "precision_gate",
     "split": "dev",
     "regression": true,
-    "alt_text": "Cha\u00eene d\u00e9di\u00e9e \u00e0 l'immersion dans l'univers Roblox !",
+    "alt_text": "Chaîne dédiée à l'immersion dans l'univers Roblox !",
     "note": "2026-08-09 audit: Roblox Rensselaer County map"
   },
   {
@@ -3432,7 +3432,7 @@
     "bucket": "precision_gate",
     "split": "holdout",
     "regression": true,
-    "alt_text": "Rise Above \u2013 Capital Region Cancer Relief will celebrate 40 years of supporting cancer patients and their families with a free event at the Royal Hotel Queanbeyan.",
+    "alt_text": "Rise Above – Capital Region Cancer Relief will celebrate 40 years of supporting cancer patients and their families with a free event at the Royal Hotel Queanbeyan.",
     "note": "2026-08-10 audit: Canberra ACT Rise Above charity"
   },
   {
@@ -3453,7 +3453,7 @@
     "bucket": "precision_gate",
     "split": "dev",
     "regression": true,
-    "alt_text": "Federal authorities rounded up more than 1,200 people during a major operation in the state of Georgia. ICE announced Operation Safe Community \u2013 Atlanta, which was carried out statewide but focused on the capital region.",
+    "alt_text": "Federal authorities rounded up more than 1,200 people during a major operation in the state of Georgia. ICE announced Operation Safe Community – Atlanta, which was carried out statewide but focused on the capital region.",
     "note": "2026-08-10 audit: Atlanta capital region ICE mirror"
   },
   {
@@ -3540,7 +3540,7 @@
   },
   {
     "id": "fp-aging-albany-ny-pubmed-journal",
-    "text": "Aging is indexed by PubMed/Medline abbreviated as \u201cAging (Albany NY)\u201d, PubMed Central, and Web of Science.",
+    "text": "Aging is indexed by PubMed/Medline abbreviated as “Aging (Albany NY)”, PubMed Central, and Web of Science.",
     "expected": false,
     "signal": "text",
     "bucket": "skyfeed_fp",
@@ -3570,7 +3570,7 @@
   },
   {
     "id": "fp-dc-snipers-capital-region",
-    "text": "It\u2019s been nearly 24 years since the DC Snipers terrorized the capital region. Without Warning, an exhibit at the National Law Enforcement Museum.",
+    "text": "It’s been nearly 24 years since the DC Snipers terrorized the capital region. Without Warning, an exhibit at the National Law Enforcement Museum.",
     "expected": false,
     "signal": "text",
     "bucket": "precision_gate",
@@ -3580,7 +3580,7 @@
   },
   {
     "id": "fp-mymcmedia-capital-region-handle",
-    "text": "It\u2019s been nearly 24 years since snipers terrorized the capital region.",
+    "text": "It’s been nearly 24 years since snipers terrorized the capital region.",
     "expected": false,
     "signal": "text",
     "bucket": "precision_gate",
@@ -3661,7 +3661,7 @@
   },
   {
     "id": "tp-rotterdam-ny-hometown-heroes",
-    "text": "ROTTERDAM, NY (WRGB)- A Rotterdam military family is questioning how the town\u2019s Hometown Heroes banner program communicates with residents.",
+    "text": "ROTTERDAM, NY (WRGB)- A Rotterdam military family is questioning how the town’s Hometown Heroes banner program communicates with residents.",
     "expected": true,
     "signal": "text",
     "bucket": "strong_local",
@@ -3681,7 +3681,7 @@
   },
   {
     "id": "tp-albany-ny-uganda-wire",
-    "text": "Photo provided by Sophie Whiteman. ALBANY, N.Y. (July 21, 2026) \u2014 Off a dirt road in Ddegeya village, students partnered on rural health.",
+    "text": "Photo provided by Sophie Whiteman. ALBANY, N.Y. (July 21, 2026) — Off a dirt road in Ddegeya village, students partnered on rural health.",
     "expected": true,
     "signal": "text",
     "bucket": "strong_local",
@@ -3722,7 +3722,7 @@
   },
   {
     "id": "fp-detroit-troy-nyc-travel-list",
-    "text": "New York City \u2022 August 25\u201328\nLas Vegas \u2022 September 10\u201312\nDetroit/Troy \u2022 September 28\u201330",
+    "text": "New York City • August 25–28\nLas Vegas • September 10–12\nDetroit/Troy • September 28–30",
     "expected": false,
     "signal": "text",
     "bucket": "precision_gate",
@@ -3742,7 +3742,7 @@
   },
   {
     "id": "fp-van-helderbergh-ghent-pulpit",
-    "text": "Pulpit of the Small Beguinage of Ghent, executed by Jan Baptist van Helderbergh, 1731\u20131732.",
+    "text": "Pulpit of the Small Beguinage of Ghent, executed by Jan Baptist van Helderbergh, 1731–1732.",
     "expected": false,
     "signal": "text",
     "bucket": "precision_gate",
@@ -3863,7 +3863,7 @@
   },
   {
     "id": "fp-egg-art-garden-kansas-city",
-    "text": "Bottom's Up Festival at The Egg and Art Garden KC \u2014 sunny weekend in Northeast Kansas City.",
+    "text": "Bottom's Up Festival at The Egg and Art Garden KC — sunny weekend in Northeast Kansas City.",
     "expected": false,
     "signal": "event",
     "bucket": "precision_gate",
@@ -3913,7 +3913,7 @@
   },
   {
     "id": "tn-saratoga-springs-utah-olive-garden",
-    "text": "Utah has a highly rated Olive Garden near Saratoga Springs \u2014 no race meet, just pasta.",
+    "text": "Utah has a highly rated Olive Garden near Saratoga Springs — no race meet, just pasta.",
     "expected": false,
     "signal": "text",
     "bucket": "skyfeed_fp",
@@ -3966,7 +3966,7 @@
   {
     "id": "fp-norwegian-ny-bok-troy-person",
     "text": "Ny bok om stortingsvalget 2025. Jeg og Troy bidrar med eget kapittel om distriktsvelgerne.",
-    "alt_text": "Norsk politikk er i endring. Troms\u00f8, Trondheim, Bergen og Oslo.",
+    "alt_text": "Norsk politikk er i endring. Tromsø, Trondheim, Bergen og Oslo.",
     "expected": false,
     "signal": "text",
     "bucket": "precision_gate",
@@ -4076,7 +4076,7 @@
   },
   {
     "id": "fp-stillwater-road-lewis-co-croghan",
-    "text": "11 ESE Croghan [Lewis Co, NY] 911 Call Center reports Tstm Wnd Dmg \u2014 Multiple trees on wires on Stillwater Road.",
+    "text": "11 ESE Croghan [Lewis Co, NY] 911 Call Center reports Tstm Wnd Dmg — Multiple trees on wires on Stillwater Road.",
     "expected": false,
     "signal": "text",
     "bucket": "precision_gate",
@@ -4169,7 +4169,7 @@
   },
   {
     "id": "tn-spac-oklo-finance-merger",
-    "text": "Oklo went public via a special purpose acquisition company merger (SPAC) in\u2026",
+    "text": "Oklo went public via a special purpose acquisition company merger (SPAC) in…",
     "expected": false,
     "signal": "text",
     "bucket": "precision_gate",
@@ -4190,7 +4190,7 @@
   },
   {
     "id": "tp-i787-traffic-crash",
-    "text": "Crash on I-787 northbound near downtown \u2014 expect delays through the morning commute.",
+    "text": "Crash on I-787 northbound near downtown — expect delays through the morning commute.",
     "expected": true,
     "signal": "text",
     "bucket": "strong_local",
@@ -4269,7 +4269,7 @@
     "bucket": "ambiguous_classifier",
     "split": "dev",
     "regression": true,
-    "alt_text": "Excerpt from My Love is a Durian \u2014 River Street Writing. Coming this October!",
+    "alt_text": "Excerpt from My Love is a Durian — River Street Writing. Coming this October!",
     "note": "2026-08-20 audit: River Street Writing press + October event cue"
   },
   {
@@ -4285,7 +4285,7 @@
   },
   {
     "id": "tp-river-street-troy-open-mic",
-    "text": "Open mic tomorrow on River Street \u2014 sign-ups start at 6.",
+    "text": "Open mic tomorrow on River Street — sign-ups start at 6.",
     "expected": true,
     "signal": "event",
     "bucket": "ambiguous_classifier",
@@ -4425,7 +4425,7 @@
     "bucket": "precision_gate",
     "split": "holdout",
     "regression": true,
-    "alt_text": "Troms\u00f8 IL: Jakob Haugaard, Vetle Skj\u00e6rvik, Troy Nyhammer\nBrighton & Hove Albion: Bart Verbruggen",
+    "alt_text": "Tromsø IL: Jakob Haugaard, Vetle Skjærvik, Troy Nyhammer\nBrighton & Hove Albion: Bart Verbruggen",
     "note": "2026-08-21 audit: Troy Nyhammer must not match troy+ny strong positive"
   },
   {
@@ -4481,13 +4481,13 @@
   },
   {
     "id": "tp-saratoga-en-dash-race-card",
-    "text": "Play the low takeout Cross Country Pick 5 today!\nLeg A: Saratoga \u2013 Race 5 (3:29 PM ET)\nLeg B: Horseshoe Indianapolis \u2013 Race 6",
+    "text": "Play the low takeout Cross Country Pick 5 today!\nLeg A: Saratoga – Race 5 (3:29 PM ET)\nLeg B: Horseshoe Indianapolis – Race 6",
     "expected": true,
     "signal": "text",
     "bucket": "regional_event",
     "split": "dev",
     "regression": true,
-    "note": "2026-08-21 audit: Saratoga \u2013 Race N cross-country pick cards"
+    "note": "2026-08-21 audit: Saratoga – Race N cross-country pick cards"
   },
   {
     "id": "tn-malta-eurovision-aidan",
@@ -4521,7 +4521,7 @@
   },
   {
     "id": "fp-nps-national-parks-outside-capital-region",
-    "text": "Trump\u2019s egotistical passion projects get millions by taking funding from public institutions. Funding allocated to national parks outside the capital region plunged by $854 million.",
+    "text": "Trump’s egotistical passion projects get millions by taking funding from public institutions. Funding allocated to national parks outside the capital region plunged by $854 million.",
     "expected": false,
     "signal": "text",
     "bucket": "precision_gate",
@@ -4531,7 +4531,7 @@
   },
   {
     "id": "tp-nys-capital-region-infrastructure-grants",
-    "text": "More than $5.4 million has been awarded to seven different Capital Region projects through New York State\u2019s County Infrastructure Grant Program.",
+    "text": "More than $5.4 million has been awarded to seven different Capital Region projects through New York State’s County Infrastructure Grant Program.",
     "expected": true,
     "signal": "text",
     "bucket": "strong_local",
@@ -4557,8 +4557,8 @@
     "bucket": "skyfeed_fp",
     "split": "dev",
     "regression": true,
-    "alt_text": "DR reports that the capital region\u2019s light rail system will open along its full route on Saturday between Ish\u00f8j and Lundtofte. The Hovedstadens Letbane light rail system will be celebrated at Gladsaxe Town Hall.",
-    "note": "2026-08-22 audit: Danish Hovedstaden Letbane / Ish\u00f8j\u2013Lundtofte capital region"
+    "alt_text": "DR reports that the capital region’s light rail system will open along its full route on Saturday between Ishøj and Lundtofte. The Hovedstadens Letbane light rail system will be celebrated at Gladsaxe Town Hall.",
+    "note": "2026-08-22 audit: Danish Hovedstaden Letbane / Ishøj–Lundtofte capital region"
   },
   {
     "id": "fp-victoria-peers-vancouverisland-capital-region",
@@ -4573,7 +4573,7 @@
   },
   {
     "id": "tp-greater-victoria-vs-albany-ny-capital-region",
-    "text": "Comparing Greater Victoria\u2019s capital region transit to New York\u2019s Capital Region bus network.",
+    "text": "Comparing Greater Victoria’s capital region transit to New York’s Capital Region bus network.",
     "expected": true,
     "signal": "text",
     "bucket": "strong_local",
@@ -4583,7 +4583,7 @@
   },
   {
     "id": "fp-alberta-capital-region-data-centre",
-    "text": "Pretty sure it wasn\u2019t anticipated to be a project that would double the energy needs for the entire Capital region, or require massive NG resources.",
+    "text": "Pretty sure it wasn’t anticipated to be a project that would double the energy needs for the entire Capital region, or require massive NG resources.",
     "expected": false,
     "signal": "text",
     "bucket": "precision_gate",
@@ -4595,7 +4595,7 @@
   },
   {
     "id": "fp-troy-fautanu-steelers-new-york",
-    "text": "Pittsburgh\u2019s offense struggled badly against New York, but Elandon Roberts, Carson Bruener and Troy Fautanu delivered positive performances in the loss.",
+    "text": "Pittsburgh’s offense struggled badly against New York, but Elandon Roberts, Carson Bruener and Troy Fautanu delivered positive performances in the loss.",
     "expected": false,
     "signal": "text",
     "bucket": "precision_gate",
@@ -4611,7 +4611,7 @@
     "bucket": "skyfeed_fp",
     "split": "dev",
     "regression": true,
-    "alt_text": "Helen of Troy, 1993: Poems \u2014The New York Times Book Review, Editors\u2019 Choice",
+    "alt_text": "Helen of Troy, 1993: Poems —The New York Times Book Review, Editors’ Choice",
     "note": "2026-08-22 audit: Helen of Troy poetry + New York Times Book Review"
   },
   {
@@ -4634,7 +4634,7 @@
     "bucket": "precision_gate",
     "split": "dev",
     "regression": true,
-    "alt_text": "A hand holds a hardcover book: Movement: New York\u2019s Long War to Take Back Its Streets From the Car, in front of the New York Hotel in Rotterdam.",
+    "alt_text": "A hand holds a hardcover book: Movement: New York’s Long War to Take Back Its Streets From the Car, in front of the New York Hotel in Rotterdam.",
     "note": "2026-08-22 audit: Hotel New York in Rotterdam photo + New York book title"
   },
   {
@@ -4679,7 +4679,7 @@
   },
   {
     "id": "tp-park-playhouse-washington-park",
-    "text": "Park Playhouse is back in Washington Park \u2014 and for the first time every seat is free.",
+    "text": "Park Playhouse is back in Washington Park — and for the first time every seat is free.",
     "expected": true,
     "signal": "event",
     "bucket": "regional_event",
@@ -4762,7 +4762,7 @@
   },
   {
     "id": "fp-saratoga-park-montclair-ca",
-    "text": "Saratoga Park is on the brink of construction \u2014 what's next for Montclair's infrastructure? #MontclairSanBernardinoCounty #CA",
+    "text": "Saratoga Park is on the brink of construction — what's next for Montclair's infrastructure? #MontclairSanBernardinoCounty #CA",
     "expected": false,
     "signal": "text",
     "bucket": "ambiguous_classifier",
@@ -5121,7 +5121,7 @@
   },
   {
     "id": "fn-saratoga-maiden-watch-races",
-    "text": "American History and Forever Carina lead this week\u2019s Maiden Watch after Aug. 22 maiden special weight races at Saratoga.",
+    "text": "American History and Forever Carina lead this week’s Maiden Watch after Aug. 22 maiden special weight races at Saratoga.",
     "expected": true,
     "signal": "text",
     "bucket": "strong_local",
@@ -5312,7 +5312,7 @@
   },
   {
     "id": "tn-malta-independent-byteseu-0827",
-    "text": "The affordable housing crisis \u2013 The Malta Independent\n\nPresident of the European Parliament Roberta Metsola advocated for affordable housing.",
+    "text": "The affordable housing crisis – The Malta Independent\n\nPresident of the European Parliament Roberta Metsola advocated for affordable housing.",
     "expected": false,
     "signal": "text",
     "bucket": "skyfeed_fp",
@@ -5400,12 +5400,12 @@
     "bucket": "ambiguous_classifier",
     "split": "dev",
     "regression": true,
-    "alt_text": "Defend Democracy Rally \u2014 Chippewa Falls \u00b7 Mobilize ... corner of Bridge Street and Highway 124 (River Street) in Chippewa Falls",
+    "alt_text": "Defend Democracy Rally — Chippewa Falls · Mobilize ... corner of Bridge Street and Highway 124 (River Street) in Chippewa Falls",
     "note": "2026-08-28 audit: Chippewa Falls River Street not Troy corridor"
   },
   {
     "id": "tp-river-street-open-mic-0828",
-    "text": "Open mic tomorrow on River Street \u2014 sign-ups start at 6.",
+    "text": "Open mic tomorrow on River Street — sign-ups start at 6.",
     "expected": true,
     "signal": "event",
     "bucket": "ambiguous_classifier",
@@ -5415,14 +5415,14 @@
   },
   {
     "id": "fp-onca-troy-nymex-0828",
-    "text": "Ouro fecha em leve alta com expectativa por sinaliza\u00e7\u00f5es do Fed em Jackson Hole",
+    "text": "Ouro fecha em leve alta com expectativa por sinalizações do Fed em Jackson Hole",
     "expected": false,
     "signal": "text",
     "bucket": "skyfeed_fp",
     "split": "dev",
     "regression": true,
-    "alt_text": "Na Comex, divis\u00e3o de metais da New York Mercantile Exchange (Nymex), o ouro para dezembro encerrou em alta de 0,23%, a US$ 4 653,30 por on\u00e7a-troy",
-    "note": "2026-08-28 audit: Portuguese on\u00e7a-troy + NY Mercantile not City of Troy"
+    "alt_text": "Na Comex, divisão de metais da New York Mercantile Exchange (Nymex), o ouro para dezembro encerrou em alta de 0,23%, a US$ 4 653,30 por onça-troy",
+    "note": "2026-08-28 audit: Portuguese onça-troy + NY Mercantile not City of Troy"
   },
   {
     "id": "tp-troy-ny-dinner-0828",
@@ -5537,7 +5537,7 @@
   },
   {
     "id": "fp-newtonville-boston-0829",
-    "text": "Newton Highlands \u2260 Newtonville \u2260 West Newton. Know before you search.",
+    "text": "Newton Highlands ≠ Newtonville ≠ West Newton. Know before you search.",
     "expected": false,
     "signal": "text",
     "bucket": "precision_gate",
@@ -5640,13 +5640,13 @@
   },
   {
     "id": "fp-center-square-reports-0829",
-    "text": "Dem AGs Planned Trump Lawsuits Months Before Election \u2014 Now They\u2019re Fighting to Keep the Emails Hidden",
+    "text": "Dem AGs Planned Trump Lawsuits Months Before Election — Now They’re Fighting to Keep the Emails Hidden",
     "expected": false,
     "signal": "text",
     "bucket": "ambiguous_classifier",
     "split": "dev",
     "regression": true,
-    "alt_text": "The Center Square reports that Democratic attorneys general began coordinating potential litigation against a second Trump administration in April 2024\u2026",
+    "alt_text": "The Center Square reports that Democratic attorneys general began coordinating potential litigation against a second Trump administration in April 2024…",
     "note": "2026-08-29 audit FP: The Center Square reports wire"
   },
   {
@@ -5742,7 +5742,7 @@
   },
   {
     "id": "tp-river-street-open-mic-0830",
-    "text": "Open mic tomorrow on River Street \u2014 sign-ups start at 6.",
+    "text": "Open mic tomorrow on River Street — sign-ups start at 6.",
     "expected": true,
     "signal": "text",
     "bucket": "ambiguous_classifier",
@@ -5779,7 +5779,7 @@
     "bucket": "precision_gate",
     "split": "holdout",
     "regression": true,
-    "alt_text": "And No Jana and Troy, Just Because My 3rd Cousin Built Malls in New York State Doesn\u2019t Mean I Know Leslie Wexner.",
+    "alt_text": "And No Jana and Troy, Just Because My 3rd Cousin Built Malls in New York State Doesn’t Mean I Know Leslie Wexner.",
     "note": "2026-08-30 audit: person-named Troy unlocked by New York State"
   },
   {
@@ -5820,7 +5820,7 @@
     "bucket": "skyfeed_fp",
     "split": "holdout",
     "regression": true,
-    "alt_text": "Dr Lou Stelling, professor at Albany State University in New York\u2019s capital city, gave an excellent talk about language learning.",
+    "alt_text": "Dr Lou Stelling, professor at Albany State University in New York’s capital city, gave an excellent talk about language learning.",
     "note": "2026-08-30 audit: Albany State University (GA) mislabeled as capital city"
   },
   {
@@ -5925,7 +5925,7 @@
   },
   {
     "id": "tp-river-street-open-mic-0831",
-    "text": "Open mic tomorrow on River Street \u2014 sign-ups start at 6.",
+    "text": "Open mic tomorrow on River Street — sign-ups start at 6.",
     "expected": true,
     "signal": "text",
     "bucket": "ambiguous_classifier",
@@ -5935,13 +5935,13 @@
   },
   {
     "id": "fp-new-brunswick-hungary-url-0831",
-    "text": "New Brunswick: Okostelefon-tilalom az iskol\u00e1kban szeptembert\u0151l\n\nNew Brunswick tartom\u00e1ny \u00faj rendeletet vezet be az iskol\u00e1kban.\n\nhttps://itouch.hu/new-brunswick-okostelefon-tilalom-az-iskolakban-szeptembertol/",
+    "text": "New Brunswick: Okostelefon-tilalom az iskolákban szeptembertől\n\nNew Brunswick tartomány új rendeletet vezet be az iskolákban.\n\nhttps://itouch.hu/new-brunswick-okostelefon-tilalom-az-iskolakban-szeptembertol/",
     "expected": false,
     "signal": "text",
     "bucket": "skyfeed_fp",
     "split": "dev",
     "regression": true,
-    "note": "2026-08-31 audit: Canadian New Brunswick via hyphen URL slug + Hungarian tartom\u00e1ny false NY token"
+    "note": "2026-08-31 audit: Canadian New Brunswick via hyphen URL slug + Hungarian tartomány false NY token"
   },
   {
     "id": "tp-brunswick-ny-board-0831",
@@ -6061,7 +6061,7 @@
     "bucket": "precision_gate",
     "split": "dev",
     "regression": true,
-    "note": "2026-09-01 audit FP: Latham & Watkins \u2026 Office matched latham\u2026office HQ strong"
+    "note": "2026-09-01 audit FP: Latham & Watkins … Office matched latham…office HQ strong"
   },
   {
     "id": "tp-latham-regional-hq-counterpart-0901",
@@ -6155,7 +6155,7 @@
   },
   {
     "id": "fn-grade2-saratoga-special-0901",
-    "text": "Twinkle Town, the impressive six-length winner of the Grade 2 Saratoga Special on Aug. 1 who was scheduled to run in Sunday\u2019s Grade 1 Hopeful.",
+    "text": "Twinkle Town, the impressive six-length winner of the Grade 2 Saratoga Special on Aug. 1 who was scheduled to run in Sunday’s Grade 1 Hopeful.",
     "expected": true,
     "signal": "text",
     "bucket": "strong_local",
@@ -6205,7 +6205,7 @@
   },
   {
     "id": "tp-capital-district-after-dark-0901",
-    "text": "Tonight we return to the Capital District. Capital District: After Dark \u2014 Season 2 premieres at 9 PM ET with They Are Counting Troy First.",
+    "text": "Tonight we return to the Capital District. Capital District: After Dark — Season 2 premieres at 9 PM ET with They Are Counting Troy First.",
     "expected": true,
     "signal": "text",
     "bucket": "strong_local",
@@ -6522,7 +6522,7 @@
   },
   {
     "id": "fn-rotterdamcc-allowlist-0903",
-    "text": "Don't forget, Rotterdam! Sister Harmony Group this Friday \u2014 free concert.",
+    "text": "Don't forget, Rotterdam! Sister Harmony Group this Friday — free concert.",
     "expected": true,
     "signal": "author",
     "bucket": "local_org_no_placename",
@@ -6544,7 +6544,7 @@
   },
   {
     "id": "fp-albany-wire-albuquerque-0904",
-    "text": "ALBANY, N.Y., Sept. 03, 2026 (GLOBE NEWSWIRE) \u2014 Curia Global, Inc. today announced the grand opening of its expanded campus in Albuquerque, New Mexico.",
+    "text": "ALBANY, N.Y., Sept. 03, 2026 (GLOBE NEWSWIRE) — Curia Global, Inc. today announced the grand opening of its expanded campus in Albuquerque, New Mexico.",
     "expected": false,
     "signal": "text",
     "bucket": "precision_gate",
@@ -6554,7 +6554,7 @@
   },
   {
     "id": "tp-albany-wire-capitol-0904",
-    "text": "ALBANY, N.Y. (WRGB) \u2014 Lawmakers met in the state Capitol about housing.",
+    "text": "ALBANY, N.Y. (WRGB) — Lawmakers met in the state Capitol about housing.",
     "expected": true,
     "signal": "text",
     "bucket": "strong_local",
@@ -6564,7 +6564,7 @@
   },
   {
     "id": "tp-albany-wire-lark-street-0904",
-    "text": "ALBANY, N.Y. \u2014 A new brewery opens on Lark Street downtown.",
+    "text": "ALBANY, N.Y. — A new brewery opens on Lark Street downtown.",
     "expected": true,
     "signal": "text",
     "bucket": "strong_local",
@@ -6708,7 +6708,7 @@
   },
   {
     "id": "fp-pa-i81-river-street-traffic-cam-0905",
-    "text": "I-81 @ EXIT 184 (PA 307 RIVER STREET)\n\ud83d\udd52 2:42 AM - 2:43 AM ET (3x speed)\n\ud83c\udf21\ufe0f 65\u00b0F | Clear\n\n\ud83d\udccd: 41.393290,-75.650790",
+    "text": "I-81 @ EXIT 184 (PA 307 RIVER STREET)\n🕒 2:42 AM - 2:43 AM ET (3x speed)\n🌡️ 65°F | Clear\n\n📍: 41.393290,-75.650790",
     "expected": false,
     "signal": "text",
     "bucket": "ambiguous_classifier",
@@ -6718,7 +6718,7 @@
   },
   {
     "id": "tp-river-street-open-mic-0905",
-    "text": "Open mic tomorrow on River Street \u2014 sign-ups start at 6.",
+    "text": "Open mic tomorrow on River Street — sign-ups start at 6.",
     "expected": true,
     "signal": "event",
     "bucket": "ambiguous_classifier",
@@ -6788,7 +6788,7 @@
   },
   {
     "id": "fn-proctors-sold-out-0905",
-    "text": "Sold out night at Proctors \u2014 what a show.",
+    "text": "Sold out night at Proctors — what a show.",
     "expected": true,
     "signal": "event",
     "bucket": "regional_event",
@@ -6798,13 +6798,13 @@
   },
   {
     "id": "fp-dutch-rotterdam-den-haag-bethlehem-person-0906",
-    "text": "Gifmoorden lijken maar zelden voor te komen. Toch werden zowel Rotterdam als Den Haag deze zomer opgeschrikt door opzienbarende zaken. Toxicoloog Corine Bethlehem legt uit waarom gif zo\u2019n angstaanjagend effectief moordmiddel kan zijn.",
+    "text": "Gifmoorden lijken maar zelden voor te komen. Toch werden zowel Rotterdam als Den Haag deze zomer opgeschrikt door opzienbarende zaken. Toxicoloog Corine Bethlehem legt uit waarom gif zo’n angstaanjagend effectief moordmiddel kan zijn.",
     "expected": false,
     "signal": "text",
     "bucket": "precision_gate",
     "split": "dev",
     "regression": true,
-    "note": "2026-09-06 audit: AD.nl Dutch poison wires \u2014 Rotterdam + Den Haag + surname Bethlehem must not multi_local"
+    "note": "2026-09-06 audit: AD.nl Dutch poison wires — Rotterdam + Den Haag + surname Bethlehem must not multi_local"
   },
   {
     "id": "fp-dutch-rotterdam-corine-bethlehem-short-0906",
@@ -6844,7 +6844,7 @@
     "bucket": "precision_gate",
     "split": "dev",
     "regression": true,
-    "note": "2026-09-06 audit: multi-city tourism list \u2014 Galway+Dublin unlocked by NYC must drop"
+    "note": "2026-09-06 audit: multi-city tourism list — Galway+Dublin unlocked by NYC must drop"
   },
   {
     "id": "tp-galway-ny-soccer-0906",
@@ -6894,7 +6894,7 @@
     "bucket": "regional_event",
     "split": "dev",
     "regression": true,
-    "note": "2026-09-06 audit: Opera Saratoga FN \u2014 nested Springs+Opera previously mislabeled bare saratoga"
+    "note": "2026-09-06 audit: Opera Saratoga FN — nested Springs+Opera previously mislabeled bare saratoga"
   },
   {
     "id": "fn-saratoga-summer-meet-thespa-0906",
@@ -7056,7 +7056,7 @@
     "bucket": "precision_gate",
     "split": "holdout",
     "regression": true,
-    "alt_text": "Father Joe Review \u2013 Venice Film Festival",
+    "alt_text": "Father Joe Review – Venice Film Festival",
     "note": "2026-09-07 audit: classical siege of Troy unlocked by King of New York"
   },
   {
@@ -7148,7 +7148,7 @@
     "bucket": "precision_gate",
     "split": "holdout",
     "regression": true,
-    "alt_text": "Tribute to 9/11 victim from Catonsville \u2014 www.wmar2news.com",
+    "alt_text": "Tribute to 9/11 victim from Catonsville — www.wmar2news.com",
     "note": "2026-09-08 audit: Baltimore Clifton Park WMAR card matched bare clifton park strong"
   },
   {
@@ -7193,7 +7193,7 @@
   },
   {
     "id": "tp-pine-hills-block-party-0908",
-    "text": "Block party this Saturday in Pine Hills \u2014 bring a dish.",
+    "text": "Block party this Saturday in Pine Hills — bring a dish.",
     "expected": true,
     "signal": "text",
     "bucket": "ambiguous_classifier",
@@ -7553,7 +7553,7 @@
     "bucket": "strong_local",
     "split": "dev",
     "regression": true,
-    "note": "2026-09-10 residual: national USPS bot includes Wynantskill NY address \u2014 intentional keep via wynantskill strong"
+    "note": "2026-09-10 residual: national USPS bot includes Wynantskill NY address — intentional keep via wynantskill strong"
   },
   {
     "id": "tp-waterford-ny-youtube-0910",
@@ -7628,7 +7628,7 @@
   },
   {
     "id": "tp-noahs-bears-cup-saratoga-0911",
-    "text": "It's always exciting when a new restaurant comes to Saratoga. But when Noah's Italian and Bear's Cup Bakehouse opened within about a week of each other\u2026",
+    "text": "It's always exciting when a new restaurant comes to Saratoga. But when Noah's Italian and Bear's Cup Bakehouse opened within about a week of each other…",
     "expected": true,
     "signal": "event",
     "bucket": "regional_event",
@@ -7742,12 +7742,175 @@
   },
   {
     "id": "tn-town-of-albany-wi-council-0911",
-    "text": "Somebody looked up 08.24.26 Council Meeting \u2014 you can now search a transcript of that meeting and link to specific timestamps at https://redtaperecordings.com/m/town-of-albany-2026-08-24-08-24-26-council-meeting\n\nTown of Albany \u2014 2026-08-24",
+    "text": "Somebody looked up 08.24.26 Council Meeting — you can now search a transcript of that meeting and link to specific timestamps at https://redtaperecordings.com/m/town-of-albany-2026-08-24-08-24-26-council-meeting\n\nTown of Albany — 2026-08-24",
     "expected": false,
     "signal": "text",
     "bucket": "precision_gate",
     "split": "holdout",
     "regression": true,
     "note": "2026-09-11 rematch-drop residual: Town of Albany WI council transcript must stay bare_albany drop"
+  },
+  {
+    "id": "fp-venezuela-capital-region-0912",
+    "text": "How Organized Communities Are Rebuilding in the Wake of Venezuela’s Twin Earthquakes",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "At 3:55 a.m. on June 25, Carlos sent word from La Guaira that his family survived the twin earthquakes that shook Venezuela’s capital region hours earlier.",
+    "note": "2026-09-12 audit FP: Venezuela capital region / CounterPunch La Guaira card"
+  },
+  {
+    "id": "tp-venezuela-capital-region-albany-rescue-0912",
+    "text": "Capital Region students visited Caracas after studying Venezuela’s capital region, then returned to #AlbanyNY.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-12 TP counterpart: NY Capital Region cue rescues Venezuela phrase"
+  },
+  {
+    "id": "fp-troy-conner-spartanburg-0912",
+    "text": "Seventh Circuit Solicitor Barry Barnette explained Christopher Kastner tracked his wife to the tattoo shop, attacked her, and then shot Troy Conner.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "Suspect accused of Upstate tattoo shop murder denied bond. Spartanburg County shooting left a man dead.",
+    "note": "2026-09-12 audit FP: person Troy Conner + Upstate Spartanburg SC unlocked Troy"
+  },
+  {
+    "id": "tp-troy-ny-dinner-0912",
+    "text": "Dinner in Troy, New York tonight.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-12 TP counterpart for Troy Conner / Spartanburg gate"
+  },
+  {
+    "id": "fp-bethlehem-area-liberty-freedom-0912",
+    "text": "Bethlehem Area students remember 9/11 first responders by climbing 110 flights of steps",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Over 2,000 Liberty and Freedom high school students climbed 110 flights in honor of the floors New York firefighters climbed on Sept. 11, 2001.",
+    "note": "2026-09-12 audit FP: Bethlehem Area PA / Liberty & Freedom HS unlocked by New York firefighters"
+  },
+  {
+    "id": "fp-bethlehem-lehigh-valley-mcall-0912",
+    "text": "From my longtime news home... #LehighValley #Allentown #Bethlehem #Easton #Pa07 mcall.com",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-12 audit FP: Morning Call / Lehigh Valley Bethlehem hashtags + New York 9/11 card"
+  },
+  {
+    "id": "tp-bethlehem-ny-board-0912",
+    "text": "Town of Bethlehem, NY board meeting tonight.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-12 TP counterpart for Bethlehem PA Lehigh Valley gate"
+  },
+  {
+    "id": "tp-brook-tavern-saratoga-0912",
+    "text": "Brook Tavern in Saratoga is sold, minimal changes planned.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-12 audit FN: Brook Tavern Saratoga dining without Springs/NY"
+  },
+  {
+    "id": "tp-stillwater-burgoyne-0912",
+    "text": "On Sept. 11, 1777, the American army waited at Stillwater for Burgoyne.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-12 audit FN: Stillwater + Burgoyne battlefield without #Saratoga250"
+  },
+  {
+    "id": "tp-section2-shaker-colonie-0912",
+    "text": "Section 2 football: Shaker vs Colonie at 7 tonight.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-12 audit FN: Section 2 football without Saratoga Springs cue"
+  },
+  {
+    "id": "tp-pine-bush-observatory-0912",
+    "text": "Pine Bush Observatory open house this weekend.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-12 audit FN: Pine Bush Observatory (beyond Preserve trails)"
+  },
+  {
+    "id": "tp-town-of-halfmoon-board-0912",
+    "text": "Town of Halfmoon board meeting tonight.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-12 audit FN: Town of Halfmoon civic copy without NY token"
+  },
+  {
+    "id": "tn-malta-valletta-byteseu-0912",
+    "text": "Malta, Opposition to present 10 reforms on Daphne Caruana Galizia inquiry  VALLETTA (MALTA)",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-12 rematch-drop residual: EU Malta / Valletta must stay dropped"
+  },
+  {
+    "id": "tn-brunswick-maine-mobile-home-0912",
+    "text": "Man accused of shooting, killing his neighbor at Brunswick mobile home park — #MaineNews #LocalTV #Video",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-12 rematch-drop residual: Brunswick Maine must stay dropped"
+  },
+  {
+    "id": "tn-saratoga-ca-constituent-0912",
+    "text": "From a constituent in Saratoga, CA",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-12 rematch-drop residual: Saratoga CA must stay dropped"
+  },
+  {
+    "id": "tp-waterford-ny-hudson-vessel-0912",
+    "text": "VesselAlert Dest.: From LAFARGE BUILDING MATERIALS INC., Hudson River NY Mouth of Spuyten Duyvil Creek to Waterford NY",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-12 TP: Hudson River vessel destination Waterford NY remains keep"
   }
 ]
