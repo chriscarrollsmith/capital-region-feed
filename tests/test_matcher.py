@@ -3168,3 +3168,76 @@ def test_albany_sheriff_library_semiconductor_and_saratoga_dining_recall() -> No
         ).matched
         is True
     )
+
+
+def test_venezuela_capital_region_not_ny() -> None:
+    venezuela = match_post(
+        'How Organized Communities Are Rebuilding in the Wake of Venezuela’s Twin Earthquakes',
+        alt_text=(
+            'At 3:55 a.m. on June 25, a flicker of cellular service allowed Carlos '
+            'to send word from La Guaira that he and his family had survived the '
+            'twin earthquakes that shook Venezuela’s capital region hours earlier.'
+        ),
+    )
+    assert venezuela.matched is False
+    assert venezuela.reason in {
+        'hard_negative',
+        'hard_negative:venezuela_capital_region',
+    }
+    assert (
+        match_post(
+            'Capital Region students visited Caracas after studying Venezuela’s '
+            'capital region, then returned to #AlbanyNY.'
+        ).matched
+        is True
+    )
+
+
+def test_troy_conner_spartanburg_not_troy_ny() -> None:
+    sc = match_post(
+        'Seventh Circuit Solicitor Barry Barnette explained Christopher Kastner '
+        'tracked his wife to the tattoo shop, attacked her, and then shot Troy Conner.',
+        alt_text=(
+            'Suspect accused of Upstate tattoo shop murder denied bond An arrest '
+            'has been made in a Spartanburg County shooting late Thursday night '
+            'that has left a man dead.'
+        ),
+    )
+    assert sc.matched is False
+    assert sc.reason in {
+        'hard_negative:troy_sc',
+        'hard_negative:troy_person_name',
+    }
+    assert match_post('Dinner in Troy, New York tonight.').matched is True
+
+
+def test_bethlehem_area_lehigh_valley_not_town_of_bethlehem() -> None:
+    area = match_post(
+        'Bethlehem Area students remember 9/11 first responders by climbing 110 flights of steps',
+        alt_text=(
+            'Over 2,000 Liberty and Freedom high school students got together '
+            'Friday to climb 110 flights of steps, in honor of the floors New York '
+            'firefighters climbed on Sept. 11, 2001.'
+        ),
+    )
+    assert area.matched is False
+    assert area.reason == 'hard_negative:bethlehem_pa'
+    lehigh = match_post(
+        'From my longtime news home... #LehighValley #Allentown #Bethlehem #Easton #Pa07 mcall.com'
+    )
+    assert lehigh.matched is False
+    assert lehigh.reason == 'hard_negative:bethlehem_pa'
+    assert match_post('Town of Bethlehem, NY board meeting tonight.').matched is True
+
+
+def test_brook_tavern_stillwater_burgoyne_and_section2_recall() -> None:
+    assert match_post('Brook Tavern in Saratoga is sold, minimal changes planned.').matched is True
+    assert (
+        match_post(
+            'On Sept. 11, 1777, the American army waited at Stillwater for Burgoyne.'
+        ).matched
+        is True
+    )
+    assert match_post('Section 2 football: Shaker vs Colonie at 7 tonight.').matched is True
+    assert match_post('Pine Bush Observatory open house this weekend.').matched is True
+    assert match_post('Town of Halfmoon board meeting tonight.').matched is True

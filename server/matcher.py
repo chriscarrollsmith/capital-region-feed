@@ -135,9 +135,18 @@ _STRONG_POSITIVE = re.compile(
       | saratoga\s+feature\b
       # Distinctive Cap Region restaurant — bizjournals cards often omit ", NY".
       | \btipsy\s+taco(?:\s+cantina)?\b
+      | brook\s+tavern\b
       # Revolutionary War campaign / battlefield copy often omits ", NY".
       | saratoga\s+campaign\b
       | battles?\s+of\s+saratoga\b
+      # Burgoyne / Stillwater battlefield tourism often omits ", NY".
+      | \bburgoyne\b[\s\S]{0,120}\bstillwater\b
+      | \bstillwater\b[\s\S]{0,120}\bburgoyne\b
+      # Albany Pine Bush Observatory (not only the Preserve trails).
+      | pine\s+bush\s+observatory\b
+      # Town of Halfmoon civic copy often omits ", NY".
+      | town\s+of\s+halfmoon\b
+      | halfmoon\s+(?:town\s+)?(?:board|council|ceremony|ceremonies)\b
       # Named Grade 1 / meet stakes at the Race Course often omit ", NY".
       | (?:h\.?\s*allen\s+)?jerkens(?:\s+memorial)?\b
       | \bgrade\s+[123i]+\s+forego\b
@@ -391,6 +400,8 @@ _STRONG_POSITIVE = re.compile(
       | christian\s+brothers\s+academy\b
       | section\s+2[\s\S]{0,100}saratoga\s+springs\b
       | saratoga\s+springs[\s\S]{0,100}(?:christian\s+brothers|section\s+2)\b
+      | section\s+2[\s\S]{0,80}(?:\bshaker\b|\bniskayuna\b|\bcolonie\b|\bcba\b)
+      | (?:\bshaker\b|\bniskayuna\b|\bcolonie\b|\bcba\b)[\s\S]{0,80}section\s+2
       # Albany / Delmar care-facility wires often omit ", NY".
       | albany\s+center\s+for\s+independent\s+living\b
       | delmar\s+center\s+for\s+rehabilitation\b
@@ -572,7 +583,8 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
             sudan|khartoum|virginia|richmond|colombia|bogot[aá]|
             iceland|reykjav[ií]k|finland|helsinki|australia|
             georgia|atlanta|russia|moscow|bulgaria|sofia|japan|tokyo|
-            michigan|lansing|wales|cardiff|manila|philippines|metro\s+manila
+            michigan|lansing|wales|cardiff|manila|philippines|metro\s+manila|
+            venezuela|caracas|la\s+guaira
           )\b
       | ukrainian\s+capital\s+region
       | (?:russian|moscow)\s+capital\s+region
@@ -589,6 +601,8 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
       | welsh\s+capital\s+region
       | philippine\s+capital\s+region
       | (?:manila|metro\s+manila)\s+capital\s+region
+      | venezuela(?:n)?\s+capital\s+region
+      | (?:caracas|la\s+guaira)\s+capital\s+region
       | bogot[aá]\s+capital\s+district
       | capital\s+district\s*,?\s*colombia\b
       | icelandic\s+capital\s+district
@@ -1181,6 +1195,25 @@ _FL_CRTPA_CAPITAL_REGION = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
+# Venezuela "capital region" (Caracas / La Guaira earthquake / CounterPunch cards).
+_VE_GEO_CUE = (
+    r'\bvenezuela\b|\bvenezuelan\b|\bcaracas\b|la\s+guaira\b|'
+    r'\#venezuela\b|\#caracas\b|\#laguaira\b|counterpunch\.org'
+)
+
+_VE_CAPITAL_REGION = re.compile(
+    rf"""
+    (?:
+        venezuela(?:n)?\s+capital\s+region
+      | capital\s+region\s+of\s+(?:venezuela|caracas)\b
+      | (?:caracas|la\s+guaira)\s+capital\s+region
+      | capital\s+region\b[\s\S]{{0,280}}(?:{_VE_GEO_CUE})
+      | (?:{_VE_GEO_CUE})[\s\S]{{0,280}}capital\s+region\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
 # Boston Newton village / MBTA Worcester Line / Newtonville NJ — not Colonie.
 _NEWTONVILLE_MA = re.compile(
     r"""
@@ -1639,6 +1672,8 @@ _TROY_SC = re.compile(
         greenville[- ]spartanburg
       | \bnws\s+greenville
       | upstate\s+south\s+carolina
+      | \bspartanburg\b
+      | \bwspa\.com\b
       | greenwood\s+county
       | troy\s*,?\s*(?:sc|south\s+carolina)\b
       | (?<![\w.])gsp\.(?:nws|weather)
@@ -1787,16 +1822,24 @@ _BETHLEHEM_PA = re.compile(
     r"""
     (?:
         bethlehem\s*,?\s*(?:pa|pennsylvania)\b
+      | bethlehem\s+area\b
       | bethlehem[\s\S]{0,160}\b(?:pa|pennsylvania|philly|philadelphia)\b
       | \b(?:pa|pennsylvania|philly|philadelphia)\b[\s\S]{0,160}bethlehem
       # Travel/heritage cards often omit ", PA" (CNN steel town / UNESCO / SteelStacks).
+      # Lehigh Valley Morning Call / Allentown–Easton civic copy likewise omits ", PA".
       | bethlehem[\s\S]{0,220}(?:
             steel(?:stacks|town|\s+town)?|unesco|lehigh\s+valley|
-            christmas\s+spirit|industrial\s+heritage|snow\s+globe
+            christmas\s+spirit|industrial\s+heritage|snow\s+globe|
+            \#lehighvalley\b|\#allentown\b|\#easton\b|\#pa07\b|
+            mcall\.com|\ballentown\b|\beaston\b|
+            liberty\s+(?:and|&)\s+freedom|freedom\s+high\s+school
           )
       | (?:
             steel(?:stacks|town|\s+town)?|unesco|lehigh\s+valley|
-            christmas\s+spirit|industrial\s+heritage
+            christmas\s+spirit|industrial\s+heritage|
+            \#lehighvalley\b|\#allentown\b|\#easton\b|\#pa07\b|
+            mcall\.com|\ballentown\b|\beaston\b|
+            liberty\s+(?:and|&)\s+freedom|freedom\s+high\s+school
           )[\s\S]{0,220}bethlehem
     )
     """,
@@ -1872,6 +1915,9 @@ _TROY_PERSON_NAME = re.compile(
       | \btroy\b[\s\S]{0,200}venice\s+film\s+festival
       # Pro wrestling ring names (Face/Off "Castor Troy") — not City of Troy.
       | \bcastor\s+troy\b
+      # Crime / court wires: victim or defendant "Troy Conner" — not City of Troy.
+      | \btroy\s+conner\b
+      | shot\s+troy\s+[a-z]+\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -2038,7 +2084,8 @@ _HARD_NEGATIVE = re.compile(
             california|sacramento|korea|south\s+korea|ukraine|kyiv|kiev|
             sudan|khartoum|virginia|richmond|colombia|bogot[aá]|
             iceland|reykjav[ií]k|bulgaria|sofia|japan|michigan|lansing|
-            wales|cardiff|manila|philippines|metro\s+manila
+            wales|cardiff|manila|philippines|metro\s+manila|
+            venezuela|caracas|la\s+guaira
           )\b
       | ukrainian\s+capital\s+region
       | sudan(?:ese)?\s+capital\s+region
@@ -2050,6 +2097,8 @@ _HARD_NEGATIVE = re.compile(
       | welsh\s+capital\s+region
       | philippine\s+capital\s+region
       | (?:manila|metro\s+manila)\s+capital\s+region
+      | venezuela(?:n)?\s+capital\s+region
+      | (?:caracas|la\s+guaira)\s+capital\s+region
       | capital\s+region\s+international\s+airport
       | liberty\s+city
       | \bgta\s*iv?\b
@@ -2607,6 +2656,13 @@ def _philippines_capital_region_conflict(haystack: str) -> bool:
 def _florida_crtpa_capital_region_conflict(haystack: str) -> bool:
     """True when 'capital region' refers to Tallahassee CRTPA / FL, not NY."""
     if not _FL_CRTPA_CAPITAL_REGION.search(haystack):
+        return False
+    return not _ny_capital_region_context(haystack)
+
+
+def _venezuela_capital_region_conflict(haystack: str) -> bool:
+    """True when 'capital region' refers to Caracas / Venezuela, not NY."""
+    if not _VE_CAPITAL_REGION.search(haystack):
         return False
     return not _ny_capital_region_context(haystack)
 
@@ -3611,6 +3667,8 @@ def match_post(
             return MatchResult(False, 'hard_negative:philippines_capital_region')
         if _florida_crtpa_capital_region_conflict(haystack):
             return MatchResult(False, 'hard_negative:florida_crtpa_capital_region')
+        if _venezuela_capital_region_conflict(haystack):
+            return MatchResult(False, 'hard_negative:venezuela_capital_region')
         if _finland_capital_region_conflict(haystack):
             return MatchResult(False, 'hard_negative:finland_capital_region')
         if _denmark_capital_region_conflict(haystack):
