@@ -7912,5 +7912,15 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-09-12 TP: Hudson River vessel destination Waterford NY remains keep"
+  },
+  {
+    "id": "tp-stillwater-1777-battlefield-0912",
+    "text": "Stand at Stillwater today and the landscape looks quiet. In Sept. 1777, thousands of soldiers were preparing for battle. The Hudson, heights, roads and ravines shaped their choices.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-12 audit FN: Stillwater battlefield 1777 tourism without Burgoyne/#Saratoga250"
   }
 ]
