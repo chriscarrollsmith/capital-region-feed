@@ -5884,14 +5884,14 @@
     "note": "2026-08-30 audit: ahead of the Travers wire FN"
   },
   {
-    "id": "tn-bare-albany-stray-cats-0830",
+    "id": "tp-downtown-albany-stray-cats-0908",
     "text": "Downtown Albany has a lot of stray cats, I think because many of the houses have mouse problems",
-    "expected": false,
+    "expected": true,
     "signal": "text",
-    "bucket": "precision_gate",
+    "bucket": "strong_local",
     "split": "holdout",
-    "regression": false,
-    "note": "2026-08-30 audit: known bare-Albany lifestyle residual (B-050)"
+    "regression": true,
+    "note": "2026-09-08: downtown Albany is Cap Region (closes former bare-Albany residual tn-bare-albany-stray-cats-0830)"
   },
   {
     "id": "fp-troy-deeney-mt-kisco-0831",
@@ -6541,5 +6541,1386 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-09-03 TN: Seattle Times union still gated after NYT Times Union lookbehind"
+  },
+  {
+    "id": "fp-albany-wire-albuquerque-0904",
+    "text": "ALBANY, N.Y., Sept. 03, 2026 (GLOBE NEWSWIRE) — Curia Global, Inc. today announced the grand opening of its expanded campus in Albuquerque, New Mexico.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-04 audit: Albany N.Y. wire dateline + Albuquerque facility must drop"
+  },
+  {
+    "id": "tp-albany-wire-capitol-0904",
+    "text": "ALBANY, N.Y. (WRGB) — Lawmakers met in the state Capitol about housing.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-04 audit: Albany N.Y. wire dateline Cap Region counterpart"
+  },
+  {
+    "id": "tp-albany-wire-lark-street-0904",
+    "text": "ALBANY, N.Y. — A new brewery opens on Lark Street downtown.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-04 audit: Albany wire + Lark Street rescue"
+  },
+  {
+    "id": "fp-albany-ithaca-poet-laureate-0904",
+    "text": "I decided to become The Poet Laureate Of Tompkins County, New York. I don't want to stray again - Not up to Albany, Where the bureaucracy Survives. Ithaca is where The hearts and souls Of New York Naturally reside.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-04 audit: Ithaca/Tompkins poem with Albany bureaucracy contrast"
+  },
+  {
+    "id": "tp-albany-capitol-aid-in-dying-0904",
+    "text": "Jules Netherland traveled from the Bronx to the New York state Capitol in Albany several times to lobby for medical aid in dying.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-04 audit: state Capitol in Albany keep counterpart"
+  },
+  {
+    "id": "fn-glens-falls-climate-0904",
+    "text": "GLENS FALLS NY Sep 3 Climate Report: High: 82 Low: 59 Precip: 0.03\"",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-04 audit: FN Glens Falls NY climate bot"
+  },
+  {
+    "id": "fn-glens-falls-soccer-0904",
+    "text": "Glens Falls boys soccer beat Ichabod Crane 3-0 in their season opener.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-04 audit: FN Glens Falls local sports"
+  },
+  {
+    "id": "fn-empire-underground-show-0904",
+    "text": "Show tonight at Empire Underground",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-04 audit: FN Empire Underground venue without city"
+  },
+  {
+    "id": "fn-empire-underground-tour-0904",
+    "text": "Moon Tooth announce East Coast dates: Nov. 21 @ Empire Underground",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-04 audit: FN Empire Underground tour stop"
+  },
+  {
+    "id": "tn-seattle-times-union-stale-0904",
+    "text": "We stand with the Seattle Times Union. Sign their petition for a strong contract.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-04 audit: stale feed still showed Seattle Times Union (already gated)"
+  },
+  {
+    "id": "tn-md-capital-region-afro-plus-0904",
+    "text": "7 things to do in the capital region, including a prized art show and Afro Plus Festival",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "author_handle": "bannerpgcounty.bsky.social",
+    "alt_text": "The capital region will host events including Afro Plus Festival over Labor Day weekend.",
+    "note": "2026-09-04 audit: stale MD/DC capital region banner (already gated)"
+  },
+  {
+    "id": "tp-ualbany-buffalo-game-0904",
+    "text": "Buffalo once again trails UAlbany after a 14-yard touchdown pass. The Great Danes lead late.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-04 audit: UAlbany football TP counterpart"
+  },
+  {
+    "id": "fp-brussels-municipality-capital-region-0905",
+    "text": "The City of Brussels is now the seventh municipality in the Capital Region to throw its weight behind the Region's legal proceedings.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "City of Brussels joins other municipalities in the fight against RNP-07L overflights",
+    "note": "2026-09-05 audit: Brussels Times Capital Region != NY"
+  },
+  {
+    "id": "tp-capital-region-brussels-twinning-0905",
+    "text": "Capital Region mayors meet partners in Brussels for a twinning trip with #AlbanyNY officials.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-05 audit: NY Cap Region + Brussels twinning still keeps"
+  },
+  {
+    "id": "fp-delhi-imd-capital-region-0905",
+    "text": "IMD Red Alert Delhi Issued: Heavy Rains and Severe Waterlogging!",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "IMD red alert Delhi brings heavy rain and severe waterlogging to the capital region, disrupting flights and transit. #India #DelhiRain",
+    "note": "2026-09-05 audit: Delhi/India capital region card"
+  },
+  {
+    "id": "tp-capital-region-flood-albany-0905",
+    "text": "Flood advisory for the Capital Region tonight near #AlbanyNY.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-05 audit: NY Capital Region counterpart to Delhi FP"
+  },
+  {
+    "id": "fp-pa-i81-river-street-traffic-cam-0905",
+    "text": "I-81 @ EXIT 184 (PA 307 RIVER STREET)\n🕒 2:42 AM - 2:43 AM ET (3x speed)\n🌡️ 65°F | Clear\n\n📍: 41.393290,-75.650790",
+    "expected": false,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-05 audit: PA traffic cam River Street unlocked classifier micro"
+  },
+  {
+    "id": "tp-river-street-open-mic-0905",
+    "text": "Open mic tomorrow on River Street — sign-ups start at 6.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "ambiguous_classifier",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-05 audit: Troy River Street counterpart"
+  },
+  {
+    "id": "fp-schenectady-multi-state-hashtag-spam-0905",
+    "text": "Fire up @\nSnap: funkykush.85\n\n#Creek #Frederick #Maryland #Oshkosh #Wisconsin #Pittsburg #Palo-Alto #Bossier-City #Louisiana #Portland #Maine #Schenectady #New-York",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-05 audit: multi-state hashtag stuffing with #Schenectady"
+  },
+  {
+    "id": "tp-schenectady-city-council-0905",
+    "text": "Schenectady City Council meets Tuesday at City Hall.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-05 audit: real Schenectady counterpart"
+  },
+  {
+    "id": "fp-albany-fm-bandscan-nyc-0905",
+    "text": "Drove to Mt Greylock Summit with family. Did FM Bandscan on the way down: VT, NH, Boston, Albany, Springfield, CT. No NYC or HV. #fmdx #dx",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-05 audit: FM DX city list unlocked by NYC token"
+  },
+  {
+    "id": "tp-albany-fm-bandscan-albanyny-0905",
+    "text": "FM bandscan from downtown #AlbanyNY caught WRPI tonight.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-05 audit: local FM DX counterpart"
+  },
+  {
+    "id": "fn-empac-presents-0905",
+    "text": "EMPAC presents a new media installation this week.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-05 audit: RPI EMPAC without Troy qualifier"
+  },
+  {
+    "id": "fn-albany-pine-bush-preserve-0905",
+    "text": "Albany Pine Bush Preserve trail conditions after rain.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-05 audit: Pine Bush Preserve without extra NY token"
+  },
+  {
+    "id": "fn-proctors-sold-out-0905",
+    "text": "Sold out night at Proctors — what a show.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-05 audit: sold-out venue cue for Proctors"
+  },
+  {
+    "id": "fp-dutch-rotterdam-den-haag-bethlehem-person-0906",
+    "text": "Gifmoorden lijken maar zelden voor te komen. Toch werden zowel Rotterdam als Den Haag deze zomer opgeschrikt door opzienbarende zaken. Toxicoloog Corine Bethlehem legt uit waarom gif zo’n angstaanjagend effectief moordmiddel kan zijn.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-06 audit: AD.nl Dutch poison wires — Rotterdam + Den Haag + surname Bethlehem must not multi_local"
+  },
+  {
+    "id": "fp-dutch-rotterdam-corine-bethlehem-short-0906",
+    "text": "Rotterdam. Toxicoloog Corine Bethlehem legt uit.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-06 audit: person-name Bethlehem must not unlock multi_local with Rotterdam"
+  },
+  {
+    "id": "tp-bethlehem-ny-board-0906",
+    "text": "Town of Bethlehem NY board meeting tonight.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-06 audit: Cap Region Bethlehem counterpart"
+  },
+  {
+    "id": "tp-rotterdam-ny-square-mall-0906",
+    "text": "Tonight at Rotterdam Square Mall in Rotterdam, NY",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-06 audit: Cap Region Rotterdam counterpart"
+  },
+  {
+    "id": "fp-galway-dublin-city-walk-list-0906",
+    "text": "Walked London, Birmingham, Glasgow, Edinburgh, NYC, DC, Berlin, Galway, Dublin, Paris, Wellfleet etc",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-06 audit: multi-city tourism list — Galway+Dublin unlocked by NYC must drop"
+  },
+  {
+    "id": "tp-galway-ny-soccer-0906",
+    "text": "Galway NY high school soccer tonight",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-06 audit: Town of Galway NY counterpart"
+  },
+  {
+    "id": "fp-schenectady-ave-bare-0906",
+    "text": "Schenectady Ave.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-06 audit: Brooklyn Schenectady Avenue is not the city"
+  },
+  {
+    "id": "fp-schenectady-avenue-brooklyn-0906",
+    "text": "Schenectady Avenue in Brooklyn",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-06 audit: Brooklyn Schenectady Avenue"
+  },
+  {
+    "id": "tp-schenectady-ge-history-0906",
+    "text": "Schenectady was built by General Electric.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-06 audit: bare city Schenectady counterpart"
+  },
+  {
+    "id": "fn-opera-saratoga-advisory-0906",
+    "text": "Mary Birnbaum, currently the General and Artistic Director of Saratoga Springs' Opera Saratoga, will transition to an advisory role.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-06 audit: Opera Saratoga FN — nested Springs+Opera previously mislabeled bare saratoga"
+  },
+  {
+    "id": "fn-saratoga-summer-meet-thespa-0906",
+    "text": "Last 3 Days of the Saratoga summer meet! Prints available. #Saratoga #TheSpa #horseracing",
+    "expected": true,
+    "signal": "text",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-06 audit: #TheSpa / summer meet race-meet FN"
+  },
+  {
+    "id": "fn-saratoga-with-anticipation-0906",
+    "text": "Saratoga: Liam's Law holds off heavily favored stablemate to win the With Anticipation.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-06 audit: With Anticipation stakes wire without , NY"
+  },
+  {
+    "id": "fn-massry-center-arts-0906",
+    "text": "HVCC Foundation is acquiring the Massry Center for the Arts.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-06 audit: Massry Center FN without city"
+  },
+  {
+    "id": "fn-harriman-campus-0906",
+    "text": "Renovations continue at the Harriman Campus.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-06 audit: Harriman State Office Campus FN"
+  },
+  {
+    "id": "fn-quackenbush-square-0906",
+    "text": "Brunch at Quackenbush Square this Saturday.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-06 audit: Quackenbush Square FN"
+  },
+  {
+    "id": "fn-peebles-island-0906",
+    "text": "Peebles Island State Park hike tomorrow.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-06 audit: Peebles Island FN"
+  },
+  {
+    "id": "fn-corning-preserve-trail-0906",
+    "text": "Walk along the Corning Preserve trail.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-06 audit: Corning Preserve strong (was classifier-only micro)"
+  },
+  {
+    "id": "fn-nys-museum-exhibit-0906",
+    "text": "New exhibit opens at the New York State Museum.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-06 audit: NYS Museum FN without Albany token"
+  },
+  {
+    "id": "tn-nested-saratoga-springs-no-ny-0906",
+    "text": "Visiting Saratoga Springs' downtown shops near Broadway.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-06 audit: nested Springs still needs NY context; reason must be saratoga springs not bare saratoga"
+  },
+  {
+    "id": "tp-saratoga-springs-ny-council-0906",
+    "text": "Saratoga Springs, NY city council meets Tuesday.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-06 audit: Saratoga Springs + NY counterpart"
+  },
+  {
+    "id": "fp-cardiff-capital-region-wales-0907",
+    "text": "Major infrastructure and regeneration projects across south-east Wales could gain access to investment expertise and capital under a new partnership with the UK's National Wealth Fund.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "author_handle": "nation.cymru",
+    "alt_text": "Cardiff Capital Region to gain access to UK National Wealth Fund. Nation.Cymru staff report.",
+    "note": "2026-09-07 audit: Cardiff/Wales Capital Region via Nation.Cymru card"
+  },
+  {
+    "id": "fp-wales-capital-region-cooccur-0907",
+    "text": "Investment across south-east Wales for the Capital Region.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-07 audit: Wales + Capital Region co-occurrence without Cardiff phrase"
+  },
+  {
+    "id": "tp-capital-district-saratoga-area-0907",
+    "text": "Anyone in the Capital District/Saratoga area, Mohawk Valley looking to organize?",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-07 audit: NY Capital District counterpart to Wales FP"
+  },
+  {
+    "id": "fp-fai-cup-waterford-galway-0907",
+    "text": "Gonna be a Waterford/Galway final, calling it now. With the Blues to prevail and get our hands on only our 3rd FAI Cup.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-07 audit: Irish FAI Cup Waterford/Galway multi_local"
+  },
+  {
+    "id": "tp-galway-waterford-ny-farmers-0907",
+    "text": "Drive from Galway to Waterford for the farmers market.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-07 audit: Cap Region Galway+Waterford counterpart to FAI Cup FP"
+  },
+  {
+    "id": "fp-siege-of-troy-venice-film-0907",
+    "text": "Did you ever feel that King of New York could have done with a bit more Wing Chun? That the siege of Troy might have been handled a bit more successfully if the Greeks had a bazooka?",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "Father Joe Review – Venice Film Festival",
+    "note": "2026-09-07 audit: classical siege of Troy unlocked by King of New York"
+  },
+  {
+    "id": "tp-troy-ny-dinner-0907",
+    "text": "Dinner in Troy, New York tonight.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-07 audit: City of Troy NY counterpart to siege-of-Troy FP"
+  },
+  {
+    "id": "tp-saratoga-hopeful-stakes-colon-0907",
+    "text": "Saratoga: The Good Life is 2-for-2 after his 4-length triumph in the Grade 1 Hopeful Stakes.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-07 audit: Hopeful Stakes / Grade 1 with Saratoga: colon form FN"
+  },
+  {
+    "id": "tp-saratoga-worktab-breezing-0907",
+    "text": "Magnitude returned to the worktab at Saratoga on Sept. 6, breezing a half-mile in his first move since the Whitney.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-07 audit: worktab/breezing at Saratoga FN"
+  },
+  {
+    "id": "tn-bare-saratoga-no-race-cue-0907",
+    "text": "Thinking about a quiet weekend in Saratoga.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-07 audit: bare Saratoga without race/venue cues still drops"
+  },
+  {
+    "id": "fp-nation-cymru-handle-capital-region-0907",
+    "text": "A Capital Region partnership with the National Wealth Fund.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "author_handle": "nation.cymru",
+    "note": "2026-09-07 audit: nation.cymru handle gate for bare Capital Region"
+  },
+  {
+    "id": "tp-hopeful-stakes-at-saratoga-0907",
+    "text": "Manny Franco notched his fourth grade 1 win of the summer in the Hopeful Stakes at Saratoga aboard The Good Life.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-07 audit: Hopeful Stakes at Saratoga already-strong counterpart"
+  },
+  {
+    "id": "fp-castor-troy-bethlehem-wrestling-0908",
+    "text": "More NXT Releases according to Pro Wrestling Illustrious:\n* Bryceton Cleese\n* Axel Rainstorm\n* Castor Troy\n* Bethlehem Jesusface\n* Oaklynnsleigh Zee",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-08 audit: Face/Off Castor Troy + wrestling Bethlehem unlocked multi_local_places"
+  },
+  {
+    "id": "tp-troy-ny-castor-street-0908",
+    "text": "Castor Street reopen in Troy, New York next week after water-main work.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-08 audit: Cap Region Troy counterpart to Castor Troy wrestling FP"
+  },
+  {
+    "id": "fp-clifton-park-catonsville-wmar-0908",
+    "text": "Volunteers clean up part of Clifton Park on 9/11 in tribute to a young woman from Catonsville who perished on Flight 93.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "Tribute to 9/11 victim from Catonsville — www.wmar2news.com",
+    "note": "2026-09-08 audit: Baltimore Clifton Park WMAR card matched bare clifton park strong"
+  },
+  {
+    "id": "tp-clifton-park-ny-farmers-market-0908",
+    "text": "Farmers market opens Saturday in Clifton Park near #AlbanyNY.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-08 audit: Cap Region Clifton Park counterpart to MD FP"
+  },
+  {
+    "id": "fp-newtonville-nj-mlk-center-0908",
+    "text": "Opening Reception 10/10/2026 at the Dr. Martin Luther King Jr. Center Newtonville NJ.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-08 audit: Newtonville NJ heritage museum matched bare newtonville strong"
+  },
+  {
+    "id": "tp-newtonville-colonie-avenue-0908",
+    "text": "Road work on Newtonville Avenue in Colonie near #AlbanyNY.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-08 audit: Colonie Newtonville counterpart to NJ FP"
+  },
+  {
+    "id": "fp-pine-hills-orlando-wesh-0908",
+    "text": "Flash Flood Warning in effect until 7:30 PM for west central Orange County, including Orlando, Ocoee, Windermere, and Pine Hills, where 2-3 inches have already fallen. Stay with #weshwx for updates.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-08 audit: Orlando Pine Hills flood unlocked classifier:local_micro"
+  },
+  {
+    "id": "tp-pine-hills-block-party-0908",
+    "text": "Block party this Saturday in Pine Hills — bring a dish.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-08 audit: Albany Pine Hills counterpart to Orlando flood FP"
+  },
+  {
+    "id": "tp-downtown-albany-conversions-0908",
+    "text": "Investors are lining up apartment conversions of two downtown Albany buildings after state funding awards.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-08 audit FN: downtown Albany redevelopment without , NY"
+  },
+  {
+    "id": "tp-troy-iron-nail-factory-0908",
+    "text": "1800s Factory RUINS and FORGOTTEN Tunnel (Troy Iron and Nail Factory)",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-08 audit FN: Troy Iron and Nail Factory tourism without , NY"
+  },
+  {
+    "id": "tp-saratoga-america250-0908",
+    "text": "I explore that question through Saratoga and America250.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-08 audit FN: bare Saratoga + America250 Revolutionary tourism"
+  },
+  {
+    "id": "tp-funny-cide-stakes-0908",
+    "text": "Scramjet stayed perfect in two starts to win the Funny Cide Stakes on closing day.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-08 audit: Funny Cide Stakes is Cap Region Saratoga Race Course"
+  },
+  {
+    "id": "tp-gio-ponti-stakes-0908",
+    "text": "Siyouincanada took the Gio Ponti on the last card of the meet.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-08 audit: Gio Ponti Stakes is Cap Region Saratoga Race Course"
+  },
+  {
+    "id": "fp-manila-capital-region-0909",
+    "text": "The capital region of Metro Manila logged the highest jobless rate of 8.2 per cent.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Philippine jobless rate surges to 4-year high as growth slows",
+    "note": "2026-09-09 audit: Metro Manila capital region / Straits Times"
+  },
+  {
+    "id": "tp-capital-region-manila-exchange-0909",
+    "text": "Capital Region students visited Metro Manila on exchange before returning to #AlbanyNY.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-09 audit: NY Capital Region + Manila exchange counterpart"
+  },
+  {
+    "id": "fp-crtpa-orchard-pond-0909",
+    "text": "Today we visited the Orchard Pond Greenway with the team from Capital Region Transportation Planning Agency to look at SunTrail upgrades. CRTPA will hold another public meeting soon.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-09 audit: Tallahassee CRTPA / Orchard Pond SunTrail"
+  },
+  {
+    "id": "tp-capital-region-trail-saratoga-0909",
+    "text": "Capital Region trail planners met in Saratoga County.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-09 audit: NY Capital Region trail counterpart"
+  },
+  {
+    "id": "fp-clark-hall-guelph-0909",
+    "text": "33 years ago today Fugazi played Peter Clark Hall University of Guelph, Guelph, ON, Canada with Burn 51 and Shudder to Think.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-09 audit: Clark Hall substring must not match Lark Hall"
+  },
+  {
+    "id": "tp-lark-hall-show-0909",
+    "text": "Doors at 7 for the matinee at Lark Hall.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-09 audit: Lark Hall venue counterpart"
+  },
+  {
+    "id": "fp-travers-brothers-assassins-creed-0909",
+    "text": "Edward recruits Lucy to the Jackdaw and helps Assassins Rhona Dinsmore and the Travers brothers.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "Assassin's Creed: Black Flag Resynced | Part 5",
+    "note": "2026-09-09 audit: Travers brothers game copy vs Travers Stakes"
+  },
+  {
+    "id": "tp-travers-day-saratoga-0909",
+    "text": "It's Travers Day at Saratoga. The main event is at 6:35 p.m.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-09 audit: Travers Day counterpart"
+  },
+  {
+    "id": "fp-stillwater-ok-acars-0909",
+    "text": "Air to Ground Message: NYC CREW who got taken off. Area: Stillwater, OK, USA Type: Airbus A319",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-09 audit: Stillwater OK ACARS unlocked by NYC crew"
+  },
+  {
+    "id": "tp-stillwater-ny-board-0909",
+    "text": "Stillwater, NY town board meets Tuesday on the waterfront plan.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-09 audit: Stillwater NY counterpart"
+  },
+  {
+    "id": "fp-erasmusbrug-rotterdam-den-bosch-0909",
+    "text": "Brooklyn Bridge en Ponte Vecchio naast bruggetje over de Dommel",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "De Ponte Vecchio in Florence, de Brooklyn Bridge in New York, het viaduct in Millau en de Erasmusbrug in Rotterdam: wat heeft dat te maken met het simpele nieuwe bruggetje over de Dommel in Den Bosch?",
+    "note": "2026-09-09 audit: Dutch Erasmusbrug Rotterdam + Brooklyn Bridge NY"
+  },
+  {
+    "id": "tp-rotterdam-ny-bakery-0909",
+    "text": "New bakery opens in Rotterdam, NY this weekend.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-09 audit: Rotterdam NY counterpart"
+  },
+  {
+    "id": "tp-tipsy-taco-latham-0909",
+    "text": "Tipsy Taco Cantina in Latham is getting a different name and a new menu.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Latham restaurant to get different name, new menu",
+    "note": "2026-09-09 audit FN: Tipsy Taco Cantina Latham without NY token"
+  },
+  {
+    "id": "fp-monica-latham-routledge-0910",
+    "text": "Publication: Monica Latham, \"Virginia Woolf in the French Imagination\". London; New York: Routledge, 2026. ISBN 9781032878904",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-10 audit: academic author surname + New York: Routledge masthead"
+  },
+  {
+    "id": "tp-latham-ny-cafe-0910",
+    "text": "New cafe opens in Latham, NY next to the circle.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-10 audit: Cap Region counterpart to Monica Latham FP"
+  },
+  {
+    "id": "fp-loudonville-nws-cleveland-ashland-0910",
+    "text": "Special Weather Statement issued September 9 at 6:03PM EDT by NWS Cleveland OH At 603 PM EDT, Doppler radar was tracking a strong thunderstorm over Loudonville, or 16 miles south of Ashland, moving east at 40 mph.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-10 audit: Loudonville OH NWS Cleveland / Ashland without , OH"
+  },
+  {
+    "id": "tp-loudonville-near-albany-0910",
+    "text": "Road work begins in Loudonville near Albany this week.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-10 audit: Cap Region Loudonville counterpart"
+  },
+  {
+    "id": "fp-rotterdam-filmmaker-venice-0910",
+    "text": "Educated in Moscow and then New York, Georgian filmmaker Levan Kogashvili was discovered in Rotterdam in 2010 with his debut film. After winning awards at Tribeca and Jeddah, he is presenting Guria at #Venice2026.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-10 audit: IFFR discovery + Venice/Tribeca unlocked via New York education"
+  },
+  {
+    "id": "tp-rotterdam-ny-bakery-0910",
+    "text": "New bakery opens in Rotterdam, NY this weekend.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-10 audit: Town of Rotterdam NY counterpart"
+  },
+  {
+    "id": "tp-capitaldistrict-hashtag-0910",
+    "text": "Bus trip from #GlensFalls to #Albany for the show. #capitaldistrict #northcountry",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-10 audit FN: #capitaldistrict hashtag lacks space inside capital district"
+  },
+  {
+    "id": "tp-autumn-glow-rotterdam-0910",
+    "text": "Autumn Glow Festival opens in Rotterdam",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-10 audit FN: Autumn Glow Festival Town of Rotterdam"
+  },
+  {
+    "id": "tp-saratoga-pumpkinfest-0910",
+    "text": "Giant Saratoga Pumpkinfest set to stage for 11th year",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-10 audit FN: Saratoga Pumpkinfest"
+  },
+  {
+    "id": "tp-new-scotland-ave-recovery-0910",
+    "text": "Recovery Sports Grill on New Scotland Ave has been Albany's go-to sports bar",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-10 audit FN: New Scotland Ave / Recovery Sports Grill"
+  },
+  {
+    "id": "tp-albany-ale-oyster-0910",
+    "text": "Second venture for Albany Ale & Oyster owners offers neighborhood feel",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-10 audit FN: Albany Ale & Oyster"
+  },
+  {
+    "id": "tp-thruway-rotterdam-0910",
+    "text": "Man rescued on Thruway after dump truck overturns in Rotterdam",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-10 audit FN: Thruway + Town of Rotterdam"
+  },
+  {
+    "id": "tp-scotia-glenville-0910",
+    "text": "From Scotia-Glenville's signing ceremony this week, honoring 18 student athletes.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-10 audit FN: Scotia-Glenville"
+  },
+  {
+    "id": "tp-whitney-day-saratoga-0910",
+    "text": "It's Whitney Day at Saratoga, and first post is about 40 minutes away.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-10 audit FN: Whitney Day at Saratoga"
+  },
+  {
+    "id": "tp-cba-saratoga-springs-0910",
+    "text": "Saratoga Springs traveling to Christian Brothers Academy in a rematch of the Class AA sectional championship game.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-10 audit FN: CBA / Saratoga Springs Section 2 football"
+  },
+  {
+    "id": "tp-albany-delmar-rehab-0910",
+    "text": "Amid NYSDOH's investigation into the Albany Center for Independent Living and Delmar Center for Rehabilitation and Nursing",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-10 audit FN: Albany / Delmar care facilities"
+  },
+  {
+    "id": "tp-usps-wynantskill-address-0910",
+    "text": "BLUE BOX: 25 HECKEL RD, MCKEES ROCKS PA 15136 PO LOBBY: 85 MAIN AVE, WYNANTSKILL NY 12198 BLUE BOX: 12665 CAMINITO ROSITA, SAN DIEGO CA 92128",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-10 residual: national USPS bot includes Wynantskill NY address — intentional keep via wynantskill strong"
+  },
+  {
+    "id": "tp-waterford-ny-youtube-0910",
+    "text": "Disgusting. She's an embarrassment, harassing a 15 year-old at his mosque.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "Waterford NY, Who is she? YouTube video by TizzyEnt",
+    "note": "2026-09-10 TP: Waterford NY viral video cluster via embed title"
+  },
+  {
+    "id": "fp-route-787-takoma-park-md-0911",
+    "text": "Twice-yearly #TakomaPark check: new (9/6/2026) Ride On Route 18 schedule still shows Flower Avenue as Route 787. It is no longer a Maryland state route.\n\nassets.montgomerycountymd.gov/files/2026-0...",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-11 audit FP: Maryland Route 787 / Takoma Park Flower Ave matched Cap Region route 787 strong"
+  },
+  {
+    "id": "tp-i787-albany-crash-0911",
+    "text": "Crash on I-787 northbound near downtown Albany.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-11 TP counterpart: Interstate 787 Albany must keep after MD Route 787 gate"
+  },
+  {
+    "id": "tp-route-787-albany-ny-0911",
+    "text": "Construction on Route 787 in Albany NY this weekend.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-11 TP counterpart: Cap Region Route 787 with Albany NY context"
+  },
+  {
+    "id": "tp-albany-sheriff-investigator-0911",
+    "text": "ALBANY SHERIFF'S INVESTIGATOR Busted for Allegedly Using Flock Cameras to Track Ex-girlfriend 3,000 TIMES",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-11 audit FN: Albany sheriff wire omitted County / , NY"
+  },
+  {
+    "id": "tp-albany-public-library-yokai-0911",
+    "text": "They're having a local tattoo artist come and talk about Japanese Yokai drawing at the Albany public library and its an event for 10-17 year olds which is unfair, I wanted to go",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-11 audit FN: Albany public library event without , NY"
+  },
+  {
+    "id": "tp-albany-semiconductor-landlord-0911",
+    "text": "An auction of a defunct semiconductor startup's equipment is on hold after the firm's Albany landlord sought protections from potential damage to the premises during the sale and removal process.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-11 audit FN: Cap Region semiconductor / Albany landlord auction wire"
+  },
+  {
+    "id": "tp-noahs-bears-cup-saratoga-0911",
+    "text": "It's always exciting when a new restaurant comes to Saratoga. But when Noah's Italian and Bear's Cup Bakehouse opened within about a week of each other…",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-11 audit FN: Saratoga Springs dining names without Springs/NY"
+  },
+  {
+    "id": "tn-troy-university-georgia-0911",
+    "text": "Georgia: Cloey Cooper joins the Sound of the South at Troy University #Georgia",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-11 rematch-drop residual: Troy University GA must stay dropped"
+  },
+  {
+    "id": "tn-malta-eu-fenech-0911",
+    "text": "European Parliament launches fact-finding mission to Malta over Fenech acquittal",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-11 rematch-drop residual: EU Malta politics must stay dropped"
+  },
+  {
+    "id": "tn-loudonville-oh-dog-breeder-0911",
+    "text": "Loudonville Dog Breeder Hit With 10 New Charges, Including Animal Cruelty #NortheastOhio #News",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-11 rematch-drop residual: Loudonville OH civic crime with #NortheastOhio / Ashland County must stay dropped",
+    "alt_text": "A Loudonville man is facing 10 new criminal charges after Ashland County investigators say further review of a dog breeding operation uncovered additional evidence of animal cruelty."
+  },
+  {
+    "id": "tp-waterford-ny-youtube-0911",
+    "text": "youtube.com/shorts/iS4gM...",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Waterford NY, Who is she? YouTube video by TizzyEnt",
+    "note": "2026-09-11 TP: Waterford NY viral video cluster via embed title remains keep"
+  },
+  {
+    "id": "tp-clifton-park-chicken-salad-0911",
+    "text": "Restaurant is opening in Clifton Park- some sort of Chicken Salad shack or something. You can guess what they mainly serve. Several types of chicken salad. I am not sure the greater Albany area is ready for a chicken salad restaurant.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-11 TP: Clifton Park + greater Albany area dining chatter"
+  },
+  {
+    "id": "tp-yaddo-bourbon-saratoga-0911",
+    "text": "Bourbon. Dinner. Yaddo after hours. Join us inside the Mansion for a rare-bourbons tasting with aficionado and Saratoga native Peter Kurto + a multi-course gourmet dinner.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-11 TP: Yaddo / Saratoga native event copy"
+  },
+  {
+    "id": "tp-ballston-spa-ebay-location-0911",
+    "text": "Kurt Angle WWE Signed Mattel Ultimate Edition Figure PSA Authentication Mint #ad",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "Kurt Angle WWE Signed Mattel Ultimate Edition Figure PSA Authentication Mint Ballston Spa, New York",
+    "note": "2026-09-11 TP: marketplace listing location Ballston Spa NY in embed"
+  },
+  {
+    "id": "tn-troy-nh-usps-0911",
+    "text": "BLUE BOX: 2215 SOUTHWEST PKWY, WICHITA FALLS TX 76308 APC: 1964 RAHNCLIFF CT, SAINT PAUL MN 55122 PO LOBBY: 7 MARLBORO RD, TROY NH 03465",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-11 rematch-drop residual: Troy NH USPS address must stay dropped"
+  },
+  {
+    "id": "tn-troy-guard-denver-chef-0911",
+    "text": "Executive chef Troy Guard brings his Michelin-recommended restaurant to a 10th-floor space with skyline views.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-11 rematch-drop residual: person-name Troy Guard must stay dropped"
+  },
+  {
+    "id": "tp-east-greenbush-missing-0911",
+    "text": "Newlywed wife begs missing diabetic husband to come home",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Julianna Zyra pleads for her missing husband Dominick Bianchi, a Type 1 diabetic, to return home as police continue their search in East Greenbush, New York.",
+    "note": "2026-09-11 TP: East Greenbush missing-person wire via embed"
+  },
+  {
+    "id": "tn-town-of-albany-wi-council-0911",
+    "text": "Somebody looked up 08.24.26 Council Meeting — you can now search a transcript of that meeting and link to specific timestamps at https://redtaperecordings.com/m/town-of-albany-2026-08-24-08-24-26-council-meeting\n\nTown of Albany — 2026-08-24",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-11 rematch-drop residual: Town of Albany WI council transcript must stay bare_albany drop"
+  },
+  {
+    "id": "fp-venezuela-capital-region-0912",
+    "text": "How Organized Communities Are Rebuilding in the Wake of Venezuela’s Twin Earthquakes",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "At 3:55 a.m. on June 25, Carlos sent word from La Guaira that his family survived the twin earthquakes that shook Venezuela’s capital region hours earlier.",
+    "note": "2026-09-12 audit FP: Venezuela capital region / CounterPunch La Guaira card"
+  },
+  {
+    "id": "tp-venezuela-capital-region-albany-rescue-0912",
+    "text": "Capital Region students visited Caracas after studying Venezuela’s capital region, then returned to #AlbanyNY.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-12 TP counterpart: NY Capital Region cue rescues Venezuela phrase"
+  },
+  {
+    "id": "fp-troy-conner-spartanburg-0912",
+    "text": "Seventh Circuit Solicitor Barry Barnette explained Christopher Kastner tracked his wife to the tattoo shop, attacked her, and then shot Troy Conner.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "Suspect accused of Upstate tattoo shop murder denied bond. Spartanburg County shooting left a man dead.",
+    "note": "2026-09-12 audit FP: person Troy Conner + Upstate Spartanburg SC unlocked Troy"
+  },
+  {
+    "id": "tp-troy-ny-dinner-0912",
+    "text": "Dinner in Troy, New York tonight.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-12 TP counterpart for Troy Conner / Spartanburg gate"
+  },
+  {
+    "id": "fp-bethlehem-area-liberty-freedom-0912",
+    "text": "Bethlehem Area students remember 9/11 first responders by climbing 110 flights of steps",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Over 2,000 Liberty and Freedom high school students climbed 110 flights in honor of the floors New York firefighters climbed on Sept. 11, 2001.",
+    "note": "2026-09-12 audit FP: Bethlehem Area PA / Liberty & Freedom HS unlocked by New York firefighters"
+  },
+  {
+    "id": "fp-bethlehem-lehigh-valley-mcall-0912",
+    "text": "From my longtime news home... #LehighValley #Allentown #Bethlehem #Easton #Pa07 mcall.com",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-12 audit FP: Morning Call / Lehigh Valley Bethlehem hashtags + New York 9/11 card"
+  },
+  {
+    "id": "tp-bethlehem-ny-board-0912",
+    "text": "Town of Bethlehem, NY board meeting tonight.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-12 TP counterpart for Bethlehem PA Lehigh Valley gate"
+  },
+  {
+    "id": "tp-brook-tavern-saratoga-0912",
+    "text": "Brook Tavern in Saratoga is sold, minimal changes planned.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-12 audit FN: Brook Tavern Saratoga dining without Springs/NY"
+  },
+  {
+    "id": "tp-stillwater-burgoyne-0912",
+    "text": "On Sept. 11, 1777, the American army waited at Stillwater for Burgoyne.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-12 audit FN: Stillwater + Burgoyne battlefield without #Saratoga250"
+  },
+  {
+    "id": "tp-section2-shaker-colonie-0912",
+    "text": "Section 2 football: Shaker vs Colonie at 7 tonight.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-12 audit FN: Section 2 football without Saratoga Springs cue"
+  },
+  {
+    "id": "tp-pine-bush-observatory-0912",
+    "text": "Pine Bush Observatory open house this weekend.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-12 audit FN: Pine Bush Observatory (beyond Preserve trails)"
+  },
+  {
+    "id": "tp-town-of-halfmoon-board-0912",
+    "text": "Town of Halfmoon board meeting tonight.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-12 audit FN: Town of Halfmoon civic copy without NY token"
+  },
+  {
+    "id": "tn-malta-valletta-byteseu-0912",
+    "text": "Malta, Opposition to present 10 reforms on Daphne Caruana Galizia inquiry  VALLETTA (MALTA)",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-12 rematch-drop residual: EU Malta / Valletta must stay dropped"
+  },
+  {
+    "id": "tn-brunswick-maine-mobile-home-0912",
+    "text": "Man accused of shooting, killing his neighbor at Brunswick mobile home park — #MaineNews #LocalTV #Video",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-12 rematch-drop residual: Brunswick Maine must stay dropped"
+  },
+  {
+    "id": "tn-saratoga-ca-constituent-0912",
+    "text": "From a constituent in Saratoga, CA",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-12 rematch-drop residual: Saratoga CA must stay dropped"
+  },
+  {
+    "id": "tp-waterford-ny-hudson-vessel-0912",
+    "text": "VesselAlert Dest.: From LAFARGE BUILDING MATERIALS INC., Hudson River NY Mouth of Spuyten Duyvil Creek to Waterford NY",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-12 TP: Hudson River vessel destination Waterford NY remains keep"
+  },
+  {
+    "id": "tp-stillwater-1777-battlefield-0912",
+    "text": "Stand at Stillwater today and the landscape looks quiet. In Sept. 1777, thousands of soldiers were preparing for battle. The Hudson, heights, roads and ravines shaped their choices.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-12 audit FN: Stillwater battlefield 1777 tourism without Burgoyne/#Saratoga250"
   }
 ]
