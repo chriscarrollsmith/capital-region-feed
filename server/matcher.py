@@ -149,6 +149,29 @@ _STRONG_POSITIVE = re.compile(
       # Town of Halfmoon civic copy often omits ", NY".
       | town\s+of\s+halfmoon\b
       | halfmoon\s+(?:town\s+)?(?:board|council|ceremony|ceremonies)\b
+      # Town of Malta / GlobalFoundries campus copy often omits ", NY".
+      | town\s+of\s+malta\b
+      | malta\s+(?:town\s+)?(?:board|council|planning)\b
+      | globalfoundries[\s\S]{0,100}\bmalta\b
+      | \bmalta\b[\s\S]{0,100}globalfoundries
+      # Distinctive Cap Region transit / parks / venues / festivals.
+      | \bcdta\b
+      | howe\s+caverns?\b
+      | secret\s+caverns?\b
+      | \buss\s+slater\b
+      | \blarkfest\b
+      | \bpearlpalooza\b
+      | five\s+rivers(?:\s+environmental)?\b
+      | indian\s+ladder(?:\s+trail)?\b
+      | thacher\s+park\b
+      | collar\s+city\b
+      | canfield\s+casino\b
+      | vischer\s+ferry\b
+      | hart\s+cluett\b
+      | burden\s+iron\s+works\b
+      | bombers\s+burrito(?:\s+bar)?\b
+      | \bwamc\b
+      | siena\s+(?:college|saints)\b
       # Named Grade 1 / meet stakes at the Race Course often omit ", NY".
       | (?:h\.?\s*allen\s+)?jerkens(?:\s+memorial)?\b
       | \bgrade\s+[123i]+\s+forego\b
@@ -1598,6 +1621,21 @@ _MALTA_EUROPE = re.compile(
       | \brotterdam\b[\s\S]{0,200}(?:tribeca|jeddah|\#?venice\d*|venice\s+film)
       | (?:tribeca|jeddah|\#?venice\d*|venice\s+film)[\s\S]{0,200}\brotterdam\b
       | georgian\s+filmmaker
+      # German oil-market wires list NL Rotterdam with New York / Frankfurt exchanges.
+      | \bniederlanden\b
+      | \bniederlande\b
+      | \bniederl[aä]nd(?:isch|ische|ischer|isches)?\b
+      | frankfurt\s+am\s+main\b
+      | \bb[oö]rsen\b
+      | \b[oö]lpreis(?:es)?\b
+      | oil\s+(?:price|market|hub)[\s\S]{0,140}\brotterdam\b
+      | \brotterdam\b[\s\S]{0,140}oil\s+(?:price|market|hub)
+      | \brotterdam\b[\s\S]{0,180}(?:
+            frankfurt|niederlanden|niederlande|\bbrd\b|saudi|yemen|houthi|huthi
+          )
+      | (?:
+            frankfurt|niederlanden|niederlande|\bbrd\b|saudi|yemen|houthi|huthi
+          )[\s\S]{0,180}\brotterdam\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
