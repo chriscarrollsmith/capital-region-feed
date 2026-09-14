@@ -230,6 +230,17 @@ def test_boston_open_streets_river_street_not_local_micro() -> None:
     assert match_post('Art walk on River Street in Troy this Saturday at noon.').matched is True
 
 
+def test_pa_traffic_cam_river_street_not_local_micro() -> None:
+    pa = match_post(
+        'I-81 @ EXIT 184 (PA 307 RIVER STREET)\n'
+        '🕒 2:42 AM - 2:43 AM ET (3x speed)\n'
+        '🌡️ 65°F | Clear\n\n'
+        '📍: 41.393290,-75.650790'
+    )
+    assert pa.matched is False
+    assert match_post('Open mic tomorrow on River Street — sign-ups start at 6.').matched is True
+
+
 def test_film_noir_99_river_street_not_local_micro() -> None:
     film = match_post(
         'Out tomorrow on the Boxing Movie Podcast: a #filmnoir classic, 99 River Street. '
@@ -237,6 +248,28 @@ def test_film_noir_99_river_street_not_local_micro() -> None:
     )
     assert film.matched is False
     assert match_post('Open mic tomorrow on River Street — sign-ups start at 6.').matched is True
+
+
+def test_orlando_pine_hills_flood_not_local_micro() -> None:
+    fl = match_post(
+        'Flash Flood Warning in effect until 7:30 PM for west central Orange County, '
+        'including Orlando, Ocoee, Windermere, and Pine Hills, where 2-3 inches have '
+        'already fallen. Stay with #weshwx for updates.'
+    )
+    assert fl.matched is False
+    assert match_post('Block party this Saturday in Pine Hills — bring a dish.').matched is True
+
+
+def test_mississippi_crossgates_blvd_traffic_cam_not_local_micro() -> None:
+    ms = match_post(
+        'Crossgates Blvd N at US 80\n'
+        '🕒 1:07 PM - 1:08 PM CT (3x speed)\n'
+        '🌡️ 91°F | Partly Cloudy\n\n'
+        '📍: 32.283720,-90.035330'
+    )
+    assert ms.matched is False
+    assert match_post('Holiday hours at Crossgates Mall this weekend.').matched is True
+    assert match_post('Holiday hours at Crossgates this weekend.').matched is True
 
 
 def test_classify_drops_bare_albany_event_without_micro() -> None:
