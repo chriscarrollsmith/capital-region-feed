@@ -7922,5 +7922,296 @@
     "split": "dev",
     "regression": true,
     "note": "2026-09-12 audit FN: Stillwater battlefield 1777 tourism without Burgoyne/#Saratoga250"
+  },
+  {
+    "id": "fp-crossgates-blvd-ms-traffic-cam-0914",
+    "text": "Crossgates Blvd N at US 80\n🕒 1:07 PM - 1:08 PM CT (3x speed)\n🌡️ 91°F | Partly Cloudy\n\n📍: 32.283720,-90.035330",
+    "expected": false,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-14 FP: Mississippi Crossgates Blvd US 80 traffic cam unlocked classifier:local_micro via time-of-day event cue"
+  },
+  {
+    "id": "tp-crossgates-mall-hours-0914",
+    "text": "Holiday hours at Crossgates Mall this weekend.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-14 TP counterpart: Crossgates Mall remains keep"
+  },
+  {
+    "id": "tp-crossgates-bare-weekend-0914",
+    "text": "Holiday hours at Crossgates this weekend.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "ambiguous_classifier",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-14 TP: bare Crossgates + weekend event still keeps via classifier"
+  },
+  {
+    "id": "fp-rotterdam-nl-oil-boersen-0914",
+    "text": "Ab Montag wird mit massivem Anstieg des Ölpreises gerechnet an den Börsen in New York in den USA u. Rotterdam in den Niederlanden u. Frankfurt am Main in der BRD!",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-14 FP: German oil-market wire New York+Rotterdam Niederlanden unlocked ambiguous_with_context:rotterdam"
+  },
+  {
+    "id": "tp-rotterdam-ny-town-board-0914",
+    "text": "Town board meeting in Rotterdam, NY tonight.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-14 TP counterpart: Town of Rotterdam NY remains keep"
+  },
+  {
+    "id": "tp-bjs-rotterdam-hiring-0914",
+    "text": "BJ's Warehouse Club in Rotterdam is hiring.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-14 TP: BJ's Rotterdam NY warehouse remains keep"
+  },
+  {
+    "id": "fn-town-of-malta-community-day-0914",
+    "text": "Town of Malta community day this Saturday.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-14 FN: Town of Malta civic without , NY"
+  },
+  {
+    "id": "fn-globalfoundries-malta-0914",
+    "text": "GlobalFoundries Malta campus hiring fair next week.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-14 FN: GlobalFoundries + Malta campus without , NY"
+  },
+  {
+    "id": "fn-cdta-route-schedule-0914",
+    "text": "CDTA route 12 schedule changes Monday.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-14 FN: Capital District Transportation Authority acronym"
+  },
+  {
+    "id": "fn-howe-caverns-field-trip-0914",
+    "text": "Howe Caverns school field trip Friday.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-14 FN: Howe Caverns tourism"
+  },
+  {
+    "id": "fn-uss-slater-tours-0914",
+    "text": "USS Slater destroyer escort tours this Sunday.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-14 FN: USS Slater museum ship"
+  },
+  {
+    "id": "fn-larkfest-weekend-0914",
+    "text": "LarkFest street festival this weekend.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-14 FN: LarkFest street festival"
+  },
+  {
+    "id": "fn-pearlpalooza-0914",
+    "text": "Pearlpalooza downtown this weekend.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-14 FN: Pearlpalooza downtown festival"
+  },
+  {
+    "id": "fn-five-rivers-0914",
+    "text": "Five Rivers Environmental Education Center programs.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-14 FN: Five Rivers environmental center"
+  },
+  {
+    "id": "fn-indian-ladder-trail-0914",
+    "text": "Indian Ladder Trail open for hiking.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-14 FN: Indian Ladder Trail at Thacher"
+  },
+  {
+    "id": "fn-thacher-park-0914",
+    "text": "Thacher Park overlook hike Sunday.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-14 FN: Thacher Park without State"
+  },
+  {
+    "id": "fn-collar-city-tweed-0914",
+    "text": "Collar City Tweed Ride Sunday.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-14 FN: Collar City Troy nickname event"
+  },
+  {
+    "id": "fn-canfield-casino-0914",
+    "text": "Canfield Casino ghost tour tickets.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-14 FN: Canfield Casino Saratoga"
+  },
+  {
+    "id": "fn-vischer-ferry-0914",
+    "text": "Vischer Ferry firefighters respond to a garage fire.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-14 FN: Vischer Ferry civic"
+  },
+  {
+    "id": "fn-hart-cluett-0914",
+    "text": "Hart Cluett Museum exhibit opens.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-14 FN: Hart Cluett Museum Troy"
+  },
+  {
+    "id": "fn-burden-iron-works-0914",
+    "text": "Burden Iron Works museum Saturday.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-14 FN: Burden Iron Works Troy"
+  },
+  {
+    "id": "fn-bombers-burrito-0914",
+    "text": "Bombers Burrito Bar downtown special.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-14 FN: Bombers Burrito Bar"
+  },
+  {
+    "id": "fn-wamc-roundtable-0914",
+    "text": "WAMC Roundtable tomorrow morning.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-14 FN: WAMC public radio"
+  },
+  {
+    "id": "fn-siena-saints-0914",
+    "text": "Siena Saints tip off tonight.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-14 FN: Siena Saints athletics"
+  },
+  {
+    "id": "fn-secret-caverns-0914",
+    "text": "Secret Caverns after dark tour.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-14 FN: Secret Caverns tourism"
+  },
+  {
+    "id": "tp-ballston-spa-resist-0914",
+    "text": "From a constituent in Ballston Spa, NY",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-14 TP: Ballston Spa NY constituent letter remains keep"
+  },
+  {
+    "id": "tp-waterford-ny-who-is-she-0914",
+    "text": "youtube.com/shorts/iS4gM...",
+    "expected": true,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Waterford NY, Who is she? YouTube video by TizzyEnt",
+    "note": "2026-09-14 TP: Waterford NY viral video cluster remains keep"
+  },
+  {
+    "id": "tn-malta-poker-portomaso-0914",
+    "text": "From Riga to Malta: Mark Twin Celebrates Title, The Festival Continues at Portomaso Casino",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-14 rematch-drop residual: European Malta poker festival stays dropped"
+  },
+  {
+    "id": "tn-east-brunswick-nj-job-0914",
+    "text": "Jp Management Llc is hiring a Maintenance Manager (live-in)! East Brunswick, NJ onsite",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-14 rematch-drop residual: East Brunswick NJ stays dropped"
   }
 ]
