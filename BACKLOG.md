@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-096 — Daily feed audit: MS Crossgates Blvd traffic cam, Rotterdam NL oil Börsen; Town of Malta / CDTA / Howe Caverns / local venue FNs
-- **Status:** in progress
+- **Status:** done ([#73](https://github.com/chriscarrollsmith/capital-region-feed/pull/73))
 - **Why:** 2026-09-14 audit of last-24h AppView feed (~141 posts since 2026-09-13T09:03Z)
   found active FPs after #72 (still open): Mississippi `Crossgates Blvd` / US 80 traffic
   cam (Jackson coords, CT clock) unlocked `classifier:local_micro` via time-of-day event
