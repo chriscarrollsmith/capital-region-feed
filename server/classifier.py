@@ -99,6 +99,9 @@ _CENTER_SQUARE_WIRE = re.compile(
       | [-–—]\s*the\s+center\s+square\b
       | \band\s+the\s+center\s+square\b
       | the\s+center\s+square\s+reports\b
+      # NewsBreak / aggregator bylines: "Source: The Center Square".
+      | (?:source|via|byline)\s*:\s*the\s+center\s+square\b
+      | newsbreak[\s\S]{0,100}the\s+center\s+square\b
       | (?:reporting\s+by|according\s+to(?:\s+reporting\s+by)?|
             (?:document\s+)?obtained\s+by)\b
         [\s\S]{0,100}the\s+center\s+square\b
@@ -152,6 +155,15 @@ _RIVER_STREET_OTHER = re.compile(
             \bboston\b|\bmattapan\b|blue\s+hill\s+avenue|babson\s+street|
             \.boston\.gov\b|open\s+streets\s+boston
           )
+      # PA traffic cams (I-81 / PA 307 River Street) — not Troy's corridor.
+      | (?:
+            \bi-?81\b|\bpa\s*307\b|\#pa\b|\bpennsylvania\b|
+            patraffic|traffic\s+cams?\b|\bscranton\b|wilkes[- ]barre
+          )[\s\S]{0,280}river\s+street
+      | river\s+street[\s\S]{0,280}(?:
+            \bi-?81\b|\bpa\s*307\b|\#pa\b|\bpennsylvania\b|
+            patraffic|traffic\s+cams?\b|\bscranton\b|wilkes[- ]barre
+          )
       # 1953 film noir / boxing-movie podcast — not Troy's corridor.
       | \b99\s+river\s+street\b
       | (?:
@@ -168,6 +180,7 @@ _RIVER_STREET_OTHER = re.compile(
 )
 
 # St. Tammany / Louisiana "Crossgates" wastewater — not Crossgates Mall.
+# Also Mississippi "Crossgates Blvd" traffic cams (US 80 / Jackson / CT zone).
 _CROSSGATES_OTHER = re.compile(
     r"""
     (?:
@@ -181,6 +194,40 @@ _CROSSGATES_OTHER = re.compile(
             tammany|\#tammanyparish\b|\#sttammany|
             \#la\b|\blouisiana\b|citizenportal|citizen\s+portal
           )[\s\S]{0,160}crossgates
+      # Pearl / Rankin County MS: Crossgates Blvd at US 80 (not Guilderland mall).
+      | crossgates\s+(?:blvd|boulevard|ave|avenue|rd|road)\b
+      | crossgates[\s\S]{0,220}(?:
+            \bus\s*[- ]?80\b|\bi-?55\b|\bmississippi\b|\#ms\b|\#mswx\b|
+            jackson\s*,?\s*ms\b|mstrafficcams|pearl\s*,?\s*ms\b|
+            rankin\s+county
+          )
+      | (?:
+            \bus\s*[- ]?80\b|\bi-?55\b|\bmississippi\b|\#ms\b|\#mswx\b|
+            jackson\s*,?\s*ms\b|mstrafficcams|pearl\s*,?\s*ms\b|
+            rankin\s+county
+          )[\s\S]{0,220}crossgates
+      # Traffic-cam clocks in Central Time near Crossgates (Albany is Eastern).
+      | crossgates[\s\S]{0,140}\b\d{1,2}:\d{2}\s*(?:am|pm)\b[\s\S]{0,48}\bct\b
+      | \b\d{1,2}:\d{2}\s*(?:am|pm)\b[\s\S]{0,48}\bct\b[\s\S]{0,140}crossgates
+      # Jackson MS lat/lon band (~32N, 90W) on traffic-cam overlays.
+      | crossgates[\s\S]{0,200}3[12]\.\d{2,}\s*,\s*-?90\.\d{2,}
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Orlando / Orange County FL "Pine Hills" flood wires — not Albany's Pine Hills.
+_PINE_HILLS_FL = re.compile(
+    r"""
+    (?:
+        pine\s+hills[\s\S]{0,280}(?:
+            \borlando\b|\bocoee\b|\bwindermere\b|\#weshwx\b|\bwesh\b|
+            orange\s+county|\bflorida\b|\#flwx\b|\#florida\b
+          )
+      | (?:
+            \borlando\b|\bocoee\b|\bwindermere\b|\#weshwx\b|\bwesh\b|
+            orange\s+county|\bflorida\b|\#flwx\b|\#florida\b
+          )[\s\S]{0,280}pine\s+hills
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -206,6 +253,9 @@ def _local_micro_hits(haystack: str) -> list[str]:
     # Drop Crossgates when Louisiana / Tammany wastewater cues dominate.
     if _CROSSGATES_OTHER.search(scan):
         hits = [h for h in hits if 'crossgates' not in h.lower()]
+    # Drop Pine Hills when Orlando / Orange County FL flood cues dominate.
+    if _PINE_HILLS_FL.search(scan):
+        hits = [h for h in hits if 'pine' not in h.lower() or 'hills' not in h.lower()]
     return hits
 
 
