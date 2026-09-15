@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-097 — Daily feed audit: Center Square Source byline, email proctors, Bristol Clifton Park; Bethlehem / Universal Preservation Hall / Houston Field House FNs
-- **Status:** in progress
+- **Status:** done ([#74](https://github.com/chriscarrollsmith/capital-region-feed/pull/74))
 - **Why:** 2026-09-15 audit of last-24h AppView feed (~161 posts since 2026-09-14T09:02Z)
   found active FPs after #73 (still open): NewsBreak `Source: The Center Square` + August
   month cue unlocked `classifier:local_micro` (paren byline scrub left the Source: form);
