@@ -193,6 +193,19 @@ def test_center_square_wire_byline_is_not_local_micro() -> None:
     )
     assert reports.matched is False
 
+    # NewsBreak "Source: The Center Square" body byline + month cue.
+    source = match_post(
+        'Rural, Latino, Trump voters hit hard by USPS delays as SCOTUS halts changes\n'
+        'Source: The Center Square\n'
+        'share.newsbreak.com/jlg0j17n',
+        alt_text=(
+            'Rural, Latino, Trump voters hit hard by USPS delays as SCOTUS halts changes '
+            '- NewsBreak (The Center Square) - More than 20,000 ballots were rejected in '
+            "Washington's August primary after U.S. Postal Service policy changes"
+        ),
+    )
+    assert source.matched is False
+
 
 def test_crossgates_tammany_and_chippewa_river_street_not_local_micro() -> None:
     la = match_post(

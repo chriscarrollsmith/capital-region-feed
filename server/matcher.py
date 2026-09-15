@@ -154,6 +154,10 @@ _STRONG_POSITIVE = re.compile(
       | malta\s+(?:town\s+)?(?:board|council|planning)\b
       | globalfoundries[\s\S]{0,100}\bmalta\b
       | \bmalta\b[\s\S]{0,100}globalfoundries
+      # Town of Bethlehem NY civic / library copy often omits ", NY".
+      | town\s+of\s+bethlehem\b
+      | bethlehem\s+(?:town\s+)?(?:board|council|planning)\b
+      | bethlehem\s+public\s+library\b
       # Distinctive Cap Region transit / parks / venues / festivals.
       | \bcdta\b
       | howe\s+caverns?\b
@@ -172,6 +176,15 @@ _STRONG_POSITIVE = re.compile(
       | bombers\s+burrito(?:\s+bar)?\b
       | \bwamc\b
       | siena\s+(?:college|saints)\b
+      # Saratoga / RPI / Albany museums & halls often omit ", NY".
+      | universal\s+preservation\s+hall\b
+      | houston\s+field\s+house\b
+      | albany\s+institute(?:\s+of\s+history\s*(?:&|and)\s*art)?\b
+      # America250 Revolutionary tourism with Stillwater (as with Saratoga).
+      | \bamerica\s*250\b[\s\S]{0,120}\bstillwater\b
+      | \bstillwater\b[\s\S]{0,120}\bamerica\s*250\b
+      # Albany Washington Park market — distinctive enough without event cues.
+      | washington\s+park\s+farmers?\s+markets?\b
       # Named Grade 1 / meet stakes at the Race Course often omit ", NY".
       | (?:h\.?\s*allen\s+)?jerkens(?:\s+memorial)?\b
       | \bgrade\s+[123i]+\s+forego\b
@@ -1823,6 +1836,7 @@ _LOUDONVILLE_OH = re.compile(
 # Clifton Park (York / Rotherham, England) — not Clifton Park, NY.
 # Watersplash is the Rotherham council paddling pool; handles like
 # rotherhamcouncil often omit "Rotherham" in the body.
+# Bristol UK bus bots ("Citylines" / inbound route opposite Clifton Park) likewise.
 _CLIFTON_PARK_UK = re.compile(
     r"""
     (?:
@@ -1835,6 +1849,26 @@ _CLIFTON_PARK_UK = re.compile(
       | \.gov\.uk\b
       | south\s+yorkshire
       | \bwatersplash\b
+      | \bbristol\b
+      | \bcitylines\b
+      | \binbound\s+\d+\b
+      | bus\s+bot
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Academic exam proctors — not Schenectady's Proctors theatre.
+# Time-of-day event cues ("3:30 pm") otherwise unlock event_local_venue:proctors.
+_PROCTORS_ACADEMIC = re.compile(
+    r"""
+    (?:
+        \bemail\s+proctors\b
+      | \b(?:contact|notify|message|text|call|ask)\s+(?:the\s+)?proctors\b
+      | \bproctors?\s+(?:exam|exams|midterms?|finals?|office\s+hours)\b
+      | \bproctor\s+(?:an?\s+)?exam\b
+      | grade\s+syncing
+      | letter\s+of\s+rec(?:ommendation)?\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -3484,7 +3518,7 @@ def _rensselaer_indiana_conflict(haystack: str) -> bool:
 
 
 def _clifton_park_uk_conflict(haystack: str, author_handle: str | None = None) -> bool:
-    """True when Clifton Park refers to York/Rotherham (England), not NY."""
+    """True when Clifton Park refers to York/Rotherham/Bristol (England), not NY."""
     if not re.search(r'clifton\s+park', haystack, flags=re.IGNORECASE):
         return False
     if re.search(
@@ -3498,10 +3532,32 @@ def _clifton_park_uk_conflict(haystack: str, author_handle: str | None = None) -
     if _CLIFTON_PARK_UK.search(haystack):
         return True
     # Council accounts often omit "Rotherham" in Watersplash / park promo copy.
+    # Bristol UK bus bots omit "Bristol" when the handle already says bristol.
     handle = (author_handle or '').strip().lower()
-    if re.search(r'rotherham', handle):
+    if re.search(r'rotherham|bristol', handle):
         return True
     return False
+
+
+def _proctors_academic_conflict(haystack: str) -> bool:
+    """True when Proctors means exam proctors, not the Schenectady theatre."""
+    if not re.search(r'\bproctors\b', haystack, flags=re.IGNORECASE):
+        return False
+    # Theatre / show cues keep.
+    if re.search(
+        r"""
+        (?:
+            \bat\s+proctors\b
+          | proctors\s+(?:theatre|theater|collaborative|presents)
+          | \bproctors\b[\s\S]{0,48}\b(?:tickets?|doors|sold\s+out|comedy|concert|show)\b
+          | \b(?:tickets?|doors|sold\s+out|comedy|concert|show)\b[\s\S]{0,48}\bproctors\b
+        )
+        """,
+        haystack,
+        flags=re.IGNORECASE | re.VERBOSE,
+    ):
+        return False
+    return bool(_PROCTORS_ACADEMIC.search(haystack))
 
 
 def _clifton_park_md_conflict(haystack: str, author_handle: str | None = None) -> bool:
@@ -3558,6 +3614,19 @@ def _soft_prior_ambiguous(
     return None
 
 
+def _has_local_event_venue(haystack: str) -> bool:
+    """True when a Cap Region venue token is present and not an off-region collision."""
+    match = _LOCAL_EVENT_VENUE.search(haystack)
+    if not match:
+        return False
+    venue = match.group(0).lower()
+    if 'egg' in venue and _egg_kansas_city_conflict(haystack):
+        return False
+    if 'proctor' in venue and _proctors_academic_conflict(haystack):
+        return False
+    return True
+
+
 def _match_local_event(haystack: str) -> MatchResult | None:
     """Keep regional events when a local venue appears with event phrasing."""
     if not _EVENT_CUE.search(haystack):
@@ -3568,6 +3637,9 @@ def _match_local_event(haystack: str) -> MatchResult | None:
     venue = re.sub(r'\s+', ' ', match.group(0).lower())
     # Kansas City's Egg and Art Garden must not unlock Albany's The Egg.
     if 'egg' in venue and _egg_kansas_city_conflict(haystack):
+        return None
+    # Academic "email proctors" / "proctor exam" must not unlock Proctors theatre.
+    if 'proctor' in venue and _proctors_academic_conflict(haystack):
         return None
     return MatchResult(True, f'event_local_venue:{venue}')
 
@@ -3583,7 +3655,7 @@ def _classifier_keep(
         haystack,
         term=term,
         has_event_cue=bool(_EVENT_CUE.search(haystack)),
-        has_local_venue=bool(_LOCAL_EVENT_VENUE.search(haystack)),
+        has_local_venue=_has_local_event_venue(haystack),
         model=model,
     )
     if decision is None:
