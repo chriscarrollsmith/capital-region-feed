@@ -538,6 +538,28 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-097 — Daily feed audit: Center Square Source byline, email proctors, Bristol Clifton Park; Bethlehem / Universal Preservation Hall / Houston Field House FNs
+- **Status:** in progress
+- **Why:** 2026-09-15 audit of last-24h AppView feed (~161 posts since 2026-09-14T09:02Z)
+  found active FPs after #73 (still open): NewsBreak `Source: The Center Square` + August
+  month cue unlocked `classifier:local_micro` (paren byline scrub left the Source: form);
+  academic `Email proctors` / `Proctor exam` + `3:30 pm` unlocked `event_local_venue:proctors`;
+  Bristol UK bus bot `Clifton Park` + Citylines/inbound unlocked bare `clifton park` strong.
+  FNs: Town of Bethlehem / Bethlehem Public Library; Universal Preservation Hall (Saratoga
+  Springs Wish Benefit card rematch-dropped); Houston Field House; Albany Institute;
+  America250+Stillwater; Washington Park farmers market. ~39 stale AppView rematch-drops
+  (Malta/Rotterdam/Troy/Brunswick). AppView `searchPosts` still often 403. Waterford NY
+  viral video remains TP. Residual: bare Albany job spam; allowlisted non-local;
+  marketplace Cap Region ship-from towns.
+- **Work:**
+  - Expand Center Square wire scrub for `Source:` / NewsBreak bylines; academic Proctors
+    conflict for exam-proctor copy; expand Clifton Park UK with Bristol/Citylines/inbound
+    + bristol handles; strong positives for Town of Bethlehem / Universal Preservation Hall /
+    Houston Field House / Albany Institute / America250+Stillwater / Washington Park farmers
+    market; grow eval with 2026-09-15 FP/TP/FN anchors (builds on #73 / B-096).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-096 — Daily feed audit: MS Crossgates Blvd traffic cam, Rotterdam NL oil Börsen; Town of Malta / CDTA / Howe Caverns / local venue FNs
 - **Status:** done ([#73](https://github.com/chriscarrollsmith/capital-region-feed/pull/73))
 - **Why:** 2026-09-14 audit of last-24h AppView feed (~141 posts since 2026-09-13T09:03Z)
