@@ -243,6 +243,19 @@ def test_boston_open_streets_river_street_not_local_micro() -> None:
     assert match_post('Art walk on River Street in Troy this Saturday at noon.').matched is True
 
 
+def test_cape_town_soetriver_street_not_local_micro() -> None:
+    cape = match_post(
+        'Burst Water Main - Closed\n'
+        'Soetriver Street, Bothasig\n'
+        'Sep 15, 10:00 AM\n'
+        'Water streaming down both sides of the road. Maintenance team conducted repairs.\n'
+        '#WaterAndSanitation #CapeTown',
+        author_handle='coct-service-alerts.mastodon.africa.ap.brid.gy',
+    )
+    assert cape.matched is False
+    assert match_post('Open mic tomorrow on River Street — sign-ups start at 6.').matched is True
+
+
 def test_pa_traffic_cam_river_street_not_local_micro() -> None:
     pa = match_post(
         'I-81 @ EXIT 184 (PA 307 RIVER STREET)\n'

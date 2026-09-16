@@ -30,7 +30,8 @@ _DISTINCTIVE_LOCAL_MICRO = re.compile(
       | corning\s+preserve
       | crossgates(?:\s+mall)?
       | stuyvesant\s+plaza
-      | river\s+street
+      # Word-boundary: Cape Town "Soetriver Street" must not match "river Street".
+      | \briver\s+street
       | new\s+scotland\s+(?:avenue|ave|road|rd)\b
       | empire\s+state\s+plaza
       | buckingham\s+lake
