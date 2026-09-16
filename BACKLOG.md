@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-098 — Daily feed audit: Indivisible BR / Allison Hill capital region, Cape Town Soetriver, Greater Albany OR; Palace / Ichabod / Howes Cave / #518 FNs
-- **Status:** in progress
+- **Status:** done ([#75](https://github.com/chriscarrollsmith/capital-region-feed/pull/75))
 - **Why:** 2026-09-16 audit of last-24h AppView feed (~158 posts since 2026-09-15T09:03Z)
   found active FPs after #74 (still open): Indivisible Baton Rouge GOTV `Capital Region`
   (handle/URL without parish names); Harrisburg `United Way of the Capital Region` +
