@@ -8213,5 +8213,148 @@
     "split": "dev",
     "regression": true,
     "note": "2026-09-14 rematch-drop residual: East Brunswick NJ stays dropped"
+  },
+  {
+    "id": "fp-center-square-source-byline-usps-0915",
+    "text": "Rural, Latino, Trump voters hit hard by USPS delays as SCOTUShalts changes\nSource: The Center Square\nshare.newsbreak.com/jlg0j17n",
+    "expected": false,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Rural, Latino, Trump voters hit hard by USPS delays as SCOTUShalts changes - NewsBreak (The Center Square) - More than 20,000 ballots were rejected in Washington's August primary after U.S. Postal Service policy changes, with rural and Latino",
+    "note": "2026-09-15 audit: NewsBreak Source: The Center Square byline + August month cue unlocked classifier:local_micro"
+  },
+  {
+    "id": "tp-center-square-lark-weekend-0915",
+    "text": "Coffee on Lark Street in Center Square this weekend",
+    "expected": true,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-15 audit: Cap Region Center Square counterpart to Source: wire FP"
+  },
+  {
+    "id": "fp-email-proctors-todo-list-0915",
+    "text": "Here's what my must-do to-do list for today looks like at 3:30 pm.\n\n1. Answer urgent emails\n2. Record announcement video\n3. Email proctors\n4. Fix grade syncing\n5. Letter of rec\n6. Prep for class tomorrow\n7. Lab setup\n8. Groceries\n9. Make dinner\n10. Proctor exam",
+    "expected": false,
+    "signal": "event",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-15 audit: academic email proctors + 3:30 pm unlocked event_local_venue:proctors"
+  },
+  {
+    "id": "tp-proctors-comedy-saturday-0915",
+    "text": "Comedy night at Proctors this Saturday — tickets on sale.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-15 audit: Proctors theatre counterpart to academic exam-proctor FP"
+  },
+  {
+    "id": "fp-bristol-clifton-park-citylines-0915",
+    "text": "The inbound 5 was right on time opposite Clifton Park. Wearing a Citylines East livery this far west is a mild geographical identity crisis, but punctuality forgives a lot.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "author_handle": "bristolbusbot.live",
+    "note": "2026-09-15 audit: Bristol UK bus bot Clifton Park matched bare clifton park strong"
+  },
+  {
+    "id": "tp-clifton-park-ny-water-main-0915",
+    "text": "Water main break on Carlton Road in Clifton Park, NY.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-15 audit: Cap Region Clifton Park counterpart to Bristol UK bus FP"
+  },
+  {
+    "id": "fn-town-of-bethlehem-board-0915",
+    "text": "Town of Bethlehem board meeting tonight on Delaware Ave",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-15 audit: Town of Bethlehem civic without , NY was ambiguous_no_context"
+  },
+  {
+    "id": "fn-bethlehem-public-library-0915",
+    "text": "Bethlehem Public Library hosts author night",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-15 audit: Bethlehem Public Library without , NY was ambiguous_no_context"
+  },
+  {
+    "id": "fn-universal-preservation-hall-0915",
+    "text": "Oteil Burbridge, LaMP Set to Perform on Wish Benefit Tour in Saratoga and Brooklyn",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Oteil Burbridge and LaMP are set to perform together at the Wish Benefit Tour at Universal Preservation Hall in Saratoga Springs on October 6 and Brooklyn Bowl on October 7.",
+    "note": "2026-09-15 audit: Universal Preservation Hall card rematch-dropped as ambiguous saratoga springs"
+  },
+  {
+    "id": "fn-houston-field-house-0915",
+    "text": "Show at RPI's Houston Field House tonight",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-15 audit: Houston Field House (RPI) had no strong/venue path"
+  },
+  {
+    "id": "fn-albany-institute-0915",
+    "text": "New show at the Albany Institute of History & Art",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-15 audit: Albany Institute bare_albany without institute strong"
+  },
+  {
+    "id": "fn-america250-stillwater-0915",
+    "text": "America250 events in Stillwater along the Hudson this weekend",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-15 audit: America250+Stillwater lacked Saratoga-style pairing"
+  },
+  {
+    "id": "fn-washington-park-farmers-market-0915",
+    "text": "See you at Washington Park farmers market Saturday",
+    "expected": true,
+    "signal": "event",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-15 audit: Washington Park farmers market needs strong path without month/this-saturday cue"
+  },
+  {
+    "id": "tp-sold-out-proctors-doors-0915",
+    "text": "Sold out night at Proctors — doors at 7pm",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-15 audit: Proctors theatre sold-out counterpart"
   }
 ]

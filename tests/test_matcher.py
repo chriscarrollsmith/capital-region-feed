@@ -764,6 +764,15 @@ def test_clifton_park_uk_cricket_not_ny() -> None:
     assert watersplash.matched is False
     assert watersplash.reason == 'hard_negative:clifton_park_uk'
 
+    # Bristol UK bus bots: Citylines / inbound route opposite Clifton Park.
+    bristol = match_post(
+        'The inbound 5 was right on time opposite Clifton Park. Wearing a '
+        'Citylines East livery this far west is a mild geographical identity crisis.',
+        author_handle='bristolbusbot.live',
+    )
+    assert bristol.matched is False
+    assert bristol.reason == 'hard_negative:clifton_park_uk'
+
     assert match_post('Water main break on Carlton Road in Clifton Park, NY.').matched is True
 
 
@@ -1317,6 +1326,15 @@ def test_proctors_theatre_not_surname_proctor() -> None:
         is False
     )
     assert match_post('Comedy night at Proctors this Saturday — tickets on sale.').matched is True
+
+    # Academic exam proctors + time-of-day cue must not unlock the theatre.
+    academic = match_post(
+        "Here's what my must-do to-do list for today looks like at 3:30 pm.\n\n"
+        '1. Answer urgent emails\n2. Record announcement video\n3. Email proctors\n'
+        '4. Fix grade syncing\n5. Letter of rec\n10. Proctor exam'
+    )
+    assert academic.matched is False
+    assert match_post('Sold out night at Proctors — doors at 7pm').matched is True
 
 
 def test_saratoga_race_course_and_spac_are_strong_positives() -> None:
@@ -3282,3 +3300,20 @@ def test_town_of_malta_cdta_and_local_venue_recall() -> None:
     assert match_post('WAMC Roundtable tomorrow morning.').matched is True
     assert match_post('Siena Saints tip off tonight.').matched is True
     assert match_post('Secret Caverns after dark tour.').matched is True
+
+
+def test_bethlehem_universal_hall_houston_institute_stillwater_recall() -> None:
+    assert match_post('Town of Bethlehem board meeting tonight on Delaware Ave.').matched is True
+    assert match_post('Bethlehem Public Library hosts author night.').matched is True
+    assert (
+        match_post(
+            'Wish Benefit Tour at Universal Preservation Hall in Saratoga Springs on October 6.'
+        ).matched
+        is True
+    )
+    assert match_post("Show at RPI's Houston Field House tonight.").matched is True
+    assert match_post('New show at the Albany Institute of History & Art.').matched is True
+    assert (
+        match_post('America250 events in Stillwater along the Hudson this weekend.').matched is True
+    )
+    assert match_post('See you at Washington Park farmers market Saturday.').matched is True
