@@ -97,6 +97,10 @@ _STRONG_POSITIVE = re.compile(
       # Albany music venue — often listed as "Albany: … @ Lark Hall" without ", NY".
       # Leading word boundary: "Peter Clark Hall" (Guelph) must not match "lark Hall".
       | \blark\s+hall\b
+      # Palace Theatre (Albany) — "Albany's Palace Theatre" concert wires.
+      | albany['\u2019]?s\s+palace\s+(?:theatre|theater)
+      | albany\s+palace\s+(?:theatre|theater)
+      | palace\s+(?:theatre|theater)\s+(?:albany|in\s+albany)
       # Capital Repertory Theatre (Albany) — hashtag #CapitalRep often omits venue cues.
       | \#?capitalrep\b
       | capital\s+rep(?:ertory)?\b
@@ -108,7 +112,8 @@ _STRONG_POSITIVE = re.compile(
       | \bon\s+i-?787\b
       | local\s*518
       # Prefer #518ny / #518area — bare #518 collides with train/jersey numbers.
-      | \#518(?:ny|area)\b
+      # Local sports/outdoors tags (#518hoops, #518outdoors) are Cap Region signal.
+      | \#518(?:ny|area|outdoors|hoops|hockey|bowling)\b
       # Hashtag forms omit the space inside "capital region/district".
       | \#capital(?:region|district)\b
       | reddit\.com/r/albany\b
@@ -162,6 +167,9 @@ _STRONG_POSITIVE = re.compile(
       | \bcdta\b
       | howe\s+caverns?\b
       | secret\s+caverns?\b
+      # Howes Cave hamlet / Iroquois Museum tourism often omit ", NY".
+      | howes?\s+cave\b
+      | iroquois\s+museum\b
       | \buss\s+slater\b
       | \blarkfest\b
       | \bpearlpalooza\b
@@ -176,6 +184,10 @@ _STRONG_POSITIVE = re.compile(
       | bombers\s+burrito(?:\s+bar)?\b
       | \bwamc\b
       | siena\s+(?:college|saints)\b
+      # Suburban Council districts / towns often omit ", NY".
+      | \bichabod\s+crane\b
+      | \bvalatie\b
+      | \bshenendehowa\b
       # Saratoga / RPI / Albany museums & halls often omit ", NY".
       | universal\s+preservation\s+hall\b
       | houston\s+field\s+house\b
@@ -438,8 +450,8 @@ _STRONG_POSITIVE = re.compile(
       | christian\s+brothers\s+academy\b
       | section\s+2[\s\S]{0,100}saratoga\s+springs\b
       | saratoga\s+springs[\s\S]{0,100}(?:christian\s+brothers|section\s+2)\b
-      | section\s+2[\s\S]{0,80}(?:\bshaker\b|\bniskayuna\b|\bcolonie\b|\bcba\b)
-      | (?:\bshaker\b|\bniskayuna\b|\bcolonie\b|\bcba\b)[\s\S]{0,80}section\s+2
+      | section\s+2[\s\S]{0,80}(?:\bshaker\b|\bniskayuna\b|\bcolonie\b|\bcba\b|\bbethlehem\b)
+      | (?:\bshaker\b|\bniskayuna\b|\bcolonie\b|\bcba\b|\bbethlehem\b)[\s\S]{0,80}section\s+2
       # Albany / Delmar care-facility wires often omit ", NY".
       | albany\s+center\s+for\s+independent\s+living\b
       | delmar\s+center\s+for\s+rehabilitation\b
@@ -663,13 +675,23 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
       | west\s+albany\s+high(?:\s+school)?
       | south\s+albany\s+high(?:\s+school)?
       | (?:south|west)\s+albany\b[\s\S]{0,200}(?:
-            \boregon\b|\#oregon\b|corvallis|crescent\s+valley|
+            \boregon\b|\#oregon\b|\#or\b|corvallis|crescent\s+valley|
             \blebanon\b|silverton|mid[- ]?willamette|\.oregonlive\.
           )
       | (?:
-            \boregon\b|\#oregon\b|corvallis|crescent\s+valley|
+            \boregon\b|\#oregon\b|\#or\b|corvallis|crescent\s+valley|
             \blebanon\b|silverton|mid[- ]?willamette|\.oregonlive\.
           )[\s\S]{0,200}(?:south|west)\s+albany\b
+      # Greater Albany OR school district / civic cards (strong "greater albany").
+      | greater\s+albany\s+public\s+school(?:s|\s+district)?\b
+      | greater\s+albany\b[\s\S]{0,200}(?:
+            \boregon\b|\#oregon\b|\#or\b|corvallis|crescent\s+valley|
+            \blebanon\b|silverton|mid[- ]?willamette|\.oregonlive\.
+          )
+      | (?:
+            \boregon\b|\#oregon\b|\#or\b|corvallis|crescent\s+valley|
+            \blebanon\b|silverton|mid[- ]?willamette|\.oregonlive\.
+          )[\s\S]{0,200}greater\s+albany\b
       | disney(?:['\u2019]?s)?\s+saratoga\s+springs
       | watervliet\s*,?\s*(?:mi|michigan)\b
       | troy\s*,?\s*(?:mi|michigan)\b
@@ -778,6 +800,8 @@ _LA_GEO_CUE = (
     r'\bfeliciana\b|st\.?\s+mary\s+parish|'
     r'\bascension(?:\s+parish)?\b|\bprairieville\b|\bsorrento\b|'
     r'\bst\.?\s+amant\b|\bgonzales\b|'
+    # Indivisible Baton Rouge GOTV pages say "Capital Region" without parish names.
+    r'indivisiblebr(?:\.org)?\b|'
     # LA MPO name (NY uses CDRPC — Capital District Regional Planning Commission).
     r'capital\s+region\s+planning\s+commission|\bcrpc\b'
 )
@@ -795,10 +819,13 @@ _LA_CAPITAL_REGION = re.compile(
 )
 
 # Pennsylvania "capital region" (Harrisburg / Capital Region Water).
+# Allison Hill / Wildheart Ministries are Harrisburg neighborhoods / orgs —
+# "United Way of the Capital Region" alone collides with the Albany NY chapter.
 _PA_GEO_CUE = (
     r'\bharrisburg\b|\bpennsylvania\b|\#pa(?:wx|politics|gov)\b|'
     r'capital\s+region\s+water\b|pennlive|susquehanna\b|'
-    r'pennsylvania\s+capital\s+region'
+    r'pennsylvania\s+capital\s+region|'
+    r'allison\s+hill\b|wildheart\s+ministries\b'
 )
 
 _PA_CAPITAL_REGION = re.compile(
@@ -807,8 +834,8 @@ _PA_CAPITAL_REGION = re.compile(
         pennsylvania\s+capital\s+region
       | capital\s+region\s+of\s+pennsylvania\b
       | capital\s+region\s+water\b
-      | capital\s+region\b[\s\S]{{0,160}}(?:{_PA_GEO_CUE})
-      | (?:{_PA_GEO_CUE})[\s\S]{{0,160}}capital\s+region\b
+      | capital\s+region\b[\s\S]{{0,480}}(?:{_PA_GEO_CUE})
+      | (?:{_PA_GEO_CUE})[\s\S]{{0,480}}capital\s+region\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -2192,13 +2219,23 @@ _HARD_NEGATIVE = re.compile(
       | west\s+albany\s+high(?:\s+school)?
       | south\s+albany\s+high(?:\s+school)?
       | (?:south|west)\s+albany\b[\s\S]{0,200}(?:
-            \boregon\b|\#oregon\b|corvallis|crescent\s+valley|
+            \boregon\b|\#oregon\b|\#or\b|corvallis|crescent\s+valley|
             \blebanon\b|silverton|mid[- ]?willamette|\.oregonlive\.
           )
       | (?:
-            \boregon\b|\#oregon\b|corvallis|crescent\s+valley|
+            \boregon\b|\#oregon\b|\#or\b|corvallis|crescent\s+valley|
             \blebanon\b|silverton|mid[- ]?willamette|\.oregonlive\.
           )[\s\S]{0,200}(?:south|west)\s+albany\b
+      # Greater Albany OR school district / civic cards (strong "greater albany").
+      | greater\s+albany\s+public\s+school(?:s|\s+district)?\b
+      | greater\s+albany\b[\s\S]{0,200}(?:
+            \boregon\b|\#oregon\b|\#or\b|corvallis|crescent\s+valley|
+            \blebanon\b|silverton|mid[- ]?willamette|\.oregonlive\.
+          )
+      | (?:
+            \boregon\b|\#oregon\b|\#or\b|corvallis|crescent\s+valley|
+            \blebanon\b|silverton|mid[- ]?willamette|\.oregonlive\.
+          )[\s\S]{0,200}greater\s+albany\b
       | jc\s+latham
       | saratoga\s+springs\s*,\s*ut\b
       | saratoga\s+springs\s+ut\b
@@ -2283,6 +2320,7 @@ _LOCAL_EVENT_VENUE = re.compile(
       | \bat\s+the\s+egg\b
       | \bthe\s+egg\s+presents\b
       | albany\s+palace\s+(?:theatre|theater)
+      | albany['\u2019]?s\s+palace\s+(?:theatre|theater)
       | palace\s+(?:theatre|theater)\s+(?:albany|in\s+albany)
       | capital\s+repertory
       | \bcap\s+rep\b
@@ -2933,9 +2971,9 @@ def _louisiana_capital_region_conflict(haystack: str, author_handle: str | None 
         return False
     if _LA_CAPITAL_REGION.search(haystack):
         return True
-    # WBRZ mirrors (wbrz, wbrznews2, …) often omit "Baton Rouge" in short copy.
+    # WBRZ / Indivisible BR mirrors often omit "Baton Rouge" in short copy.
     handle = (author_handle or '').strip().lower()
-    if re.search(r'(?<![a-z0-9])wbrz', handle) and re.search(
+    if re.search(r'(?<![a-z0-9])(?:wbrz|batonrouge|indivisiblebr)', handle) and re.search(
         r'capital\s+region\b', haystack, flags=re.IGNORECASE
     ):
         return True

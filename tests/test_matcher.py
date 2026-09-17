@@ -427,6 +427,16 @@ def test_louisiana_capital_region_is_hard_negative() -> None:
     assert ascension.matched is False
     assert ascension.reason == 'hard_negative:louisiana_capital_region'
 
+    # Indivisible BR GOTV pages say Capital Region; handle often omits parish names.
+    indivis = match_post(
+        'Join Team Jamie Davis Every Saturday for our GOTV Activation Day!! '
+        'https://indivisiblebr.org/team-jamie-davis-super-saturday-gotv-activation-capital-region/',
+        alt_text='Team Jamie Davis-SUPER SATURDAY-GOTV Activation-CAPITAL REGION',
+        author_handle='indivisbatonrouge.bsky.social',
+    )
+    assert indivis.matched is False
+    assert indivis.reason == 'hard_negative:louisiana_capital_region'
+
     keep = match_post(
         'Capital Region exporters shipped goods to Louisiana through the Port of Albany '
         '(#AlbanyNY).'
@@ -445,8 +455,23 @@ def test_pennsylvania_capital_region_is_hard_negative() -> None:
     )
     assert forum.matched is False
 
+    # Harrisburg Day of Caring — Allison Hill is not Albany's United Way chapter.
+    allison = match_post(
+        'Brown Plus team members proudly participated in the United Way of the Capital '
+        "Region's 2026 Day of Caring last Friday, helping Wildheart Ministries with litter "
+        'removal along the sidewalks of Allison Hill!'
+    )
+    assert allison.matched is False
+    assert allison.reason == 'hard_negative:pennsylvania_capital_region'
+
     keep = match_post('Capital Region students visited Harrisburg before returning to #AlbanyNY.')
     assert keep.matched is True
+    assert (
+        match_post(
+            'United Way of the Capital Region Day of Caring volunteers downtown (#AlbanyNY).'
+        ).matched
+        is True
+    )
 
 
 def test_bogota_capital_district_is_hard_negative() -> None:
@@ -2472,6 +2497,57 @@ def test_oregon_south_west_albany_not_south_albany_ny() -> None:
         is True
     )
     assert match_post('Construction starts in South Albany near the airport.').matched is True
+
+    greater = match_post(
+        "Greater Albany's school board is weighing pension-obligation bonds.\n\n"
+        '#OR #MarketReadiness #FinancialTransparency #PublicEducation',
+        alt_text=(
+            'Board hears pension-bond briefing; bond adviser urges early authorization. '
+            'Piper Jaffray briefed the Greater Albany Public School District.'
+        ),
+        author_handle='citizenptnewsor.bsky.social',
+    )
+    assert greater.matched is False
+    assert greater.reason == 'hard_negative'
+    assert (
+        match_post(
+            'Greater Albany trail network expansions were discussed at City Hall (#AlbanyNY).'
+        ).matched
+        is True
+    )
+
+
+def test_palace_ichabod_howes_518_and_section2_bethlehem_recall() -> None:
+    assert (
+        match_post(
+            "Trey Anastasio Band will perform at Albany's Palace Theatre on Nov. 12 "
+            'before joining Billy Strings for benefit concerts later in November.'
+        ).matched
+        is True
+    )
+    assert (
+        match_post(
+            'Ichabod Crane Central School district board members say they will give public '
+            'financial updates, with Valatie residents wanting more answers.'
+        ).matched
+        is True
+    )
+    assert (
+        match_post(
+            'The Iroquois Museum in Howes Cave houses a comprehensive collection of '
+            'modern Iroquois art.'
+        ).matched
+        is True
+    )
+    assert match_post('Burn ban goes into effect this week. #518outdoors').matched is True
+    assert (
+        match_post(
+            "With confidence skyrocketed, Bethlehem girls' basketball is surging into the "
+            'state final four (Section 2). #518hoops'
+        ).matched
+        is True
+    )
+    assert match_post('Shenendehowa senior Liam Anderson started powerlifting.').matched is True
 
 
 def test_lasnny_amtrak_window_saratoga_special_and_1777_recall() -> None:

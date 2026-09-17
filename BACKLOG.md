@@ -538,6 +538,28 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-098 — Daily feed audit: Indivisible BR / Allison Hill capital region, Cape Town Soetriver, Greater Albany OR; Palace / Ichabod / Howes Cave / #518 FNs
+- **Status:** done ([#75](https://github.com/chriscarrollsmith/capital-region-feed/pull/75))
+- **Why:** 2026-09-16 audit of last-24h AppView feed (~158 posts since 2026-09-15T09:03Z)
+  found active FPs after #74 (still open): Indivisible Baton Rouge GOTV `Capital Region`
+  (handle/URL without parish names); Harrisburg `United Way of the Capital Region` +
+  Allison Hill / Wildheart Ministries; Cape Town municipal `Soetriver Street` unlocked
+  `classifier:local_micro` via substring `river street`; Greater Albany OR public-school
+  pension-bond cards via strong `greater albany` + `#OR`. FNs from allowlist-author
+  text without allowlist: Albany's Palace Theatre; Ichabod Crane / Valatie; Howes Cave /
+  Iroquois Museum; `#518outdoors` / `#518hoops`; Section 2 + Bethlehem; Shenendehowa.
+  ~47 stale AppView rematch-drops (Troy Meink / Malta / Rotterdam / Brunswick). AppView
+  `searchPosts` still often 403. Waterford NY / Crossgates Mall remain TP. Residual: bare
+  Albany job spam; allowlisted non-local; marketplace Cap Region ship-from towns.
+- **Work:**
+  - Expand LA capital-region handle/URL cues (batonrouge / indivisiblebr); PA Allison Hill
+    / Wildheart Ministries window; `\briver street` word-boundary in classifier; Greater
+    Albany OR hard-negative; strong positives for Palace possessive, Ichabod/Valatie,
+    Howes Cave / Iroquois Museum, `#518outdoors|hoops|hockey|bowling`, Section 2+Bethlehem,
+    Shenendehowa; grow eval with 2026-09-16 FP/TP/FN anchors (builds on #74 / B-097).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-097 — Daily feed audit: Center Square Source byline, email proctors, Bristol Clifton Park; Bethlehem / Universal Preservation Hall / Houston Field House FNs
 - **Status:** done ([#74](https://github.com/chriscarrollsmith/capital-region-feed/pull/74))
 - **Why:** 2026-09-15 audit of last-24h AppView feed (~161 posts since 2026-09-14T09:02Z)
