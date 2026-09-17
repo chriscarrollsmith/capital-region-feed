@@ -3045,3 +3045,78 @@ def test_tipsy_taco_latham_recall() -> None:
         alt_text='Latham restaurant to get different name, new menu',
     )
     assert tipsy.matched is True
+
+
+def test_monica_latham_routledge_not_latham_ny() -> None:
+    academic = match_post(
+        'Publication: Monica Latham, "Virginia Woolf in the French Imagination". '
+        'London; New York: Routledge, 2026. ISBN 9781032878904'
+    )
+    assert academic.matched is False
+    assert academic.reason == 'hard_negative:latham_person_name'
+    assert match_post('New cafe opens in Latham, NY next to the circle.').matched is True
+
+
+def test_loudonville_nws_cleveland_ashland_not_ny() -> None:
+    nws = match_post(
+        'Special Weather Statement issued September 9 at 6:03PM EDT by NWS Cleveland OH '
+        'At 603 PM EDT, Doppler radar was tracking a strong thunderstorm over '
+        'Loudonville, or 16 miles south of Ashland, moving east at 40 mph.'
+    )
+    assert nws.matched is False
+    assert nws.reason == 'hard_negative:loudonville_oh'
+    assert match_post('Road work begins in Loudonville near Albany this week.').matched is True
+
+
+def test_rotterdam_filmmaker_venice_not_rotterdam_ny() -> None:
+    film = match_post(
+        'Educated in Moscow and then New York, Georgian filmmaker Levan Kogashvili '
+        'was discovered in Rotterdam in 2010 with his debut film. After winning awards '
+        'at Tribeca and Jeddah, he is presenting Guria at #Venice2026.'
+    )
+    assert film.matched is False
+    assert film.reason == 'hard_negative:malta_europe'
+    assert match_post('New bakery opens in Rotterdam, NY this weekend.').matched is True
+
+
+def test_capitaldistrict_hashtag_and_local_festival_recall() -> None:
+    assert (
+        match_post(
+            'Bus trip from #GlensFalls to #Albany for the show. #capitaldistrict #northcountry'
+        ).matched
+        is True
+    )
+    assert match_post('Autumn Glow Festival opens in Rotterdam').matched is True
+    assert match_post('Giant Saratoga Pumpkinfest set to stage for 11th year').matched is True
+    assert (
+        match_post(
+            "Recovery Sports Grill on New Scotland Ave has been Albany's go-to sports bar"
+        ).matched
+        is True
+    )
+    assert (
+        match_post('Second venture for Albany Ale & Oyster owners offers neighborhood feel').matched
+        is True
+    )
+    assert (
+        match_post('Man rescued on Thruway after dump truck overturns in Rotterdam').matched is True
+    )
+    assert match_post("From Scotia-Glenville's signing ceremony this week").matched is True
+    assert (
+        match_post("It's Whitney Day at Saratoga, and first post is about 40 minutes away.").matched
+        is True
+    )
+    assert (
+        match_post(
+            'Saratoga Springs traveling to Christian Brothers Academy in a rematch '
+            'of the Class AA sectional championship game.'
+        ).matched
+        is True
+    )
+    assert (
+        match_post(
+            "Amid NYSDOH's investigation into the Albany Center for Independent Living "
+            'and Delmar Center for Rehabilitation and Nursing'
+        ).matched
+        is True
+    )

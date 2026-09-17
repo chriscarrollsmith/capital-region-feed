@@ -538,6 +538,29 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-093 — Daily feed audit: Monica Latham, Loudonville OH/Ashland, Rotterdam filmmaker; #capitaldistrict / festivals FNs
+- **Status:** done ([#70](https://github.com/chriscarrollsmith/capital-region-feed/pull/70))
+- **Why:** 2026-09-10 audit of last-24h AppView feed (~173 posts since 2026-09-09T09:03Z)
+  found active FPs after #69 (still open): academic `Monica Latham` + `New York: Routledge`
+  unlocked `ambiguous_with_context:latham`; NWS Cleveland `Loudonville` / Ashland matched
+  bare `loudonville` strong (OH gate required `, OH` / Ohio hashtags); Georgian filmmaker
+  `discovered in Rotterdam` + Tribeca/Venice unlocked via incidental New York education.
+  FNs: `#capitaldistrict` hashtag (no space); Autumn Glow Festival / Saratoga Pumpkinfest;
+  New Scotland Ave / Recovery Sports Grill; Albany Ale & Oyster; Thruway + Rotterdam;
+  Scotia-Glenville; Whitney Day at Saratoga; CBA / Saratoga Springs Section 2; Albany /
+  Delmar care-facility names. ~36 stale AppView rematch-drops (Malta/Troy/Brunswick bare).
+  AppView `searchPosts` still often 403. Waterford NY viral video cluster remains TP.
+  Residual: bare Albany job spam; allowlisted non-local; national USPS bot with Wynantskill.
+- **Work:**
+  - Latham person-name conflict (Routledge/ISBN/academic bylines); expand Loudonville OH
+    with NWS Cleveland / Ashland; expand malta-europe with filmmaker / discovered in
+    Rotterdam / Venice-Tribeca cues; strong positives for `#capitaldistrict`, festivals,
+    New Scotland Ave, Albany Ale & Oyster, Thruway+Rotterdam, Scotia-Glenville, Whitney
+    Day, CBA/Section 2, Albany/Delmar care facilities.
+  - Grow eval with 2026-09-10 FP/TP/FN anchors (builds on #69 / B-092).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-092 — Daily feed audit: Metro Manila / CRTPA capital region, Clark Hall→Lark Hall, Travers brothers, Stillwater OK, Erasmusbrug Rotterdam; Tipsy Taco Latham FN
 - **Status:** done ([#69](https://github.com/chriscarrollsmith/capital-region-feed/pull/69))
 - **Why:** 2026-09-09 audit of last-24h AppView feed (~154 posts since 2026-09-08T09:03Z)
