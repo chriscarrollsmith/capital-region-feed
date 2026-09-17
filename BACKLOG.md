@@ -538,6 +538,26 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-099 — Daily feed audit: Loudonville Mid-Ohio, Ireland MetroLink capital region, Galway Girl, Troy person names, Stillwater NJ, Times Union Getty; corporation counsel / #NewYork FNs
+- **Status:** done ([#76](https://github.com/chriscarrollsmith/capital-region-feed/pull/76))
+- **Why:** 2026-09-17 audit of last-24h AppView feed (~156 posts since 2026-09-16T09:20Z)
+  found active FPs after #75 (still open): Mid-Ohio Loudonville flood/severe wires with
+  Ashland/Holmes/Knox/Richland counties but without `, OH` / NWS Cleveland proximity;
+  Dublin MetroLink / Irish Government `capital region`; playlist `Galway Girl` unlocked by
+  `Leaving New York`; attorney `Troy Nader` and Heisman `Troy Davis` unlocked by NYC;
+  Stillwater Township NJ via CBS News New York; UnHerd `(…/Times Union/Getty)` photo credit.
+  FNs: Albany corporation counsel / Common Council; `#NewYork`'s Saratoga Sand Plains.
+  ~31 stale AppView rematch-drops (Malta / Rotterdam / Cardiff / Troy Meink). AppView
+  `searchPosts` still often 403. Residual: bare Albany job spam; allowlisted non-local;
+  marketplace Cap Region ship-from towns; national MiniVAN lists mentioning Saratoga Springs.
+- **Work:**
+  - Expand Loudonville OH Mid-Ohio county/Mansfield window; Ireland capital-region conflict;
+    Galway Girl / Ed Sheeran cues; Troy Nader/Davis person-name gates; Stillwater Township NJ;
+    Times Union photo-credit scrub; `#newyork` NY-context; Albany corporation counsel strong;
+    grow eval with 2026-09-17 FP/TP/FN anchors (builds on #75 / B-098).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-098 — Daily feed audit: Indivisible BR / Allison Hill capital region, Cape Town Soetriver, Greater Albany OR; Palace / Ichabod / Howes Cave / #518 FNs
 - **Status:** done ([#75](https://github.com/chriscarrollsmith/capital-region-feed/pull/75))
 - **Why:** 2026-09-16 audit of last-24h AppView feed (~158 posts since 2026-09-15T09:03Z)

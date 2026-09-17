@@ -91,6 +91,9 @@ _STRONG_POSITIVE = re.compile(
       | empire\s+state\s+plaza
       | albany\s+capital\s+center
       | albany\s+mayor\b
+      | albany['\u2019]?s\s+corporation\s+counsel\b
+      | corporation\s+counsel[\s\S]{0,80}\balbany\b
+      | \balbany\b[\s\S]{0,80}corporation\s+counsel\b
       | university\s+at\s+albany
       | \bualbany\b
       | suny\s+albany
@@ -551,6 +554,7 @@ _NY_CONTEXT = re.compile(
       | capital\s+(?:region|district)\b
       | \#ny\b
       | \#upstateny\b
+      | \#newyork\b
       | upstate\s+ny\b
       | hudson\s+valley
       | \#albanyny\b
@@ -649,6 +653,8 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
       | michigan\s+capital\s+region
       | cardiff\s+capital\s+region
       | welsh\s+capital\s+region
+      | irish\s+capital\s+region
+      | dublin\s+capital\s+region
       | philippine\s+capital\s+region
       | (?:manila|metro\s+manila)\s+capital\s+region
       | venezuela(?:n)?\s+capital\s+region
@@ -1070,6 +1076,22 @@ _STILLWATER_OK = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
+# Stillwater Township (Sussex County, NJ) — not Town of Stillwater NY.
+_STILLWATER_NJ = re.compile(
+    r"""
+    (?:
+        stillwater\s+township\b
+      | stillwater[\s\S]{0,160}\bsussex\s+county\b
+      | \bsussex\s+county\b[\s\S]{0,160}stillwater
+      | stillwater[\s\S]{0,100}\b(?:n\.?j\.?|new\s+jersey)\b
+      | \b(?:n\.?j\.?|new\s+jersey)\b[\s\S]{0,100}stillwater
+      | millbrook\s+road[\s\S]{0,100}stillwater
+      | stillwater[\s\S]{0,100}millbrook\s+road
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
 # North Country "Stillwater Road" (Lewis Co / Croghan) — not Town of Stillwater NY.
 _STILLWATER_ROAD_NORTH = re.compile(
     r"""
@@ -1218,6 +1240,26 @@ _UK_WALES_CAPITAL_REGION = re.compile(
       | capital\s+region\s+of\s+(?:wales|cardiff)\b
       | capital\s+region\b[\s\S]{{0,280}}(?:{_UK_WALES_GEO_CUE})
       | (?:{_UK_WALES_GEO_CUE})[\s\S]{{0,280}}capital\s+region\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Dublin / Ireland "capital region" (MetroLink / Irish Government cards).
+_IRELAND_GEO_CUE = (
+    r'\bdublin\b|\bireland\b|\birish\b|\bswords\b|'
+    r'\#dublin\b|\#ireland\b|\#irish\b|'
+    r'\bmetrolink\b|irish\s+government|'
+    r'dublin\s+city\s+centre|republic\s+of\s+ireland'
+)
+
+_IRELAND_CAPITAL_REGION = re.compile(
+    rf"""
+    (?:
+        (?:irish|dublin)\s+capital\s+region
+      | capital\s+region\s+of\s+(?:ireland|dublin)\b
+      | capital\s+region\b[\s\S]{{0,280}}(?:{_IRELAND_GEO_CUE})
+      | (?:{_IRELAND_GEO_CUE})[\s\S]{{0,280}}capital\s+region\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -1781,6 +1823,10 @@ _GALWAY_IRELAND = re.compile(
       | wild\s+atlantic\s+way
       | \bdingle\b
       | \bkinsale\b
+      # Song / playlist titles — not Town of Galway NY.
+      | galway\s+girl\b
+      | \bed\s+sheeran\b[\s\S]{0,80}galway
+      | galway[\s\S]{0,80}\bed\s+sheeran\b
       # Multi-city walking / tourism lists pair Galway with Dublin (and often
       # London/Paris) while NYC only unlocks Cap Region Galway NY.
       | \bdublin\b
@@ -1853,8 +1899,16 @@ _LOUDONVILLE_OH = re.compile(
       | nws\s+cleveland
       | cleveland\s+oh[\s\S]{0,360}loudonville
       | loudonville[\s\S]{0,360}cleveland\s+oh
-      | loudonville[\s\S]{0,80}(?:south\s+of\s+)?ashland\b
-      | (?:south\s+of\s+)?ashland[\s\S]{0,80}loudonville
+      | loudonville[\s\S]{0,360}(?:south\s+of\s+)?ashland\b
+      | (?:south\s+of\s+)?ashland[\s\S]{0,360}loudonville
+      # Mid-Ohio county lists / NWS copy omit ", OH" and put Ashland far from Loudonville.
+      | \b(?:ashland|holmes|knox|morrow|richland)\s+count(?:y|ies)\b[\s\S]{0,400}loudonville
+      | loudonville[\s\S]{0,400}\b(?:ashland|holmes|knox|morrow|richland)\s+count
+      | \bmansfield\b[\s\S]{0,200}loudonville
+      | loudonville[\s\S]{0,200}\bmansfield\b
+      | \bmount\s+gilead\b
+      | \bperrysville\b
+      | \bbellville\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -2019,6 +2073,11 @@ _TROY_PERSON_NAME = re.compile(
       # Crime / court wires: victim or defendant "Troy Conner" — not City of Troy.
       | \btroy\s+conner\b
       | shot\s+troy\s+[a-z]+\b
+      # Immigration / sports person names unlocked by NYC / New York context.
+      | \btroy\s+nader\b
+      | \btroy\s+davis\b
+      | immigration\s+attorney\s+troy\b
+      | attorney\s+troy\s+[a-z]+\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -2196,6 +2255,8 @@ _HARD_NEGATIVE = re.compile(
       | michigan\s+capital\s+region
       | cardiff\s+capital\s+region
       | welsh\s+capital\s+region
+      | irish\s+capital\s+region
+      | dublin\s+capital\s+region
       | philippine\s+capital\s+region
       | (?:manila|metro\s+manila)\s+capital\s+region
       | venezuela(?:n)?\s+capital\s+region
@@ -2591,6 +2652,22 @@ def _stillwater_ok_conflict(haystack: str) -> bool:
     return True
 
 
+def _stillwater_nj_conflict(haystack: str) -> bool:
+    """True when Stillwater refers to Sussex County NJ township, not Stillwater NY."""
+    if not re.search(r'\bstillwater\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not _STILLWATER_NJ.search(haystack):
+        return False
+    if re.search(
+        r'stillwater\s*,?\s*(?:ny|n\.y\.|new\s+york)\b|town\s+of\s+stillwater|'
+        r'saratoga\s+county|\#albanyny\b',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    return True
+
+
 def _troy_michigan_conflict(haystack: str) -> bool:
     """True when Troy refers to the Detroit suburb, not Troy NY."""
     if not re.search(r'\btroy\b', haystack, flags=re.IGNORECASE):
@@ -2754,6 +2831,18 @@ def _uk_wales_capital_region_conflict(haystack: str, author_handle: str | None =
     # Nation.Cymru and similar Welsh outlets often put "Capital Region" only in
     # the card title while the body says Wales / UK National Wealth Fund.
     if re.search(r'(?:^|\.)cymru$|\bcymru\b|nation\.cymru|cardiff', handle):
+        return bool(re.search(r'capital\s+region\b', haystack, flags=re.IGNORECASE))
+    return False
+
+
+def _ireland_capital_region_conflict(haystack: str, author_handle: str | None = None) -> bool:
+    """True when 'capital region' refers to Dublin / Ireland, not NY."""
+    if _ny_capital_region_context(haystack):
+        return False
+    if _IRELAND_CAPITAL_REGION.search(haystack):
+        return True
+    handle = (author_handle or '').strip().lower()
+    if re.search(r'\bdublin\b|\bireland\b|\bmetrolink\b', handle):
         return bool(re.search(r'capital\s+region\b', haystack, flags=re.IGNORECASE))
     return False
 
@@ -3081,6 +3170,35 @@ def _loudonville_oh_conflict(haystack: str, author_handle: str | None = None) ->
     ):
         return False
     return not _ny_capital_region_context(haystack)
+
+
+# Photo-credit "/Times Union/Getty" (and AP/Reuters) — not Albany Times Union reporting.
+_TIMES_UNION_PHOTO_CREDIT = re.compile(
+    r"""
+    (?:
+        times\s+union\s*/\s*(?:getty|ap\b|reuters)
+      | /\s*times\s+union\s*/\s*(?:getty|ap\b|reuters)
+      | \(\s*[^)]{0,80}times\s+union\s*/\s*(?:getty|ap\b|reuters)[^)]{0,40}\)
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+_TIMES_UNION_TOKEN = re.compile(
+    r'(?<!york\s)(?<!seattle\s)(?<![\w-])times\s+union\b',
+    re.IGNORECASE,
+)
+
+
+def _times_union_photo_credit_conflict(haystack: str) -> bool:
+    """True when Times Union appears only as a wire photo credit."""
+    if not _TIMES_UNION_PHOTO_CREDIT.search(haystack):
+        return False
+    scrubbed = _TIMES_UNION_PHOTO_CREDIT.sub(' ', haystack)
+    # Real Times Union reporting keeps a masthead / byline mention after scrubbing.
+    if _TIMES_UNION_TOKEN.search(scrubbed):
+        return False
+    return True
 
 
 # Maryland Route 787 (Takoma Park / Flower Avenue) — not Interstate 787 Albany.
@@ -3813,6 +3931,8 @@ def match_post(
             return MatchResult(False, 'hard_negative:india_capital_region')
         if _uk_wales_capital_region_conflict(haystack, author_handle):
             return MatchResult(False, 'hard_negative:uk_wales_capital_region')
+        if _ireland_capital_region_conflict(haystack, author_handle):
+            return MatchResult(False, 'hard_negative:ireland_capital_region')
         if _philippines_capital_region_conflict(haystack):
             return MatchResult(False, 'hard_negative:philippines_capital_region')
         if _florida_crtpa_capital_region_conflict(haystack):
@@ -3851,6 +3971,8 @@ def match_post(
             return MatchResult(False, 'hard_negative:burnt_hills_descriptive')
         if _loudonville_oh_conflict(haystack, author_handle):
             return MatchResult(False, 'hard_negative:loudonville_oh')
+        if _times_union_photo_credit_conflict(haystack):
+            return MatchResult(False, 'hard_negative:times_union_photo_credit')
         if _route_787_md_conflict(haystack, author_handle):
             return MatchResult(False, 'hard_negative:route_787_md')
         if _clifton_park_uk_conflict(haystack, author_handle):
@@ -4034,6 +4156,9 @@ def match_post(
 
         if term == 'stillwater' and _stillwater_ok_conflict(haystack):
             return MatchResult(False, 'hard_negative:stillwater_ok')
+
+        if term == 'stillwater' and _stillwater_nj_conflict(haystack):
+            return MatchResult(False, 'hard_negative:stillwater_nj')
 
         if term == 'troy' and _troy_michigan_conflict(haystack):
             return MatchResult(False, 'hard_negative:troy_michigan')
