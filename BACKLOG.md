@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-099 — Daily feed audit: Loudonville Mid-Ohio, Ireland MetroLink capital region, Galway Girl, Troy person names, Stillwater NJ, Times Union Getty; corporation counsel / #NewYork FNs
-- **Status:** in progress
+- **Status:** done ([#76](https://github.com/chriscarrollsmith/capital-region-feed/pull/76))
 - **Why:** 2026-09-17 audit of last-24h AppView feed (~156 posts since 2026-09-16T09:20Z)
   found active FPs after #75 (still open): Mid-Ohio Loudonville flood/severe wires with
   Ashland/Holmes/Knox/Richland counties but without `, OH` / NWS Cleveland proximity;
