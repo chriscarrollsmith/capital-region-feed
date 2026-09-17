@@ -538,6 +538,28 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-092 — Daily feed audit: Metro Manila / CRTPA capital region, Clark Hall→Lark Hall, Travers brothers, Stillwater OK, Erasmusbrug Rotterdam; Tipsy Taco Latham FN
+- **Status:** done ([#69](https://github.com/chriscarrollsmith/capital-region-feed/pull/69))
+- **Why:** 2026-09-09 audit of last-24h AppView feed (~154 posts since 2026-09-08T09:03Z)
+  found active FPs after #68 (still open): Straits Times `capital region of Metro Manila`
+  matched bare `capital region` strong; Tallahassee `Capital Region Transportation
+  Planning Agency` / CRTPA / Orchard Pond / SunTrail matched the same; Fugazi
+  `Peter Clark Hall` (Guelph) matched `lark hall` without a leading word boundary;
+  Assassin's Creed `the Travers brothers` matched `\bthe travers\b`; ACARS
+  `Stillwater, OK` unlocked via incidental `NYC` crew context; Dutch Brabant
+  Erasmusbrug/Dommel/Den Bosch Rotterdam wires unlocked via Brooklyn Bridge `New York`.
+  FN: bizjournals Tipsy Taco Cantina in Latham without NY token. ~29 stale AppView
+  rematch-drops (Malta/Troy/Brunswick bare). AppView `searchPosts` still often 403.
+  Waterford NY viral video cluster remains TP.
+- **Work:**
+  - Philippines / Metro Manila capital-region conflict + of-list phrases; CRTPA /
+    Tallahassee capital-region hard-neg + conflict; `\blark hall\b` boundary;
+    Travers brothers negative lookahead; Stillwater OK conflict; expand malta-europe
+    Erasmusbrug / Den Bosch / Dommel / Brabant cues; Tipsy Taco strong positive.
+  - Grow eval with 2026-09-09 FP/TP/FN anchors (builds on #68 / B-091).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-091 — Daily feed audit: Castor Troy/Bethlehem wrestling, Clifton Park MD, Newtonville NJ, Orlando Pine Hills; downtown Albany / Troy Iron / America250 FNs
 - **Status:** done ([#68](https://github.com/chriscarrollsmith/capital-region-feed/pull/68))
 - **Why:** 2026-09-08 audit of last-24h AppView feed (~169 posts since 2026-09-07T09:03Z)

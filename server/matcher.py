@@ -95,7 +95,8 @@ _STRONG_POSITIVE = re.compile(
       | \bualbany\b
       | suny\s+albany
       # Albany music venue — often listed as "Albany: … @ Lark Hall" without ", NY".
-      | lark\s+hall\b
+      # Leading word boundary: "Peter Clark Hall" (Guelph) must not match "lark Hall".
+      | \blark\s+hall\b
       # Capital Repertory Theatre (Albany) — hashtag #CapitalRep often omits venue cues.
       | \#?capitalrep\b
       | capital\s+rep(?:ertory)?\b
@@ -120,14 +121,17 @@ _STRONG_POSITIVE = re.compile(
       # Horse-racing debut copy often omits "Race Course".
       | debut\s+at\s+saratoga\b
       # Travers / Midsummer Derby / "Saratoga feature" wires often omit ", NY".
+      # Negative lookahead: Assassin's Creed "the Travers brothers" is not the stakes.
       | travers\s+stakes\b
       | travers\s+(?:day|weekend)\b
-      | \bthe\s+travers\b
+      | \bthe\s+travers\b(?!\s+brothers?\b)
       | \bahead\s+of\s+(?:the\s+)?travers\b
       | \bwins?\s+(?:the\s+)?travers\b
       | travers\s+at\s+saratoga\b
       | midsummer\s+derby\b
       | saratoga\s+feature\b
+      # Distinctive Cap Region restaurant — bizjournals cards often omit ", NY".
+      | \btipsy\s+taco(?:\s+cantina)?\b
       # Revolutionary War campaign / battlefield copy often omits ", NY".
       | saratoga\s+campaign\b
       | battles?\s+of\s+saratoga\b
@@ -512,6 +516,9 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
       | saratoga\s+terrace\b
       # Louisiana MPO — not NY Capital District Regional Planning Commission (CDRPC).
       | capital\s+region\s+planning\s+commission
+      # Tallahassee FL MPO — not NY Capital Region / CDRPC.
+      | capital\s+region\s+transportation\s+planning\s+agency
+      | \bcrtpa\b
       # Berlin-Brandenburg / Germany "capital region" (Medienboard wires).
       | berlin[- /]brandenburg\s+capital\s+region
       | berlin[- ]brandenburg[\s\S]{0,80}capital\s+region\b
@@ -527,7 +534,7 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
             sudan|khartoum|virginia|richmond|colombia|bogot[aá]|
             iceland|reykjav[ií]k|finland|helsinki|australia|
             georgia|atlanta|russia|moscow|bulgaria|sofia|japan|tokyo|
-            michigan|lansing|wales|cardiff
+            michigan|lansing|wales|cardiff|manila|philippines|metro\s+manila
           )\b
       | ukrainian\s+capital\s+region
       | (?:russian|moscow)\s+capital\s+region
@@ -542,6 +549,8 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
       | michigan\s+capital\s+region
       | cardiff\s+capital\s+region
       | welsh\s+capital\s+region
+      | philippine\s+capital\s+region
+      | (?:manila|metro\s+manila)\s+capital\s+region
       | bogot[aá]\s+capital\s+district
       | capital\s+district\s*,?\s*colombia\b
       | icelandic\s+capital\s+district
@@ -930,6 +939,20 @@ _STILLWATER_FILM = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
+# Stillwater, Oklahoma (OSU / ACARS aviation) — not Town of Stillwater NY.
+# NYC crew mentions must not unlock Cap Region context for "Stillwater, OK".
+_STILLWATER_OK = re.compile(
+    r"""
+    (?:
+        stillwater\s*,?\s*(?:ok|oklahoma)\b
+      | stillwater[\s\S]{0,120}\b(?:oklahoma|\bok\b|osu\s+cowboys?)\b
+      | \b(?:oklahoma|\bok\b|osu\s+cowboys?)\b[\s\S]{0,120}stillwater
+      | area:\s*stillwater\s*,?\s*ok\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
 # North Country "Stillwater Road" (Lewis Co / Croghan) — not Town of Stillwater NY.
 _STILLWATER_ROAD_NORTH = re.compile(
     r"""
@@ -1078,6 +1101,43 @@ _UK_WALES_CAPITAL_REGION = re.compile(
       | capital\s+region\s+of\s+(?:wales|cardiff)\b
       | capital\s+region\b[\s\S]{{0,280}}(?:{_UK_WALES_GEO_CUE})
       | (?:{_UK_WALES_GEO_CUE})[\s\S]{{0,280}}capital\s+region\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Metro Manila / Philippines "capital region" (Straits Times jobless cards).
+_PH_GEO_CUE = (
+    r'\bmanila\b|\bphilippines?\b|\bfilipino\b|'
+    r'metro\s+manila\b|\#manila\b|\#philippines?\b|'
+    r'straitstimes\.com|\#inquirer\b|\binquirer\.net\b'
+)
+
+_PH_CAPITAL_REGION = re.compile(
+    rf"""
+    (?:
+        (?:philippine|manila|metro\s+manila)\s+capital\s+region
+      | capital\s+region\s+of\s+(?:the\s+)?(?:philippines|manila|metro\s+manila)\b
+      | capital\s+region\b[\s\S]{{0,280}}(?:{_PH_GEO_CUE})
+      | (?:{_PH_GEO_CUE})[\s\S]{{0,280}}capital\s+region\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Tallahassee FL "Capital Region" MPO (CRTPA / Orchard Pond / SunTrail).
+_FL_CRTPA_GEO_CUE = (
+    r'\bcrtpa\b|orchard\s+pond(?:\s+greenway)?\b|\bsuntrail\b|'
+    r'\btallahassee\b|\#tallahassee\b|\#tlh\b|'
+    r'leon\s+county|wakulla\s+county|gadsden\s+county'
+)
+
+_FL_CRTPA_CAPITAL_REGION = re.compile(
+    rf"""
+    (?:
+        capital\s+region\s+transportation\s+planning\s+agency
+      | capital\s+region\b[\s\S]{{0,280}}(?:{_FL_CRTPA_GEO_CUE})
+      | (?:{_FL_CRTPA_GEO_CUE})[\s\S]{{0,280}}capital\s+region\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -1451,6 +1511,13 @@ _MALTA_EUROPE = re.compile(
       | \bahoy\s+rotterdam\b
       | ad\.nl/
       | \bbinnenland\b
+      # Dutch bridge / Brabant wires list Erasmusbrug Rotterdam next to Brooklyn Bridge.
+      | \berasmusbrug\b
+      | \bden\s+bosch\b
+      | \bdommel\b
+      | \bbrabant(?:s)?\b
+      | brabantsdagblad
+      | ponte\s+vecchio
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -1884,6 +1951,9 @@ _HARD_NEGATIVE = re.compile(
       | saratoga\s+terrace\b
       # Louisiana MPO — not NY Capital District Regional Planning Commission (CDRPC).
       | capital\s+region\s+planning\s+commission
+      # Tallahassee FL MPO — not NY Capital Region / CDRPC.
+      | capital\s+region\s+transportation\s+planning\s+agency
+      | \bcrtpa\b
       # Berlin-Brandenburg / Germany "capital region" (Medienboard wires).
       | berlin[- /]brandenburg\s+capital\s+region
       | berlin[- ]brandenburg[\s\S]{0,80}capital\s+region\b
@@ -1898,7 +1968,7 @@ _HARD_NEGATIVE = re.compile(
             california|sacramento|korea|south\s+korea|ukraine|kyiv|kiev|
             sudan|khartoum|virginia|richmond|colombia|bogot[aá]|
             iceland|reykjav[ií]k|bulgaria|sofia|japan|michigan|lansing|
-            wales|cardiff
+            wales|cardiff|manila|philippines|metro\s+manila
           )\b
       | ukrainian\s+capital\s+region
       | sudan(?:ese)?\s+capital\s+region
@@ -1908,6 +1978,8 @@ _HARD_NEGATIVE = re.compile(
       | michigan\s+capital\s+region
       | cardiff\s+capital\s+region
       | welsh\s+capital\s+region
+      | philippine\s+capital\s+region
+      | (?:manila|metro\s+manila)\s+capital\s+region
       | capital\s+region\s+international\s+airport
       | liberty\s+city
       | \bgta\s*iv?\b
@@ -2272,6 +2344,22 @@ def _stillwater_road_conflict(haystack: str, author_handle: str | None = None) -
     return True
 
 
+def _stillwater_ok_conflict(haystack: str) -> bool:
+    """True when Stillwater refers to Oklahoma / ACARS aviation, not Stillwater NY."""
+    if not re.search(r'\bstillwater\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not _STILLWATER_OK.search(haystack):
+        return False
+    if re.search(
+        r'stillwater\s*,?\s*(?:ny|n\.y\.|new\s+york)\b|town\s+of\s+stillwater|'
+        r'saratoga\s+county|\#albanyny\b',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    return True
+
+
 def _troy_michigan_conflict(haystack: str) -> bool:
     """True when Troy refers to the Detroit suburb, not Troy NY."""
     if not re.search(r'\btroy\b', haystack, flags=re.IGNORECASE):
@@ -2437,6 +2525,20 @@ def _uk_wales_capital_region_conflict(haystack: str, author_handle: str | None =
     if re.search(r'(?:^|\.)cymru$|\bcymru\b|nation\.cymru|cardiff', handle):
         return bool(re.search(r'capital\s+region\b', haystack, flags=re.IGNORECASE))
     return False
+
+
+def _philippines_capital_region_conflict(haystack: str) -> bool:
+    """True when 'capital region' refers to Metro Manila / Philippines, not NY."""
+    if not _PH_CAPITAL_REGION.search(haystack):
+        return False
+    return not _ny_capital_region_context(haystack)
+
+
+def _florida_crtpa_capital_region_conflict(haystack: str) -> bool:
+    """True when 'capital region' refers to Tallahassee CRTPA / FL, not NY."""
+    if not _FL_CRTPA_CAPITAL_REGION.search(haystack):
+        return False
+    return not _ny_capital_region_context(haystack)
 
 
 def _newtonville_ma_conflict(haystack: str) -> bool:
@@ -3373,6 +3475,10 @@ def match_post(
             return MatchResult(False, 'hard_negative:india_capital_region')
         if _uk_wales_capital_region_conflict(haystack, author_handle):
             return MatchResult(False, 'hard_negative:uk_wales_capital_region')
+        if _philippines_capital_region_conflict(haystack):
+            return MatchResult(False, 'hard_negative:philippines_capital_region')
+        if _florida_crtpa_capital_region_conflict(haystack):
+            return MatchResult(False, 'hard_negative:florida_crtpa_capital_region')
         if _finland_capital_region_conflict(haystack):
             return MatchResult(False, 'hard_negative:finland_capital_region')
         if _denmark_capital_region_conflict(haystack):
@@ -3578,6 +3684,9 @@ def match_post(
 
         if term == 'stillwater' and _stillwater_road_conflict(haystack, author_handle):
             return MatchResult(False, 'hard_negative:stillwater_road')
+
+        if term == 'stillwater' and _stillwater_ok_conflict(haystack):
+            return MatchResult(False, 'hard_negative:stillwater_ok')
 
         if term == 'troy' and _troy_michigan_conflict(haystack):
             return MatchResult(False, 'hard_negative:troy_michigan')
