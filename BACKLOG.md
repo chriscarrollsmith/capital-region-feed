@@ -538,6 +538,28 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-096 — Daily feed audit: MS Crossgates Blvd traffic cam, Rotterdam NL oil Börsen; Town of Malta / CDTA / Howe Caverns / local venue FNs
+- **Status:** done ([#73](https://github.com/chriscarrollsmith/capital-region-feed/pull/73))
+- **Why:** 2026-09-14 audit of last-24h AppView feed (~141 posts since 2026-09-13T09:03Z)
+  found active FPs after #72 (still open): Mississippi `Crossgates Blvd` / US 80 traffic
+  cam (Jackson coords, CT clock) unlocked `classifier:local_micro` via time-of-day event
+  cue; German oil-market wire `Rotterdam in den Niederlanden` + New York / Frankfurt
+  Börsen unlocked `ambiguous_with_context:rotterdam`. FNs from synthetic Cap Region
+  probes: Town of Malta / GlobalFoundries Malta; CDTA; Howe/Secret Caverns; USS Slater;
+  LarkFest / Pearlpalooza; Five Rivers; Indian Ladder / Thacher Park; Collar City;
+  Canfield Casino; Vischer Ferry; Hart Cluett / Burden Iron Works; Bombers Burrito;
+  WAMC; Siena Saints. ~21 stale AppView rematch-drops (Malta/Troy/Brunswick/Saratoga).
+  AppView `searchPosts` still often 403. Waterford NY viral video remains TP. Residual:
+  bare Albany job spam; allowlisted non-local; marketplace Cap Region ship-from towns.
+- **Work:**
+  - Expand Crossgates other-region gate (Blvd / US 80 / Mississippi / CT traffic-cam);
+    expand malta-europe with Niederlanden / Börsen / Frankfurt am Main / oil-price cues;
+    strong positives for Town of Malta / GlobalFoundries+Malta and distinctive Cap Region
+    transit/venues/festivals; grow eval with 2026-09-14 FP/TP/FN anchors (builds on #72 /
+    B-095).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-095 — Daily feed audit: Venezuela capital region, Troy Conner/Spartanburg, Bethlehem PA Lehigh Valley; Brook Tavern / Stillwater-Burgoyne / Section 2 / Pine Bush Observatory / Halfmoon FNs
 - **Status:** done ([#72](https://github.com/chriscarrollsmith/capital-region-feed/pull/72))
 - **Why:** 2026-09-12 audit of last-24h AppView feed (~146 posts since 2026-09-11T09:14Z)

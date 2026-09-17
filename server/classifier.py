@@ -177,6 +177,7 @@ _RIVER_STREET_OTHER = re.compile(
 )
 
 # St. Tammany / Louisiana "Crossgates" wastewater — not Crossgates Mall.
+# Also Mississippi "Crossgates Blvd" traffic cams (US 80 / Jackson / CT zone).
 _CROSSGATES_OTHER = re.compile(
     r"""
     (?:
@@ -190,6 +191,23 @@ _CROSSGATES_OTHER = re.compile(
             tammany|\#tammanyparish\b|\#sttammany|
             \#la\b|\blouisiana\b|citizenportal|citizen\s+portal
           )[\s\S]{0,160}crossgates
+      # Pearl / Rankin County MS: Crossgates Blvd at US 80 (not Guilderland mall).
+      | crossgates\s+(?:blvd|boulevard|ave|avenue|rd|road)\b
+      | crossgates[\s\S]{0,220}(?:
+            \bus\s*[- ]?80\b|\bi-?55\b|\bmississippi\b|\#ms\b|\#mswx\b|
+            jackson\s*,?\s*ms\b|mstrafficcams|pearl\s*,?\s*ms\b|
+            rankin\s+county
+          )
+      | (?:
+            \bus\s*[- ]?80\b|\bi-?55\b|\bmississippi\b|\#ms\b|\#mswx\b|
+            jackson\s*,?\s*ms\b|mstrafficcams|pearl\s*,?\s*ms\b|
+            rankin\s+county
+          )[\s\S]{0,220}crossgates
+      # Traffic-cam clocks in Central Time near Crossgates (Albany is Eastern).
+      | crossgates[\s\S]{0,140}\b\d{1,2}:\d{2}\s*(?:am|pm)\b[\s\S]{0,48}\bct\b
+      | \b\d{1,2}:\d{2}\s*(?:am|pm)\b[\s\S]{0,48}\bct\b[\s\S]{0,140}crossgates
+      # Jackson MS lat/lon band (~32N, 90W) on traffic-cam overlays.
+      | crossgates[\s\S]{0,200}3[12]\.\d{2,}\s*,\s*-?90\.\d{2,}
     )
     """,
     re.IGNORECASE | re.VERBOSE,

@@ -260,6 +260,18 @@ def test_orlando_pine_hills_flood_not_local_micro() -> None:
     assert match_post('Block party this Saturday in Pine Hills — bring a dish.').matched is True
 
 
+def test_mississippi_crossgates_blvd_traffic_cam_not_local_micro() -> None:
+    ms = match_post(
+        'Crossgates Blvd N at US 80\n'
+        '🕒 1:07 PM - 1:08 PM CT (3x speed)\n'
+        '🌡️ 91°F | Partly Cloudy\n\n'
+        '📍: 32.283720,-90.035330'
+    )
+    assert ms.matched is False
+    assert match_post('Holiday hours at Crossgates Mall this weekend.').matched is True
+    assert match_post('Holiday hours at Crossgates this weekend.').matched is True
+
+
 def test_classify_drops_bare_albany_event_without_micro() -> None:
     decision = classify_candidate(
         "Don't miss the Albany Veterans Day Parade this Saturday downtown!",

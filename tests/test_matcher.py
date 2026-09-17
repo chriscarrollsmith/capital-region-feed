@@ -3248,3 +3248,37 @@ def test_brook_tavern_stillwater_burgoyne_and_section2_recall() -> None:
     assert match_post('Section 2 football: Shaker vs Colonie at 7 tonight.').matched is True
     assert match_post('Pine Bush Observatory open house this weekend.').matched is True
     assert match_post('Town of Halfmoon board meeting tonight.').matched is True
+
+
+def test_rotterdam_netherlands_oil_exchange_not_ny() -> None:
+    nl = match_post(
+        'Ab Montag wird mit massivem Anstieg des Ölpreises gerechnet an den Börsen in '
+        'New York in den USA u. Rotterdam in den Niederlanden u. Frankfurt am Main '
+        'in der BRD!'
+    )
+    assert nl.matched is False
+    assert nl.reason == 'hard_negative:malta_europe'
+    assert match_post('Town board meeting in Rotterdam, NY tonight.').matched is True
+    assert match_post("BJ's Warehouse Club in Rotterdam is hiring.").matched is True
+
+
+def test_town_of_malta_cdta_and_local_venue_recall() -> None:
+    assert match_post('Town of Malta community day this Saturday.').matched is True
+    assert match_post('GlobalFoundries Malta campus hiring fair next week.').matched is True
+    assert match_post('CDTA route 12 schedule changes Monday.').matched is True
+    assert match_post('Howe Caverns school field trip Friday.').matched is True
+    assert match_post('USS Slater destroyer escort tours this Sunday.').matched is True
+    assert match_post('LarkFest street festival this weekend.').matched is True
+    assert match_post('Pearlpalooza downtown this weekend.').matched is True
+    assert match_post('Five Rivers Environmental Education Center programs.').matched is True
+    assert match_post('Indian Ladder Trail open for hiking.').matched is True
+    assert match_post('Thacher Park overlook hike Sunday.').matched is True
+    assert match_post('Collar City Tweed Ride Sunday.').matched is True
+    assert match_post('Canfield Casino ghost tour tickets.').matched is True
+    assert match_post('Vischer Ferry firefighters respond to a garage fire.').matched is True
+    assert match_post('Hart Cluett Museum exhibit opens.').matched is True
+    assert match_post('Burden Iron Works museum Saturday.').matched is True
+    assert match_post('Bombers Burrito Bar downtown special.').matched is True
+    assert match_post('WAMC Roundtable tomorrow morning.').matched is True
+    assert match_post('Siena Saints tip off tonight.').matched is True
+    assert match_post('Secret Caverns after dark tour.').matched is True
