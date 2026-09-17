@@ -6995,5 +6995,129 @@
     "split": "dev",
     "regression": true,
     "note": "2026-09-06 audit: Saratoga Springs + NY counterpart"
+  },
+  {
+    "id": "fp-cardiff-capital-region-wales-0907",
+    "text": "Major infrastructure and regeneration projects across south-east Wales could gain access to investment expertise and capital under a new partnership with the UK's National Wealth Fund.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "author_handle": "nation.cymru",
+    "alt_text": "Cardiff Capital Region to gain access to UK National Wealth Fund. Nation.Cymru staff report.",
+    "note": "2026-09-07 audit: Cardiff/Wales Capital Region via Nation.Cymru card"
+  },
+  {
+    "id": "fp-wales-capital-region-cooccur-0907",
+    "text": "Investment across south-east Wales for the Capital Region.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-07 audit: Wales + Capital Region co-occurrence without Cardiff phrase"
+  },
+  {
+    "id": "tp-capital-district-saratoga-area-0907",
+    "text": "Anyone in the Capital District/Saratoga area, Mohawk Valley looking to organize?",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-07 audit: NY Capital District counterpart to Wales FP"
+  },
+  {
+    "id": "fp-fai-cup-waterford-galway-0907",
+    "text": "Gonna be a Waterford/Galway final, calling it now. With the Blues to prevail and get our hands on only our 3rd FAI Cup.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-07 audit: Irish FAI Cup Waterford/Galway multi_local"
+  },
+  {
+    "id": "tp-galway-waterford-ny-farmers-0907",
+    "text": "Drive from Galway to Waterford for the farmers market.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-07 audit: Cap Region Galway+Waterford counterpart to FAI Cup FP"
+  },
+  {
+    "id": "fp-siege-of-troy-venice-film-0907",
+    "text": "Did you ever feel that King of New York could have done with a bit more Wing Chun? That the siege of Troy might have been handled a bit more successfully if the Greeks had a bazooka?",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "Father Joe Review – Venice Film Festival",
+    "note": "2026-09-07 audit: classical siege of Troy unlocked by King of New York"
+  },
+  {
+    "id": "tp-troy-ny-dinner-0907",
+    "text": "Dinner in Troy, New York tonight.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-07 audit: City of Troy NY counterpart to siege-of-Troy FP"
+  },
+  {
+    "id": "tp-saratoga-hopeful-stakes-colon-0907",
+    "text": "Saratoga: The Good Life is 2-for-2 after his 4-length triumph in the Grade 1 Hopeful Stakes.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-07 audit: Hopeful Stakes / Grade 1 with Saratoga: colon form FN"
+  },
+  {
+    "id": "tp-saratoga-worktab-breezing-0907",
+    "text": "Magnitude returned to the worktab at Saratoga on Sept. 6, breezing a half-mile in his first move since the Whitney.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-07 audit: worktab/breezing at Saratoga FN"
+  },
+  {
+    "id": "tn-bare-saratoga-no-race-cue-0907",
+    "text": "Thinking about a quiet weekend in Saratoga.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-07 audit: bare Saratoga without race/venue cues still drops"
+  },
+  {
+    "id": "fp-nation-cymru-handle-capital-region-0907",
+    "text": "A Capital Region partnership with the National Wealth Fund.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "author_handle": "nation.cymru",
+    "note": "2026-09-07 audit: nation.cymru handle gate for bare Capital Region"
+  },
+  {
+    "id": "tp-hopeful-stakes-at-saratoga-0907",
+    "text": "Manny Franco notched his fourth grade 1 win of the summer in the Hopeful Stakes at Saratoga aboard The Good Life.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-07 audit: Hopeful Stakes at Saratoga already-strong counterpart"
   }
 ]

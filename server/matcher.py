@@ -267,6 +267,15 @@ _STRONG_POSITIVE = re.compile(
       | with\s+anticipation\s+stakes\b
       | \bsaratoga\b[\s\S]{0,80}with\s+anticipation\b
       | with\s+anticipation\b[\s\S]{0,80}\bsaratoga\b
+      # Hopeful / Grade wires often lead with "Saratoga:" without "at Saratoga".
+      | \bhopeful\s+stakes\b[\s\S]{0,120}\bsaratoga\b
+      | \bsaratoga\b[\s\S]{0,120}\bhopeful\s+stakes\b
+      | grade\s+[123i]+\b[\s\S]{0,120}\bsaratoga\b
+      | \bsaratoga\b[\s\S]{0,120}grade\s+[123i]+\b
+      # Workout / worktab copy often omits Race Course / ", NY".
+      | worktab\s+at\s+saratoga\b
+      | \bat\s+saratoga\b[\s\S]{0,80}\b(?:worktab|breezing|breeze[sd]?|worked)\b
+      | \b(?:worktab|breezing|breeze[sd]?|worked)\b[\s\S]{0,80}\bat\s+saratoga\b
       # Distinctive Albany campuses / plazas often omit ", NY".
       | massry\s+(?:center|school|hall)\b
       | harriman\s+(?:state\s+office\s+)?campus\b
@@ -507,7 +516,7 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
             sudan|khartoum|virginia|richmond|colombia|bogot[aá]|
             iceland|reykjav[ií]k|finland|helsinki|australia|
             georgia|atlanta|russia|moscow|bulgaria|sofia|japan|tokyo|
-            michigan|lansing
+            michigan|lansing|wales|cardiff
           )\b
       | ukrainian\s+capital\s+region
       | (?:russian|moscow)\s+capital\s+region
@@ -520,6 +529,8 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
       | (?:bulgarian?|sofia)\s+capital\s+region
       | (?:japanese?|tokyo)\s+capital\s+region
       | michigan\s+capital\s+region
+      | cardiff\s+capital\s+region
+      | welsh\s+capital\s+region
       | bogot[aá]\s+capital\s+district
       | capital\s+district\s*,?\s*colombia\b
       | icelandic\s+capital\s+district
@@ -1040,6 +1051,27 @@ _IN_CAPITAL_REGION = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
+# Cardiff / Wales "Capital Region" (Nation.Cymru / UK city-region cards).
+_UK_WALES_GEO_CUE = (
+    r'\bcardiff\b|\bwales\b|\bwels[h]\b|\bcymru\b|'
+    r'\#cardiff\b|\#wales\b|\#cymru\b|\#welsh\b|'
+    r'nation\.cymru|south[- ]east\s+wales|'
+    r'national\s+wealth\s+fund|\bswansea\b'
+)
+
+_UK_WALES_CAPITAL_REGION = re.compile(
+    rf"""
+    (?:
+        cardiff\s+capital\s+region
+      | welsh\s+capital\s+region
+      | capital\s+region\s+of\s+(?:wales|cardiff)\b
+      | capital\s+region\b[\s\S]{{0,280}}(?:{_UK_WALES_GEO_CUE})
+      | (?:{_UK_WALES_GEO_CUE})[\s\S]{{0,280}}capital\s+region\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
 # Boston Newton village / MBTA Worcester Line — not Colonie Newtonville.
 _NEWTONVILLE_MA = re.compile(
     r"""
@@ -1523,6 +1555,12 @@ _GALWAY_IRELAND = re.compile(
       | \bbohemians\b
       | \bbohs\b
       | \bdrogheda\b
+      # FAI Cup / Waterford FC wires often omit "Ireland" / "United".
+      | \bfai\s+cup\b
+      | \#faicup\b
+      | waterford\s+fc\b
+      | galway\s*/\s*waterford\b
+      | waterford\s*/\s*galway\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -1658,6 +1696,12 @@ _TROY_PERSON_NAME = re.compile(
       | brad\s+pitt[\s\S]{0,80}\btroy\b
       | \btroy\b[\s\S]{0,80}brad\s+pitt
       | \btroy\s*\(\s*2004\s*\)
+      # Classical / film "siege of Troy" unlocked by King of New York reviews.
+      | siege\s+of\s+troy\b
+      | \btroy\b[\s\S]{0,80}\b(?:greeks?|homeric|homer|iliad)\b
+      | \b(?:greeks?|homeric|homer|iliad)\b[\s\S]{0,80}\btroy\b
+      | venice\s+film\s+festival[\s\S]{0,200}\btroy\b
+      | \btroy\b[\s\S]{0,200}venice\s+film\s+festival
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -1820,7 +1864,8 @@ _HARD_NEGATIVE = re.compile(
             canada|denmark|copenhagen|mississippi|louisiana|pennsylvania|
             california|sacramento|korea|south\s+korea|ukraine|kyiv|kiev|
             sudan|khartoum|virginia|richmond|colombia|bogot[aá]|
-            iceland|reykjav[ií]k|bulgaria|sofia|japan|michigan|lansing
+            iceland|reykjav[ií]k|bulgaria|sofia|japan|michigan|lansing|
+            wales|cardiff
           )\b
       | ukrainian\s+capital\s+region
       | sudan(?:ese)?\s+capital\s+region
@@ -1828,6 +1873,8 @@ _HARD_NEGATIVE = re.compile(
       | (?:bulgarian?|sofia)\s+capital\s+region
       | (?:japanese?|tokyo)\s+capital\s+region
       | michigan\s+capital\s+region
+      | cardiff\s+capital\s+region
+      | welsh\s+capital\s+region
       | capital\s+region\s+international\s+airport
       | liberty\s+city
       | \bgta\s*iv?\b
@@ -2343,6 +2390,20 @@ def _india_capital_region_conflict(haystack: str) -> bool:
     if not _IN_CAPITAL_REGION.search(haystack):
         return False
     return not _ny_capital_region_context(haystack)
+
+
+def _uk_wales_capital_region_conflict(haystack: str, author_handle: str | None = None) -> bool:
+    """True when 'capital region' refers to Cardiff / Wales, not NY."""
+    if _ny_capital_region_context(haystack):
+        return False
+    if _UK_WALES_CAPITAL_REGION.search(haystack):
+        return True
+    handle = (author_handle or '').strip().lower()
+    # Nation.Cymru and similar Welsh outlets often put "Capital Region" only in
+    # the card title while the body says Wales / UK National Wealth Fund.
+    if re.search(r'(?:^|\.)cymru$|\bcymru\b|nation\.cymru|cardiff', handle):
+        return bool(re.search(r'capital\s+region\b', haystack, flags=re.IGNORECASE))
+    return False
 
 
 def _newtonville_ma_conflict(haystack: str) -> bool:
@@ -3257,6 +3318,8 @@ def match_post(
             return MatchResult(False, 'hard_negative:belgium_capital_region')
         if _india_capital_region_conflict(haystack):
             return MatchResult(False, 'hard_negative:india_capital_region')
+        if _uk_wales_capital_region_conflict(haystack, author_handle):
+            return MatchResult(False, 'hard_negative:uk_wales_capital_region')
         if _finland_capital_region_conflict(haystack):
             return MatchResult(False, 'hard_negative:finland_capital_region')
         if _denmark_capital_region_conflict(haystack):

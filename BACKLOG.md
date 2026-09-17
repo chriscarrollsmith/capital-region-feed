@@ -538,6 +538,27 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-090 — Daily feed audit: Cardiff/Wales capital region, FAI Cup Waterford/Galway, siege of Troy; Hopeful/worktab Saratoga FNs
+- **Status:** done ([#67](https://github.com/chriscarrollsmith/capital-region-feed/pull/67))
+- **Why:** 2026-09-07 audit of last-24h AppView feed (~149 posts since 2026-09-06T09:00Z)
+  found active FPs after #66 (still open): Nation.Cymru `Cardiff Capital Region` /
+  south-east Wales National Wealth Fund cards matched bare `capital region` strong;
+  Irish `Waterford/Galway` + `FAI Cup` unlocked `multi_local_places` (LOI United cues
+  missed FAI Cup); Venice Film Festival `siege of Troy` + `King of New York` unlocked
+  `ambiguous_with_context:troy`. FNs: Horse Racing Nation `Saratoga: … Grade 1 Hopeful
+  Stakes` (colon form without `at Saratoga`); BloodHorse `worktab at Saratoga` /
+  breezing. ~52 stale AppView rows already rematch-drop (Malta/Brunswick/Troy bare).
+  AppView `searchPosts` still often 403. Waterford NY viral video cluster remains TP.
+- **Work:**
+  - UK/Wales capital-region conflict + Cardiff/Welsh hard-neg phrases + `nation.cymru`
+    handle gate; expand Galway Ireland with FAI Cup / Waterford FC / slash finals;
+    expand Troy film/myth cues (`siege of Troy`, Greeks/Homer/Iliad, Venice Film);
+    strong positives for Hopeful Stakes ↔ Saratoga, Grade N ↔ Saratoga (no `at`), and
+    worktab/breezing at Saratoga.
+  - Grow eval with 2026-09-07 FP/TP/FN anchors (builds on #66 / B-089).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-089 — Daily feed audit: Dutch Rotterdam/Bethlehem person, Galway+Dublin walks, Schenectady Ave; Opera Saratoga / Massry / Harriman FNs
 - **Status:** done ([#66](https://github.com/chriscarrollsmith/capital-region-feed/pull/66))
 - **Why:** 2026-09-06 audit of last-24h AppView feed (~198 posts since 2026-09-05T09:03Z)
