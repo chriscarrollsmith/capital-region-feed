@@ -276,6 +276,17 @@ _STRONG_POSITIVE = re.compile(
       | worktab\s+at\s+saratoga\b
       | \bat\s+saratoga\b[\s\S]{0,80}\b(?:worktab|breezing|breeze[sd]?|worked)\b
       | \b(?:worktab|breezing|breeze[sd]?|worked)\b[\s\S]{0,80}\bat\s+saratoga\b
+      # Named closing-day / summer-meet stakes often omit ", NY".
+      | funny\s+cide(?:\s+stakes)?\b
+      | gio\s+ponti(?:\s+stakes)?\b
+      # America250 / Revolutionary tourism often pairs bare Saratoga.
+      | \bamerica\s*250\b[\s\S]{0,120}\bsaratoga\b
+      | \bsaratoga\b[\s\S]{0,120}\bamerica\s*250\b
+      # Historic Troy Iron Works / Nail Factory tourism often omits ", NY".
+      | troy\s+iron\s+and\s+nail(?:\s+factory)?\b
+      | iron\s+and\s+nail\s+factory\b
+      # Downtown Albany redevelopment wires often omit ", NY".
+      | downtown\s+albany\b
       # Distinctive Albany campuses / plazas often omit ", NY".
       | massry\s+(?:center|school|hall)\b
       | harriman\s+(?:state\s+office\s+)?campus\b
@@ -1072,18 +1083,21 @@ _UK_WALES_CAPITAL_REGION = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
-# Boston Newton village / MBTA Worcester Line — not Colonie Newtonville.
+# Boston Newton village / MBTA Worcester Line / Newtonville NJ — not Colonie.
 _NEWTONVILLE_MA = re.compile(
     r"""
     (?:
         newtonville[\s\S]{0,220}(?:
             \bboston\b|\bmbta\b|\#mbta\b|newton\s+ma\b|newton\s+highlands|
-            west\s+newton|worcester\s+line|garden\s+city
+            west\s+newton|worcester\s+line|garden\s+city|
+            \bnj\b|\bnew\s+jersey\b|\#newjersey\b
         )
       | (?:
             \bboston\b|\bmbta\b|\#mbta\b|newton\s+ma\b|newton\s+highlands|
-            west\s+newton|worcester\s+line
+            west\s+newton|worcester\s+line|
+            \bnj\b|\bnew\s+jersey\b|\#newjersey\b
         )[\s\S]{0,220}newtonville
+      | newtonville\s*,?\s*(?:nj|n\.j\.|new\s+jersey)\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -1632,6 +1646,23 @@ _CLIFTON_PARK_UK = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
+# Baltimore / Catonsville Clifton Park (WMAR 9/11 tributes) — not Clifton Park, NY.
+_CLIFTON_PARK_MD = re.compile(
+    r"""
+    (?:
+        \bcatonsville\b
+      | \bbaltimore\b
+      | \bmaryland\b
+      | \#maryland\b
+      | \bwmar\b
+      | wmar2news
+      | flight\s+93
+      | \bshanksville\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
 # Bethlehem, Pennsylvania (SteelStacks / Lehigh Valley) — not Town of Bethlehem NY.
 _BETHLEHEM_PA = re.compile(
     r"""
@@ -1702,6 +1733,8 @@ _TROY_PERSON_NAME = re.compile(
       | \b(?:greeks?|homeric|homer|iliad)\b[\s\S]{0,80}\btroy\b
       | venice\s+film\s+festival[\s\S]{0,200}\btroy\b
       | \btroy\b[\s\S]{0,200}venice\s+film\s+festival
+      # Pro wrestling ring names (Face/Off "Castor Troy") — not City of Troy.
+      | \bcastor\s+troy\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -2407,7 +2440,7 @@ def _uk_wales_capital_region_conflict(haystack: str, author_handle: str | None =
 
 
 def _newtonville_ma_conflict(haystack: str) -> bool:
-    """True when Newtonville refers to Boston Newton / MBTA, not Colonie NY."""
+    """True when Newtonville refers to Boston Newton / MBTA / NJ, not Colonie NY."""
     if not re.search(r'\bnewtonville\b', haystack, flags=re.IGNORECASE):
         return False
     if not _NEWTONVILLE_MA.search(haystack):
@@ -3141,6 +3174,26 @@ def _clifton_park_uk_conflict(haystack: str, author_handle: str | None = None) -
     return False
 
 
+def _clifton_park_md_conflict(haystack: str, author_handle: str | None = None) -> bool:
+    """True when Clifton Park refers to Baltimore/Catonsville MD, not NY."""
+    if not re.search(r'clifton\s+park', haystack, flags=re.IGNORECASE):
+        return False
+    if re.search(
+        r'clifton\s+park\s*,?\s*(?:ny|n\.y\.|new\s+york)\b',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    if _ny_capital_region_context(haystack):
+        return False
+    if _CLIFTON_PARK_MD.search(haystack):
+        return True
+    handle = (author_handle or '').strip().lower()
+    if re.search(r'wmar|baltimore|catonsville|maryland', handle):
+        return True
+    return False
+
+
 def _haystack_without_handles(haystack: str) -> str:
     """Strip @mentions so handle tokens cannot supply place/NY context."""
     return _HANDLE_MENTION.sub(' ', haystack)
@@ -3354,6 +3407,8 @@ def match_post(
             return MatchResult(False, 'hard_negative:loudonville_oh')
         if _clifton_park_uk_conflict(haystack, author_handle):
             return MatchResult(False, 'hard_negative:clifton_park_uk')
+        if _clifton_park_md_conflict(haystack, author_handle):
+            return MatchResult(False, 'hard_negative:clifton_park_md')
         if _newtonville_ma_conflict(haystack):
             return MatchResult(False, 'hard_negative:newtonville_ma')
         if _ct_capital_district_conflict(haystack):

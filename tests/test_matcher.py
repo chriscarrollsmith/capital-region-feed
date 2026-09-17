@@ -767,6 +767,19 @@ def test_clifton_park_uk_cricket_not_ny() -> None:
     assert match_post('Water main break on Carlton Road in Clifton Park, NY.').matched is True
 
 
+def test_clifton_park_baltimore_md_not_ny() -> None:
+    md = match_post(
+        'Volunteers clean up part of Clifton Park on 9/11 in tribute to a young woman '
+        'from Catonsville who perished on Flight 93.',
+        alt_text='Tribute to 9/11 victim from Catonsville — www.wmar2news.com',
+    )
+    assert md.matched is False
+    assert md.reason == 'hard_negative:clifton_park_md'
+    assert (
+        match_post('Farmers market opens Saturday in Clifton Park near #AlbanyNY.').matched is True
+    )
+
+
 def test_california_capital_region_is_hard_negative() -> None:
     sac = match_post(
         'In recent years, numerous social clubs geared toward women in the capital region '
@@ -2149,6 +2162,12 @@ def test_newtonville_ma_mbta_not_colonie() -> None:
     assert mbta.reason == 'hard_negative:newtonville_ma'
     assert match_post('Road work on Newtonville Avenue in Colonie near #AlbanyNY.').matched is True
 
+    nj = match_post(
+        'Opening Reception 10/10/2026 at the Dr. Martin Luther King Jr. Center Newtonville NJ.'
+    )
+    assert nj.matched is False
+    assert nj.reason == 'hard_negative:newtonville_ma'
+
 
 def test_dc_capital_district_not_ny() -> None:
     dc = match_post(
@@ -2897,3 +2916,35 @@ def test_hopeful_stakes_and_worktab_saratoga_recall() -> None:
         'half-mile in his first move since the Whitney.'
     )
     assert worktab.matched is True
+
+
+def test_castor_troy_wrestling_not_multi_local() -> None:
+    nxt = match_post(
+        'More NXT Releases according to Pro Wrestling Illustrious:\n'
+        '* Bryceton Cleese\n'
+        '* Axel Rainstorm\n'
+        '* Castor Troy\n'
+        '* Bethlehem Jesusface\n'
+        '* Oaklynnsleigh Zee'
+    )
+    assert nxt.matched is False
+    assert nxt.reason == 'hard_negative:troy_person_name'
+    assert match_post('Castor Street reopen in Troy, New York next week.').matched is True
+
+
+def test_downtown_albany_and_troy_iron_nail_recall() -> None:
+    downtown = match_post(
+        'Investors are lining up apartment conversions of two downtown Albany buildings.'
+    )
+    assert downtown.matched is True
+    iron = match_post('1800s Factory RUINS and FORGOTTEN Tunnel (Troy Iron and Nail Factory)')
+    assert iron.matched is True
+
+
+def test_america250_and_funny_cide_gio_ponti_saratoga_recall() -> None:
+    america = match_post('I explore that question through Saratoga and America250.')
+    assert america.matched is True
+    funny = match_post('Scramjet won the Funny Cide Stakes on closing day.')
+    assert funny.matched is True
+    gio = match_post('Siyouincanada took the Gio Ponti on the last card of the meet.')
+    assert gio.matched is True

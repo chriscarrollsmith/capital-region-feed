@@ -538,6 +538,28 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-091 — Daily feed audit: Castor Troy/Bethlehem wrestling, Clifton Park MD, Newtonville NJ, Orlando Pine Hills; downtown Albany / Troy Iron / America250 FNs
+- **Status:** done ([#68](https://github.com/chriscarrollsmith/capital-region-feed/pull/68))
+- **Why:** 2026-09-08 audit of last-24h AppView feed (~169 posts since 2026-09-07T09:03Z)
+  found active FPs after #67 (still open): NXT release list `Castor Troy` +
+  `Bethlehem Jesusface` unlocked `multi_local_places`; Baltimore/Catonsville
+  `Clifton Park` WMAR 9/11 tribute matched bare `clifton park` strong; Newtonville
+  NJ MLK Center heritage card matched bare `newtonville` strong; Orlando/Orange
+  County `#weshwx` flood with `Pine Hills` unlocked `classifier:local_micro`.
+  FNs: bizjournals `downtown Albany` conversions (bare Albany); Troy Iron and Nail
+  Factory tourism; historian `Saratoga` + `America250` without county/NY. Named
+  Funny Cide / Gio Ponti stakes recall anchors. ~49 stale AppView rematch-drops
+  (Malta/Rotterdam/Troy bare). AppView `searchPosts` still often 403. Waterford NY
+  viral video cluster remains TP.
+- **Work:**
+  - Gate `Castor Troy` as troy person-name; Clifton Park MD (Catonsville/WMAR)
+    conflict; expand Newtonville other-region with NJ; scrub Orlando Pine Hills
+    from classifier micros; strong positives for downtown Albany, Troy Iron and
+    Nail Factory, America250↔Saratoga, Funny Cide / Gio Ponti stakes.
+  - Grow eval with 2026-09-08 FP/TP/FN anchors (builds on #67 / B-090).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-090 — Daily feed audit: Cardiff/Wales capital region, FAI Cup Waterford/Galway, siege of Troy; Hopeful/worktab Saratoga FNs
 - **Status:** done ([#67](https://github.com/chriscarrollsmith/capital-region-feed/pull/67))
 - **Why:** 2026-09-07 audit of last-24h AppView feed (~149 posts since 2026-09-06T09:00Z)
