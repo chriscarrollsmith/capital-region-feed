@@ -2649,3 +2649,48 @@ def test_yaddo_saratoga_and_rotterdamcc_allowlist() -> None:
     )
     assert kept.matched is True
     assert kept.reason == 'allowlist_did'
+
+
+def test_albany_wire_remote_albuquerque_not_local() -> None:
+    remote = match_post(
+        'ALBANY, N.Y., Sept. 03, 2026 (GLOBE NEWSWIRE) — Curia Global, Inc. '
+        'today announced the grand opening of its expanded campus in '
+        'Albuquerque, New Mexico.'
+    )
+    assert remote.matched is False
+    assert remote.reason == 'hard_negative:albany_wire_remote'
+    assert (
+        match_post(
+            'ALBANY, N.Y. (WRGB) — Lawmakers met in the state Capitol about housing.'
+        ).matched
+        is True
+    )
+    assert match_post('ALBANY, N.Y. — A new brewery opens on Lark Street downtown.').matched is True
+
+
+def test_albany_ithaca_contrast_not_cap_region() -> None:
+    poem = match_post(
+        'I decided to become The Poet Laureate Of Tompkins County, New York. '
+        "I don't want to stray again - Not up to Albany, Where the bureaucracy "
+        'Survives. Ithaca is where The hearts and souls Of New York Naturally reside.'
+    )
+    assert poem.matched is False
+    assert poem.reason == 'hard_negative:albany_ithaca_contrast'
+    assert (
+        match_post(
+            'Jules Netherland traveled from the Bronx to the New York state Capitol '
+            'in Albany several times to lobby for medical aid in dying.'
+        ).matched
+        is True
+    )
+
+
+def test_glens_falls_and_empire_underground_keep() -> None:
+    assert match_post('GLENS FALLS NY Sep 3 Climate Report: High: 82 Low: 59').matched is True
+    assert match_post('Glens Falls boys soccer beat Ichabod Crane 3-0').matched is True
+    assert match_post('Show tonight at Empire Underground').matched is True
+    assert (
+        match_post('Moon Tooth announce East Coast dates: Nov. 21 @ Empire Underground').matched
+        is True
+    )
+    assert match_post('Tickets on sale for Saturday at Empire Underground').matched is True

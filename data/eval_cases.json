@@ -6541,5 +6541,127 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-09-03 TN: Seattle Times union still gated after NYT Times Union lookbehind"
+  },
+  {
+    "id": "fp-albany-wire-albuquerque-0904",
+    "text": "ALBANY, N.Y., Sept. 03, 2026 (GLOBE NEWSWIRE) — Curia Global, Inc. today announced the grand opening of its expanded campus in Albuquerque, New Mexico.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-04 audit: Albany N.Y. wire dateline + Albuquerque facility must drop"
+  },
+  {
+    "id": "tp-albany-wire-capitol-0904",
+    "text": "ALBANY, N.Y. (WRGB) — Lawmakers met in the state Capitol about housing.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-04 audit: Albany N.Y. wire dateline Cap Region counterpart"
+  },
+  {
+    "id": "tp-albany-wire-lark-street-0904",
+    "text": "ALBANY, N.Y. — A new brewery opens on Lark Street downtown.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-04 audit: Albany wire + Lark Street rescue"
+  },
+  {
+    "id": "fp-albany-ithaca-poet-laureate-0904",
+    "text": "I decided to become The Poet Laureate Of Tompkins County, New York. I don't want to stray again - Not up to Albany, Where the bureaucracy Survives. Ithaca is where The hearts and souls Of New York Naturally reside.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-04 audit: Ithaca/Tompkins poem with Albany bureaucracy contrast"
+  },
+  {
+    "id": "tp-albany-capitol-aid-in-dying-0904",
+    "text": "Jules Netherland traveled from the Bronx to the New York state Capitol in Albany several times to lobby for medical aid in dying.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-04 audit: state Capitol in Albany keep counterpart"
+  },
+  {
+    "id": "fn-glens-falls-climate-0904",
+    "text": "GLENS FALLS NY Sep 3 Climate Report: High: 82 Low: 59 Precip: 0.03\"",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-04 audit: FN Glens Falls NY climate bot"
+  },
+  {
+    "id": "fn-glens-falls-soccer-0904",
+    "text": "Glens Falls boys soccer beat Ichabod Crane 3-0 in their season opener.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-04 audit: FN Glens Falls local sports"
+  },
+  {
+    "id": "fn-empire-underground-show-0904",
+    "text": "Show tonight at Empire Underground",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-04 audit: FN Empire Underground venue without city"
+  },
+  {
+    "id": "fn-empire-underground-tour-0904",
+    "text": "Moon Tooth announce East Coast dates: Nov. 21 @ Empire Underground",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-04 audit: FN Empire Underground tour stop"
+  },
+  {
+    "id": "tn-seattle-times-union-stale-0904",
+    "text": "We stand with the Seattle Times Union. Sign their petition for a strong contract.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-04 audit: stale feed still showed Seattle Times Union (already gated)"
+  },
+  {
+    "id": "tn-md-capital-region-afro-plus-0904",
+    "text": "7 things to do in the capital region, including a prized art show and Afro Plus Festival",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "author_handle": "bannerpgcounty.bsky.social",
+    "alt_text": "The capital region will host events including Afro Plus Festival over Labor Day weekend.",
+    "note": "2026-09-04 audit: stale MD/DC capital region banner (already gated)"
+  },
+  {
+    "id": "tp-ualbany-buffalo-game-0904",
+    "text": "Buffalo once again trails UAlbany after a 14-yard touchdown pass. The Great Danes lead late.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-04 audit: UAlbany football TP counterpart"
   }
 ]

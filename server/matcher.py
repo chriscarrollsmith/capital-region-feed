@@ -246,6 +246,11 @@ _STRONG_POSITIVE = re.compile(
       | \btroy\b[\s\S]{0,80}powers\s+park\b
       # Yaddo artist colony (Saratoga Springs) often pairs with bare Saratoga.
       | \byaddo\b
+      # Glens Falls (Warren County / Cap Region media market) — climate bots and
+      # local sports often omit ", NY" beyond the city+state token order.
+      | \bglens\s+falls\b
+      # Albany music venue — tour posters often say "@ Empire Underground" alone.
+      | empire\s+underground\b
       # Named Saratoga Race Course stakes / barn copy often omits ", NY".
       | saratoga\s+derby\b
       | saratoga\s+barn\b
@@ -1839,6 +1844,7 @@ _LOCAL_EVENT_VENUE = re.compile(
       | \bcap\s+rep\b
       | albany\s+civic\s+(?:theater|theatre)
       | park\s+playhouse\b
+      | empire\s+underground\b
       | joseph\s+l\.?\s+bruno\s+stadium
       | \bbruno\s+stadium\b
       | tri-?city\s+valleycats\b
@@ -2672,6 +2678,97 @@ def _troy_road_ithaca_conflict(haystack: str) -> bool:
     return True
 
 
+_ALBANY_WIRE_REMOTE = re.compile(
+    r"""
+    (?:
+        \balbuquerque\b
+      | \bnew\s+mexico\b
+      | \bphoenix\b
+      | \barizona\b
+      | \bdenver\b
+      | \bcolorado\b
+      | \bhouston\b
+      | \bdallas\b
+      | \bsan\s+francisco\b
+      | \blos\s+angeles\b
+      | \bseattle\b
+      | \bmiami\b
+      | \batlanta\b
+      | \bminneapolis\b
+      | \bdetroit\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+_ALBANY_WIRE_LOCAL_RESCUE = re.compile(
+    r"""
+    (?:
+        empire\s+state\s+plaza
+      | lark\s+(?:street|hall)\b
+      | \bualbany\b
+      | university\s+at\s+albany
+      | capital\s+(?:region|district)\b
+      | \bschenectady\b
+      | \btroy\s*,?\s*(?:ny|n\.y\.)\b
+      | city\s+of\s+(?:albany|troy)\b
+      | albany\s+medical
+      | mvp\s+arena
+      | \bproctors\b
+      | empire\s+underground\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+
+def _albany_wire_remote_conflict(haystack: str) -> bool:
+    """True when an Albany, N.Y. wire dateline fronts a remote-city story.
+
+    Press wires often open with the HQ dateline (ALBANY, N.Y.) while the body
+    is about an Albuquerque / Phoenix / etc. facility. Keep Cap Region body
+    cues as rescue so local Albany copy is not dropped.
+    """
+    if not re.search(
+        r'\balbany,?\s*(?:n\.?\s*y\.?|new\s+york)\b',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    if not _ALBANY_WIRE_REMOTE.search(haystack):
+        return False
+    if _ALBANY_WIRE_LOCAL_RESCUE.search(haystack):
+        return False
+    return True
+
+
+def _albany_ithaca_contrast_conflict(haystack: str) -> bool:
+    """True when Albany is only a contrast to Ithaca/Tompkins, not Cap Region news."""
+    if not re.search(r'\balbany\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not re.search(r'\b(?:ithaca|tompkins(?:\s+county)?)\b', haystack, flags=re.IGNORECASE):
+        return False
+    # Explicit Cap Region anchors (beyond bare Albany + New York) keep.
+    if re.search(
+        r"""
+        (?:
+            albany\s*,?\s*(?:ny|n\.y\.)\b
+          | \bualbany\b
+          | university\s+at\s+albany
+          | capital\s+(?:region|district)\b
+          | \bschenectady\b
+          | empire\s+state\s+plaza
+          | new\s+york\s+state\s+capitol
+          | state\s+capitol\s+in\s+albany
+        )
+        """,
+        haystack,
+        flags=re.IGNORECASE | re.VERBOSE,
+    ):
+        return False
+    return True
+
+
 def _schaghticoke_ct_conflict(haystack: str) -> bool:
     """True when Schaghticoke is a Kent CT road, not the Town of Schaghticoke NY."""
     if not re.search(r'\bschaghticoke\b', haystack, flags=re.IGNORECASE):
@@ -2966,6 +3063,8 @@ def match_post(
             return MatchResult(False, 'hard_negative:ct_capital_district')
         if _schaghticoke_ct_conflict(haystack):
             return MatchResult(False, 'hard_negative:schaghticoke_ct')
+        if _albany_wire_remote_conflict(haystack):
+            return MatchResult(False, 'hard_negative:albany_wire_remote')
         return MatchResult(True, 'strong_positive')
 
     if _COLONIE_LOCAL.search(haystack):
@@ -3042,6 +3141,10 @@ def match_post(
                 return MatchResult(False, 'hard_negative:albany_bay_area')
             if _gta_albany_conflict(haystack):
                 return MatchResult(False, 'hard_negative:gta_albany')
+            if _albany_ithaca_contrast_conflict(haystack):
+                return MatchResult(False, 'hard_negative:albany_ithaca_contrast')
+            if _albany_wire_remote_conflict(haystack):
+                return MatchResult(False, 'hard_negative:albany_wire_remote')
             if _NY_CONTEXT.search(place_haystack):
                 return MatchResult(True, 'albany_with_ny_context')
             if _STRONG_POSITIVE.search(haystack):
