@@ -3065,6 +3065,12 @@ def test_loudonville_nws_cleveland_ashland_not_ny() -> None:
     )
     assert nws.matched is False
     assert nws.reason == 'hard_negative:loudonville_oh'
+    northeast = match_post(
+        'Loudonville Dog Breeder Hit With 10 New Charges, Including Animal Cruelty '
+        '#NortheastOhio #News'
+    )
+    assert northeast.matched is False
+    assert northeast.reason == 'hard_negative:loudonville_oh'
     assert match_post('Road work begins in Loudonville near Albany this week.').matched is True
 
 
@@ -3117,6 +3123,48 @@ def test_capitaldistrict_hashtag_and_local_festival_recall() -> None:
         match_post(
             "Amid NYSDOH's investigation into the Albany Center for Independent Living "
             'and Delmar Center for Rehabilitation and Nursing'
+        ).matched
+        is True
+    )
+
+
+def test_route_787_takoma_park_md_not_albany_i787() -> None:
+    md = match_post(
+        'Twice-yearly #TakomaPark check: new (9/6/2026) Ride On Route 18 schedule '
+        'still shows Flower Avenue as Route 787. It is no longer a Maryland state route.\n'
+        'assets.montgomerycountymd.gov/files/2026-0...'
+    )
+    assert md.matched is False
+    assert md.reason == 'hard_negative:route_787_md'
+    assert match_post('Crash on I-787 northbound near downtown Albany.').matched is True
+    assert match_post('Construction on Route 787 in Albany NY this weekend.').matched is True
+
+
+def test_albany_sheriff_library_semiconductor_and_saratoga_dining_recall() -> None:
+    assert (
+        match_post(
+            "ALBANY SHERIFF'S INVESTIGATOR Busted for Allegedly Using Flock Cameras "
+            'to Track Ex-girlfriend 3,000 TIMES'
+        ).matched
+        is True
+    )
+    assert (
+        match_post(
+            'Tattoo artist talk about Japanese Yokai drawing at the Albany public library'
+        ).matched
+        is True
+    )
+    assert (
+        match_post(
+            "An auction of a defunct semiconductor startup's equipment is on hold after "
+            "the firm's Albany landlord sought protections from potential damage."
+        ).matched
+        is True
+    )
+    assert (
+        match_post(
+            "It's always exciting when a new restaurant comes to Saratoga. But when "
+            "Noah's Italian and Bear's Cup Bakehouse opened within about a week…"
         ).matched
         is True
     )

@@ -538,6 +538,26 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-094 — Daily feed audit: MD Route 787 / Takoma Park; Albany sheriff/library/semiconductor; Saratoga dining FNs
+- **Status:** done ([#71](https://github.com/chriscarrollsmith/capital-region-feed/pull/71))
+- **Why:** 2026-09-11 audit of last-24h AppView feed (~161 posts since 2026-09-10T09:02Z)
+  found an active FP after #70 (still open): Maryland `Route 787` / Takoma Park Flower Ave
+  / Montgomery County Ride On matched Cap Region `route 787` strong. Loudonville OH civic
+  crime with `#NortheastOhio` still matched bare `loudonville` strong (`#ohio` gate missed
+  compound hashtags). FNs: `Albany sheriff` wire and `Albany public library` event dropped
+  as bare Albany; Cap Region semiconductor / Albany landlord auction wire dropped; Saratoga
+  Springs dining (`Noah's Italian` / `Bear's Cup Bakehouse`) dropped as bare Saratoga.
+  ~23 stale AppView rematch-drops (Malta/Troy/Brunswick). AppView `searchPosts` still often
+  403. Waterford NY viral video cluster remains TP. Residual: bare Albany job spam;
+  allowlisted non-local; marketplace listings with Cap Region ship-from towns.
+- **Work:**
+  - Route 787 Maryland conflict (Takoma Park / MoCo / Flower Ave / Ride On); expand
+    Loudonville OH `#\w*ohio` hashtags; strong positives for Albany sheriff, Albany public
+    library, Albany+semiconductor, Noah's Italian / Bear's Cup Bakehouse; grow eval with
+    2026-09-11 FP/TP/FN anchors (builds on #70 / B-093).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-093 — Daily feed audit: Monica Latham, Loudonville OH/Ashland, Rotterdam filmmaker; #capitaldistrict / festivals FNs
 - **Status:** done ([#70](https://github.com/chriscarrollsmith/capital-region-feed/pull/70))
 - **Why:** 2026-09-10 audit of last-24h AppView feed (~173 posts since 2026-09-09T09:03Z)

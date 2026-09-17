@@ -102,7 +102,8 @@ _STRONG_POSITIVE = re.compile(
       | capital\s+rep(?:ertory)?\b
       | proctors\s+collaborative\b
       # Interstate 787 — require I-/interstate/route prefix. Bare "on 787" matches
-      # medical PR ("Study on 787 Brain Tumor Patients").
+      # medical PR ("Study on 787 Brain Tumor Patients"). Maryland "Route 787"
+      # (Takoma Park / Flower Ave) is gated by _route_787_md_conflict.
       | \b(?:i-?|interstate\s+|route\s+|ny\s+)787\b
       | \bon\s+i-?787\b
       | local\s*518
@@ -311,6 +312,13 @@ _STRONG_POSITIVE = re.compile(
       | burdett\s+birth(?:ing)?\s+center\b
       # County sheriff ICE wires often omit "County" / ", NY".
       | rensselaer\s+sheriff\b
+      # Albany County sheriff wires often omit "County" / ", NY".
+      | albany\s+sheriff(?:['\u2019]?s)?\b
+      # Albany Public Library event copy often omits ", NY".
+      | albany\s+public\s+library\b
+      # Cap Region chip / landlord auction wires often omit ", NY".
+      | semiconductor[\s\S]{0,120}\balbany\b
+      | \balbany\b[\s\S]{0,120}semiconductor
       # Albany Med / AMC trauma wires often omit ", NY".
       | albany\s+medical\s+center\b
       | albany\s+med(?:ical)?\s+health\s+system\b
@@ -367,6 +375,9 @@ _STRONG_POSITIVE = re.compile(
       | saratoga\s+pumpkinfest\b
       | pumpkinfest[\s\S]{0,40}\bsaratoga\b
       | \bsaratoga\b[\s\S]{0,40}pumpkinfest
+      # Saratoga Springs dining wires often say bare "Saratoga" without Springs/NY.
+      | noah['\u2019]?s\s+italian\b
+      | bear['\u2019]?s\s+cup(?:\s+bakehouse)?\b
       # Thruway incident wires for Town of Rotterdam often omit ", NY".
       | thruway[\s\S]{0,80}\brotterdam\b
       | \brotterdam\b[\s\S]{0,80}thruway
@@ -1717,8 +1728,8 @@ _LOUDONVILLE_OH = re.compile(
     r"""
     (?:
         loudonville\s*,?\s*(?:oh|ohio)\b
-      | loudonville[\s\S]{0,160}(?:\#ohio\b|\bohio\b|\#oh\d+\b)
-      | (?:\#ohio\b|\bohio\b|\#oh\d+\b)[\s\S]{0,160}loudonville
+      | loudonville[\s\S]{0,160}(?:\#\w*ohio\b|\bohio\b|\#oh\d+\b)
+      | (?:\#\w*ohio\b|\bohio\b|\#oh\d+\b)[\s\S]{0,160}loudonville
       | \bwaynedale\b
       | golden\s+bears[\s\S]{0,80}loudonville
       | loudonville[\s\S]{0,80}golden\s+bears
@@ -2904,6 +2915,43 @@ def _loudonville_oh_conflict(haystack: str, author_handle: str | None = None) ->
     return not _ny_capital_region_context(haystack)
 
 
+# Maryland Route 787 (Takoma Park / Flower Avenue) — not Interstate 787 Albany.
+_ROUTE_787_MD = re.compile(
+    r"""
+    (?:
+        \#?takoma\s*park\b
+      | \btakomapark\b
+      | montgomery\s+county
+      | montgomerycountymd
+      | maryland\s+state\s+route
+      | flower\s+ave(?:nue)?\b
+      | \bride\s*on\b
+      | \#md(?:wx|politics|gov|news)?\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+
+def _route_787_md_conflict(haystack: str, author_handle: str | None = None) -> bool:
+    """True when Route 787 refers to Maryland MD 787, not Albany I-787."""
+    del author_handle
+    # Only gate "route 787" — I-787 / interstate 787 / NY 787 stay Cap Region.
+    if not re.search(r'\broute\s+787\b', haystack, flags=re.IGNORECASE):
+        return False
+    if re.search(r'\b(?:i-?787|interstate\s+787|ny\s+787)\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not _ROUTE_787_MD.search(haystack):
+        return False
+    if re.search(
+        r'(?:\bi-?787\b|interstate\s+787|albany|schenectady|troy\s*,?\s*ny)',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    return not _ny_capital_region_context(haystack)
+
+
 def _brunswick_records_conflict(haystack: str) -> bool:
     """True when Brunswick refers to the record label, not Town of Brunswick NY."""
     if not re.search(r'\bbrunswick\b', haystack, flags=re.IGNORECASE):
@@ -3595,6 +3643,8 @@ def match_post(
             return MatchResult(False, 'hard_negative:burnt_hills_descriptive')
         if _loudonville_oh_conflict(haystack, author_handle):
             return MatchResult(False, 'hard_negative:loudonville_oh')
+        if _route_787_md_conflict(haystack, author_handle):
+            return MatchResult(False, 'hard_negative:route_787_md')
         if _clifton_park_uk_conflict(haystack, author_handle):
             return MatchResult(False, 'hard_negative:clifton_park_uk')
         if _clifton_park_md_conflict(haystack, author_handle):
