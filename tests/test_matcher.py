@@ -3393,3 +3393,95 @@ def test_bethlehem_universal_hall_houston_institute_stillwater_recall() -> None:
         match_post('America250 events in Stillwater along the Hudson this weekend.').matched is True
     )
     assert match_post('See you at Washington Park farmers market Saturday.').matched is True
+
+
+def test_loudonville_mid_ohio_county_flood_not_ny() -> None:
+    flood = match_post(
+        'Flood Advisory in effect until 11:45 PM for Ashland, Holmes, Knox, Morrow, and '
+        'Richland Counties. Avoid flooded roads near Mansfield, Loudonville, Mount Gilead.'
+    )
+    assert flood.matched is False
+    assert flood.reason == 'hard_negative:loudonville_oh'
+    severe = match_post(
+        'Severe Thunderstorm Warning for Ashland, Holmes, Knox, and Richland Counties '
+        'with rotation near Loudonville affecting Perrysville and Bellville.'
+    )
+    assert severe.matched is False
+    assert severe.reason == 'hard_negative:loudonville_oh'
+    assert match_post('Road work begins in Loudonville near Albany this week.').matched is True
+
+
+def test_ireland_metrolink_capital_region_not_ny() -> None:
+    metro = match_post(
+        'Irish Government has approved MetroLink for detailed tendering. The line will '
+        'link Swords and Dublin city centre, improving links across the capital region.'
+    )
+    assert metro.matched is False
+    assert metro.reason == 'hard_negative:ireland_capital_region'
+    assert (
+        match_post('Join us for Capital Region Voter Registration Day in Albany.').matched is True
+    )
+
+
+def test_galway_girl_song_not_galway_ny() -> None:
+    song = match_post(
+        'R.E.M. - Leaving New York / Ed Sheeran - Galway Girl / The Police - Reggatta De Blanc'
+    )
+    assert song.matched is False
+    assert song.reason == 'hard_negative:galway_ireland'
+    assert match_post('Town of Galway NY hosts a farmers market this Saturday.').matched is True
+
+
+def test_troy_nader_and_troy_davis_person_names_not_city() -> None:
+    attorney = match_post(
+        'Immigration Attorney Troy Nader Moslemi at Chinese Community event in NYC.'
+    )
+    assert attorney.matched is False
+    assert attorney.reason == 'hard_negative:troy_person_name'
+    heisman = match_post(
+        'Rand-O thoughts on Iowa State, Eddie George, Troy Davis — and Paul McCartney. '
+        'A 1995 weekend in downtown New York City.'
+    )
+    assert heisman.matched is False
+    assert heisman.reason == 'hard_negative:troy_person_name'
+    assert match_post('New cafe opens in Troy, NY near the waterfront.').matched is True
+
+
+def test_stillwater_township_nj_not_stillwater_ny() -> None:
+    nj = match_post(
+        'CBS News New York: road rage on Millbrook Road in Stillwater Township. '
+        'Sussex County, N.J. chair disputes allegations.'
+    )
+    assert nj.matched is False
+    assert nj.reason == 'hard_negative:stillwater_nj'
+    assert (
+        match_post('Town of Stillwater hosts America250 celebration on Burgoyne Avenue.').matched
+        is True
+    )
+
+
+def test_times_union_photo_credit_not_local_paper() -> None:
+    credit = match_post(
+        'Flock might be a tipping point in a broader anti-tech movement. '
+        'Is Flock spying on you? (Jim Franco/Times Union/Getty)'
+    )
+    assert credit.matched is False
+    assert credit.reason == 'hard_negative:times_union_photo_credit'
+    article = match_post(
+        'Times Union coverage: Common Council debates housing on Lark Street. '
+        'Photo (Jim Franco/Times Union/Getty)'
+    )
+    assert article.matched is True
+
+
+def test_albany_corporation_counsel_and_newyork_hashtag_recall() -> None:
+    counsel = match_post(
+        "John Reilly Jr. has been named as Albany's corporation counsel, setting up a "
+        'Common Council confirmation process that will likely focus on his experience.'
+    )
+    assert counsel.matched is True
+    sand = match_post(
+        "Outdoor #News: #NewYork's Saratoga Sand Plains WMA is #Northern Zone hunting "
+        'with a #Southern Zone feel'
+    )
+    assert sand.matched is True
