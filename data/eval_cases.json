@@ -6795,5 +6795,205 @@
     "split": "dev",
     "regression": true,
     "note": "2026-09-05 audit: sold-out venue cue for Proctors"
+  },
+  {
+    "id": "fp-dutch-rotterdam-den-haag-bethlehem-person-0906",
+    "text": "Gifmoorden lijken maar zelden voor te komen. Toch werden zowel Rotterdam als Den Haag deze zomer opgeschrikt door opzienbarende zaken. Toxicoloog Corine Bethlehem legt uit waarom gif zo’n angstaanjagend effectief moordmiddel kan zijn.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-06 audit: AD.nl Dutch poison wires — Rotterdam + Den Haag + surname Bethlehem must not multi_local"
+  },
+  {
+    "id": "fp-dutch-rotterdam-corine-bethlehem-short-0906",
+    "text": "Rotterdam. Toxicoloog Corine Bethlehem legt uit.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-06 audit: person-name Bethlehem must not unlock multi_local with Rotterdam"
+  },
+  {
+    "id": "tp-bethlehem-ny-board-0906",
+    "text": "Town of Bethlehem NY board meeting tonight.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-06 audit: Cap Region Bethlehem counterpart"
+  },
+  {
+    "id": "tp-rotterdam-ny-square-mall-0906",
+    "text": "Tonight at Rotterdam Square Mall in Rotterdam, NY",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-06 audit: Cap Region Rotterdam counterpart"
+  },
+  {
+    "id": "fp-galway-dublin-city-walk-list-0906",
+    "text": "Walked London, Birmingham, Glasgow, Edinburgh, NYC, DC, Berlin, Galway, Dublin, Paris, Wellfleet etc",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-06 audit: multi-city tourism list — Galway+Dublin unlocked by NYC must drop"
+  },
+  {
+    "id": "tp-galway-ny-soccer-0906",
+    "text": "Galway NY high school soccer tonight",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-06 audit: Town of Galway NY counterpart"
+  },
+  {
+    "id": "fp-schenectady-ave-bare-0906",
+    "text": "Schenectady Ave.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-06 audit: Brooklyn Schenectady Avenue is not the city"
+  },
+  {
+    "id": "fp-schenectady-avenue-brooklyn-0906",
+    "text": "Schenectady Avenue in Brooklyn",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-06 audit: Brooklyn Schenectady Avenue"
+  },
+  {
+    "id": "tp-schenectady-ge-history-0906",
+    "text": "Schenectady was built by General Electric.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-06 audit: bare city Schenectady counterpart"
+  },
+  {
+    "id": "fn-opera-saratoga-advisory-0906",
+    "text": "Mary Birnbaum, currently the General and Artistic Director of Saratoga Springs' Opera Saratoga, will transition to an advisory role.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-06 audit: Opera Saratoga FN — nested Springs+Opera previously mislabeled bare saratoga"
+  },
+  {
+    "id": "fn-saratoga-summer-meet-thespa-0906",
+    "text": "Last 3 Days of the Saratoga summer meet! Prints available. #Saratoga #TheSpa #horseracing",
+    "expected": true,
+    "signal": "text",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-06 audit: #TheSpa / summer meet race-meet FN"
+  },
+  {
+    "id": "fn-saratoga-with-anticipation-0906",
+    "text": "Saratoga: Liam's Law holds off heavily favored stablemate to win the With Anticipation.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-06 audit: With Anticipation stakes wire without , NY"
+  },
+  {
+    "id": "fn-massry-center-arts-0906",
+    "text": "HVCC Foundation is acquiring the Massry Center for the Arts.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-06 audit: Massry Center FN without city"
+  },
+  {
+    "id": "fn-harriman-campus-0906",
+    "text": "Renovations continue at the Harriman Campus.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-06 audit: Harriman State Office Campus FN"
+  },
+  {
+    "id": "fn-quackenbush-square-0906",
+    "text": "Brunch at Quackenbush Square this Saturday.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-06 audit: Quackenbush Square FN"
+  },
+  {
+    "id": "fn-peebles-island-0906",
+    "text": "Peebles Island State Park hike tomorrow.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-06 audit: Peebles Island FN"
+  },
+  {
+    "id": "fn-corning-preserve-trail-0906",
+    "text": "Walk along the Corning Preserve trail.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-06 audit: Corning Preserve strong (was classifier-only micro)"
+  },
+  {
+    "id": "fn-nys-museum-exhibit-0906",
+    "text": "New exhibit opens at the New York State Museum.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-06 audit: NYS Museum FN without Albany token"
+  },
+  {
+    "id": "tn-nested-saratoga-springs-no-ny-0906",
+    "text": "Visiting Saratoga Springs' downtown shops near Broadway.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-06 audit: nested Springs still needs NY context; reason must be saratoga springs not bare saratoga"
+  },
+  {
+    "id": "tp-saratoga-springs-ny-council-0906",
+    "text": "Saratoga Springs, NY city council meets Tuesday.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-06 audit: Saratoga Springs + NY counterpart"
   }
 ]
