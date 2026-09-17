@@ -538,6 +538,29 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-095 — Daily feed audit: Venezuela capital region, Troy Conner/Spartanburg, Bethlehem PA Lehigh Valley; Brook Tavern / Stillwater-Burgoyne / Section 2 / Pine Bush Observatory / Halfmoon FNs
+- **Status:** done ([#72](https://github.com/chriscarrollsmith/capital-region-feed/pull/72))
+- **Why:** 2026-09-12 audit of last-24h AppView feed (~146 posts since 2026-09-11T09:14Z)
+  found active FPs after #71 (still open): CounterPunch `Venezuela’s capital region` /
+  La Guaira matched bare `capital region` strong; WSPA `Troy Conner` + bare `Upstate`
+  Spartanburg SC tattoo-shop card unlocked `ambiguous_with_context:troy`; Morning Call
+  `Bethlehem Area` / Liberty & Freedom HS and `#LehighValley` `#Bethlehem` cards unlocked
+  via incidental New York firefighters / 9/11 NYC context. FNs: `Brook Tavern` Saratoga
+  dining; Stillwater+Burgoyne/1777 without `#Saratoga250`; Section 2 football Shaker/Colonie
+  without Saratoga Springs; Pine Bush Observatory; Town of Halfmoon civic. ~30 stale
+  AppView rematch-drops (Malta/Troy/Brunswick/Saratoga CA). AppView `searchPosts` still
+  often 403. Waterford NY Hudson vessel traffic remains TP. Residual: bare Albany job
+  spam; allowlisted non-local; marketplace Cap Region ship-from towns.
+- **Work:**
+  - Venezuela capital region conflict (Caracas / La Guaira / CounterPunch); Troy Conner
+    person-name + Spartanburg/WSPA Troy SC cues; expand Bethlehem PA with Bethlehem Area /
+    Lehigh Valley / Allentown / Easton / Pa07 / mcall / Liberty & Freedom; strong positives
+    for Brook Tavern, Stillwater+Burgoyne/1777, Section 2+Shaker/Colonie/Niskayuna/CBA, Pine
+    Bush Observatory, Town of Halfmoon; grow eval with 2026-09-12 FP/TP/FN anchors
+    (builds on #71 / B-094).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-094 — Daily feed audit: MD Route 787 / Takoma Park; Albany sheriff/library/semiconductor; Saratoga dining FNs
 - **Status:** done ([#71](https://github.com/chriscarrollsmith/capital-region-feed/pull/71))
 - **Why:** 2026-09-11 audit of last-24h AppView feed (~161 posts since 2026-09-10T09:02Z)
