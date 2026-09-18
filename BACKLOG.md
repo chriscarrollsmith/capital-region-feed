@@ -538,6 +538,28 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-100 — Daily feed audit: Fife Crossgates, Brantford Grand River Street, Brooklyn Albany Avenue; Curtain Call / Colonie / Bethlehem Town Board FNs
+- **Status:** in progress
+- **Why:** 2026-09-18 audit of last-24h AppView feed (~105 posts since 2026-09-17T09:13Z)
+  found active FPs after #76: Scotland `Crossgates, Fife` / Police Scotland unlocked
+  `classifier:local_micro` via bare Crossgates; Brantford Ontario `Grand River Street`
+  unlocked `river street` micro; NYC Post Crown Heights `Albany Avenue` kept via
+  `albany_with_ny_context`. FNs from allowlist-author text without allowlist: Curtain
+  Call Theatre (Latham) without Capital District cue; Towers of Colonie / South Colonie
+  CSD as `bare_colonie`; Town Board land-use copy `in Bethlehem` wrongly hit
+  `bethlehem_person_name` (lookbehind applied before the preposition token). AppView
+  `searchPosts` still often 403. Residual: bare Albany job spam; allowlisted non-local;
+  WAMC attribution of Massachusetts-primary wires; ~16 rematch-drops until purge
+  (Malta / Rotterdam NL / Troy Trojans).
+- **Work:**
+  - Expand Crossgates Fife/Scotland gate; Grand River Street lookbehind + Brantford
+    conflict; Albany Avenue hard-negative; Curtain Call Theatre strong/venue; Towers of /
+    South/North Colonie local cues; fix Bethlehem person-name preposition gate + star of
+    Bethlehem floral hard-negative; Town Board↔Bethlehem strong; grow eval with
+    2026-09-18 FP/TP/FN anchors (builds on #76 / B-099).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-099 — Daily feed audit: Loudonville Mid-Ohio, Ireland MetroLink capital region, Galway Girl, Troy person names, Stillwater NJ, Times Union Getty; corporation counsel / #NewYork FNs
 - **Status:** done ([#76](https://github.com/chriscarrollsmith/capital-region-feed/pull/76))
 - **Why:** 2026-09-17 audit of last-24h AppView feed (~156 posts since 2026-09-16T09:20Z)
