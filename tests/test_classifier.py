@@ -298,6 +298,30 @@ def test_mississippi_crossgates_blvd_traffic_cam_not_local_micro() -> None:
     assert match_post('Holiday hours at Crossgates this weekend.').matched is True
 
 
+def test_fife_scotland_crossgates_not_local_micro() -> None:
+    fife = match_post(
+        'Police appeal after serious assault and robbery in Fife\n\n'
+        'POLICE SCOTLAND is appealing for information following a serious assault '
+        'and robbery in Crossgates, Fife. The incident happened around 8.25pm on '
+        'Thursday, 10 September, on Manse Road.'
+    )
+    assert fife.matched is False
+    assert match_post('Holiday hours at Crossgates Mall this weekend.').matched is True
+
+
+def test_brantford_grand_river_street_not_local_micro() -> None:
+    brantford = match_post(
+        'Brantford police are asking for public help identifying those involved in '
+        'relation to a break and enter at a restaurant on Grand River Street '
+        'Thursday morning.'
+    )
+    assert brantford.matched is False
+    assert (
+        match_post('Art walk on River Street in Troy this Saturday — food trucks welcome.').matched
+        is True
+    )
+
+
 def test_classify_drops_bare_albany_event_without_micro() -> None:
     decision = classify_candidate(
         "Don't miss the Albany Veterans Day Parade this Saturday downtown!",

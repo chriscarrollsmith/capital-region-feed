@@ -3485,3 +3485,50 @@ def test_albany_corporation_counsel_and_newyork_hashtag_recall() -> None:
         'with a #Southern Zone feel'
     )
     assert sand.matched is True
+
+
+def test_albany_avenue_crown_heights_not_city() -> None:
+    nyc = match_post(
+        'NYC yellow school bus slams apartment building during morning rush. '
+        'Eastern Parkway near Albany Avenue in Crown Heights around 7:20 a.m.'
+    )
+    assert nyc.matched is False
+    assert nyc.reason == 'hard_negative'
+    assert match_post('Crash near Hackett Blvd in #AlbanyNY').matched is True
+
+
+def test_curtain_call_theatre_and_colonie_local_cues() -> None:
+    curtain = match_post(
+        "Curtain Call Theater in Latham has a brilliant production of Delia Ephron's "
+        'play Left on 10th showing through October 4th.'
+    )
+    assert curtain.matched is True
+    assert match_post('Left on 10th at Curtain Call Theatre through October 4th').matched is True
+    towers = match_post(
+        'Six people have been sent to the hospital after a fire at the Towers of '
+        'Colonie on Thursday'
+    )
+    assert towers.matched is True
+    assert towers.reason == 'colonie_local'
+    south = match_post('South Colonie CSD is looking for businesses to host Toys for Tots drives.')
+    assert south.matched is True
+    assert south.reason == 'colonie_local'
+
+
+def test_bethlehem_town_board_not_person_or_star_of() -> None:
+    board = match_post(
+        'Tempers run hot at Town Board meeting as land-use battle drags on in '
+        'Bethlehem with residents and Town Board divided over solutions.'
+    )
+    assert board.matched is True
+    star = match_post(
+        'A little waterfall of grass lily, star of Bethlehem & a little waterfall, '
+        'both in the New York Botanical Garden'
+    )
+    assert star.matched is False
+    assert star.reason == 'hard_negative:bethlehem_star_of'
+    # Comma before "New York Botanical Garden" must not look like "Bethlehem, NY".
+    star_comma = match_post('grass lily, star of Bethlehem, New York Botanical Garden')
+    assert star_comma.matched is False
+    assert star_comma.reason == 'hard_negative:bethlehem_star_of'
+    assert match_post('Town of Bethlehem Public Library book sale this weekend.').matched is True

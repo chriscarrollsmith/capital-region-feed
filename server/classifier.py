@@ -31,7 +31,8 @@ _DISTINCTIVE_LOCAL_MICRO = re.compile(
       | crossgates(?:\s+mall)?
       | stuyvesant\s+plaza
       # Word-boundary: Cape Town "Soetriver Street" must not match "river Street".
-      | \briver\s+street
+      # Negative lookbehind: Ontario "Grand River Street" is not Troy's River Street.
+      | (?<!grand\s)\briver\s+street
       | new\s+scotland\s+(?:avenue|ave|road|rd)\b
       | empire\s+state\s+plaza
       | buckingham\s+lake
@@ -175,6 +176,14 @@ _RIVER_STREET_OTHER = re.compile(
             \#?filmnoir\b|film\s+noir|\#?filmsky\b|\#?moviesky\b|
             boxing\s+movie(?:\s+podcast)?
           )
+      # Brantford / Grand River (Ontario) street names — not Troy's corridor.
+      | \bgrand\s+river\s+street\b
+      | (?:
+            \bbrantford\b|\bontario\b|\#on\b|grand\s+river
+          )[\s\S]{0,280}river\s+street
+      | river\s+street[\s\S]{0,280}(?:
+            \bbrantford\b|\bontario\b|\#on\b|grand\s+river
+          )
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -212,6 +221,16 @@ _CROSSGATES_OTHER = re.compile(
       | \b\d{1,2}:\d{2}\s*(?:am|pm)\b[\s\S]{0,48}\bct\b[\s\S]{0,140}crossgates
       # Jackson MS lat/lon band (~32N, 90W) on traffic-cam overlays.
       | crossgates[\s\S]{0,200}3[12]\.\d{2,}\s*,\s*-?90\.\d{2,}
+      # Crossgates, Fife (Scotland) — not Guilderland Crossgates Mall.
+      | crossgates\s*,\s*fife\b
+      | crossgates[\s\S]{0,220}(?:
+            \bfife\b|police\s+scotland|\bscotland\b|manse\s+road|
+            \#scotland\b|\#fife\b
+          )
+      | (?:
+            \bfife\b|police\s+scotland|\bscotland\b|manse\s+road|
+            \#scotland\b|\#fife\b
+          )[\s\S]{0,220}crossgates
     )
     """,
     re.IGNORECASE | re.VERBOSE,

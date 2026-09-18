@@ -104,6 +104,8 @@ _STRONG_POSITIVE = re.compile(
       | albany['\u2019]?s\s+palace\s+(?:theatre|theater)
       | albany\s+palace\s+(?:theatre|theater)
       | palace\s+(?:theatre|theater)\s+(?:albany|in\s+albany)
+      # Curtain Call Theatre (Latham) — often omits ", NY".
+      | curtain\s+call\s+(?:theatre|theater)\b
       # Capital Repertory Theatre (Albany) — hashtag #CapitalRep often omits venue cues.
       | \#?capitalrep\b
       | capital\s+rep(?:ertory)?\b
@@ -165,6 +167,8 @@ _STRONG_POSITIVE = re.compile(
       # Town of Bethlehem NY civic / library copy often omits ", NY".
       | town\s+of\s+bethlehem\b
       | bethlehem\s+(?:town\s+)?(?:board|council|planning)\b
+      | town\s+board[\s\S]{0,120}\bbethlehem\b
+      | \bbethlehem\b[\s\S]{0,120}town\s+board
       | bethlehem\s+public\s+library\b
       # Distinctive Cap Region transit / parks / venues / festivals.
       | \bcdta\b
@@ -2020,14 +2024,33 @@ _LATHAM_PERSON_NAME = re.compile(
 )
 
 # Person surname Bethlehem (Dutch toxicologist Corine Bethlehem, etc.) — not the town.
-# Negative lookbehinds keep "Town of Bethlehem" / "in Bethlehem" as place mentions.
+# Require a plausible given name before Bethlehem; exclude place prepositions so
+# "in Bethlehem" / "of Bethlehem" (Town of Bethlehem, star of Bethlehem) do not match.
 _BETHLEHEM_PERSON_NAME = re.compile(
     r"""
     (?:
         toxicoloog[\s\S]{0,60}\bbethlehem\b
       | \bbethlehem\b[\s\S]{0,40}legt\s+uit
-      | (?<!town\sof\s)(?<!city\sof\s)(?<!of\s)(?<!in\s)(?<!near\s)(?<!from\s)
-        (?<!,\s)\b[a-z]+\s+bethlehem\b
+      | (?<!town\sof\s)(?<!city\sof\s)
+        \b(?!(?:in|of|near|from|at|on|to|and|for|with|into|star)\b)[a-z]+\s+bethlehem\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Floral "star of Bethlehem" / botanical-garden copy — not Town of Bethlehem NY.
+_BETHLEHEM_STAR_OF = re.compile(
+    r"""
+    (?:
+        star\s+of\s+bethlehem\b
+      | bethlehem[\s\S]{0,120}(?:
+            botanical\s+garden|new\s+york\s+botanical|\#pompandpatterns\b|
+            grass\s+lily|\blily\b
+          )
+      | (?:
+            botanical\s+garden|new\s+york\s+botanical|\#pompandpatterns\b|
+            grass\s+lily
+          )[\s\S]{0,120}bethlehem
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -2180,6 +2203,8 @@ _HARD_NEGATIVE = re.compile(
       | troy\s+(?:ave(?:nue)?|st(?:reet)?)\b
       # Brooklyn / NYC street — not the City of Schenectady.
       | schenectady\s+(?:ave(?:nue)?|av|st(?:reet)?)\b
+      # Brooklyn / NYC street (Crown Heights) — not City of Albany.
+      | albany\s+(?:ave(?:nue)?|av)\b
       # Brooklyn subway (Saratoga Av on the 3) — not Saratoga Springs.
       | saratoga\s+av(?:e(?:nue)?)?\b
       # PubMed journal abbreviation — not Albany NY local news.
@@ -2336,6 +2361,9 @@ _COLONIE_LOCAL = re.compile(
       | colonie(?:\s*,)?\s*ny
       | colonie\s+(?:police|center|senior|school|high|library|fire)
       | colonie\s+senior\s+service
+      | towers\s+of\s+colonie
+      | south\s+colonie\b
+      | north\s+colonie\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -2383,6 +2411,7 @@ _LOCAL_EVENT_VENUE = re.compile(
       | albany\s+palace\s+(?:theatre|theater)
       | albany['\u2019]?s\s+palace\s+(?:theatre|theater)
       | palace\s+(?:theatre|theater)\s+(?:albany|in\s+albany)
+      | curtain\s+call\s+(?:theatre|theater)\b
       | capital\s+repertory
       | \bcap\s+rep\b
       | albany\s+civic\s+(?:theater|theatre)
@@ -3325,6 +3354,33 @@ def _bethlehem_person_name_conflict(haystack: str) -> bool:
             bethlehem\s*,?\s*(?:ny|n\.y\.|new\s+york|pa|pennsylvania)\b
           | town\s+of\s+bethlehem
           | city\s+of\s+bethlehem
+          | town\s+board[\s\S]{0,120}\bbethlehem\b
+          | \bbethlehem\b[\s\S]{0,120}town\s+board
+        )
+        """,
+        haystack,
+        flags=re.IGNORECASE | re.VERBOSE,
+    ):
+        return False
+    return True
+
+
+def _bethlehem_star_of_conflict(haystack: str) -> bool:
+    """True when Bethlehem is the flower / botanical copy, not Town of Bethlehem NY."""
+    if not re.search(r'\bbethlehem\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not _BETHLEHEM_STAR_OF.search(haystack):
+        return False
+    # Do not rescue on bare "New York" — floral copy often cites the New York
+    # Botanical Garden. Require explicit Cap Region civic / NY town cues.
+    if re.search(
+        r"""
+        (?:
+            bethlehem\s*,?\s*(?:ny|n\.y\.)\b
+          | town\s+of\s+bethlehem
+          | bethlehem\s+(?:town\s+)?(?:board|council|planning|public\s+library)
+          | town\s+board[\s\S]{0,120}\bbethlehem\b
+          | \bbethlehem\b[\s\S]{0,120}town\s+board
         )
         """,
         haystack,
@@ -4054,6 +4110,8 @@ def match_post(
                 return MatchResult(False, 'hard_negative:troy_road_ithaca')
             if _bethlehem_person_name_conflict(haystack) and 'bethlehem' in multi_eligible:
                 return MatchResult(False, 'hard_negative:bethlehem_person_name')
+            if _bethlehem_star_of_conflict(haystack) and 'bethlehem' in multi_eligible:
+                return MatchResult(False, 'hard_negative:bethlehem_star_of')
             if _latham_person_name_conflict(haystack) and 'latham' in multi_eligible:
                 return MatchResult(False, 'hard_negative:latham_person_name')
             return MatchResult(True, 'multi_local_places')
@@ -4109,6 +4167,9 @@ def match_post(
 
         if term == 'bethlehem' and _bethlehem_person_name_conflict(haystack):
             return MatchResult(False, 'hard_negative:bethlehem_person_name')
+
+        if term == 'bethlehem' and _bethlehem_star_of_conflict(haystack):
+            return MatchResult(False, 'hard_negative:bethlehem_star_of')
 
         if term == 'latham' and _latham_person_name_conflict(haystack):
             return MatchResult(False, 'hard_negative:latham_person_name')
