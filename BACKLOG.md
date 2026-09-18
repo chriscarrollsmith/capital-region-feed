@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-100 — Daily feed audit: Fife Crossgates, Brantford Grand River Street, Brooklyn Albany Avenue; Curtain Call / Colonie / Bethlehem Town Board FNs
-- **Status:** in progress
+- **Status:** done ([#77](https://github.com/chriscarrollsmith/capital-region-feed/pull/77))
 - **Why:** 2026-09-18 audit of last-24h AppView feed (~105 posts since 2026-09-17T09:13Z)
   found active FPs after #76: Scotland `Crossgates, Fife` / Police Scotland unlocked
   `classifier:local_micro` via bare Crossgates; Brantford Ontario `Grand River Street`
