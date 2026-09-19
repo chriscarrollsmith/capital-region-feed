@@ -104,6 +104,8 @@ _STRONG_POSITIVE = re.compile(
       | albany['\u2019]?s\s+palace\s+(?:theatre|theater)
       | albany\s+palace\s+(?:theatre|theater)
       | palace\s+(?:theatre|theater)\s+(?:albany|in\s+albany)
+      # Curtain Call Theatre (Latham) — often omits ", NY".
+      | curtain\s+call\s+(?:theatre|theater)\b
       # Capital Repertory Theatre (Albany) — hashtag #CapitalRep often omits venue cues.
       | \#?capitalrep\b
       | capital\s+rep(?:ertory)?\b
@@ -158,13 +160,21 @@ _STRONG_POSITIVE = re.compile(
       | town\s+of\s+halfmoon\b
       | halfmoon\s+(?:town\s+)?(?:board|council|ceremony|ceremonies)\b
       # Town of Malta / GlobalFoundries campus copy often omits ", NY".
+      # Require campus/in-Malta/NY cues so trending-word clouds pairing both
+      # tokens without locality do not keep.
       | town\s+of\s+malta\b
       | malta\s+(?:town\s+)?(?:board|council|planning)\b
-      | globalfoundries[\s\S]{0,100}\bmalta\b
-      | \bmalta\b[\s\S]{0,100}globalfoundries
+      | globalfoundries[\s\S]{0,120}(?:
+            \bin\s+malta\b|\bat\s+malta\b|malta\s+campus\b|malta\s*,?\s*ny\b
+          )
+      | (?:
+            \bin\s+malta\b|\bat\s+malta\b|malta\s+campus\b|malta\s*,?\s*ny\b
+          )[\s\S]{0,120}globalfoundries
       # Town of Bethlehem NY civic / library copy often omits ", NY".
       | town\s+of\s+bethlehem\b
       | bethlehem\s+(?:town\s+)?(?:board|council|planning)\b
+      | town\s+board[\s\S]{0,120}\bbethlehem\b
+      | \bbethlehem\b[\s\S]{0,120}town\s+board
       | bethlehem\s+public\s+library\b
       # Distinctive Cap Region transit / parks / venues / festivals.
       | \bcdta\b
@@ -188,7 +198,10 @@ _STRONG_POSITIVE = re.compile(
       | \bwamc\b
       | siena\s+(?:college|saints)\b
       # Suburban Council districts / towns often omit ", NY".
-      | \bichabod\s+crane\b
+      # Bare "Ichabod Crane" is also the Sleepy Hollow character / song lyric.
+      | ichabod\s+crane\s+(?:central\s+)?(?:school|district|csd)\b
+      | ichabod\s+crane[\s\S]{0,100}\bvalatie\b
+      | \bvalatie\b[\s\S]{0,100}ichabod\s+crane
       | \bvalatie\b
       | \bshenendehowa\b
       # Saratoga / RPI / Albany museums & halls often omit ", NY".
@@ -328,8 +341,10 @@ _STRONG_POSITIVE = re.compile(
       | albany\s+pine\s+bush(?:\s+preserve)?\b
       | pine\s+bush\s+preserve\b
       # Opera Saratoga / race-meet spa nicknames often omit ", NY".
+      # Bare #thespa also tags Japan's Thespa Gunma — require Saratoga nearby.
       | opera\s+saratoga\b
-      | \#thespa\b
+      | \#thespa\b[\s\S]{0,80}\bsaratoga\b
+      | \bsaratoga\b[\s\S]{0,80}\#thespa\b
       | \bthe\s+spa\b[\s\S]{0,80}\bsaratoga\b
       | \bsaratoga\b[\s\S]{0,80}\bthe\s+spa\b
       | \bsaratoga\s+summer\s+meet\b
@@ -354,8 +369,15 @@ _STRONG_POSITIVE = re.compile(
       # Historic Troy Iron Works / Nail Factory tourism often omits ", NY".
       | troy\s+iron\s+and\s+nail(?:\s+factory)?\b
       | iron\s+and\s+nail\s+factory\b
-      # Downtown Albany redevelopment wires often omit ", NY".
+      # Downtown Albany / Troy redevelopment wires often omit ", NY".
       | downtown\s+albany\b
+      | downtown\s+troy\b
+      # Troy Frear Park / civic copy often omits ", NY".
+      | \bfrear\s+park\b
+      | troy\s+city\s+(?:officials?|council|hall|school)\b
+      | \bcity\s+of\s+troy\b
+      # Crossings of Colonie (town park) often omits ", NY".
+      | crossings\s+of\s+colonie\b
       # Distinctive Albany campuses / plazas often omit ", NY".
       | massry\s+(?:center|school|hall)\b
       | harriman\s+(?:state\s+office\s+)?campus\b
@@ -2020,14 +2042,33 @@ _LATHAM_PERSON_NAME = re.compile(
 )
 
 # Person surname Bethlehem (Dutch toxicologist Corine Bethlehem, etc.) — not the town.
-# Negative lookbehinds keep "Town of Bethlehem" / "in Bethlehem" as place mentions.
+# Require a plausible given name before Bethlehem; exclude place prepositions so
+# "in Bethlehem" / "of Bethlehem" (Town of Bethlehem, star of Bethlehem) do not match.
 _BETHLEHEM_PERSON_NAME = re.compile(
     r"""
     (?:
         toxicoloog[\s\S]{0,60}\bbethlehem\b
       | \bbethlehem\b[\s\S]{0,40}legt\s+uit
-      | (?<!town\sof\s)(?<!city\sof\s)(?<!of\s)(?<!in\s)(?<!near\s)(?<!from\s)
-        (?<!,\s)\b[a-z]+\s+bethlehem\b
+      | (?<!town\sof\s)(?<!city\sof\s)
+        \b(?!(?:in|of|near|from|at|on|to|and|for|with|into|star)\b)[a-z]+\s+bethlehem\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Floral "star of Bethlehem" / botanical-garden copy — not Town of Bethlehem NY.
+_BETHLEHEM_STAR_OF = re.compile(
+    r"""
+    (?:
+        star\s+of\s+bethlehem\b
+      | bethlehem[\s\S]{0,120}(?:
+            botanical\s+garden|new\s+york\s+botanical|\#pompandpatterns\b|
+            grass\s+lily|\blily\b
+          )
+      | (?:
+            botanical\s+garden|new\s+york\s+botanical|\#pompandpatterns\b|
+            grass\s+lily
+          )[\s\S]{0,120}bethlehem
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -2076,6 +2117,7 @@ _TROY_PERSON_NAME = re.compile(
       # Immigration / sports person names unlocked by NYC / New York context.
       | \btroy\s+nader\b
       | \btroy\s+davis\b
+      | \btroy\s+kingston\b
       | immigration\s+attorney\s+troy\b
       | attorney\s+troy\s+[a-z]+\b
     )
@@ -2180,6 +2222,8 @@ _HARD_NEGATIVE = re.compile(
       | troy\s+(?:ave(?:nue)?|st(?:reet)?)\b
       # Brooklyn / NYC street — not the City of Schenectady.
       | schenectady\s+(?:ave(?:nue)?|av|st(?:reet)?)\b
+      # Brooklyn / NYC street (Crown Heights) — not City of Albany.
+      | albany\s+(?:ave(?:nue)?|av)\b
       # Brooklyn subway (Saratoga Av on the 3) — not Saratoga Springs.
       | saratoga\s+av(?:e(?:nue)?)?\b
       # PubMed journal abbreviation — not Albany NY local news.
@@ -2336,6 +2380,9 @@ _COLONIE_LOCAL = re.compile(
       | colonie(?:\s*,)?\s*ny
       | colonie\s+(?:police|center|senior|school|high|library|fire)
       | colonie\s+senior\s+service
+      | towers\s+of\s+colonie
+      | south\s+colonie\b
+      | north\s+colonie\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -2383,6 +2430,7 @@ _LOCAL_EVENT_VENUE = re.compile(
       | albany\s+palace\s+(?:theatre|theater)
       | albany['\u2019]?s\s+palace\s+(?:theatre|theater)
       | palace\s+(?:theatre|theater)\s+(?:albany|in\s+albany)
+      | curtain\s+call\s+(?:theatre|theater)\b
       | capital\s+repertory
       | \bcap\s+rep\b
       | albany\s+civic\s+(?:theater|theatre)
@@ -3325,6 +3373,33 @@ def _bethlehem_person_name_conflict(haystack: str) -> bool:
             bethlehem\s*,?\s*(?:ny|n\.y\.|new\s+york|pa|pennsylvania)\b
           | town\s+of\s+bethlehem
           | city\s+of\s+bethlehem
+          | town\s+board[\s\S]{0,120}\bbethlehem\b
+          | \bbethlehem\b[\s\S]{0,120}town\s+board
+        )
+        """,
+        haystack,
+        flags=re.IGNORECASE | re.VERBOSE,
+    ):
+        return False
+    return True
+
+
+def _bethlehem_star_of_conflict(haystack: str) -> bool:
+    """True when Bethlehem is the flower / botanical copy, not Town of Bethlehem NY."""
+    if not re.search(r'\bbethlehem\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not _BETHLEHEM_STAR_OF.search(haystack):
+        return False
+    # Do not rescue on bare "New York" — floral copy often cites the New York
+    # Botanical Garden. Require explicit Cap Region civic / NY town cues.
+    if re.search(
+        r"""
+        (?:
+            bethlehem\s*,?\s*(?:ny|n\.y\.)\b
+          | town\s+of\s+bethlehem
+          | bethlehem\s+(?:town\s+)?(?:board|council|planning|public\s+library)
+          | town\s+board[\s\S]{0,120}\bbethlehem\b
+          | \bbethlehem\b[\s\S]{0,120}town\s+board
         )
         """,
         haystack,
@@ -4054,6 +4129,8 @@ def match_post(
                 return MatchResult(False, 'hard_negative:troy_road_ithaca')
             if _bethlehem_person_name_conflict(haystack) and 'bethlehem' in multi_eligible:
                 return MatchResult(False, 'hard_negative:bethlehem_person_name')
+            if _bethlehem_star_of_conflict(haystack) and 'bethlehem' in multi_eligible:
+                return MatchResult(False, 'hard_negative:bethlehem_star_of')
             if _latham_person_name_conflict(haystack) and 'latham' in multi_eligible:
                 return MatchResult(False, 'hard_negative:latham_person_name')
             return MatchResult(True, 'multi_local_places')
@@ -4109,6 +4186,9 @@ def match_post(
 
         if term == 'bethlehem' and _bethlehem_person_name_conflict(haystack):
             return MatchResult(False, 'hard_negative:bethlehem_person_name')
+
+        if term == 'bethlehem' and _bethlehem_star_of_conflict(haystack):
+            return MatchResult(False, 'hard_negative:bethlehem_star_of')
 
         if term == 'latham' and _latham_person_name_conflict(haystack):
             return MatchResult(False, 'hard_negative:latham_person_name')

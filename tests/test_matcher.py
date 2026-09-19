@@ -3485,3 +3485,112 @@ def test_albany_corporation_counsel_and_newyork_hashtag_recall() -> None:
         'with a #Southern Zone feel'
     )
     assert sand.matched is True
+
+
+def test_albany_avenue_crown_heights_not_city() -> None:
+    nyc = match_post(
+        'NYC yellow school bus slams apartment building during morning rush. '
+        'Eastern Parkway near Albany Avenue in Crown Heights around 7:20 a.m.'
+    )
+    assert nyc.matched is False
+    assert nyc.reason == 'hard_negative'
+    assert match_post('Crash near Hackett Blvd in #AlbanyNY').matched is True
+
+
+def test_curtain_call_theatre_and_colonie_local_cues() -> None:
+    curtain = match_post(
+        "Curtain Call Theater in Latham has a brilliant production of Delia Ephron's "
+        'play Left on 10th showing through October 4th.'
+    )
+    assert curtain.matched is True
+    assert match_post('Left on 10th at Curtain Call Theatre through October 4th').matched is True
+    towers = match_post(
+        'Six people have been sent to the hospital after a fire at the Towers of '
+        'Colonie on Thursday'
+    )
+    assert towers.matched is True
+    assert towers.reason == 'colonie_local'
+    south = match_post('South Colonie CSD is looking for businesses to host Toys for Tots drives.')
+    assert south.matched is True
+    assert south.reason == 'colonie_local'
+
+
+def test_bethlehem_town_board_not_person_or_star_of() -> None:
+    board = match_post(
+        'Tempers run hot at Town Board meeting as land-use battle drags on in '
+        'Bethlehem with residents and Town Board divided over solutions.'
+    )
+    assert board.matched is True
+    star = match_post(
+        'A little waterfall of grass lily, star of Bethlehem & a little waterfall, '
+        'both in the New York Botanical Garden'
+    )
+    assert star.matched is False
+    assert star.reason == 'hard_negative:bethlehem_star_of'
+
+
+def test_thespa_gunma_not_saratoga_spa() -> None:
+    jp = match_post('【新生日本代表】#fcgifu #fctokyo #giravanz #hollyhock #thespa #trinita #verdy')
+    assert jp.matched is False
+    spa = match_post(
+        'Last 3 Days of the Saratoga summer meet! Prints available. #Saratoga #TheSpa #horseracing'
+    )
+    assert spa.matched is True
+
+
+def test_ichabod_crane_literary_not_school() -> None:
+    lyric = match_post("Someday I'll win I'm not Ichabod Crane And though dark my days")
+    assert lyric.matched is False
+    merch = match_post(
+        'Headless Horseman Ichabod Crane greeting card #Halloween #SleepyHollow #classic'
+    )
+    assert merch.matched is False
+    school = match_post(
+        'Ichabod Crane Central School district board members say they will give public '
+        'financial updates, with Valatie residents wanting more answers.'
+    )
+    assert school.matched is True
+
+
+def test_globalfoundries_wordcloud_not_malta_campus() -> None:
+    cloud = match_post("Bluesky's Top 10 Trending Words: ukraine, globalfoundries, monaco, malta")
+    assert cloud.matched is False
+    campus = match_post('GlobalFoundries Malta campus hiring fair next week.')
+    assert campus.matched is True
+    ny = match_post('GlobalFoundries secures a federal award to expand manufacturing in Malta, NY.')
+    assert ny.matched is True
+
+
+def test_troy_kingston_person_not_city() -> None:
+    person = match_post('Troy Kingston: Fighting for real New Yorkers with his viral videos')
+    assert person.matched is False
+    assert person.reason == 'hard_negative:troy_person_name'
+    assert match_post('Downtown Troy hosts a First Friday art walk tonight.').matched is True
+
+
+def test_frear_park_downtown_troy_crossings_colonie_recall() -> None:
+    frear = match_post(
+        'Two developers are seeking tax exemptions to build a 72-unit apartment complex '
+        'off Oakwood Avenue near the entrance to Frear Park in Troy.'
+    )
+    assert frear.matched is True
+    downtown = match_post(
+        "One of downtown Troy's most prominent buildings will be in the hands of a "
+        'lender following a foreclosure auction Friday.'
+    )
+    assert downtown.matched is True
+    crossings = match_post(
+        'Colonie will be welcoming the change of seasons with the return of their '
+        'annual Harvest Fest at the Crossings of Colonie on September 26.'
+    )
+    assert crossings.matched is True
+    officials = match_post(
+        'Troy city officials confirmed that a teen was injured in an e-bike-involved '
+        'crash on Thursday night near Fourth Avenue and Monroe Avenue.'
+    )
+    assert officials.matched is True
+    # Comma before "New York Botanical Garden" must not look like "Bethlehem, NY".
+    star_comma = match_post('grass lily, star of Bethlehem, New York Botanical Garden')
+    assert star_comma.matched is False
+    assert star_comma.reason == 'hard_negative:bethlehem_star_of'
+    assert match_post('Town of Bethlehem Public Library book sale this weekend.').matched is True

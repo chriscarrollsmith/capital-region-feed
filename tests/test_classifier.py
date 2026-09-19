@@ -298,6 +298,50 @@ def test_mississippi_crossgates_blvd_traffic_cam_not_local_micro() -> None:
     assert match_post('Holiday hours at Crossgates this weekend.').matched is True
 
 
+def test_fife_scotland_crossgates_not_local_micro() -> None:
+    fife = match_post(
+        'Police appeal after serious assault and robbery in Fife\n\n'
+        'POLICE SCOTLAND is appealing for information following a serious assault '
+        'and robbery in Crossgates, Fife. The incident happened around 8.25pm on '
+        'Thursday, 10 September, on Manse Road.'
+    )
+    assert fife.matched is False
+    assert match_post('Holiday hours at Crossgates Mall this weekend.').matched is True
+
+
+def test_brantford_grand_river_street_not_local_micro() -> None:
+    brantford = match_post(
+        'Brantford police are asking for public help identifying those involved in '
+        'relation to a break and enter at a restaurant on Grand River Street '
+        'Thursday morning.'
+    )
+    assert brantford.matched is False
+    assert (
+        match_post('Art walk on River Street in Troy this Saturday — food trucks welcome.').matched
+        is True
+    )
+
+
+def test_brechin_angus_river_street_not_local_micro() -> None:
+    courier = match_post(
+        'Long-awaited proposals for the future of the River Street area will be '
+        'considered by Angus councillors next week.',
+        alt_text=(
+            '40 private Brechin homes could face compulsory demolition as council '
+            'favours cheapest Storm Babet recovery plan'
+        ),
+    )
+    assert courier.matched is False
+    angus = match_post(
+        'Papers containing the results of the options appraisal for the Brechin '
+        'River Street area which will be considered at the Angus Council Special '
+        'meeting on 23 September are now live on the Angus Council website.',
+        alt_text='Image shows the river South Esk flowing through Brechin',
+    )
+    assert angus.matched is False
+    assert match_post('Open mic tomorrow on River Street — sign-ups start at 6.').matched is True
+
+
 def test_classify_drops_bare_albany_event_without_micro() -> None:
     decision = classify_candidate(
         "Don't miss the Albany Veterans Day Parade this Saturday downtown!",
