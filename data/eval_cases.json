@@ -8851,5 +8851,167 @@
     "split": "dev",
     "regression": true,
     "note": "2026-09-18 audit: comma before NYBG must not rescue as Bethlehem, NY"
+  },
+  {
+    "id": "fp-brechin-angus-river-street-0919",
+    "text": "Long-awaited proposals for the future of the River Street area will be considered by Angus councillors next week.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "40 private Brechin homes could face compulsory demolition as council favours cheapest Storm Babet recovery plan",
+    "note": "2026-09-19 audit: Brechin/Angus Scotland River Street via classifier micro"
+  },
+  {
+    "id": "fp-angus-council-brechin-river-street-0919",
+    "text": "Papers containing the results of the options appraisal for the Brechin River Street area which will be considered at the Angus Council Special meeting on 23 September are now live on the Angus Council website.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "Image shows the river South Esk flowing through Brechin",
+    "note": "2026-09-19 audit: Angus Council Brechin River Street / South Esk"
+  },
+  {
+    "id": "tp-river-street-open-mic-0919",
+    "text": "Open mic tomorrow on River Street — sign-ups start at 6.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "ambiguous_classifier",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-19 audit: Troy River Street counterpart to Brechin FP"
+  },
+  {
+    "id": "fp-thespa-gunma-hashtags-0919",
+    "text": "Match preview thread #fcgifu #fctokyo #giravanz #hollyhock #thespa #trinita #verdy #vortis",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-19 audit: Japanese Thespa Gunma #thespa without Saratoga"
+  },
+  {
+    "id": "tp-thespa-saratoga-meet-0919",
+    "text": "Last 3 Days of the Saratoga summer meet! Prints available. #Saratoga #TheSpa #horseracing",
+    "expected": true,
+    "signal": "text",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-19 audit: #TheSpa + Saratoga counterpart"
+  },
+  {
+    "id": "fp-ichabod-crane-lyric-0919",
+    "text": "Someday I'll win I'm not Ichabod Crane And though dark my days I'll say until then",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-19 audit: They Might Be Giants lyric bare Ichabod Crane"
+  },
+  {
+    "id": "fp-ichabod-crane-sleepy-hollow-merch-0919",
+    "text": "Headless Horseman Ichabod Crane greeting card #Halloween #Fall #SleepyHollow #classic #horror",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-19 audit: Sleepy Hollow merch Ichabod Crane without school/Valatie"
+  },
+  {
+    "id": "tp-ichabod-crane-valatie-school-0919",
+    "text": "Ichabod Crane Central School district board members say they will give public financial updates, with Valatie residents wanting more answers.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-19 audit: Ichabod Crane CSD / Valatie counterpart"
+  },
+  {
+    "id": "fp-globalfoundries-malta-wordcloud-0919",
+    "text": "Bluesky's Top 10 Trending Words (past 10min): ukraine, tgs, ratcliffe, greenland, globalfoundries, monaco, democracy, malta",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-19 audit: trending-word cloud pairs GlobalFoundries + Malta without campus/NY"
+  },
+  {
+    "id": "tp-globalfoundries-malta-campus-0919",
+    "text": "GlobalFoundries Malta campus hiring fair next week.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-19 audit: GlobalFoundries Malta campus counterpart"
+  },
+  {
+    "id": "fp-troy-kingston-person-0919",
+    "text": "Troy Kingston: Fighting for real New Yorkers with his viral videos",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-19 audit: person Troy Kingston + New Yorkers not City of Troy"
+  },
+  {
+    "id": "tp-downtown-troy-art-walk-0919",
+    "text": "Downtown Troy hosts a First Friday art walk tonight.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-19 audit: downtown Troy counterpart to Troy Kingston FP"
+  },
+  {
+    "id": "fn-frear-park-troy-0919",
+    "text": "Two developers are seeking tax exemptions to build a 72-unit apartment complex off Oakwood Avenue near the entrance to Frear Park in Troy.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-19 audit FN: Frear Park / Oakwood Avenue Troy without , NY"
+  },
+  {
+    "id": "fn-downtown-troy-foreclosure-0919",
+    "text": "One of downtown Troy's most prominent buildings will be in the hands of a lender following a foreclosure auction Friday.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-19 audit FN: downtown Troy foreclosure wire"
+  },
+  {
+    "id": "fn-crossings-of-colonie-harvest-0919",
+    "text": "Colonie will be welcoming the change of seasons with the return of their annual Harvest Fest at the Crossings of Colonie on September 26.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-19 audit FN: Crossings of Colonie Harvest Fest"
+  },
+  {
+    "id": "fn-troy-city-officials-0919",
+    "text": "Troy city officials confirmed that a teen was injured in an e-bike-involved crash on Thursday night near Fourth Avenue and Monroe Avenue.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-19 audit FN: Troy city officials crash wire"
   }
 ]

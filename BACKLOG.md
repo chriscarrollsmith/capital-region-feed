@@ -538,6 +538,28 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-101 — Daily feed audit: Brechin River Street, #thespa Gunma, Ichabod literary, GF wordcloud, Troy Kingston; Frear Park / downtown Troy / Crossings Colonie FNs
+- **Status:** in progress
+- **Why:** 2026-09-19 audit of last-24h AppView feed (~155 posts since 2026-09-18T09:15Z)
+  found active FPs after #77: Brechin/Angus Scotland `River Street` unlocked
+  `classifier:local_micro`; Japanese J.League `#thespa` (Thespa Gunma) hit bare
+  `#thespa` strong; They Might Be Giants / Sleepy Hollow merch bare `Ichabod Crane`;
+  trending-word clouds pairing `globalfoundries` + `malta` without campus/NY;
+  Amsterdam News `Troy Kingston` person name via `ambiguous_with_context:troy`.
+  FNs from allowlist-author / rematch text without allowlist: Frear Park / Oakwood
+  Avenue Troy; downtown Troy foreclosure; Crossings of Colonie Harvest Fest; Troy
+  city officials crash wire. AppView `searchPosts` still 403. Residual: bare Albany
+  job spam; allowlisted non-local; Siena College national-poll wires; ~26 rematch-drops
+  until purge (Rotterdam NL / Malta EU / Troy Trojans).
+- **Work:**
+  - Expand River Street Scotland (Brechin/Angus/Storm Babet) gate; require Saratoga
+    near `#thespa`; gate Ichabod Crane to school/Valatie; tighten GlobalFoundries+Malta
+    to campus/in-Malta/NY; Troy Kingston person-name; Frear Park / downtown Troy /
+    Crossings of Colonie / Troy city officials strong; grow eval with 2026-09-19
+    FP/TP/FN anchors (builds on #77 / B-100).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-100 — Daily feed audit: Fife Crossgates, Brantford Grand River Street, Brooklyn Albany Avenue; Curtain Call / Colonie / Bethlehem Town Board FNs
 - **Status:** done ([#77](https://github.com/chriscarrollsmith/capital-region-feed/pull/77))
 - **Why:** 2026-09-18 audit of last-24h AppView feed (~105 posts since 2026-09-17T09:13Z)
