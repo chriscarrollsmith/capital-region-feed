@@ -160,10 +160,16 @@ _STRONG_POSITIVE = re.compile(
       | town\s+of\s+halfmoon\b
       | halfmoon\s+(?:town\s+)?(?:board|council|ceremony|ceremonies)\b
       # Town of Malta / GlobalFoundries campus copy often omits ", NY".
+      # Require campus/in-Malta/NY cues so trending-word clouds pairing both
+      # tokens without locality do not keep.
       | town\s+of\s+malta\b
       | malta\s+(?:town\s+)?(?:board|council|planning)\b
-      | globalfoundries[\s\S]{0,100}\bmalta\b
-      | \bmalta\b[\s\S]{0,100}globalfoundries
+      | globalfoundries[\s\S]{0,120}(?:
+            \bin\s+malta\b|\bat\s+malta\b|malta\s+campus\b|malta\s*,?\s*ny\b
+          )
+      | (?:
+            \bin\s+malta\b|\bat\s+malta\b|malta\s+campus\b|malta\s*,?\s*ny\b
+          )[\s\S]{0,120}globalfoundries
       # Town of Bethlehem NY civic / library copy often omits ", NY".
       | town\s+of\s+bethlehem\b
       | bethlehem\s+(?:town\s+)?(?:board|council|planning)\b
@@ -192,7 +198,10 @@ _STRONG_POSITIVE = re.compile(
       | \bwamc\b
       | siena\s+(?:college|saints)\b
       # Suburban Council districts / towns often omit ", NY".
-      | \bichabod\s+crane\b
+      # Bare "Ichabod Crane" is also the Sleepy Hollow character / song lyric.
+      | ichabod\s+crane\s+(?:central\s+)?(?:school|district|csd)\b
+      | ichabod\s+crane[\s\S]{0,100}\bvalatie\b
+      | \bvalatie\b[\s\S]{0,100}ichabod\s+crane
       | \bvalatie\b
       | \bshenendehowa\b
       # Saratoga / RPI / Albany museums & halls often omit ", NY".
@@ -332,8 +341,10 @@ _STRONG_POSITIVE = re.compile(
       | albany\s+pine\s+bush(?:\s+preserve)?\b
       | pine\s+bush\s+preserve\b
       # Opera Saratoga / race-meet spa nicknames often omit ", NY".
+      # Bare #thespa also tags Japan's Thespa Gunma — require Saratoga nearby.
       | opera\s+saratoga\b
-      | \#thespa\b
+      | \#thespa\b[\s\S]{0,80}\bsaratoga\b
+      | \bsaratoga\b[\s\S]{0,80}\#thespa\b
       | \bthe\s+spa\b[\s\S]{0,80}\bsaratoga\b
       | \bsaratoga\b[\s\S]{0,80}\bthe\s+spa\b
       | \bsaratoga\s+summer\s+meet\b
@@ -358,8 +369,15 @@ _STRONG_POSITIVE = re.compile(
       # Historic Troy Iron Works / Nail Factory tourism often omits ", NY".
       | troy\s+iron\s+and\s+nail(?:\s+factory)?\b
       | iron\s+and\s+nail\s+factory\b
-      # Downtown Albany redevelopment wires often omit ", NY".
+      # Downtown Albany / Troy redevelopment wires often omit ", NY".
       | downtown\s+albany\b
+      | downtown\s+troy\b
+      # Troy Frear Park / civic copy often omits ", NY".
+      | \bfrear\s+park\b
+      | troy\s+city\s+(?:officials?|council|hall|school)\b
+      | \bcity\s+of\s+troy\b
+      # Crossings of Colonie (town park) often omits ", NY".
+      | crossings\s+of\s+colonie\b
       # Distinctive Albany campuses / plazas often omit ", NY".
       | massry\s+(?:center|school|hall)\b
       | harriman\s+(?:state\s+office\s+)?campus\b
@@ -2099,6 +2117,7 @@ _TROY_PERSON_NAME = re.compile(
       # Immigration / sports person names unlocked by NYC / New York context.
       | \btroy\s+nader\b
       | \btroy\s+davis\b
+      | \btroy\s+kingston\b
       | immigration\s+attorney\s+troy\b
       | attorney\s+troy\s+[a-z]+\b
     )

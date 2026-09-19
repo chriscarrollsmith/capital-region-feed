@@ -3527,6 +3527,68 @@ def test_bethlehem_town_board_not_person_or_star_of() -> None:
     )
     assert star.matched is False
     assert star.reason == 'hard_negative:bethlehem_star_of'
+
+
+def test_thespa_gunma_not_saratoga_spa() -> None:
+    jp = match_post('【新生日本代表】#fcgifu #fctokyo #giravanz #hollyhock #thespa #trinita #verdy')
+    assert jp.matched is False
+    spa = match_post(
+        'Last 3 Days of the Saratoga summer meet! Prints available. #Saratoga #TheSpa #horseracing'
+    )
+    assert spa.matched is True
+
+
+def test_ichabod_crane_literary_not_school() -> None:
+    lyric = match_post("Someday I'll win I'm not Ichabod Crane And though dark my days")
+    assert lyric.matched is False
+    merch = match_post(
+        'Headless Horseman Ichabod Crane greeting card #Halloween #SleepyHollow #classic'
+    )
+    assert merch.matched is False
+    school = match_post(
+        'Ichabod Crane Central School district board members say they will give public '
+        'financial updates, with Valatie residents wanting more answers.'
+    )
+    assert school.matched is True
+
+
+def test_globalfoundries_wordcloud_not_malta_campus() -> None:
+    cloud = match_post("Bluesky's Top 10 Trending Words: ukraine, globalfoundries, monaco, malta")
+    assert cloud.matched is False
+    campus = match_post('GlobalFoundries Malta campus hiring fair next week.')
+    assert campus.matched is True
+    ny = match_post('GlobalFoundries secures a federal award to expand manufacturing in Malta, NY.')
+    assert ny.matched is True
+
+
+def test_troy_kingston_person_not_city() -> None:
+    person = match_post('Troy Kingston: Fighting for real New Yorkers with his viral videos')
+    assert person.matched is False
+    assert person.reason == 'hard_negative:troy_person_name'
+    assert match_post('Downtown Troy hosts a First Friday art walk tonight.').matched is True
+
+
+def test_frear_park_downtown_troy_crossings_colonie_recall() -> None:
+    frear = match_post(
+        'Two developers are seeking tax exemptions to build a 72-unit apartment complex '
+        'off Oakwood Avenue near the entrance to Frear Park in Troy.'
+    )
+    assert frear.matched is True
+    downtown = match_post(
+        "One of downtown Troy's most prominent buildings will be in the hands of a "
+        'lender following a foreclosure auction Friday.'
+    )
+    assert downtown.matched is True
+    crossings = match_post(
+        'Colonie will be welcoming the change of seasons with the return of their '
+        'annual Harvest Fest at the Crossings of Colonie on September 26.'
+    )
+    assert crossings.matched is True
+    officials = match_post(
+        'Troy city officials confirmed that a teen was injured in an e-bike-involved '
+        'crash on Thursday night near Fourth Avenue and Monroe Avenue.'
+    )
+    assert officials.matched is True
     # Comma before "New York Botanical Garden" must not look like "Bethlehem, NY".
     star_comma = match_post('grass lily, star of Bethlehem, New York Botanical Garden')
     assert star_comma.matched is False

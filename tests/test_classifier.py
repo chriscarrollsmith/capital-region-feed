@@ -322,6 +322,26 @@ def test_brantford_grand_river_street_not_local_micro() -> None:
     )
 
 
+def test_brechin_angus_river_street_not_local_micro() -> None:
+    courier = match_post(
+        'Long-awaited proposals for the future of the River Street area will be '
+        'considered by Angus councillors next week.',
+        alt_text=(
+            '40 private Brechin homes could face compulsory demolition as council '
+            'favours cheapest Storm Babet recovery plan'
+        ),
+    )
+    assert courier.matched is False
+    angus = match_post(
+        'Papers containing the results of the options appraisal for the Brechin '
+        'River Street area which will be considered at the Angus Council Special '
+        'meeting on 23 September are now live on the Angus Council website.',
+        alt_text='Image shows the river South Esk flowing through Brechin',
+    )
+    assert angus.matched is False
+    assert match_post('Open mic tomorrow on River Street — sign-ups start at 6.').matched is True
+
+
 def test_classify_drops_bare_albany_event_without_micro() -> None:
     decision = classify_candidate(
         "Don't miss the Albany Veterans Day Parade this Saturday downtown!",

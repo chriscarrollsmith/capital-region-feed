@@ -184,6 +184,15 @@ _RIVER_STREET_OTHER = re.compile(
       | river\s+street[\s\S]{0,280}(?:
             \bbrantford\b|\bontario\b|\#on\b|grand\s+river
           )
+      # Brechin / Angus (Scotland) River Street flood recovery — not Troy's corridor.
+      | (?:
+            \bbrechin\b|\bangus\b|storm\s+babet|south\s+esk|
+            \bscotland\b|\#scotland\b|angus\s+council
+          )[\s\S]{0,280}river\s+street
+      | river\s+street[\s\S]{0,280}(?:
+            \bbrechin\b|\bangus\b|storm\s+babet|south\s+esk|
+            \bscotland\b|\#scotland\b|angus\s+council
+          )
     )
     """,
     re.IGNORECASE | re.VERBOSE,
