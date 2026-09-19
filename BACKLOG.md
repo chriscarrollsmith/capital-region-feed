@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-101 — Daily feed audit: Brechin River Street, #thespa Gunma, Ichabod literary, GF wordcloud, Troy Kingston; Frear Park / downtown Troy / Crossings Colonie FNs
-- **Status:** in progress
+- **Status:** done ([#78](https://github.com/chriscarrollsmith/capital-region-feed/pull/78))
 - **Why:** 2026-09-19 audit of last-24h AppView feed (~155 posts since 2026-09-18T09:15Z)
   found active FPs after #77: Brechin/Angus Scotland `River Street` unlocked
   `classifier:local_micro`; Japanese J.League `#thespa` (Thespa Gunma) hit bare
