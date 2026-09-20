@@ -257,6 +257,10 @@ _STRONG_POSITIVE = re.compile(
       | at\s+saratoga\b[\s\S]{0,80}\bstakes\b
       # Battlefield NPS / tourism often omits ", NY".
       | saratoga\s+battlefield\b
+      | saratoga\s+national\s+historical\s+park\b
+      | \bbemus\s+heights\b
+      | \bbemis\s+heights\b
+      | freeman'?s?\s+farm\b
       # Graded race titles / starts often omit "stakes" beside Saratoga.
       | christophe\s+clement[\s\S]{0,80}\bsaratoga\b
       | \bsaratoga\b[\s\S]{0,80}christophe\s+clement
@@ -362,7 +366,13 @@ _STRONG_POSITIVE = re.compile(
       | \b(?:worktab|breezing|breeze[sd]?|worked)\b[\s\S]{0,80}\bat\s+saratoga\b
       # Named closing-day / summer-meet stakes often omit ", NY".
       | funny\s+cide(?:\s+stakes)?\b
-      | gio\s+ponti(?:\s+stakes)?\b
+      # Gio Ponti Stakes (Saratoga); bare "Gio Ponti" is the Italian designer.
+      | gio\s+ponti\s+stakes\b
+      | gio\s+ponti\b[\s\S]{0,80}\b(?:stakes|meet|saratoga|race\s+course|card|turf|won|wins?)\b
+      | \b(?:stakes|meet|saratoga|race\s+course|card|turf|won|wins?)\b[\s\S]{0,80}gio\s+ponti\b
+      # Funny Bones (Albany-area comedy club) often omits ", NY".
+      | funny\s+bones[\s\S]{0,60}\b(?:albany|latham|colonie)\b
+      | \b(?:albany|latham|colonie)\b[\s\S]{0,60}funny\s+bones\b
       # America250 / Revolutionary tourism often pairs bare Saratoga.
       | \bamerica\s*250\b[\s\S]{0,120}\bsaratoga\b
       | \bsaratoga\b[\s\S]{0,120}\bamerica\s*250\b
