@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-102 — Daily feed audit: Gio Ponti designer FP; Saratoga NHP / Funny Bones Albany FNs
-- **Status:** in progress
+- **Status:** done ([#79](https://github.com/chriscarrollsmith/capital-region-feed/pull/79))
 - **Why:** 2026-09-20 audit of last-24h AppView feed (~99 posts since 2026-09-19T09:02Z)
   found an active FP after #78: Les Echos French design copy naming Italian architect
   `Gio Ponti` matched bare `gio ponti(?:\s+stakes)?` strong meant for the Saratoga
