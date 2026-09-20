@@ -3044,6 +3044,31 @@ def test_america250_and_funny_cide_gio_ponti_saratoga_recall() -> None:
     assert gio.matched is True
 
 
+def test_gio_ponti_designer_not_stakes() -> None:
+    designer = match_post("L'objet design : la théière Aéro, le chef-d'oeuvre fuselé de Gio Ponti")
+    assert designer.matched is False
+    stakes = match_post('Gio Ponti Stakes drew a full field on closing day.')
+    assert stakes.matched is True
+
+
+def test_saratoga_national_historical_park_and_battlefield_landmarks() -> None:
+    park = match_post(
+        "On Sept. 19, 1777, Burgoyne's army fought at Freeman's Farm. "
+        'Walk the ground today at Saratoga National Historical Park.'
+    )
+    assert park.matched is True
+    assert match_post('Tour Bemus Heights before the evening lecture.').matched is True
+    assert match_post('Bemis Heights overlooks the Hudson battlefield trail.').matched is True
+
+
+def test_funny_bones_albany_comedy_recall() -> None:
+    show = match_post('Omg we saw comedian Trae Crowder at Funny Bones in Albany- we howled.')
+    assert show.matched is True
+    # Other-city Funny Bone franchises without Cap Region towns stay out.
+    other = match_post('Caught a set at Funny Bones in Dayton last night.')
+    assert other.matched is False
+
+
 def test_philippines_metro_manila_capital_region_not_ny() -> None:
     manila = match_post(
         'Jobless rate climbs as growth slows.',

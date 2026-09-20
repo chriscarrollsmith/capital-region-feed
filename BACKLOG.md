@@ -538,6 +538,24 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-102 — Daily feed audit: Gio Ponti designer FP; Saratoga NHP / Funny Bones Albany FNs
+- **Status:** done ([#79](https://github.com/chriscarrollsmith/capital-region-feed/pull/79))
+- **Why:** 2026-09-20 audit of last-24h AppView feed (~99 posts since 2026-09-19T09:02Z)
+  found an active FP after #78: Les Echos French design copy naming Italian architect
+  `Gio Ponti` matched bare `gio ponti(?:\s+stakes)?` strong meant for the Saratoga
+  Gio Ponti Stakes. FNs from rematch / local venue text: `Saratoga National Historical
+  Park` / Bemus Heights / Freeman's Farm battlefield tourism (Burgoyne/1777 windows too
+  narrow when landmarks carry locality); Funny Bones comedy club in Albany without
+  `, NY`. AppView `searchPosts` still 403. Residual: bare Albany job spam; allowlisted
+  non-local; Siena sports / Battle of Saratoga history wires (intentional strong);
+  ~40 rematch-drops until purge (Malta EU / Rotterdam NL / Troy Trojans / OH Albany).
+- **Work:**
+  - Gate Gio Ponti to stakes/racing cues; strong positives for Saratoga National
+    Historical Park, Bemus/Bemis Heights, Freeman's Farm; Funny Bones↔Albany/Latham/
+    Colonie; grow eval with 2026-09-20 FP/TP/FN anchors (builds on #78 / B-101).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-101 — Daily feed audit: Brechin River Street, #thespa Gunma, Ichabod literary, GF wordcloud, Troy Kingston; Frear Park / downtown Troy / Crossings Colonie FNs
 - **Status:** done ([#78](https://github.com/chriscarrollsmith/capital-region-feed/pull/78))
 - **Why:** 2026-09-19 audit of last-24h AppView feed (~155 posts since 2026-09-18T09:15Z)
