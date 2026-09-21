@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-103 — Daily feed audit: Bethlehem carol/Palestine, Newtonville Village Day, CDTA Algeria, blue collar city, #DenHaag; Albany Democrats / War Room FNs
-- **Status:** in progress
+- **Status:** done ([#80](https://github.com/chriscarrollsmith/capital-region-feed/pull/80))
 - **Why:** 2026-09-21 audit of last-24h AppView feed (~142 posts since 2026-09-20T09:04Z)
   found active FPs after #79: Christmas carol `O Little Town Of Bethlehem` /
   `Oh little town of Bethlehem` matched `town of bethlehem` strong; West Bank
