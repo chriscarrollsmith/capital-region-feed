@@ -9013,5 +9013,245 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-09-19 audit FN: Troy city officials crash wire"
+  },
+  {
+    "id": "fp-gio-ponti-designer-teapot-0920",
+    "text": "L'objet design : la théière Aéro, le chef-d'oeuvre fuselé de Gio Ponti",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-20 audit: Italian designer Gio Ponti is not Gio Ponti Stakes"
+  },
+  {
+    "id": "tp-gio-ponti-stakes-closing-card-0920",
+    "text": "Siyouincanada took the Gio Ponti on the last card of the meet.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-20 audit: Gio Ponti Stakes racing copy still keeps"
+  },
+  {
+    "id": "tp-gio-ponti-stakes-named-0920",
+    "text": "Gio Ponti Stakes drew a full field on closing day.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-20 audit: named Gio Ponti Stakes"
+  },
+  {
+    "id": "tp-saratoga-national-historical-park-0920",
+    "text": "On Sept. 19, 1777, Burgoyne's army fought at Freeman's Farm. The British held the field, but the American defenses at Bemus Heights remained intact. Walk the ground today at Saratoga National Historical Park.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-20 audit: NPS Saratoga park / battlefield landmarks without , NY"
+  },
+  {
+    "id": "tp-bemus-heights-tour-0920",
+    "text": "Tour Bemus Heights before the evening lecture.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-20 audit: Bemus Heights battlefield landmark"
+  },
+  {
+    "id": "tp-freemans-farm-wire-0920",
+    "text": "Burgoyne's army fought at Freeman's Farm near the river.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-20 audit: Freeman's Farm battle site"
+  },
+  {
+    "id": "tp-funny-bones-albany-comedy-0920",
+    "text": "Omg we saw comedian Trae Crowder at Funny Bones in Albany- we howled.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-20 audit: Funny Bones Albany comedy club without , NY"
+  },
+  {
+    "id": "tn-funny-bones-dayton-0920",
+    "text": "Caught a set at Funny Bones in Dayton last night.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-20 audit: other-city Funny Bone franchise without Cap Region town"
+  },
+  {
+    "id": "tp-saratoga-battlefield-alias-0920",
+    "text": "Morning fog over Saratoga Battlefield before the ranger talk.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-20 audit: existing Saratoga Battlefield strong still keeps"
+  },
+  {
+    "id": "tn-bare-gio-ponti-museum-wall-0920",
+    "text": "The museum wall text credits Gio Ponti for the 1950s ceramic series.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-20 audit: designer credit without stakes/racing cues"
+  },
+  {
+    "id": "fp-bethlehem-carol-earworm-0921",
+    "text": "I'm trying to figure out why this morning's earworm is O Little Town Of Bethlehem on a beach in Greece.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-21 audit: Christmas carol matched town of Bethlehem strong"
+  },
+  {
+    "id": "fp-bethlehem-palestine-nyc-0921",
+    "text": "Park Slope farmers market vendor selling za'atar from Bethlehem, Palestine. #nyc #palestine",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-21 audit: West Bank Bethlehem unlocked via #nyc"
+  },
+  {
+    "id": "tp-bethlehem-town-board-0921",
+    "text": "Bethlehem Town Board voted on the budget at Town Hall last night.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-21 audit: Town of Bethlehem civic counterpart"
+  },
+  {
+    "id": "fp-newtonville-village-day-0921",
+    "text": "Newtonville Village Day and the dedication of Setti D. Warren Plaza. Newton turned out; Mayor Marc Laredo beside Austin Street.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-21 audit: Newton MA Village Day matched bare newtonville strong"
+  },
+  {
+    "id": "tp-newtonville-colonie-0921",
+    "text": "New shops opening on Newtonville Avenue in Colonie near #AlbanyNY.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-21 audit: Colonie Newtonville counterpart"
+  },
+  {
+    "id": "fp-cdta-algeria-0921",
+    "text": "Le CDTA produit désormais des puces électroniques entièrement conçues en Algérie.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-21 audit: Algerian CDTA tech center vs Cap Region transit"
+  },
+  {
+    "id": "tp-cdta-route-0921",
+    "text": "CDTA route 12 schedule changes Monday.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-21 audit: Cap Region CDTA counterpart"
+  },
+  {
+    "id": "fp-blue-collar-city-0921",
+    "text": "Congratulations Cleveland Browns! I'll root for any blue collar city, especially an underdog.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-21 audit: blue collar city substring hit Collar City strong"
+  },
+  {
+    "id": "tp-collar-city-tweed-0921",
+    "text": "Collar City Tweed Ride Sunday in downtown Troy.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-21 audit: Troy Collar City nickname counterpart"
+  },
+  {
+    "id": "fp-rotterdam-denhaag-hashtags-0921",
+    "text": "Eindelijk naar bed Een #Rotterdam #DenHaag #Curaçao #NewYork Big Apple dag",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-21 audit: Dutch #DenHaag/#Curaçao hashtags omitted from malta_europe"
+  },
+  {
+    "id": "tp-rotterdam-junction-0921",
+    "text": "Autumn Glow Festival lights up Mabee Farm in Rotterdam Junction.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-21 audit: Rotterdam Junction Cap Region counterpart"
+  },
+  {
+    "id": "fn-albany-democrats-hochul-0921",
+    "text": "HOCHUL to join Albany Democrats at Saturday campaign rally.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-21 audit: Hochul + Albany Democrats was bare_albany"
+  },
+  {
+    "id": "fn-war-room-tavern-0921",
+    "text": "Mets legend resurrects iconic Albany tavern. The War Room Tavern, a bar hot spot for lawmakers in the capital, reopens.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-21 audit: War Room Tavern Albany lobbyist bar was bare_albany"
+  },
+  {
+    "id": "tn-oh-little-town-palestine-0921",
+    "text": "Oh little town of Bethlehem how deadly are the lies #palestine",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-21 audit: carol + Palestine solidarity without Cap Region civic cues"
   }
 ]

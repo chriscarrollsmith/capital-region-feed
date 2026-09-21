@@ -3044,6 +3044,31 @@ def test_america250_and_funny_cide_gio_ponti_saratoga_recall() -> None:
     assert gio.matched is True
 
 
+def test_gio_ponti_designer_not_stakes() -> None:
+    designer = match_post("L'objet design : la théière Aéro, le chef-d'oeuvre fuselé de Gio Ponti")
+    assert designer.matched is False
+    stakes = match_post('Gio Ponti Stakes drew a full field on closing day.')
+    assert stakes.matched is True
+
+
+def test_saratoga_national_historical_park_and_battlefield_landmarks() -> None:
+    park = match_post(
+        "On Sept. 19, 1777, Burgoyne's army fought at Freeman's Farm. "
+        'Walk the ground today at Saratoga National Historical Park.'
+    )
+    assert park.matched is True
+    assert match_post('Tour Bemus Heights before the evening lecture.').matched is True
+    assert match_post('Bemis Heights overlooks the Hudson battlefield trail.').matched is True
+
+
+def test_funny_bones_albany_comedy_recall() -> None:
+    show = match_post('Omg we saw comedian Trae Crowder at Funny Bones in Albany- we howled.')
+    assert show.matched is True
+    # Other-city Funny Bone franchises without Cap Region towns stay out.
+    other = match_post('Caught a set at Funny Bones in Dayton last night.')
+    assert other.matched is False
+
+
 def test_philippines_metro_manila_capital_region_not_ny() -> None:
     manila = match_post(
         'Jobless rate climbs as growth slows.',
@@ -3594,3 +3619,68 @@ def test_frear_park_downtown_troy_crossings_colonie_recall() -> None:
     assert star_comma.matched is False
     assert star_comma.reason == 'hard_negative:bethlehem_star_of'
     assert match_post('Town of Bethlehem Public Library book sale this weekend.').matched is True
+
+
+def test_bethlehem_holy_land_carol_not_town() -> None:
+    carol = match_post(
+        "I'm trying to figure out why this morning's earworm is O Little Town Of Bethlehem"
+    )
+    assert carol.matched is False
+    assert carol.reason == 'hard_negative:bethlehem_holy_land'
+    palestine = match_post(
+        "Park Slope farmers market selling olive oil and za'atar from Bethlehem, Palestine. "
+        '#nyc #palestine'
+    )
+    assert palestine.matched is False
+    assert palestine.reason == 'hard_negative:bethlehem_holy_land'
+    assert match_post('Bethlehem Town Board voted on the budget at Town Hall.').matched is True
+
+
+def test_newtonville_village_day_not_colonie() -> None:
+    village = match_post(
+        '[PHOTOS] Newtonville Village Day and the dedication of Setti D. Warren Plaza. '
+        'Newton turned out Sunday. Mayor Marc Laredo and John Kerry were on hand beside '
+        'the Austin Street development.'
+    )
+    assert village.matched is False
+    assert village.reason == 'hard_negative:newtonville_ma'
+    assert (
+        match_post('New shops opening on Newtonville Avenue in Colonie near #AlbanyNY.').matched
+        is True
+    )
+
+
+def test_cdta_algeria_not_capital_district_transit() -> None:
+    algeria = match_post(
+        'Le CDTA produit désormais des puces électroniques entièrement conçues en Algérie.'
+    )
+    assert algeria.matched is False
+    assert algeria.reason == 'hard_negative:cdta_algeria'
+    assert match_post('CDTA route 12 schedule changes Monday.').matched is True
+
+
+def test_blue_collar_city_not_troy_nickname() -> None:
+    browns = match_post(
+        "Congratulations Cleveland Browns! I'll root for any blue collar city, "
+        'especially an underdog.'
+    )
+    assert browns.matched is False
+    assert match_post('Collar City Tweed Ride Sunday.').matched is True
+
+
+def test_rotterdam_denhaag_hashtags_not_ny() -> None:
+    dutch = match_post('Eindelijk naar bed Een #Rotterdam #DenHaag #Curaçao #NewYork Big Apple dag')
+    assert dutch.matched is False
+    assert dutch.reason == 'hard_negative:malta_europe'
+    assert match_post('Mabee Farm Autumn Glow Festival in Rotterdam Junction.').matched is True
+
+
+def test_albany_democrats_hochul_and_war_room_recall() -> None:
+    dems = match_post('HOCHUL to join Albany Democrats at Saturday campaign rally.')
+    assert dems.matched is True
+    assert dems.reason == 'strong_positive'
+    tavern = match_post(
+        "Mets legend resurrects iconic Albany tavern: 'A real save'. "
+        'The War Room Tavern, a bar hot spot for lawmakers in the capital, reopens.'
+    )
+    assert tavern.matched is True
