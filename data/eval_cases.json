@@ -9113,5 +9113,145 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-09-20 audit: designer credit without stakes/racing cues"
+  },
+  {
+    "id": "fp-bethlehem-carol-earworm-0921",
+    "text": "I'm trying to figure out why this morning's earworm is O Little Town Of Bethlehem on a beach in Greece.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-21 audit: Christmas carol matched town of Bethlehem strong"
+  },
+  {
+    "id": "fp-bethlehem-palestine-nyc-0921",
+    "text": "Park Slope farmers market vendor selling za'atar from Bethlehem, Palestine. #nyc #palestine",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-21 audit: West Bank Bethlehem unlocked via #nyc"
+  },
+  {
+    "id": "tp-bethlehem-town-board-0921",
+    "text": "Bethlehem Town Board voted on the budget at Town Hall last night.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-21 audit: Town of Bethlehem civic counterpart"
+  },
+  {
+    "id": "fp-newtonville-village-day-0921",
+    "text": "Newtonville Village Day and the dedication of Setti D. Warren Plaza. Newton turned out; Mayor Marc Laredo beside Austin Street.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-21 audit: Newton MA Village Day matched bare newtonville strong"
+  },
+  {
+    "id": "tp-newtonville-colonie-0921",
+    "text": "New shops opening on Newtonville Avenue in Colonie near #AlbanyNY.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-21 audit: Colonie Newtonville counterpart"
+  },
+  {
+    "id": "fp-cdta-algeria-0921",
+    "text": "Le CDTA produit désormais des puces électroniques entièrement conçues en Algérie.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-21 audit: Algerian CDTA tech center vs Cap Region transit"
+  },
+  {
+    "id": "tp-cdta-route-0921",
+    "text": "CDTA route 12 schedule changes Monday.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-21 audit: Cap Region CDTA counterpart"
+  },
+  {
+    "id": "fp-blue-collar-city-0921",
+    "text": "Congratulations Cleveland Browns! I'll root for any blue collar city, especially an underdog.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-21 audit: blue collar city substring hit Collar City strong"
+  },
+  {
+    "id": "tp-collar-city-tweed-0921",
+    "text": "Collar City Tweed Ride Sunday in downtown Troy.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-21 audit: Troy Collar City nickname counterpart"
+  },
+  {
+    "id": "fp-rotterdam-denhaag-hashtags-0921",
+    "text": "Eindelijk naar bed Een #Rotterdam #DenHaag #Curaçao #NewYork Big Apple dag",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-21 audit: Dutch #DenHaag/#Curaçao hashtags omitted from malta_europe"
+  },
+  {
+    "id": "tp-rotterdam-junction-0921",
+    "text": "Autumn Glow Festival lights up Mabee Farm in Rotterdam Junction.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-21 audit: Rotterdam Junction Cap Region counterpart"
+  },
+  {
+    "id": "fn-albany-democrats-hochul-0921",
+    "text": "HOCHUL to join Albany Democrats at Saturday campaign rally.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-21 audit: Hochul + Albany Democrats was bare_albany"
+  },
+  {
+    "id": "fn-war-room-tavern-0921",
+    "text": "Mets legend resurrects iconic Albany tavern. The War Room Tavern, a bar hot spot for lawmakers in the capital, reopens.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-21 audit: War Room Tavern Albany lobbyist bar was bare_albany"
+  },
+  {
+    "id": "tn-oh-little-town-palestine-0921",
+    "text": "Oh little town of Bethlehem how deadly are the lies #palestine",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-21 audit: carol + Palestine solidarity without Cap Region civic cues"
   }
 ]

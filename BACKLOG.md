@@ -538,6 +538,28 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-103 — Daily feed audit: Bethlehem carol/Palestine, Newtonville Village Day, CDTA Algeria, blue collar city, #DenHaag; Albany Democrats / War Room FNs
+- **Status:** in progress
+- **Why:** 2026-09-21 audit of last-24h AppView feed (~142 posts since 2026-09-20T09:04Z)
+  found active FPs after #79: Christmas carol `O Little Town Of Bethlehem` /
+  `Oh little town of Bethlehem` matched `town of bethlehem` strong; West Bank
+  Bethlehem za'atar copy unlocked via `#nyc`; Newton MA Village Day / Setti Warren /
+  Marc Laredo matched bare `newtonville` strong; Algerian `CDTA` chip-fab copy matched
+  Cap Region transit strong; generic `blue collar city` substring hit Troy's
+  `collar city` nickname; Dutch `#Rotterdam #DenHaag #Curaçao #NewYork` kept because
+  hashtag forms lack the space in `den haag`. FNs from rematch drops: Hochul +
+  `Albany Democrats` and War Room Tavern lobbyist-bar wire were `bare_albany`.
+  AppView `searchPosts` still 403. Residual: bare Albany job spam; allowlisted
+  non-local; WAMC national wires / Siena College poll wires (intentional strong);
+  ~33 rematch-drops until purge (Malta EU / Rotterdam NL / Troy Trojans / OH Albany).
+- **Work:**
+  - Exclude `little town of` before Bethlehem strong; holy-land / carol conflict;
+    expand Newtonville MA cues; CDTA↔Algeria conflict; `(?<!blue )collar city`;
+    `#denhaag` / Curaçao in malta_europe; Albany Democrats / Hochul / War Room Tavern
+    strong; grow eval with 2026-09-21 FP/TP/FN anchors (builds on #79 / B-102).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-102 — Daily feed audit: Gio Ponti designer FP; Saratoga NHP / Funny Bones Albany FNs
 - **Status:** done ([#79](https://github.com/chriscarrollsmith/capital-region-feed/pull/79))
 - **Why:** 2026-09-20 audit of last-24h AppView feed (~99 posts since 2026-09-19T09:02Z)
