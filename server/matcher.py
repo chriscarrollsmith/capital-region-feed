@@ -171,7 +171,8 @@ _STRONG_POSITIVE = re.compile(
             \bin\s+malta\b|\bat\s+malta\b|malta\s+campus\b|malta\s*,?\s*ny\b
           )[\s\S]{0,120}globalfoundries
       # Town of Bethlehem NY civic / library copy often omits ", NY".
-      | town\s+of\s+bethlehem\b
+      # Exclude Christmas carol "little town of Bethlehem".
+      | (?<!little\s)town\s+of\s+bethlehem\b
       | bethlehem\s+(?:town\s+)?(?:board|council|planning)\b
       | town\s+board[\s\S]{0,120}\bbethlehem\b
       | \bbethlehem\b[\s\S]{0,120}town\s+board
@@ -189,7 +190,8 @@ _STRONG_POSITIVE = re.compile(
       | five\s+rivers(?:\s+environmental)?\b
       | indian\s+ladder(?:\s+trail)?\b
       | thacher\s+park\b
-      | collar\s+city\b
+      # Troy's Collar City nickname — not generic "blue collar city".
+      | (?<!blue\s)collar\s+city\b
       | canfield\s+casino\b
       | vischer\s+ferry\b
       | hart\s+cluett\b
@@ -197,6 +199,11 @@ _STRONG_POSITIVE = re.compile(
       | bombers\s+burrito(?:\s+bar)?\b
       | \bwamc\b
       | siena\s+(?:college|saints)\b
+      # State-politics / Albany civic copy often omits ", NY".
+      | albany\s+democrats?\b
+      | hochul[\s\S]{0,120}\balbany\b
+      | \balbany\b[\s\S]{0,120}hochul
+      | war\s+room\s+tavern\b
       # Suburban Council districts / towns often omit ", NY".
       # Bare "Ichabod Crane" is also the Sleepy Hollow character / song lyric.
       | ichabod\s+crane\s+(?:central\s+)?(?:school|district|csd)\b
@@ -1360,12 +1367,16 @@ _NEWTONVILLE_MA = re.compile(
         newtonville[\s\S]{0,220}(?:
             \bboston\b|\bmbta\b|\#mbta\b|newton\s+ma\b|newton\s+highlands|
             west\s+newton|worcester\s+line|garden\s+city|
-            \bnj\b|\bnew\s+jersey\b|\#newjersey\b
+            \bnj\b|\bnew\s+jersey\b|\#newjersey\b|
+            village\s+day|setti\s+(?:d\.?\s+)?warren|marc\s+laredo|
+            austin\s+street|john\s+kerry|newton\s+turned\s+out
         )
       | (?:
             \bboston\b|\bmbta\b|\#mbta\b|newton\s+ma\b|newton\s+highlands|
             west\s+newton|worcester\s+line|
-            \bnj\b|\bnew\s+jersey\b|\#newjersey\b
+            \bnj\b|\bnew\s+jersey\b|\#newjersey\b|
+            village\s+day|setti\s+(?:d\.?\s+)?warren|marc\s+laredo|
+            austin\s+street|john\s+kerry|newton\s+turned\s+out
         )[\s\S]{0,220}newtonville
       | newtonville\s*,?\s*(?:nj|n\.j\.|new\s+jersey)\b
     )
@@ -1713,9 +1724,14 @@ _MALTA_EUROPE = re.compile(
       | \b(?:paris|london|hong\s+kong|detroit)\b[\s\S]{0,220}\brotterdam\b
       | \brotterdam\b[\s\S]{0,220}\b(?:paris|london|hong\s+kong|detroit)\b
       # Dutch domestic news (AD.nl) often names Rotterdam + Den Haag without
-      # the English word "Netherlands".
+      # the English word "Netherlands". Hashtag forms (#DenHaag / #Curaçao)
+      # lack the space that ``den haag`` requires.
       | \bden\s+haag\b
+      | \#denhaag\b
+      | \bdenhaag\b
       | \bthe\s+hague\b
+      | \bcura[cç]ao\b
+      | \#cura[cç]ao\b
       | \bnederland(?:er|se)?\b
       | \#nederland\b
       | \bahoy\s+rotterdam\b
@@ -2079,6 +2095,43 @@ _BETHLEHEM_STAR_OF = re.compile(
             botanical\s+garden|new\s+york\s+botanical|\#pompandpatterns\b|
             grass\s+lily
           )[\s\S]{0,120}bethlehem
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Biblical / West Bank Bethlehem and Christmas carol — not Town of Bethlehem NY.
+# "#nyc" / "New York" tags on Palestine solidarity posts must not unlock keep.
+_BETHLEHEM_HOLY_LAND = re.compile(
+    r"""
+    (?:
+        little\s+town\s+of\s+bethlehem\b
+      | o\s+little\s+town\s+(?:of\s+)?bethlehem\b
+      | bethlehem[\s\S]{0,200}(?:
+            \bpalestine\b|\bisrael\b|west\s+bank|jerusalem|
+            \#palestine\b|\#israel\b|palestinian|
+            za['\u2019]?atar|earworm|christmas\s+carol|\bhymn\b
+          )
+      | (?:
+            \bpalestine\b|\bisrael\b|west\s+bank|jerusalem|
+            \#palestine\b|\#israel\b|palestinian|
+            za['\u2019]?atar|earworm|christmas\s+carol|\bhymn\b
+          )[\s\S]{0,200}bethlehem
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Algerian Centre de Développement des Technologies Avancées — not Cap Region CDTA.
+_CDTA_ALGERIA = re.compile(
+    r"""
+    (?:
+        \bcdta\b[\s\S]{0,220}(?:
+            alg[eé]rie|alg[eé]rienne|alg[eé]rien|\balgeria\b|\#algeria\b
+          )
+      | (?:
+            alg[eé]rie|alg[eé]rienne|alg[eé]rien|\balgeria\b|\#algeria\b
+          )[\s\S]{0,220}\bcdta\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -3419,6 +3472,53 @@ def _bethlehem_star_of_conflict(haystack: str) -> bool:
     return True
 
 
+def _bethlehem_holy_land_conflict(haystack: str) -> bool:
+    """True when Bethlehem is the biblical/West Bank city or carol, not NY."""
+    if not re.search(r'\bbethlehem\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not _BETHLEHEM_HOLY_LAND.search(haystack):
+        return False
+    if re.search(
+        r"""
+        (?:
+            bethlehem\s*,?\s*(?:ny|n\.y\.)\b
+          | (?<!little\s)town\s+of\s+bethlehem
+          | bethlehem\s+(?:town\s+)?(?:board|council|planning|public\s+library)
+          | town\s+board[\s\S]{0,120}\bbethlehem\b
+          | \bbethlehem\b[\s\S]{0,120}town\s+board
+        )
+        """,
+        haystack,
+        flags=re.IGNORECASE | re.VERBOSE,
+    ):
+        return False
+    return True
+
+
+def _cdta_algeria_conflict(haystack: str) -> bool:
+    """True when CDTA refers to Algeria's tech center, not Cap Region transit."""
+    if not re.search(r'\bcdta\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not _CDTA_ALGERIA.search(haystack):
+        return False
+    if re.search(
+        r"""
+        (?:
+            \bcdta\b[\s\S]{0,80}(?:
+                albany|troy|schenectady|capital\s+(?:region|district)|\#albanyny\b
+              )
+          | (?:
+                albany|troy|schenectady|capital\s+(?:region|district)|\#albanyny\b
+              )[\s\S]{0,80}\bcdta\b
+        )
+        """,
+        haystack,
+        flags=re.IGNORECASE | re.VERBOSE,
+    ):
+        return False
+    return True
+
+
 def _latham_person_name_conflict(haystack: str) -> bool:
     """True when Latham is an academic/author surname, not Town of Latham NY."""
     if not re.search(r'\blatham\b', haystack, flags=re.IGNORECASE):
@@ -4072,6 +4172,10 @@ def match_post(
             return MatchResult(False, 'hard_negative:schaghticoke_ct')
         if _albany_wire_remote_conflict(haystack):
             return MatchResult(False, 'hard_negative:albany_wire_remote')
+        if _bethlehem_holy_land_conflict(haystack):
+            return MatchResult(False, 'hard_negative:bethlehem_holy_land')
+        if _cdta_algeria_conflict(haystack):
+            return MatchResult(False, 'hard_negative:cdta_algeria')
         return MatchResult(True, 'strong_positive')
 
     if _COLONIE_LOCAL.search(haystack):
@@ -4141,6 +4245,8 @@ def match_post(
                 return MatchResult(False, 'hard_negative:bethlehem_person_name')
             if _bethlehem_star_of_conflict(haystack) and 'bethlehem' in multi_eligible:
                 return MatchResult(False, 'hard_negative:bethlehem_star_of')
+            if _bethlehem_holy_land_conflict(haystack) and 'bethlehem' in multi_eligible:
+                return MatchResult(False, 'hard_negative:bethlehem_holy_land')
             if _latham_person_name_conflict(haystack) and 'latham' in multi_eligible:
                 return MatchResult(False, 'hard_negative:latham_person_name')
             return MatchResult(True, 'multi_local_places')
@@ -4199,6 +4305,9 @@ def match_post(
 
         if term == 'bethlehem' and _bethlehem_star_of_conflict(haystack):
             return MatchResult(False, 'hard_negative:bethlehem_star_of')
+
+        if term == 'bethlehem' and _bethlehem_holy_land_conflict(haystack):
+            return MatchResult(False, 'hard_negative:bethlehem_holy_land')
 
         if term == 'latham' and _latham_person_name_conflict(haystack):
             return MatchResult(False, 'hard_negative:latham_person_name')
