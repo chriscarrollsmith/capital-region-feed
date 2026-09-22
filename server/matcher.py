@@ -327,8 +327,16 @@ _STRONG_POSITIVE = re.compile(
       | \bsaratoga\b[\s\S]{0,80}high\s+rock\s+park\b
       # Local paper — reject hyphenated "Sun-Times union" (Chicago),
       # "Seattle Times union", and "New York Times Union" guild phrasing.
-      | (?<!york\s)(?<!seattle\s)(?<![\w-])times\s+union\b
+      # "current times" + "Union Busting" alt cards must not glue into Times Union.
+      | (?<!york\s)(?<!seattle\s)(?<![\w-])times\s+union(?!\s+busting)\b
       | albany\s+business\s+review\b
+      # Albany Central Warehouse demolition / asbestos wires often omit ", NY".
+      | albany['\u2019]?s\s+central\s+warehouse\b
+      | central\s+warehouse[\s\S]{0,100}\balbany\b
+      | \balbany\b[\s\S]{0,100}central\s+warehouse\b
+      # Town of Saratoga / Schuylerville civic copy often omits ", NY".
+      | \bschuylerville\b
+      | saratoga\s+town\s+hall\b
       # Albany Riverfront Jazz Festival / Jennings Landing often omit ", NY".
       | albany\s+riverfront\s+jazz
       | jennings\s+landing\b
@@ -783,12 +791,14 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
 # Snowbirds = RCAF demo team (Victoria-area flyovers); not birdwatching copy.
 # Window is 240 chars: CFAX call-in intros often put #yyj / #BCpoli after a long clause.
 # Goldstream / Vancouver Island rail copy often says bare "Victoria" (no "BC").
+# Sooke / South Island / firesmoke.ca wildfire cards often say bare "capital region".
 _CANADIAN_GEO_CUE = (
     r'\bcanada\b|\bcanadian\b|\bottawa\b|\#canadian\w*|'
     r'\#yyj\b|\#bcpoli\b|british\s+columbia|\blangford\b|'
     r'victoria(?:\s*,?\s*bc\b)|greater\s+victoria|'
     r'\bgoldstream\b|vancouver\s*island|vancouverisland|peers\s+victoria|'
     r'restoreislandrail|'
+    r'\bsooke\b|south\s+island|firesmoke\.ca|'
     r'capital\s+regional\s+district|\blivable\s+crd\b|'
     r'timescolonist\.com|ottawacitizen\.com|\bsnowbirds?\b|parkland\s+secondary|'
     r'\bcfax\b|cfax\.com'
@@ -1691,6 +1701,12 @@ _MALTA_EUROPE = re.compile(
       | delta(?:['\u2019]?s)?\s+nonstop[\s\S]{0,60}\bmalta\b
       | \beturbonews\b
       | eturbonews\.com
+      # Country of Malta national holidays / republic cues (not Town of Malta NY).
+      | malta\s+independence(?:\s+day)?\b
+      | independence\s+day[\s\S]{0,40}\bmalta\b
+      | \bmalta\b[\s\S]{0,40}independence\s+day
+      | republic\s+of\s+malta\b
+      | \bvalletta\b
       # Rotterdam, The Netherlands (architecture / football wire mirrors).
       | \bthe\s+netherlands\b
       | \bnetherlands\b
@@ -1790,6 +1806,24 @@ _BRUNSWICK_OK = re.compile(
         brunswick[\s\S]{0,80}\b(?:tulsa|oklahoma|\bok\b)\b
       | \b(?:tulsa|oklahoma)\b[\s\S]{0,80}brunswick
       | brunswick\s*,?\s*ok\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Brunswick Corporation (boats / engines / NYSE) — not Town of Brunswick NY.
+# "New York-listed boat manufacturer Brunswick" unlocks via bare New York context.
+_BRUNSWICK_CORP = re.compile(
+    r"""
+    (?:
+        boat\s+manufacturer\s+brunswick\b
+      | brunswick\s+(?:corporation|boat(?:s|ing)?|marine|engines?)\b
+      | new\s+york[- ]listed[\s\S]{0,80}\bbrunswick\b
+      | \bbrunswick\b[\s\S]{0,80}new\s+york[- ]listed
+      | \bnyse\b[\s\S]{0,80}\bbrunswick\b
+      | \bbrunswick\b[\s\S]{0,80}\bnyse\b
+      | \bmercury\s+marine\b[\s\S]{0,80}\bbrunswick\b
+      | \bbrunswick\b[\s\S]{0,80}\bmercury\s+marine\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -3379,6 +3413,21 @@ def _brunswick_ok_conflict(haystack: str) -> bool:
     return True
 
 
+def _brunswick_corp_conflict(haystack: str) -> bool:
+    """True when Brunswick refers to the boat/engine corporation, not Town NY."""
+    if not re.search(r'\bbrunswick\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not _BRUNSWICK_CORP.search(haystack):
+        return False
+    if re.search(
+        r'brunswick\s*,?\s*(?:ny|n\.y\.|new\s+york)\b|town\s+of\s+brunswick',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    return True
+
+
 def _saratoga_park_ca_conflict(haystack: str) -> bool:
     """True when Saratoga Park refers to Montclair CA, not Saratoga Springs NY."""
     if not re.search(r'\bsaratoga\b', haystack, flags=re.IGNORECASE):
@@ -4317,6 +4366,9 @@ def match_post(
 
         if term == 'brunswick' and _brunswick_ok_conflict(haystack):
             return MatchResult(False, 'hard_negative:brunswick_ok')
+
+        if term == 'brunswick' and _brunswick_corp_conflict(haystack):
+            return MatchResult(False, 'hard_negative:brunswick_corp')
 
         if term == 'brunswick' and _brunswick_schools_other_conflict(haystack):
             return MatchResult(False, 'hard_negative:brunswick_schools_other')

@@ -342,6 +342,20 @@ def test_brechin_angus_river_street_not_local_micro() -> None:
     assert match_post('Open mic tomorrow on River Street — sign-ups start at 6.').matched is True
 
 
+def test_birmingham_artisans_river_street_not_local_micro() -> None:
+    uk = match_post(
+        'Markets are where we get to talk to people face to face. The next one is '
+        'Alternative Artisans in Birmingham on Sunday 27 September, midday until 5pm '
+        'at Secret Space.',
+        alt_text=(
+            'Find us at Alternative Artisans Birmingham. Midday to 5pm, Secret Space, '
+            '30-34 River Street, Birmingham, B5 5SA.'
+        ),
+    )
+    assert uk.matched is False
+    assert match_post('Open mic tomorrow on River Street — sign-ups start at 6.').matched is True
+
+
 def test_classify_drops_bare_albany_event_without_micro() -> None:
     decision = classify_candidate(
         "Don't miss the Albany Veterans Day Parade this Saturday downtown!",

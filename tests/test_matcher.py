@@ -3684,3 +3684,56 @@ def test_albany_democrats_hochul_and_war_room_recall() -> None:
         'The War Room Tavern, a bar hot spot for lawmakers in the capital, reopens.'
     )
     assert tavern.matched is True
+
+
+def test_sooke_firesmoke_capital_region_not_ny() -> None:
+    sooke = match_post(
+        'South Island friends should batten down — the wildfire north of Sooke grew overnight.',
+        alt_text='firesmoke.ca predicting the smoke to drift over capital region tonight.',
+    )
+    assert sooke.matched is False
+    assert sooke.reason == 'hard_negative:canadian_capital_region'
+    local = match_post('Capital Region air quality advisory for #AlbanyNY this evening.')
+    assert local.matched is True
+
+
+def test_times_union_busting_not_local_paper() -> None:
+    bingo = match_post(
+        'This seems like a good format for the current times',
+        alt_text='Union Busting BINGO YouTube video by Sam Maxis',
+    )
+    assert bingo.matched is False
+    assert match_post('Times Union coverage of downtown #AlbanyNY redevelopment.').matched is True
+
+
+def test_brunswick_boat_manufacturer_not_town_ny() -> None:
+    boats = match_post(
+        'Dubliner named chief executive of New York-listed boat manufacturer Brunswick'
+    )
+    assert boats.matched is False
+    assert boats.reason == 'hard_negative:brunswick_corp'
+    assert match_post('Town of Brunswick, NY board meeting tonight.').matched is True
+
+
+def test_malta_independence_day_not_town_ny() -> None:
+    indep = match_post(
+        'Malta Independence Day\nNew York City Appreciation day\nArmenia Independence day'
+    )
+    assert indep.matched is False
+    assert indep.reason == 'hard_negative:malta_europe'
+    assert match_post('Concert tonight at the Malta Amphitheater, Malta, NY.').matched is True
+
+
+def test_schuylerville_town_hall_and_central_warehouse_recall() -> None:
+    hall = match_post(
+        "What can Saratoga's landscape tell us about the Revolution? "
+        'Thursday at 7 p.m. at Saratoga Town Hall in Schuylerville.'
+    )
+    assert hall.matched is True
+    assert hall.reason == 'strong_positive'
+    warehouse = match_post(
+        "Asbestos remediation has been completed at Albany's Central Warehouse. "
+        "Now the city's longstanding eyesore is entering its final stages of demolition."
+    )
+    assert warehouse.matched is True
+    assert warehouse.reason == 'strong_positive'
