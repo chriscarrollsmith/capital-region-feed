@@ -9253,5 +9253,148 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-09-21 audit: carol + Palestine solidarity without Cap Region civic cues"
+  },
+  {
+    "id": "fp-sooke-firesmoke-capital-region-0922",
+    "text": "South Island friends should batten down — the wildfire north of Sooke grew overnight.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "firesmoke.ca predicting the smoke to drift over capital region tonight.",
+    "note": "2026-09-22 audit: Victoria BC / Sooke firesmoke capital region"
+  },
+  {
+    "id": "tp-capital-region-air-quality-0922",
+    "text": "Capital Region air quality advisory for #AlbanyNY this evening.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-22 audit: Cap Region counterpart to Sooke capital region"
+  },
+  {
+    "id": "fp-times-union-busting-0922",
+    "text": "This seems like a good format for the current times",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "Union Busting BINGO YouTube video by Sam Maxis",
+    "note": "2026-09-22 audit: current times + Union Busting glued into Times Union"
+  },
+  {
+    "id": "tp-times-union-albany-0922",
+    "text": "Times Union coverage of downtown #AlbanyNY redevelopment.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-22 audit: Times Union paper counterpart"
+  },
+  {
+    "id": "fp-brunswick-boat-manufacturer-0922",
+    "text": "Dubliner named chief executive of New York-listed boat manufacturer Brunswick",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-22 audit: Brunswick Corporation + New York-listed unlocked Town Brunswick"
+  },
+  {
+    "id": "tp-brunswick-town-board-0922",
+    "text": "Town of Brunswick, NY board meeting tonight.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-22 audit: Town of Brunswick Cap Region counterpart"
+  },
+  {
+    "id": "fp-malta-independence-nyc-0922",
+    "text": "Malta Independence Day\nNew York City Appreciation day\nArmenia Independence day",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-22 audit: country of Malta Independence Day + NYC appreciation"
+  },
+  {
+    "id": "tp-malta-amphitheater-0922",
+    "text": "Concert tonight at the Malta Amphitheater, Malta, NY.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-22 audit: Town of Malta Cap Region counterpart"
+  },
+  {
+    "id": "fp-birmingham-river-street-0922",
+    "text": "Markets are where we get to talk to people face to face. The next one is Alternative Artisans in Birmingham on Sunday 27 September, midday until 5pm at Secret Space.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Find us at Alternative Artisans Birmingham. Midday to 5pm, Secret Space, 30-34 River Street, Birmingham, B5 5SA.",
+    "note": "2026-09-22 audit: Birmingham UK River Street classifier micro"
+  },
+  {
+    "id": "tp-troy-river-street-open-mic-0922",
+    "text": "Open mic tomorrow on River Street — sign-ups start at 6.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "ambiguous_classifier",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-22 audit: Troy River Street counterpart"
+  },
+  {
+    "id": "fn-schuylerville-town-hall-0922",
+    "text": "What can Saratoga's landscape tell us about the Revolution? Thursday at 7 p.m. at Saratoga Town Hall in Schuylerville.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-22 audit: Saratoga Town Hall / Schuylerville was ambiguous_no_context"
+  },
+  {
+    "id": "fn-albany-central-warehouse-0922",
+    "text": "Asbestos remediation has been completed at Albany's Central Warehouse. Now the city's longstanding eyesore is entering its final stages of demolition.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-22 audit: Albany Central Warehouse was bare_albany"
+  },
+  {
+    "id": "tp-heritage-capital-region-0922",
+    "text": "I've eaten the food that Heritage Capital Region residents have held up as the greatest for 50 years.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-22 audit: intentional Capital Region culture keep (not Victoria BC)"
+  },
+  {
+    "id": "fp-irishtimes-brunswick-nyse-0922",
+    "text": "New York-listed boat manufacturer Brunswick names new chief executive after Mercury Marine expansion.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-22 audit: Brunswick Corp + Mercury Marine / NYSE phrasing"
   }
 ]

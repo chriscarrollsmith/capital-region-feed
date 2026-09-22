@@ -538,6 +538,29 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-104 — Daily feed audit: Sooke capital region, Times Union Busting, Brunswick boats, Malta Independence, Birmingham River Street; Schuylerville / Central Warehouse FNs
+- **Status:** in progress
+- **Why:** 2026-09-22 audit of last-24h AppView feed (~134 posts since 2026-09-21T09:13Z)
+  found active FPs after #80: Victoria BC / Sooke wildfire alt cards saying
+  `capital region` (firesmoke.ca / South Island) kept as strong; YouTube
+  `current times` + `Union Busting` alt glued into `times union` strong; Irish
+  Times `New York-listed boat manufacturer Brunswick` unlocked Town of Brunswick
+  via NY context; country-of-Malta `Malta Independence Day` + `New York City`
+  appreciation lists; Birmingham UK `River Street` / Secret Space / B5 5SA hit
+  classifier local_micro. FNs from rematch drops / bare Albany: Saratoga Town Hall
+  in Schuylerville (`ambiguous_no_context:saratoga`); Albany's Central Warehouse
+  demolition (`bare_albany`). AppView `searchPosts` still 403. Residual: bare
+  Albany job spam; allowlisted non-local; WAMC national wires / Siena College poll
+  wires (intentional strong); ~24 rematch-drops until purge.
+- **Work:**
+  - Expand Canadian capital-region cues (Sooke / South Island / firesmoke.ca);
+    `times union(?! busting)`; Brunswick Corporation boat/NYSE conflict; Malta
+    Independence / Valletta in malta_europe; Birmingham River Street classifier
+    gate; Schuylerville / Saratoga Town Hall / Albany Central Warehouse strong;
+    grow eval with 2026-09-22 FP/TP/FN anchors (builds on #80 / B-103).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-103 — Daily feed audit: Bethlehem carol/Palestine, Newtonville Village Day, CDTA Algeria, blue collar city, #DenHaag; Albany Democrats / War Room FNs
 - **Status:** done ([#80](https://github.com/chriscarrollsmith/capital-region-feed/pull/80))
 - **Why:** 2026-09-21 audit of last-24h AppView feed (~142 posts since 2026-09-20T09:04Z)
