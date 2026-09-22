@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-104 — Daily feed audit: Sooke capital region, Times Union Busting, Brunswick boats, Malta Independence, Birmingham River Street; Schuylerville / Central Warehouse FNs
-- **Status:** in progress
+- **Status:** done ([#81](https://github.com/chriscarrollsmith/capital-region-feed/pull/81))
 - **Why:** 2026-09-22 audit of last-24h AppView feed (~134 posts since 2026-09-21T09:13Z)
   found active FPs after #80: Victoria BC / Sooke wildfire alt cards saying
   `capital region` (firesmoke.ca / South Island) kept as strong; YouTube
