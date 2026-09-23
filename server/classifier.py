@@ -193,6 +193,25 @@ _RIVER_STREET_OTHER = re.compile(
             \bbrechin\b|\bangus\b|storm\s+babet|south\s+esk|
             \bscotland\b|\#scotland\b|angus\s+council
           )
+      # Birmingham UK artisans / Secret Space — not Troy's corridor.
+      | (?:
+            \bbirmingham\b|\bb5\s*5sa\b|secret\s+space|alternative\s+artisans|
+            \#birmingham\b
+          )[\s\S]{0,280}river\s+street
+      | river\s+street[\s\S]{0,280}(?:
+            \bbirmingham\b|\bb5\s*5sa\b|secret\s+space|alternative\s+artisans|
+            \#birmingham\b
+          )
+      # Aurora / Montgomery (Kane County IL) festival & cemetery cards — not Troy.
+      | (?:
+            city\s+of\s+aurora|kane\s+county|benton\s+street|
+            montgomery\s+historic|riverside\s+cemetery
+          )[\s\S]{0,280}river\s+street
+      | river\s+street[\s\S]{0,280}(?:
+            city\s+of\s+aurora|kane\s+county|benton\s+street|
+            montgomery\s+historic|riverside\s+cemetery
+          )
+      | 414\s+n\.?\s+river\s+street
     )
     """,
     re.IGNORECASE | re.VERBOSE,
