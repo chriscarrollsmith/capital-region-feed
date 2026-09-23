@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-105 — Daily feed audit: French colonie tech, Aurora/Montgomery IL River Street, ancient Troy, DrupalCon Rotterdam, idiomatic five rivers; Freeman’s Farm / albany.edu FNs
-- **Status:** in progress
+- **Status:** done ([#82](https://github.com/chriscarrollsmith/capital-region-feed/pull/82))
 - **Why:** 2026-09-23 audit of last-24h AppView feed (~168 posts since 2026-09-22T09:02Z)
   found active FPs after #81: French `sa colonie tech` / `néocolons` Praxis Uruguay
   cards unlocked Town of Colonie via `New York-based` (`colonie_with_context`);
