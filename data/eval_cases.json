@@ -9396,5 +9396,138 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-09-22 audit: Brunswick Corp + Mercury Marine / NYSE phrasing"
+  },
+  {
+    "id": "fp-french-colonie-tech-praxis-0923",
+    "text": "La startup Praxis annonce vouloir installer sa colonie tech en Uruguay. Le retour des néocolons tech.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Praxis, a New York-based crypto-backed digital nation, has signed a deal to build a physical city in Uruguay.",
+    "note": "2026-09-23 audit: French sa colonie tech / néocolons + New York-based must not unlock Town of Colonie"
+  },
+  {
+    "id": "tp-town-of-colonie-police-0923",
+    "text": "Town of Colonie police responded to a crash on Central Avenue.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-23 audit: Town of Colonie counterpart to French colonie tech FP"
+  },
+  {
+    "id": "fp-aurora-il-river-street-food-truck-0923",
+    "text": "Aurora Fall Food Truck Festival Sept. 25",
+    "expected": false,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "The City of Aurora government will host its third annual Fall Food Truck Festival. More than 30 food trucks will line up on Benton Street between River Street and Broadway.",
+    "note": "2026-09-23 audit: Kane County IL Aurora River Street food trucks not Troy corridor"
+  },
+  {
+    "id": "fp-montgomery-il-river-street-cemetery-0923",
+    "text": "Montgomery Historic Cemetery Walk to return October 7",
+    "expected": false,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "The Montgomery Historic Preservation Commission's Cemetery Walk returns Oct. 7 at Riverside Cemetery, 414 N. River Street in Montgomery.",
+    "note": "2026-09-23 audit: Montgomery IL Riverside Cemetery River Street not Troy corridor"
+  },
+  {
+    "id": "tp-troy-river-street-open-mic-0923",
+    "text": "Open mic tomorrow on River Street — sign-ups start at 6.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-23 audit: Troy River Street event+micro counterpart"
+  },
+  {
+    "id": "fp-ancient-troy-turkey-market-0923",
+    "text": "Troy: 2,800-year-old market discovered. The ancient city of Troy, located in northwestern Turkey, continues to hold surprises for researchers.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-23 audit: Anatolian archaeological Troy must not match City of Troy strong"
+  },
+  {
+    "id": "tp-city-of-troy-paving-0923",
+    "text": "City of Troy announces downtown street paving schedule for October.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-23 audit: municipal City of Troy counterpart"
+  },
+  {
+    "id": "fp-drupalcon-rotterdam-nyc-credit-0923",
+    "text": "With DrupalCon Rotterdam approaching, plan your week. #Drupal #DrupalConRotterdam\nPhoto credits: Drupal AI Summit NYC 2026",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-23 audit: DrupalCon Rotterdam + NYC photo credit must not unlock Town of Rotterdam"
+  },
+  {
+    "id": "tp-rotterdam-ny-pangburn-0923",
+    "text": "On Pangburn Rd Rotterdam New York",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-23 audit: Town of Rotterdam NY counterpart"
+  },
+  {
+    "id": "fp-idiomatic-pee-five-rivers-0923",
+    "text": "I just want to give him this box so I can go home and pee five rivers.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-23 audit: idiomatic five rivers must not match Five Rivers Environmental Education Center"
+  },
+  {
+    "id": "tp-five-rivers-delmar-0923",
+    "text": "Hike the trails at Five Rivers Environmental Education Center in Delmar this weekend.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-23 audit: Five Rivers Delmar nature-center counterpart"
+  },
+  {
+    "id": "fn-freeman-farm-curly-apostrophe-0923",
+    "text": "On Sept. 19, 1777, Burgoyne won Freeman’s Farm after seven hours of fighting. He gained the field. He did not break Gates’s army or open the road to Albany.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-23 audit: curly-apostrophe Freeman’s Farm was bare_albany before unicode fix"
+  },
+  {
+    "id": "fn-albany-edu-cihs-0923",
+    "text": "Most of what we know about how bacteria grow comes from studying rod-shaped model organisms. Learn more: www.albany.edu/cihs/faculty...",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-23 audit: albany.edu campus URL without placename was bare_albany"
   }
 ]

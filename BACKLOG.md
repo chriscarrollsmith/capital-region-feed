@@ -538,6 +538,29 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-105 — Daily feed audit: French colonie tech, Aurora/Montgomery IL River Street, ancient Troy, DrupalCon Rotterdam, idiomatic five rivers; Freeman’s Farm / albany.edu FNs
+- **Status:** in progress
+- **Why:** 2026-09-23 audit of last-24h AppView feed (~168 posts since 2026-09-22T09:02Z)
+  found active FPs after #81: French `sa colonie tech` / `néocolons` Praxis Uruguay
+  cards unlocked Town of Colonie via `New York-based` (`colonie_with_context`);
+  Kane County IL Aurora food-truck and Montgomery IL cemetery cards hit classifier
+  `River Street` local_micro; Anatolian `ancient city of Troy` / Turkey archaeology
+  matched municipal `city of Troy` strong; DrupalCon Rotterdam + NYC photo credit
+  unlocked Town of Rotterdam; idiomatic `pee five rivers` matched Five Rivers
+  Environmental Education Center strong. FNs: curly-apostrophe `Freeman’s Farm`
+  (`bare_albany`); `albany.edu` campus URL without placename (`bare_albany`).
+  AppView `searchPosts` still mostly 403. Residual: bare Albany job spam;
+  allowlisted non-local; WAMC / Siena intentional; ~33 rematch-drops until purge;
+  bare Rotterdam cafe / Rensselaer-woman wires remain fail-closed without NY cues.
+- **Work:**
+  - Expand French colonie hard negatives; Aurora/Montgomery IL River Street classifier
+    gate; ancient/Turkey Troy conflict + `(?<!ancient )city of troy`; DrupalCon
+    Rotterdam in malta_europe; narrow five rivers to environmental/Delmar cues;
+    curly apostrophe on Freeman’s Farm; `albany.edu` strong; grow eval with
+    2026-09-23 FP/TP/FN anchors (builds on #81 / B-104).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-104 — Daily feed audit: Sooke capital region, Times Union Busting, Brunswick boats, Malta Independence, Birmingham River Street; Schuylerville / Central Warehouse FNs
 - **Status:** done ([#81](https://github.com/chriscarrollsmith/capital-region-feed/pull/81))
 - **Why:** 2026-09-22 audit of last-24h AppView feed (~134 posts since 2026-09-21T09:13Z)
