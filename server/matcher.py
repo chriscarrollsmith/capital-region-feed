@@ -96,6 +96,7 @@ _STRONG_POSITIVE = re.compile(
       | \balbany\b[\s\S]{0,80}corporation\s+counsel\b
       | university\s+at\s+albany
       | \bualbany\b
+      | \balbany\.edu\b
       | suny\s+albany
       # Albany music venue — often listed as "Albany: … @ Lark Hall" without ", NY".
       # Leading word boundary: "Peter Clark Hall" (Guelph) must not match "lark Hall".
@@ -187,7 +188,14 @@ _STRONG_POSITIVE = re.compile(
       | \buss\s+slater\b
       | \blarkfest\b
       | \bpearlpalooza\b
-      | five\s+rivers(?:\s+environmental)?\b
+      # Five Rivers Environmental Education Center (Delmar) — not idiomatic "five rivers".
+      | five\s+rivers\s+environmental(?:\s+education(?:\s+center)?)?\b
+      | five\s+rivers[\s\S]{0,60}(?:
+            delmar|wildlife|nature\s+center|education\s+center
+          )
+      | (?:
+            delmar|wildlife|nature\s+center|education\s+center
+          )[\s\S]{0,60}five\s+rivers
       | indian\s+ladder(?:\s+trail)?\b
       | thacher\s+park\b
       # Troy's Collar City nickname — not generic "blue collar city".
@@ -267,7 +275,8 @@ _STRONG_POSITIVE = re.compile(
       | saratoga\s+national\s+historical\s+park\b
       | \bbemus\s+heights\b
       | \bbemis\s+heights\b
-      | freeman'?s?\s+farm\b
+      # Curly apostrophe (Freeman’s) appears in live AppView copy.
+      | freeman['\u2019]?s?\s+farm\b
       # Graded race titles / starts often omit "stakes" beside Saratoga.
       | christophe\s+clement[\s\S]{0,80}\bsaratoga\b
       | \bsaratoga\b[\s\S]{0,80}christophe\s+clement
@@ -400,7 +409,8 @@ _STRONG_POSITIVE = re.compile(
       # Troy Frear Park / civic copy often omits ", NY".
       | \bfrear\s+park\b
       | troy\s+city\s+(?:officials?|council|hall|school)\b
-      | \bcity\s+of\s+troy\b
+      # Municipal "City of Troy" — not "ancient city of Troy" (Turkey archaeology).
+      | (?<!ancient\s)\bcity\s+of\s+troy\b
       # Crossings of Colonie (town park) often omits ", NY".
       | crossings\s+of\s+colonie\b
       # Distinctive Albany campuses / plazas often omit ", NY".
@@ -1729,6 +1739,12 @@ _MALTA_EUROPE = re.compile(
       | rotterdam\s+film(?:s)?\b
       | film\s+festival[\s\S]{0,40}\brotterdam\b
       | \biffr\b
+      # DrupalCon Rotterdam / #DrupalConRotterdam — not Town of Rotterdam NY.
+      | drupalcon\s*rotterdam\b
+      | \#drupalconrotterdam\b
+      | drupalcon[\s\S]{0,60}\brotterdam\b
+      | \brotterdam\b[\s\S]{0,60}drupalcon
+      | \#drupal\b[\s\S]{0,80}\#?drupalconrotterdam\b
       # Book / tourism photos of Hotel New York in Rotterdam.
       | new\s+york\s+hotel[\s\S]{0,60}\brotterdam\b
       | \brotterdam\b[\s\S]{0,60}new\s+york\s+hotel
@@ -2217,6 +2233,19 @@ _TROY_PERSON_NAME = re.compile(
       | \btroy\s+kingston\b
       | immigration\s+attorney\s+troy\b
       | attorney\s+troy\s+[a-z]+\b
+      # Ancient / archaeological Troy (Turkey / Çanakkale) — not City of Troy NY.
+      | ancient\s+city\s+of\s+troy\b
+      | archaeological[\s\S]{0,100}\btroy\b
+      | \btroy\b[\s\S]{0,100}archaeological
+      | \btroy\b[\s\S]{0,140}(?:
+            \bturkey\b|\bt[uü]rkiye\b|\bçanakkale\b|\bcanakkale\b|
+            turkish\s+ministry|2[\s,]*800[- ]year
+          )
+      | (?:
+            \bturkey\b|\bt[uü]rkiye\b|\bçanakkale\b|\bcanakkale\b|
+            turkish\s+ministry
+          )[\s\S]{0,140}\btroy\b
+      | northwestern\s+turkey[\s\S]{0,80}\btroy\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -2458,6 +2487,12 @@ _HARD_NEGATIVE = re.compile(
       | colonie\s+num[eé]rique
       | une\s+colonie
       | m[eê]me\s+colonie
+      # French "sa colonie tech" / néocolons (Praxis Uruguay) — not Town of Colonie.
+      | sa\s+colonie
+      | son\s+colonie
+      | leur\s+colonie
+      | colonie\s+tech\b
+      | n[eé]ocolons?
       | university\s+of\s+galway
       | galway\s*,?\s*ireland\b
       | galway\s+united\b
@@ -3689,18 +3724,55 @@ def _troy_person_name_conflict(haystack: str) -> bool:
     if not _TROY_PERSON_NAME.search(haystack):
         return False
     # Real place mentions still keep. Bare "in Troy" is too loose for film titles
-    # like "Brad Pitt in Troy (2004)".
+    # like "Brad Pitt in Troy (2004)". Do not rescue archaeological "city of Troy".
     if re.search(
         r"""
         (?:
             \btroy\s*,?\s*(?:ny|n\.y\.|new\s+york)\b
-          | city\s+of\s+troy
+          | (?<!ancient\s)city\s+of\s+troy
           | troy\s+(?:street|avenue|ave)\b
           | \balbany\s+and\s+troy\b
         )
         """,
         haystack,
         flags=re.IGNORECASE | re.VERBOSE,
+    ):
+        # Ancient / Turkey archaeology still conflicts even when "city of Troy" appears.
+        if _troy_ancient_conflict(haystack):
+            return True
+        return False
+    return True
+
+
+def _troy_ancient_conflict(haystack: str) -> bool:
+    """True when Troy is the Anatolian archaeological site, not City of Troy NY."""
+    if not re.search(r'\btroy\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not re.search(
+        r"""
+        (?:
+            ancient\s+city\s+of\s+troy\b
+          | archaeological[\s\S]{0,100}\btroy\b
+          | \btroy\b[\s\S]{0,100}archaeological
+          | \btroy\b[\s\S]{0,140}(?:
+                \bturkey\b|\bt[uü]rkiye\b|\bçanakkale\b|\bcanakkale\b|
+                turkish\s+ministry|2[\s,]*800[- ]year
+              )
+          | (?:
+                \bturkey\b|\bt[uü]rkiye\b|\bçanakkale\b|\bcanakkale\b|
+                turkish\s+ministry
+              )[\s\S]{0,140}\btroy\b
+          | northwestern\s+turkey[\s\S]{0,80}\btroy\b
+        )
+        """,
+        haystack,
+        flags=re.IGNORECASE | re.VERBOSE,
+    ):
+        return False
+    if re.search(
+        r'troy\s*,?\s*(?:ny|n\.y\.|new\s+york)\b|troy\s+(?:music\s+hall|savings\s+bank)',
+        haystack,
+        flags=re.IGNORECASE,
     ):
         return False
     return True
@@ -3777,6 +3849,7 @@ _ALBANY_WIRE_LOCAL_RESCUE = re.compile(
         empire\s+state\s+plaza
       | lark\s+(?:street|hall)\b
       | \bualbany\b
+      | \balbany\.edu\b
       | university\s+at\s+albany
       | capital\s+(?:region|district)\b
       | \bschenectady\b
@@ -3824,6 +3897,7 @@ def _albany_ithaca_contrast_conflict(haystack: str) -> bool:
         (?:
             albany\s*,?\s*(?:ny|n\.y\.)\b
           | \bualbany\b
+          | \balbany\.edu\b
           | university\s+at\s+albany
           | capital\s+(?:region|district)\b
           | \bschenectady\b
@@ -4225,6 +4299,8 @@ def match_post(
             return MatchResult(False, 'hard_negative:bethlehem_holy_land')
         if _cdta_algeria_conflict(haystack):
             return MatchResult(False, 'hard_negative:cdta_algeria')
+        if _troy_ancient_conflict(haystack):
+            return MatchResult(False, 'hard_negative:troy_ancient')
         return MatchResult(True, 'strong_positive')
 
     if _COLONIE_LOCAL.search(haystack):
@@ -4419,6 +4495,9 @@ def match_post(
 
         if term == 'troy' and _troy_person_name_conflict(haystack):
             return MatchResult(False, 'hard_negative:troy_person_name')
+
+        if term == 'troy' and _troy_ancient_conflict(haystack):
+            return MatchResult(False, 'hard_negative:troy_ancient')
 
         if term == 'troy' and _troy_pa_conflict(haystack):
             return MatchResult(False, 'hard_negative:troy_pa')

@@ -3737,3 +3737,59 @@ def test_schuylerville_town_hall_and_central_warehouse_recall() -> None:
     )
     assert warehouse.matched is True
     assert warehouse.reason == 'strong_positive'
+
+
+def test_french_colonie_tech_praxis_not_town_ny() -> None:
+    praxis = match_post(
+        'La startup Praxis annonce vouloir installer sa colonie tech en Uruguay. '
+        'Le retour des néocolons tech.',
+        alt_text=(
+            'Praxis, a New York-based crypto-backed digital nation, has signed a deal '
+            'to build a physical city in Uruguay.'
+        ),
+    )
+    assert praxis.matched is False
+    assert match_post('Town of Colonie police responded on Central Avenue.').matched is True
+
+
+def test_ancient_troy_turkey_not_city_of_troy_ny() -> None:
+    ancient = match_post(
+        'Troy: 2,800-year-old market discovered. The ancient city of Troy, located in '
+        'northwestern Turkey, continues to hold surprises for researchers.'
+    )
+    assert ancient.matched is False
+    assert ancient.reason in {
+        'hard_negative:troy_person_name',
+        'hard_negative:troy_ancient',
+        'ambiguous_no_context:troy',
+    }
+    assert match_post('City of Troy announces downtown paving for October.').matched is True
+
+
+def test_drupalcon_rotterdam_not_town_ny() -> None:
+    conf = match_post(
+        'With DrupalCon Rotterdam approaching, plan your week. '
+        '#Drupal #DrupalConRotterdam\nPhoto credits: Drupal AI Summit NYC 2026'
+    )
+    assert conf.matched is False
+    assert conf.reason == 'hard_negative:malta_europe'
+    assert match_post('On Pangburn Rd Rotterdam New York').matched is True
+
+
+def test_idiomatic_five_rivers_not_nature_center() -> None:
+    idiom = match_post('I just want to give him this box so I can go home and pee five rivers.')
+    assert idiom.matched is False
+    nature = match_post('Hike the trails at Five Rivers Environmental Education Center in Delmar.')
+    assert nature.matched is True
+
+
+def test_freeman_farm_curly_apostrophe_and_albany_edu_recall() -> None:
+    curly = match_post(
+        'On Sept. 19, 1777, Burgoyne won Freeman’s Farm after seven hours of fighting. '
+        'He did not open the road to Albany.'
+    )
+    assert curly.matched is True
+    assert curly.reason == 'strong_positive'
+    campus = match_post('Pathogen morphology research continues at www.albany.edu/cihs/faculty...')
+    assert campus.matched is True
+    assert campus.reason == 'strong_positive'
