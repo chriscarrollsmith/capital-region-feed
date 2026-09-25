@@ -538,6 +538,26 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-106 — Daily feed audit: BWI/Dulles/DCA capital region; Albany International Airport / MVP Arena / downtowntroyny.org FNs
+- **Status:** in progress
+- **Why:** 2026-09-25 audit of last-24h AppView feed (~129 posts since 2026-09-24T09:13Z)
+  found active FPs after #82: Baltimore Banner SMART air-traffic cards saying the
+  `capital region's three main airports — BWI, Dulles and DCA` kept as
+  `strong_positive` because MD/DC geo cues lacked airport codes. FNs from
+  synthetic probes (AppView `searchPosts` still 403): bare
+  `Albany International Airport` was `bare_albany`; venue-only `MVP Arena`
+  without event cues was `no_match`; Downtown Troy BID `downtowntroyny.org`
+  Chowderfest cards without "Troy" were `no_match`. Residual: bare Albany job
+  spam; allowlisted non-local; WAMC / Siena intentional; NWS Albany CWA CT
+  advisories; ~29 rematch-drops until purge (Malta EU / Brunswick NC / Troy OH).
+- **Work:**
+  - Add BWI / Dulles / DCA / Reagan National to MD/DC capital-region geo cues;
+    strong-positive `albany international airport`, `mvp arena`,
+    `downtowntroyny.org`; grow eval with 2026-09-25 FP/TP/FN anchors (builds on
+    #82 / B-105).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-105 — Daily feed audit: French colonie tech, Aurora/Montgomery IL River Street, ancient Troy, DrupalCon Rotterdam, idiomatic five rivers; Freeman’s Farm / albany.edu FNs
 - **Status:** done ([#82](https://github.com/chriscarrollsmith/capital-region-feed/pull/82))
 - **Why:** 2026-09-23 audit of last-24h AppView feed (~168 posts since 2026-09-22T09:02Z)

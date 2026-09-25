@@ -9529,5 +9529,67 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-09-23 audit: albany.edu campus URL without placename was bare_albany"
+  },
+  {
+    "id": "fp-bwi-dulles-dca-capital-region-0925",
+    "text": "Feds to debut AI air traffic tool at BWI, DC-area airports before nationwide rollout",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Federal officials said this week that the Strategic Management of Airspace Routing Trajectories system, or SMART tool, is launching for the capital region's three main airports — BWI, Dulles and DCA — before expanding nationwide.",
+    "note": "2026-09-25 audit: MD/DC capital region + BWI/Dulles/DCA airport codes must not keep"
+  },
+  {
+    "id": "tp-albany-intl-airport-smart-0925",
+    "text": "FAA expands the SMART air-traffic tool to Albany International Airport after the DC-area pilot.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-25 audit: Albany International Airport counterpart to BWI capital-region FP"
+  },
+  {
+    "id": "fn-albany-intl-airport-bare-0925",
+    "text": "Delayed at Albany International Airport for two hours.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-25 audit: bare Albany International Airport was bare_albany before strong positive"
+  },
+  {
+    "id": "fn-mvp-arena-venue-only-0925",
+    "text": "See you at the MVP Arena.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-25 audit: venue-only MVP Arena without event cues was no_match"
+  },
+  {
+    "id": "fn-downtowntroyny-chowderfest-0925",
+    "text": "CHOWDERFEST? www.downtowntroyny.org/chowderfest okay well i got plans",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-25 audit: Downtown Troy BID domain without Troy placename was no_match"
+  },
+  {
+    "id": "tp-capital-region-golf-neny-0925",
+    "text": "Dougherty: Player of the Year races in Capital Region golf wind down",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "Chris Sanger, of Red Hook, hits a tee shot during the Northeastern New York PGA Stroke Play Championship.",
+    "note": "2026-09-25 audit: Northeastern New York Capital Region golf must keep after MD airport gate"
   }
 ]
