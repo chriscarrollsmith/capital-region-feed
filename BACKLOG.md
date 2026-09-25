@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-106 — Daily feed audit: BWI/Dulles/DCA capital region; Albany International Airport / MVP Arena / downtowntroyny.org FNs
-- **Status:** in progress
+- **Status:** done ([#83](https://github.com/chriscarrollsmith/capital-region-feed/pull/83))
 - **Why:** 2026-09-25 audit of last-24h AppView feed (~129 posts since 2026-09-24T09:13Z)
   found active FPs after #82: Baltimore Banner SMART air-traffic cards saying the
   `capital region's three main airports — BWI, Dulles and DCA` kept as
