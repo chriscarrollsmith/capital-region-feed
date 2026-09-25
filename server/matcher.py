@@ -476,6 +476,12 @@ _STRONG_POSITIVE = re.compile(
       | albany\s+region\b
       # Crossgates Mall / Commons (Guilderland) — often omit ", NY".
       | crossgates\s+(?:commons|mall)\b
+      # Albany International Airport (ALB) — often omit ", NY"; not bare Albany.
+      | albany\s+international\s+airport\b
+      # MVP Arena (Albany) — venue-only posts often omit event cues / placename.
+      | mvp\s+arena\b
+      # Downtown Troy BID domain — Chowderfest / event cards may omit "Troy".
+      | downtowntroyny\.org
       # Tri-City ValleyCats / Joseph L. Bruno Stadium (Troy).
       | tri-?city\s+valleycats\b
       | \bvalleycats\b
@@ -837,6 +843,11 @@ _MD_DC_GEO_CUE = (
     r'(?<![\w.])dc\s+snipers?\b|national\s+law\s+enforcement\s+museum|'
     r'\bdmv\b|silver\s+spring|\bbethesda\b|\brockville\b|'
     r'olney\s+theatre|national\s+harbor|college\s+park|\bannapolis\b|'
+    # DC-metro airport cards say "capital region's … airports" with BWI/Dulles/DCA
+    # and no Maryland/DC place token beyond the airport codes.
+    r'\bbwi\b|baltimore(?:\s*[/\-]\s*washington)?\s+international|'
+    r'\bdulles\b|washington\s+dulles|'
+    r'(?<![\w.])dca\b|reagan\s+national|'
     # NPS funding wires contrast "national parks outside the capital region".
     r'national\s+parks?\s+outside|'
     # DC go-go music listings often omit Maryland / DC place tokens.

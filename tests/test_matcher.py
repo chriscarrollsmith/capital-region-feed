@@ -243,6 +243,18 @@ def test_md_dc_capital_region_is_hard_negative() -> None:
     assert mymc.matched is False
     assert mymc.reason == 'hard_negative:md_dc_capital_region'
 
+    # Baltimore Banner SMART-tool cards: capital region + BWI/Dulles/DCA, no Maryland token.
+    bwi = match_post(
+        'Feds to debut AI air traffic tool at BWI, DC-area airports before nationwide rollout',
+        alt_text=(
+            'Federal officials said this week that the Strategic Management of Airspace '
+            'Routing Trajectories system, or SMART tool, is launching for the capital '
+            "region's three main airports — BWI, Dulles and DCA — before expanding nationwide."
+        ),
+    )
+    assert bwi.matched is False
+    assert bwi.reason == 'hard_negative:md_dc_capital_region'
+
     # NY Capital Region keeps even if Maryland is mentioned in passing.
     keep = match_post(
         'Capital Region students visited museums in Maryland before returning to #AlbanyNY.'
@@ -3793,3 +3805,17 @@ def test_freeman_farm_curly_apostrophe_and_albany_edu_recall() -> None:
     campus = match_post('Pathogen morphology research continues at www.albany.edu/cihs/faculty...')
     assert campus.matched is True
     assert campus.reason == 'strong_positive'
+
+
+def test_albany_intl_airport_mvp_arena_downtowntroy_recall() -> None:
+    airport = match_post('Delayed at Albany International Airport for two hours.')
+    assert airport.matched is True
+    assert airport.reason == 'strong_positive'
+
+    mvp = match_post('See you at the MVP Arena.')
+    assert mvp.matched is True
+    assert mvp.reason == 'strong_positive'
+
+    troy_bid = match_post('CHOWDERFEST? www.downtowntroyny.org/chowderfest okay well i got plans')
+    assert troy_bid.matched is True
+    assert troy_bid.reason == 'strong_positive'
