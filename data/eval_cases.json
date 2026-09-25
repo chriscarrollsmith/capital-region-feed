@@ -9013,5 +9013,583 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-09-19 audit FN: Troy city officials crash wire"
+  },
+  {
+    "id": "fp-gio-ponti-designer-teapot-0920",
+    "text": "L'objet design : la théière Aéro, le chef-d'oeuvre fuselé de Gio Ponti",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-20 audit: Italian designer Gio Ponti is not Gio Ponti Stakes"
+  },
+  {
+    "id": "tp-gio-ponti-stakes-closing-card-0920",
+    "text": "Siyouincanada took the Gio Ponti on the last card of the meet.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-20 audit: Gio Ponti Stakes racing copy still keeps"
+  },
+  {
+    "id": "tp-gio-ponti-stakes-named-0920",
+    "text": "Gio Ponti Stakes drew a full field on closing day.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-20 audit: named Gio Ponti Stakes"
+  },
+  {
+    "id": "tp-saratoga-national-historical-park-0920",
+    "text": "On Sept. 19, 1777, Burgoyne's army fought at Freeman's Farm. The British held the field, but the American defenses at Bemus Heights remained intact. Walk the ground today at Saratoga National Historical Park.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-20 audit: NPS Saratoga park / battlefield landmarks without , NY"
+  },
+  {
+    "id": "tp-bemus-heights-tour-0920",
+    "text": "Tour Bemus Heights before the evening lecture.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-20 audit: Bemus Heights battlefield landmark"
+  },
+  {
+    "id": "tp-freemans-farm-wire-0920",
+    "text": "Burgoyne's army fought at Freeman's Farm near the river.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-20 audit: Freeman's Farm battle site"
+  },
+  {
+    "id": "tp-funny-bones-albany-comedy-0920",
+    "text": "Omg we saw comedian Trae Crowder at Funny Bones in Albany- we howled.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-20 audit: Funny Bones Albany comedy club without , NY"
+  },
+  {
+    "id": "tn-funny-bones-dayton-0920",
+    "text": "Caught a set at Funny Bones in Dayton last night.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-20 audit: other-city Funny Bone franchise without Cap Region town"
+  },
+  {
+    "id": "tp-saratoga-battlefield-alias-0920",
+    "text": "Morning fog over Saratoga Battlefield before the ranger talk.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-20 audit: existing Saratoga Battlefield strong still keeps"
+  },
+  {
+    "id": "tn-bare-gio-ponti-museum-wall-0920",
+    "text": "The museum wall text credits Gio Ponti for the 1950s ceramic series.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-20 audit: designer credit without stakes/racing cues"
+  },
+  {
+    "id": "fp-bethlehem-carol-earworm-0921",
+    "text": "I'm trying to figure out why this morning's earworm is O Little Town Of Bethlehem on a beach in Greece.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-21 audit: Christmas carol matched town of Bethlehem strong"
+  },
+  {
+    "id": "fp-bethlehem-palestine-nyc-0921",
+    "text": "Park Slope farmers market vendor selling za'atar from Bethlehem, Palestine. #nyc #palestine",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-21 audit: West Bank Bethlehem unlocked via #nyc"
+  },
+  {
+    "id": "tp-bethlehem-town-board-0921",
+    "text": "Bethlehem Town Board voted on the budget at Town Hall last night.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-21 audit: Town of Bethlehem civic counterpart"
+  },
+  {
+    "id": "fp-newtonville-village-day-0921",
+    "text": "Newtonville Village Day and the dedication of Setti D. Warren Plaza. Newton turned out; Mayor Marc Laredo beside Austin Street.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-21 audit: Newton MA Village Day matched bare newtonville strong"
+  },
+  {
+    "id": "tp-newtonville-colonie-0921",
+    "text": "New shops opening on Newtonville Avenue in Colonie near #AlbanyNY.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-21 audit: Colonie Newtonville counterpart"
+  },
+  {
+    "id": "fp-cdta-algeria-0921",
+    "text": "Le CDTA produit désormais des puces électroniques entièrement conçues en Algérie.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-21 audit: Algerian CDTA tech center vs Cap Region transit"
+  },
+  {
+    "id": "tp-cdta-route-0921",
+    "text": "CDTA route 12 schedule changes Monday.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-21 audit: Cap Region CDTA counterpart"
+  },
+  {
+    "id": "fp-blue-collar-city-0921",
+    "text": "Congratulations Cleveland Browns! I'll root for any blue collar city, especially an underdog.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-21 audit: blue collar city substring hit Collar City strong"
+  },
+  {
+    "id": "tp-collar-city-tweed-0921",
+    "text": "Collar City Tweed Ride Sunday in downtown Troy.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-21 audit: Troy Collar City nickname counterpart"
+  },
+  {
+    "id": "fp-rotterdam-denhaag-hashtags-0921",
+    "text": "Eindelijk naar bed Een #Rotterdam #DenHaag #Curaçao #NewYork Big Apple dag",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-21 audit: Dutch #DenHaag/#Curaçao hashtags omitted from malta_europe"
+  },
+  {
+    "id": "tp-rotterdam-junction-0921",
+    "text": "Autumn Glow Festival lights up Mabee Farm in Rotterdam Junction.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-21 audit: Rotterdam Junction Cap Region counterpart"
+  },
+  {
+    "id": "fn-albany-democrats-hochul-0921",
+    "text": "HOCHUL to join Albany Democrats at Saturday campaign rally.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-21 audit: Hochul + Albany Democrats was bare_albany"
+  },
+  {
+    "id": "fn-war-room-tavern-0921",
+    "text": "Mets legend resurrects iconic Albany tavern. The War Room Tavern, a bar hot spot for lawmakers in the capital, reopens.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-21 audit: War Room Tavern Albany lobbyist bar was bare_albany"
+  },
+  {
+    "id": "tn-oh-little-town-palestine-0921",
+    "text": "Oh little town of Bethlehem how deadly are the lies #palestine",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-21 audit: carol + Palestine solidarity without Cap Region civic cues"
+  },
+  {
+    "id": "fp-sooke-firesmoke-capital-region-0922",
+    "text": "South Island friends should batten down — the wildfire north of Sooke grew overnight.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "firesmoke.ca predicting the smoke to drift over capital region tonight.",
+    "note": "2026-09-22 audit: Victoria BC / Sooke firesmoke capital region"
+  },
+  {
+    "id": "tp-capital-region-air-quality-0922",
+    "text": "Capital Region air quality advisory for #AlbanyNY this evening.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-22 audit: Cap Region counterpart to Sooke capital region"
+  },
+  {
+    "id": "fp-times-union-busting-0922",
+    "text": "This seems like a good format for the current times",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "Union Busting BINGO YouTube video by Sam Maxis",
+    "note": "2026-09-22 audit: current times + Union Busting glued into Times Union"
+  },
+  {
+    "id": "tp-times-union-albany-0922",
+    "text": "Times Union coverage of downtown #AlbanyNY redevelopment.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-22 audit: Times Union paper counterpart"
+  },
+  {
+    "id": "fp-brunswick-boat-manufacturer-0922",
+    "text": "Dubliner named chief executive of New York-listed boat manufacturer Brunswick",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-22 audit: Brunswick Corporation + New York-listed unlocked Town Brunswick"
+  },
+  {
+    "id": "tp-brunswick-town-board-0922",
+    "text": "Town of Brunswick, NY board meeting tonight.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-22 audit: Town of Brunswick Cap Region counterpart"
+  },
+  {
+    "id": "fp-malta-independence-nyc-0922",
+    "text": "Malta Independence Day\nNew York City Appreciation day\nArmenia Independence day",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-22 audit: country of Malta Independence Day + NYC appreciation"
+  },
+  {
+    "id": "tp-malta-amphitheater-0922",
+    "text": "Concert tonight at the Malta Amphitheater, Malta, NY.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-22 audit: Town of Malta Cap Region counterpart"
+  },
+  {
+    "id": "fp-birmingham-river-street-0922",
+    "text": "Markets are where we get to talk to people face to face. The next one is Alternative Artisans in Birmingham on Sunday 27 September, midday until 5pm at Secret Space.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Find us at Alternative Artisans Birmingham. Midday to 5pm, Secret Space, 30-34 River Street, Birmingham, B5 5SA.",
+    "note": "2026-09-22 audit: Birmingham UK River Street classifier micro"
+  },
+  {
+    "id": "tp-troy-river-street-open-mic-0922",
+    "text": "Open mic tomorrow on River Street — sign-ups start at 6.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "ambiguous_classifier",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-22 audit: Troy River Street counterpart"
+  },
+  {
+    "id": "fn-schuylerville-town-hall-0922",
+    "text": "What can Saratoga's landscape tell us about the Revolution? Thursday at 7 p.m. at Saratoga Town Hall in Schuylerville.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-22 audit: Saratoga Town Hall / Schuylerville was ambiguous_no_context"
+  },
+  {
+    "id": "fn-albany-central-warehouse-0922",
+    "text": "Asbestos remediation has been completed at Albany's Central Warehouse. Now the city's longstanding eyesore is entering its final stages of demolition.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-22 audit: Albany Central Warehouse was bare_albany"
+  },
+  {
+    "id": "tp-heritage-capital-region-0922",
+    "text": "I've eaten the food that Heritage Capital Region residents have held up as the greatest for 50 years.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-22 audit: intentional Capital Region culture keep (not Victoria BC)"
+  },
+  {
+    "id": "fp-irishtimes-brunswick-nyse-0922",
+    "text": "New York-listed boat manufacturer Brunswick names new chief executive after Mercury Marine expansion.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-22 audit: Brunswick Corp + Mercury Marine / NYSE phrasing"
+  },
+  {
+    "id": "fp-french-colonie-tech-praxis-0923",
+    "text": "La startup Praxis annonce vouloir installer sa colonie tech en Uruguay. Le retour des néocolons tech.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Praxis, a New York-based crypto-backed digital nation, has signed a deal to build a physical city in Uruguay.",
+    "note": "2026-09-23 audit: French sa colonie tech / néocolons + New York-based must not unlock Town of Colonie"
+  },
+  {
+    "id": "tp-town-of-colonie-police-0923",
+    "text": "Town of Colonie police responded to a crash on Central Avenue.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-23 audit: Town of Colonie counterpart to French colonie tech FP"
+  },
+  {
+    "id": "fp-aurora-il-river-street-food-truck-0923",
+    "text": "Aurora Fall Food Truck Festival Sept. 25",
+    "expected": false,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "The City of Aurora government will host its third annual Fall Food Truck Festival. More than 30 food trucks will line up on Benton Street between River Street and Broadway.",
+    "note": "2026-09-23 audit: Kane County IL Aurora River Street food trucks not Troy corridor"
+  },
+  {
+    "id": "fp-montgomery-il-river-street-cemetery-0923",
+    "text": "Montgomery Historic Cemetery Walk to return October 7",
+    "expected": false,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "The Montgomery Historic Preservation Commission's Cemetery Walk returns Oct. 7 at Riverside Cemetery, 414 N. River Street in Montgomery.",
+    "note": "2026-09-23 audit: Montgomery IL Riverside Cemetery River Street not Troy corridor"
+  },
+  {
+    "id": "tp-troy-river-street-open-mic-0923",
+    "text": "Open mic tomorrow on River Street — sign-ups start at 6.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-23 audit: Troy River Street event+micro counterpart"
+  },
+  {
+    "id": "fp-ancient-troy-turkey-market-0923",
+    "text": "Troy: 2,800-year-old market discovered. The ancient city of Troy, located in northwestern Turkey, continues to hold surprises for researchers.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-23 audit: Anatolian archaeological Troy must not match City of Troy strong"
+  },
+  {
+    "id": "tp-city-of-troy-paving-0923",
+    "text": "City of Troy announces downtown street paving schedule for October.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-23 audit: municipal City of Troy counterpart"
+  },
+  {
+    "id": "fp-drupalcon-rotterdam-nyc-credit-0923",
+    "text": "With DrupalCon Rotterdam approaching, plan your week. #Drupal #DrupalConRotterdam\nPhoto credits: Drupal AI Summit NYC 2026",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-23 audit: DrupalCon Rotterdam + NYC photo credit must not unlock Town of Rotterdam"
+  },
+  {
+    "id": "tp-rotterdam-ny-pangburn-0923",
+    "text": "On Pangburn Rd Rotterdam New York",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-23 audit: Town of Rotterdam NY counterpart"
+  },
+  {
+    "id": "fp-idiomatic-pee-five-rivers-0923",
+    "text": "I just want to give him this box so I can go home and pee five rivers.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-23 audit: idiomatic five rivers must not match Five Rivers Environmental Education Center"
+  },
+  {
+    "id": "tp-five-rivers-delmar-0923",
+    "text": "Hike the trails at Five Rivers Environmental Education Center in Delmar this weekend.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-23 audit: Five Rivers Delmar nature-center counterpart"
+  },
+  {
+    "id": "fn-freeman-farm-curly-apostrophe-0923",
+    "text": "On Sept. 19, 1777, Burgoyne won Freeman’s Farm after seven hours of fighting. He gained the field. He did not break Gates’s army or open the road to Albany.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-23 audit: curly-apostrophe Freeman’s Farm was bare_albany before unicode fix"
+  },
+  {
+    "id": "fn-albany-edu-cihs-0923",
+    "text": "Most of what we know about how bacteria grow comes from studying rod-shaped model organisms. Learn more: www.albany.edu/cihs/faculty...",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-23 audit: albany.edu campus URL without placename was bare_albany"
+  },
+  {
+    "id": "fp-bwi-dulles-dca-capital-region-0925",
+    "text": "Feds to debut AI air traffic tool at BWI, DC-area airports before nationwide rollout",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Federal officials said this week that the Strategic Management of Airspace Routing Trajectories system, or SMART tool, is launching for the capital region's three main airports — BWI, Dulles and DCA — before expanding nationwide.",
+    "note": "2026-09-25 audit: MD/DC capital region + BWI/Dulles/DCA airport codes must not keep"
+  },
+  {
+    "id": "tp-albany-intl-airport-smart-0925",
+    "text": "FAA expands the SMART air-traffic tool to Albany International Airport after the DC-area pilot.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-25 audit: Albany International Airport counterpart to BWI capital-region FP"
+  },
+  {
+    "id": "fn-albany-intl-airport-bare-0925",
+    "text": "Delayed at Albany International Airport for two hours.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-25 audit: bare Albany International Airport was bare_albany before strong positive"
+  },
+  {
+    "id": "fn-mvp-arena-venue-only-0925",
+    "text": "See you at the MVP Arena.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-25 audit: venue-only MVP Arena without event cues was no_match"
+  },
+  {
+    "id": "fn-downtowntroyny-chowderfest-0925",
+    "text": "CHOWDERFEST? www.downtowntroyny.org/chowderfest okay well i got plans",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-25 audit: Downtown Troy BID domain without Troy placename was no_match"
+  },
+  {
+    "id": "tp-capital-region-golf-neny-0925",
+    "text": "Dougherty: Player of the Year races in Capital Region golf wind down",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "Chris Sanger, of Red Hook, hits a tee shot during the Northeastern New York PGA Stroke Play Championship.",
+    "note": "2026-09-25 audit: Northeastern New York Capital Region golf must keep after MD airport gate"
   }
 ]
