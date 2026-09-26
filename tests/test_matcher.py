@@ -826,6 +826,26 @@ def test_clifton_park_baltimore_md_not_ny() -> None:
     )
 
 
+def test_clifton_park_lakewood_oh_not_ny() -> None:
+    lakewood = match_post(
+        'Would you pay $2.25 million for this Lakewood home? The 1902 Clifton Park '
+        'property mixes historic details, modern updates and access to a private beach.'
+    )
+    assert lakewood.matched is False
+    assert lakewood.reason == 'hard_negative:clifton_park_oh'
+
+    handle = match_post(
+        'The 1902 Clifton Park property mixes historic details and modern updates.',
+        author_handle='cleveland.com',
+    )
+    assert handle.matched is False
+    assert handle.reason == 'hard_negative:clifton_park_oh'
+
+    assert (
+        match_post('Farmers market opens Saturday in Clifton Park near #AlbanyNY.').matched is True
+    )
+
+
 def test_california_capital_region_is_hard_negative() -> None:
     sac = match_post(
         'In recent years, numerous social clubs geared toward women in the capital region '
@@ -1718,7 +1738,29 @@ def test_brunswick_records_not_brunswick_ny() -> None:
     )
     assert shellac.matched is False
     assert shellac.reason == 'hard_negative:brunswick_records'
+
+    session = match_post(
+        'THE JUNGLE BAND: Duke Ellington(p). New York City, 08 January 1929. '
+        'Brunswick recording session'
+    )
+    assert session.matched is False
+    assert session.reason == 'hard_negative:brunswick_records'
     assert match_post('Dinner in Brunswick, NY tonight.').matched is True
+
+
+def test_nouveau_brunswick_not_brunswick_ny() -> None:
+    nb = match_post(
+        'Toute une histoire vécue par deux collectionneurs de Tracadie, dans la '
+        'Péninsule acadienne, en obtenant une carte unique de Matthew Schaefer, '
+        'des Islanders de New York.',
+        alt_text=(
+            'Une carte de hockey rare mise aux enchères par des collectionneurs '
+            'du Nouveau-Brunswick'
+        ),
+    )
+    assert nb.matched is False
+    assert nb.reason == 'hard_negative:brunswick_nb'
+    assert match_post('Town of Brunswick, NY planning board meets Tuesday.').matched is True
 
 
 def test_albany_business_review_and_rentredi_recall() -> None:
@@ -3819,3 +3861,74 @@ def test_albany_intl_airport_mvp_arena_downtowntroy_recall() -> None:
     troy_bid = match_post('CHOWDERFEST? www.downtowntroyny.org/chowderfest okay well i got plans')
     assert troy_bid.matched is True
     assert troy_bid.reason == 'strong_positive'
+
+
+def test_rotterdam_diesel_futures_and_dutch_landscape_not_ny() -> None:
+    diesel = match_post(
+        "How Trump's threat to ban diesel makes US exports more profitable. "
+        'Diesel traders monitor the difference between New York futures and prices in Rotterdam.'
+    )
+    assert diesel.matched is False
+    assert diesel.reason == 'hard_negative:malta_europe'
+
+    west8 = match_post(
+        'West 8, the award-winning Dutch landscape architecture and urban design firm '
+        'with offices in Rotterdam and New York City, has unveiled the Houston Botanic Garden.'
+    )
+    assert west8.matched is False
+    assert west8.reason == 'hard_negative:malta_europe'
+
+    assert match_post('Town of Rotterdam NY hosts a community meeting tonight.').matched is True
+
+
+def test_malta_un_netanyahu_walkout_not_malta_ny() -> None:
+    un = match_post(
+        'Malta not in UN chamber during walkout over Netanyahu speech. '
+        'A language interpreter looks out from behind a glass wall inside the General Assembly '
+        'Hall at U.N. headquarters in New York City, New York, U.S.'
+    )
+    assert un.matched is False
+    assert un.reason == 'hard_negative:malta_europe'
+    assert match_post('Town of Malta NY board meets about campus traffic.').matched is True
+
+
+def test_ctv_vancouver_capital_region_not_ny() -> None:
+    ctv = match_post(
+        'As parallel elections loom, The Sign Pad says business is booming',
+        alt_text=(
+            'Two elections in one month is good for business when you own a sign shop. '
+            'The streets around the capital region are beginning to look a little crowded '
+            'with signs as a municipal election is to be held on Oct. 17.'
+        ),
+        author_handle='ctvnewsvancouver.bsky.social',
+    )
+    assert ctv.matched is False
+    assert ctv.reason == 'hard_negative:canadian_capital_region'
+    assert (
+        match_post('Capital Region students visited Vancouver before returning home.').matched
+        is True
+    )
+
+
+def test_albany_firebirds_nine_pin_erie_canal_cidery_recall() -> None:
+    firebirds = match_post(
+        'Months of hard work has led the Albany Firebirds to this weekend as the '
+        'Birds will look to win their 2nd consecutive title.'
+    )
+    assert firebirds.matched is True
+    assert firebirds.reason == 'strong_positive'
+
+    nine_pin = match_post('Nine Pin Cider Works is hiring an experienced Head Cider Maker.')
+    assert nine_pin.matched is True
+    assert nine_pin.reason == 'strong_positive'
+
+    erie = match_post(
+        'Ian Mackay is traveling 351 miles in his wheelchair along the Erie Canal '
+        'from Albany to Buffalo to highlight accessibility.'
+    )
+    assert erie.matched is True
+    assert erie.reason == 'strong_positive'
+
+    cidery = match_post("How Trump's trade war with Canada is squeezing a farm cidery in Albany")
+    assert cidery.matched is True
+    assert cidery.reason == 'strong_positive'

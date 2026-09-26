@@ -487,6 +487,16 @@ _STRONG_POSITIVE = re.compile(
       | \bvalleycats\b
       | joseph\s+l\.?\s+bruno\s+stadium
       | \bbruno\s+stadium\b
+      # Albany Firebirds (arena football) — local sports wires often omit ", NY".
+      | albany\s+firebirds?\b
+      # Nine Pin Cider Works (Albany) — hiring / cider cards often omit ", NY".
+      | nine\s+pin(?:\s+cider(?:\s+works)?)?\b
+      # Erie Canal corridor copy that names Albany as origin/destination.
+      | erie\s+canal[\s\S]{0,100}\balbany\b
+      | \balbany\b[\s\S]{0,100}erie\s+canal
+      # Farm cidery / cider works in Albany (Canada trade / agri wires).
+      | (?:farm\s+)?cidery[\s\S]{0,60}\balbany\b
+      | \balbany\b[\s\S]{0,60}(?:farm\s+)?cidery
       # Park Playhouse (Washington Park, Albany).
       | park\s+playhouse\b
       # Town of New Scotland — not "a new Scotland" / "New Scotland Shirt".
@@ -1803,12 +1813,36 @@ _MALTA_EUROPE = re.compile(
       | \b[oö]lpreis(?:es)?\b
       | oil\s+(?:price|market|hub)[\s\S]{0,140}\brotterdam\b
       | \brotterdam\b[\s\S]{0,140}oil\s+(?:price|market|hub)
+      # Diesel / fuel export wires: "New York futures and prices in Rotterdam".
+      | prices?\s+in\s+rotterdam\b
+      | \bdiesel\b[\s\S]{0,140}\brotterdam\b
+      | \brotterdam\b[\s\S]{0,140}\bdiesel\b
+      | new\s+york\s+futures[\s\S]{0,100}\brotterdam\b
+      | \brotterdam\b[\s\S]{0,100}new\s+york\s+futures
+      | fuel\s+(?:exports?|traders?)[\s\S]{0,140}\brotterdam\b
+      | \brotterdam\b[\s\S]{0,140}fuel\s+(?:exports?|traders?)
+      # Dutch landscape / architecture firms listing Rotterdam + NYC offices.
+      | dutch\s+landscape
+      | offices\s+in\s+rotterdam\b
+      | rotterdam\s+and\s+new\s+york\s+city\b
+      | new\s+york\s+city[\s\S]{0,80}offices?\s+in\s+rotterdam\b
+      | \bhouston\b[\s\S]{0,220}\brotterdam\b
+      | \brotterdam\b[\s\S]{0,220}\bhouston\b
       | \brotterdam\b[\s\S]{0,180}(?:
             frankfurt|niederlanden|niederlande|\bbrd\b|saudi|yemen|houthi|huthi
           )
       | (?:
             frankfurt|niederlanden|niederlande|\bbrd\b|saudi|yemen|houthi|huthi
           )[\s\S]{0,180}\brotterdam\b
+      # Country of Malta at the UN / Netanyahu walkouts (NYC headquarters photo).
+      | \bmalta\b[\s\S]{0,180}(?:
+            netanyahu|united\s+nations|\bun\s+chamber|general\s+assembly|
+            u\.?n\.?\s+headquarters
+          )
+      | (?:
+            netanyahu|united\s+nations|\bun\s+chamber|general\s+assembly|
+            u\.?n\.?\s+headquarters
+          )[\s\S]{0,180}\bmalta\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -1820,7 +1854,25 @@ _BRUNSWICK_RECORDS = re.compile(
     (?:
         \(\s*brunswick\s*,\s*\d{4}\s*\)
       | brunswick\s+records?\b
+      | brunswick\s+recording\s+session
       | on\s+brunswick\s+(?:records?\b|78s?\b|label\b)
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Nouveau-Brunswick / New Brunswick (Canada) French copy — not Town of Brunswick NY.
+# Lookbehind on ambiguous ``brunswick`` already skips ``new-brunswick``; French
+# ``Nouveau-Brunswick`` still unlocks via New York sports context.
+_BRUNSWICK_NB = re.compile(
+    r"""
+    (?:
+        nouveau[\s\-]+brunswick\b
+      | \bnew\s+brunswick\b
+      | p[eé]ninsule\s+acadienne
+      | \btracadie\b
+      | \bacadie\b[\s\S]{0,80}\bbrunswick\b
+      | \bbrunswick\b[\s\S]{0,80}\bacadie\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -2076,6 +2128,21 @@ _CLIFTON_PARK_MD = re.compile(
       | wmar2news
       | flight\s+93
       | \bshanksville\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Lakewood / Cleveland OH Clifton Park neighborhood — not Clifton Park, NY.
+_CLIFTON_PARK_OH = re.compile(
+    r"""
+    (?:
+        \blakewood\b
+      | \bcleveland\b
+      | cleveland\.com
+      | \bohio\b
+      | \#ohio\b
+      | private\s+beach
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -2751,11 +2818,14 @@ def _canadian_capital_region_conflict(haystack: str, author_handle: str | None =
         return False
     if _CANADIAN_CAPITAL_REGION.search(haystack):
         return True
-    # Times Colonist / CFAX / Ottawa Citizen / Island rail cards often omit domain cues.
+    # Times Colonist / CFAX / Ottawa Citizen / Island rail / CTV Vancouver cards
+    # often omit domain cues in the body.
     handle = (author_handle or '').strip().lower()
-    if re.search(r'timescolonist|\bcfax|ottawacitizen|restoreislandrail', handle) and re.search(
-        r'capital\s+region\b', haystack, flags=re.IGNORECASE
-    ):
+    if re.search(
+        r'timescolonist|\bcfax|ottawacitizen|restoreislandrail|ctvnewsvancouver|'
+        r'ctv\.?news.*vancouver',
+        handle,
+    ) and re.search(r'capital\s+region\b', haystack, flags=re.IGNORECASE):
         return True
     return False
 
@@ -3444,6 +3514,21 @@ def _brunswick_records_conflict(haystack: str) -> bool:
     return True
 
 
+def _brunswick_nb_conflict(haystack: str) -> bool:
+    """True when Brunswick refers to Nouveau-Brunswick / New Brunswick CA, not NY."""
+    if not re.search(r'\bbrunswick\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not _BRUNSWICK_NB.search(haystack):
+        return False
+    if re.search(
+        r'brunswick\s*,?\s*(?:ny|n\.y\.|new\s+york)\b|town\s+of\s+brunswick',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    return True
+
+
 def _brunswick_ok_conflict(haystack: str) -> bool:
     """True when Brunswick refers to Tulsa OK / corp jobs, not Town of Brunswick NY."""
     if not re.search(r'\bbrunswick\b', haystack, flags=re.IGNORECASE):
@@ -4055,6 +4140,26 @@ def _clifton_park_md_conflict(haystack: str, author_handle: str | None = None) -
     return False
 
 
+def _clifton_park_oh_conflict(haystack: str, author_handle: str | None = None) -> bool:
+    """True when Clifton Park refers to Lakewood/Cleveland OH, not NY."""
+    if not re.search(r'clifton\s+park', haystack, flags=re.IGNORECASE):
+        return False
+    if re.search(
+        r'clifton\s+park\s*,?\s*(?:ny|n\.y\.|new\s+york)\b',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    if _ny_capital_region_context(haystack):
+        return False
+    if _CLIFTON_PARK_OH.search(haystack):
+        return True
+    handle = (author_handle or '').strip().lower()
+    if re.search(r'cleveland|lakewood|\.oh\b|ohio', handle):
+        return True
+    return False
+
+
 def _haystack_without_handles(haystack: str) -> str:
     """Strip @mentions so handle tokens cannot supply place/NY context."""
     return _HANDLE_MENTION.sub(' ', haystack)
@@ -4298,6 +4403,8 @@ def match_post(
             return MatchResult(False, 'hard_negative:clifton_park_uk')
         if _clifton_park_md_conflict(haystack, author_handle):
             return MatchResult(False, 'hard_negative:clifton_park_md')
+        if _clifton_park_oh_conflict(haystack, author_handle):
+            return MatchResult(False, 'hard_negative:clifton_park_oh')
         if _newtonville_ma_conflict(haystack):
             return MatchResult(False, 'hard_negative:newtonville_ma')
         if _ct_capital_district_conflict(haystack):
@@ -4450,6 +4557,9 @@ def match_post(
 
         if term == 'brunswick' and _brunswick_records_conflict(haystack):
             return MatchResult(False, 'hard_negative:brunswick_records')
+
+        if term == 'brunswick' and _brunswick_nb_conflict(haystack):
+            return MatchResult(False, 'hard_negative:brunswick_nb')
 
         if term == 'brunswick' and _brunswick_ok_conflict(haystack):
             return MatchResult(False, 'hard_negative:brunswick_ok')
