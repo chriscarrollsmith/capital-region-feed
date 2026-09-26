@@ -538,6 +538,34 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-107 — Daily feed audit: Rotterdam diesel/Dutch landscape, Nouveau-Brunswick, Brunswick recording, Malta UN, CTV Vancouver capital region, Lakewood Clifton Park; Firebirds / Nine Pin / Erie Canal / cidery FNs
+- **Status:** in progress
+- **Why:** 2026-09-26 audit of last-24h AppView feed (~123 posts since 2026-09-25T09:08Z)
+  found active FPs after #83: diesel export wires comparing New York futures to
+  `prices in Rotterdam` (8 mirror copies) and Dutch West 8 landscape firm cards
+  (`offices in Rotterdam and New York City` / Houston Botanic Garden) kept as
+  `ambiguous_with_context:rotterdam`; French `Nouveau-Brunswick` + New York
+  Islanders hockey cards and jazz `Brunswick recording session` + NYC unlocked
+  Town of Brunswick; country-of-Malta UN / Netanyahu walkout cards with NYC
+  headquarters photo unlocked Town of Malta; CTV Vancouver municipal-election
+  sign cards saying bare `capital region` kept as strong; Cleveland.com
+  Lakewood OH `Clifton Park` private-beach listing kept as strong. FNs:
+  `Albany Firebirds` arena football (`bare_albany`); venue-less
+  `Nine Pin Cider Works` hiring (`bare_albany`); Erie Canal Albany-to-Buffalo
+  accessibility ride and Gothamist farm-cidery-in-Albany Canada trade cards
+  (`bare_albany`). Residual: bare Albany job spam; allowlisted non-local;
+  WAMC / Siena intentional; NWS Albany CWA CT / Poughkeepsie advisories;
+  ~33 rematch-drops until purge; bare Albany marches without NY cues.
+- **Work:**
+  - Expand malta_europe diesel/futures/Dutch-landscape/Houston/UN-Malta cues;
+    Brunswick recording session + Nouveau-Brunswick gates; CTV Vancouver handle
+    on Canadian capital-region conflict; Lakewood/Cleveland Clifton Park OH
+    conflict; strong-positive Albany Firebirds / Nine Pin / Erie Canal+Albany /
+    farm cidery+Albany; grow eval with 2026-09-26 FP/TP/FN anchors (builds on
+    #83 / B-106).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-106 — Daily feed audit: BWI/Dulles/DCA capital region; Albany International Airport / MVP Arena / downtowntroyny.org FNs
 - **Status:** done ([#83](https://github.com/chriscarrollsmith/capital-region-feed/pull/83))
 - **Why:** 2026-09-25 audit of last-24h AppView feed (~129 posts since 2026-09-24T09:13Z)

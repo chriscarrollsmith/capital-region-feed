@@ -9591,5 +9591,166 @@
     "regression": true,
     "alt_text": "Chris Sanger, of Red Hook, hits a tee shot during the Northeastern New York PGA Stroke Play Championship.",
     "note": "2026-09-25 audit: Northeastern New York Capital Region golf must keep after MD airport gate"
+  },
+  {
+    "id": "fp-rotterdam-diesel-ny-futures-0926",
+    "text": "How Trump's threat to ban diesel makes US exports more profitable. Diesel traders monitor the difference between New York futures and prices in Rotterdam.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-26 audit: NL Rotterdam diesel futures vs New York unlocked Town of Rotterdam"
+  },
+  {
+    "id": "fp-dutch-west8-rotterdam-houston-0926",
+    "text": "West 8, the award-winning Dutch landscape architecture firm with offices in Rotterdam and New York City, unveiled the Houston Botanic Garden.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-26 audit: Dutch Rotterdam office + NYC unlocked Town of Rotterdam"
+  },
+  {
+    "id": "fp-nouveau-brunswick-islanders-0926",
+    "text": "Collectionneurs du Nouveau-Brunswick enchérissent une carte des Islanders de New York à Tracadie.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-26 audit: French Nouveau-Brunswick + New York Islanders unlocked Town of Brunswick"
+  },
+  {
+    "id": "fp-brunswick-recording-session-nyc-0926",
+    "text": "THE JUNGLE BAND: Duke Ellington(p). New York City, 08 January 1929. Brunswick recording session",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-26 audit: Brunswick Records session + NYC unlocked Town of Brunswick"
+  },
+  {
+    "id": "fp-malta-un-netanyahu-nyc-0926",
+    "text": "Malta not in UN chamber during walkout over Netanyahu speech at U.N. headquarters in New York City.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-26 audit: country of Malta UN walkout + NYC photo unlocked Town of Malta"
+  },
+  {
+    "id": "fp-ctv-vancouver-capital-region-0926",
+    "text": "The streets around the capital region are beginning to look a little crowded with signs as a municipal election is to be held on Oct. 17.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "author_handle": "ctvnewsvancouver.bsky.social",
+    "note": "2026-09-26 audit: CTV Vancouver BC capital region municipal election signs"
+  },
+  {
+    "id": "fp-clifton-park-lakewood-oh-0926",
+    "text": "Would you pay $2.25 million for this Lakewood home? The 1902 Clifton Park property mixes historic details and access to a private beach.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-26 audit: Lakewood/Cleveland OH Clifton Park neighborhood"
+  },
+  {
+    "id": "tp-town-rotterdam-ny-diesel-counterpart-0926",
+    "text": "Town of Rotterdam NY hosts a diesel truck safety meeting at the community center tonight.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-26 audit: Cap Region counterpart after Rotterdam diesel futures gate"
+  },
+  {
+    "id": "tp-town-brunswick-ny-counterpart-0926",
+    "text": "Town of Brunswick, NY planning board meets Tuesday about Route 7 traffic.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-26 audit: Cap Region counterpart after Nouveau-Brunswick / recording gates"
+  },
+  {
+    "id": "tp-town-malta-ny-counterpart-0926",
+    "text": "Town of Malta NY board meets tonight about GlobalFoundries campus traffic.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-26 audit: Cap Region counterpart after Malta UN walkout gate"
+  },
+  {
+    "id": "tp-clifton-park-ny-counterpart-0926",
+    "text": "Farmers market opens Saturday in Clifton Park near #AlbanyNY.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-26 audit: Cap Region counterpart after Lakewood OH Clifton Park gate"
+  },
+  {
+    "id": "tp-capital-region-ny-counterpart-0926",
+    "text": "Capital Region students visited Vancouver before returning home to #AlbanyNY.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-26 audit: Cap Region counterpart after CTV Vancouver capital region gate"
+  },
+  {
+    "id": "fn-albany-firebirds-0926",
+    "text": "Months of hard work has led the Albany Firebirds to this weekend as the Birds will look to win their 2nd consecutive title.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-26 audit: Albany Firebirds arena football was bare_albany"
+  },
+  {
+    "id": "fn-nine-pin-cider-works-0926",
+    "text": "Nine Pin Cider Works is hiring an experienced Head Cider Maker.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-26 audit: Nine Pin without placename was bare_albany"
+  },
+  {
+    "id": "fn-erie-canal-albany-buffalo-0926",
+    "text": "Ian Mackay is traveling 351 miles in his wheelchair along the Erie Canal from Albany to Buffalo to highlight accessibility.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-09-26 audit: Erie Canal Albany-to-Buffalo accessibility ride was bare_albany"
+  },
+  {
+    "id": "fn-farm-cidery-albany-canada-0926",
+    "text": "How Trump's trade war with Canada is squeezing a farm cidery in Albany",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-09-26 audit: Gothamist farm cidery in Albany Canada trade card was bare_albany"
   }
 ]
