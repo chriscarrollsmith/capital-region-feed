@@ -243,6 +243,18 @@ def test_md_dc_capital_region_is_hard_negative() -> None:
     assert mymc.matched is False
     assert mymc.reason == 'hard_negative:md_dc_capital_region'
 
+    # Baltimore Banner SMART-tool cards: capital region + BWI/Dulles/DCA, no Maryland token.
+    bwi = match_post(
+        'Feds to debut AI air traffic tool at BWI, DC-area airports before nationwide rollout',
+        alt_text=(
+            'Federal officials said this week that the Strategic Management of Airspace '
+            'Routing Trajectories system, or SMART tool, is launching for the capital '
+            "region's three main airports — BWI, Dulles and DCA — before expanding nationwide."
+        ),
+    )
+    assert bwi.matched is False
+    assert bwi.reason == 'hard_negative:md_dc_capital_region'
+
     # NY Capital Region keeps even if Maryland is mentioned in passing.
     keep = match_post(
         'Capital Region students visited museums in Maryland before returning to #AlbanyNY.'
@@ -463,6 +475,12 @@ def test_pennsylvania_capital_region_is_hard_negative() -> None:
     )
     assert allison.matched is False
     assert allison.reason == 'hard_negative:pennsylvania_capital_region'
+
+    harrisburg_job = match_post(
+        'Senior Branch Premier Banker Capital District - 140207-PA-Harrisburg Capitol Job'
+    )
+    assert harrisburg_job.matched is False
+    assert harrisburg_job.reason == 'hard_negative:pennsylvania_capital_region'
 
     keep = match_post('Capital Region students visited Harrisburg before returning to #AlbanyNY.')
     assert keep.matched is True
@@ -809,6 +827,26 @@ def test_clifton_park_baltimore_md_not_ny() -> None:
     )
     assert md.matched is False
     assert md.reason == 'hard_negative:clifton_park_md'
+    assert (
+        match_post('Farmers market opens Saturday in Clifton Park near #AlbanyNY.').matched is True
+    )
+
+
+def test_clifton_park_lakewood_oh_not_ny() -> None:
+    lakewood = match_post(
+        'Would you pay $2.25 million for this Lakewood home? The 1902 Clifton Park '
+        'property mixes historic details, modern updates and access to a private beach.'
+    )
+    assert lakewood.matched is False
+    assert lakewood.reason == 'hard_negative:clifton_park_oh'
+
+    handle = match_post(
+        'The 1902 Clifton Park property mixes historic details and modern updates.',
+        author_handle='cleveland.com',
+    )
+    assert handle.matched is False
+    assert handle.reason == 'hard_negative:clifton_park_oh'
+
     assert (
         match_post('Farmers market opens Saturday in Clifton Park near #AlbanyNY.').matched is True
     )
@@ -1706,7 +1744,29 @@ def test_brunswick_records_not_brunswick_ny() -> None:
     )
     assert shellac.matched is False
     assert shellac.reason == 'hard_negative:brunswick_records'
+
+    session = match_post(
+        'THE JUNGLE BAND: Duke Ellington(p). New York City, 08 January 1929. '
+        'Brunswick recording session'
+    )
+    assert session.matched is False
+    assert session.reason == 'hard_negative:brunswick_records'
     assert match_post('Dinner in Brunswick, NY tonight.').matched is True
+
+
+def test_nouveau_brunswick_not_brunswick_ny() -> None:
+    nb = match_post(
+        'Toute une histoire vécue par deux collectionneurs de Tracadie, dans la '
+        'Péninsule acadienne, en obtenant une carte unique de Matthew Schaefer, '
+        'des Islanders de New York.',
+        alt_text=(
+            'Une carte de hockey rare mise aux enchères par des collectionneurs '
+            'du Nouveau-Brunswick'
+        ),
+    )
+    assert nb.matched is False
+    assert nb.reason == 'hard_negative:brunswick_nb'
+    assert match_post('Town of Brunswick, NY planning board meets Tuesday.').matched is True
 
 
 def test_albany_business_review_and_rentredi_recall() -> None:
@@ -3044,6 +3104,31 @@ def test_america250_and_funny_cide_gio_ponti_saratoga_recall() -> None:
     assert gio.matched is True
 
 
+def test_gio_ponti_designer_not_stakes() -> None:
+    designer = match_post("L'objet design : la théière Aéro, le chef-d'oeuvre fuselé de Gio Ponti")
+    assert designer.matched is False
+    stakes = match_post('Gio Ponti Stakes drew a full field on closing day.')
+    assert stakes.matched is True
+
+
+def test_saratoga_national_historical_park_and_battlefield_landmarks() -> None:
+    park = match_post(
+        "On Sept. 19, 1777, Burgoyne's army fought at Freeman's Farm. "
+        'Walk the ground today at Saratoga National Historical Park.'
+    )
+    assert park.matched is True
+    assert match_post('Tour Bemus Heights before the evening lecture.').matched is True
+    assert match_post('Bemis Heights overlooks the Hudson battlefield trail.').matched is True
+
+
+def test_funny_bones_albany_comedy_recall() -> None:
+    show = match_post('Omg we saw comedian Trae Crowder at Funny Bones in Albany- we howled.')
+    assert show.matched is True
+    # Other-city Funny Bone franchises without Cap Region towns stay out.
+    other = match_post('Caught a set at Funny Bones in Dayton last night.')
+    assert other.matched is False
+
+
 def test_philippines_metro_manila_capital_region_not_ny() -> None:
     manila = match_post(
         'Jobless rate climbs as growth slows.',
@@ -3594,3 +3679,336 @@ def test_frear_park_downtown_troy_crossings_colonie_recall() -> None:
     assert star_comma.matched is False
     assert star_comma.reason == 'hard_negative:bethlehem_star_of'
     assert match_post('Town of Bethlehem Public Library book sale this weekend.').matched is True
+
+
+def test_bethlehem_holy_land_carol_not_town() -> None:
+    carol = match_post(
+        "I'm trying to figure out why this morning's earworm is O Little Town Of Bethlehem"
+    )
+    assert carol.matched is False
+    assert carol.reason == 'hard_negative:bethlehem_holy_land'
+    palestine = match_post(
+        "Park Slope farmers market selling olive oil and za'atar from Bethlehem, Palestine. "
+        '#nyc #palestine'
+    )
+    assert palestine.matched is False
+    assert palestine.reason == 'hard_negative:bethlehem_holy_land'
+    assert match_post('Bethlehem Town Board voted on the budget at Town Hall.').matched is True
+
+
+def test_newtonville_village_day_not_colonie() -> None:
+    village = match_post(
+        '[PHOTOS] Newtonville Village Day and the dedication of Setti D. Warren Plaza. '
+        'Newton turned out Sunday. Mayor Marc Laredo and John Kerry were on hand beside '
+        'the Austin Street development.'
+    )
+    assert village.matched is False
+    assert village.reason == 'hard_negative:newtonville_ma'
+    assert (
+        match_post('New shops opening on Newtonville Avenue in Colonie near #AlbanyNY.').matched
+        is True
+    )
+
+
+def test_cdta_algeria_not_capital_district_transit() -> None:
+    algeria = match_post(
+        'Le CDTA produit désormais des puces électroniques entièrement conçues en Algérie.'
+    )
+    assert algeria.matched is False
+    assert algeria.reason == 'hard_negative:cdta_algeria'
+    assert match_post('CDTA route 12 schedule changes Monday.').matched is True
+
+
+def test_blue_collar_city_not_troy_nickname() -> None:
+    browns = match_post(
+        "Congratulations Cleveland Browns! I'll root for any blue collar city, "
+        'especially an underdog.'
+    )
+    assert browns.matched is False
+    assert match_post('Collar City Tweed Ride Sunday.').matched is True
+
+
+def test_rotterdam_denhaag_hashtags_not_ny() -> None:
+    dutch = match_post('Eindelijk naar bed Een #Rotterdam #DenHaag #Curaçao #NewYork Big Apple dag')
+    assert dutch.matched is False
+    assert dutch.reason == 'hard_negative:malta_europe'
+    assert match_post('Mabee Farm Autumn Glow Festival in Rotterdam Junction.').matched is True
+
+
+def test_albany_democrats_hochul_and_war_room_recall() -> None:
+    dems = match_post('HOCHUL to join Albany Democrats at Saturday campaign rally.')
+    assert dems.matched is True
+    assert dems.reason == 'strong_positive'
+    tavern = match_post(
+        "Mets legend resurrects iconic Albany tavern: 'A real save'. "
+        'The War Room Tavern, a bar hot spot for lawmakers in the capital, reopens.'
+    )
+    assert tavern.matched is True
+
+
+def test_sooke_firesmoke_capital_region_not_ny() -> None:
+    sooke = match_post(
+        'South Island friends should batten down — the wildfire north of Sooke grew overnight.',
+        alt_text='firesmoke.ca predicting the smoke to drift over capital region tonight.',
+    )
+    assert sooke.matched is False
+    assert sooke.reason == 'hard_negative:canadian_capital_region'
+    local = match_post('Capital Region air quality advisory for #AlbanyNY this evening.')
+    assert local.matched is True
+
+
+def test_times_union_busting_not_local_paper() -> None:
+    bingo = match_post(
+        'This seems like a good format for the current times',
+        alt_text='Union Busting BINGO YouTube video by Sam Maxis',
+    )
+    assert bingo.matched is False
+    assert match_post('Times Union coverage of downtown #AlbanyNY redevelopment.').matched is True
+
+
+def test_brunswick_boat_manufacturer_not_town_ny() -> None:
+    boats = match_post(
+        'Dubliner named chief executive of New York-listed boat manufacturer Brunswick'
+    )
+    assert boats.matched is False
+    assert boats.reason == 'hard_negative:brunswick_corp'
+    assert match_post('Town of Brunswick, NY board meeting tonight.').matched is True
+
+
+def test_malta_independence_day_not_town_ny() -> None:
+    indep = match_post(
+        'Malta Independence Day\nNew York City Appreciation day\nArmenia Independence day'
+    )
+    assert indep.matched is False
+    assert indep.reason == 'hard_negative:malta_europe'
+    assert match_post('Concert tonight at the Malta Amphitheater, Malta, NY.').matched is True
+
+
+def test_schuylerville_town_hall_and_central_warehouse_recall() -> None:
+    hall = match_post(
+        "What can Saratoga's landscape tell us about the Revolution? "
+        'Thursday at 7 p.m. at Saratoga Town Hall in Schuylerville.'
+    )
+    assert hall.matched is True
+    assert hall.reason == 'strong_positive'
+    warehouse = match_post(
+        "Asbestos remediation has been completed at Albany's Central Warehouse. "
+        "Now the city's longstanding eyesore is entering its final stages of demolition."
+    )
+    assert warehouse.matched is True
+    assert warehouse.reason == 'strong_positive'
+
+
+def test_french_colonie_tech_praxis_not_town_ny() -> None:
+    praxis = match_post(
+        'La startup Praxis annonce vouloir installer sa colonie tech en Uruguay. '
+        'Le retour des néocolons tech.',
+        alt_text=(
+            'Praxis, a New York-based crypto-backed digital nation, has signed a deal '
+            'to build a physical city in Uruguay.'
+        ),
+    )
+    assert praxis.matched is False
+    assert match_post('Town of Colonie police responded on Central Avenue.').matched is True
+
+
+def test_ancient_troy_turkey_not_city_of_troy_ny() -> None:
+    ancient = match_post(
+        'Troy: 2,800-year-old market discovered. The ancient city of Troy, located in '
+        'northwestern Turkey, continues to hold surprises for researchers.'
+    )
+    assert ancient.matched is False
+    assert ancient.reason in {
+        'hard_negative:troy_person_name',
+        'hard_negative:troy_ancient',
+        'ambiguous_no_context:troy',
+    }
+    assert match_post('City of Troy announces downtown paving for October.').matched is True
+
+
+def test_drupalcon_rotterdam_not_town_ny() -> None:
+    conf = match_post(
+        'With DrupalCon Rotterdam approaching, plan your week. '
+        '#Drupal #DrupalConRotterdam\nPhoto credits: Drupal AI Summit NYC 2026'
+    )
+    assert conf.matched is False
+    assert conf.reason == 'hard_negative:malta_europe'
+    assert match_post('On Pangburn Rd Rotterdam New York').matched is True
+
+
+def test_idiomatic_five_rivers_not_nature_center() -> None:
+    idiom = match_post('I just want to give him this box so I can go home and pee five rivers.')
+    assert idiom.matched is False
+    nature = match_post('Hike the trails at Five Rivers Environmental Education Center in Delmar.')
+    assert nature.matched is True
+
+
+def test_freeman_farm_curly_apostrophe_and_albany_edu_recall() -> None:
+    curly = match_post(
+        'On Sept. 19, 1777, Burgoyne won Freeman’s Farm after seven hours of fighting. '
+        'He did not open the road to Albany.'
+    )
+    assert curly.matched is True
+    assert curly.reason == 'strong_positive'
+    campus = match_post('Pathogen morphology research continues at www.albany.edu/cihs/faculty...')
+    assert campus.matched is True
+    assert campus.reason == 'strong_positive'
+
+
+def test_albany_intl_airport_mvp_arena_downtowntroy_recall() -> None:
+    airport = match_post('Delayed at Albany International Airport for two hours.')
+    assert airport.matched is True
+    assert airport.reason == 'strong_positive'
+
+    mvp = match_post('See you at the MVP Arena.')
+    assert mvp.matched is True
+    assert mvp.reason == 'strong_positive'
+
+    troy_bid = match_post('CHOWDERFEST? www.downtowntroyny.org/chowderfest okay well i got plans')
+    assert troy_bid.matched is True
+    assert troy_bid.reason == 'strong_positive'
+
+
+def test_rotterdam_diesel_futures_and_dutch_landscape_not_ny() -> None:
+    diesel = match_post(
+        "How Trump's threat to ban diesel makes US exports more profitable. "
+        'Diesel traders monitor the difference between New York futures and prices in Rotterdam.'
+    )
+    assert diesel.matched is False
+    assert diesel.reason == 'hard_negative:malta_europe'
+
+    west8 = match_post(
+        'West 8, the award-winning Dutch landscape architecture and urban design firm '
+        'with offices in Rotterdam and New York City, has unveiled the Houston Botanic Garden.'
+    )
+    assert west8.matched is False
+    assert west8.reason == 'hard_negative:malta_europe'
+
+    assert match_post('Town of Rotterdam NY hosts a community meeting tonight.').matched is True
+
+
+def test_malta_un_netanyahu_walkout_not_malta_ny() -> None:
+    un = match_post(
+        'Malta not in UN chamber during walkout over Netanyahu speech. '
+        'A language interpreter looks out from behind a glass wall inside the General Assembly '
+        'Hall at U.N. headquarters in New York City, New York, U.S.'
+    )
+    assert un.matched is False
+    assert un.reason == 'hard_negative:malta_europe'
+    assert match_post('Town of Malta NY board meets about campus traffic.').matched is True
+
+
+def test_ctv_vancouver_capital_region_not_ny() -> None:
+    ctv = match_post(
+        'As parallel elections loom, The Sign Pad says business is booming',
+        alt_text=(
+            'Two elections in one month is good for business when you own a sign shop. '
+            'The streets around the capital region are beginning to look a little crowded '
+            'with signs as a municipal election is to be held on Oct. 17.'
+        ),
+        author_handle='ctvnewsvancouver.bsky.social',
+    )
+    assert ctv.matched is False
+    assert ctv.reason == 'hard_negative:canadian_capital_region'
+    assert (
+        match_post('Capital Region students visited Vancouver before returning home.').matched
+        is True
+    )
+
+
+def test_albany_firebirds_nine_pin_erie_canal_cidery_recall() -> None:
+    firebirds = match_post(
+        'Months of hard work has led the Albany Firebirds to this weekend as the '
+        'Birds will look to win their 2nd consecutive title.'
+    )
+    assert firebirds.matched is True
+    assert firebirds.reason == 'strong_positive'
+
+    nine_pin = match_post('Nine Pin Cider Works is hiring an experienced Head Cider Maker.')
+    assert nine_pin.matched is True
+    assert nine_pin.reason == 'strong_positive'
+
+    erie = match_post(
+        'Ian Mackay is traveling 351 miles in his wheelchair along the Erie Canal '
+        'from Albany to Buffalo to highlight accessibility.'
+    )
+    assert erie.matched is True
+    assert erie.reason == 'strong_positive'
+
+    cidery = match_post("How Trump's trade war with Canada is squeezing a farm cidery in Albany")
+    assert cidery.matched is True
+    assert cidery.reason == 'strong_positive'
+
+
+def test_poland_warsaw_capital_region_is_hard_negative() -> None:
+    warsaw = match_post(
+        'Five Polish regions generated 56.4% of national GDP in 2024. The Warsaw '
+        'Capital Region alone accounted for 18.6%, while GDP per capita there '
+        'exceeded PLN 197,000 — more than twice the national average.'
+    )
+    assert warsaw.matched is False
+    assert warsaw.reason in {
+        'hard_negative',
+        'hard_negative:poland_capital_region',
+    }
+
+    keep = match_post(
+        'Capital Region exporters shipped goods through Poland before returning to #AlbanyNY.'
+    )
+    assert keep.matched is True
+
+
+def test_bethlehem_brooklyn_church_not_town() -> None:
+    church = match_post('Bethlehem Lutheran Church, 6917 4th Ave, Brooklyn, NY 11209')
+    assert church.matched is False
+    assert church.reason == 'hard_negative:bethlehem_other_city'
+
+    keep = match_post('Town of Bethlehem board meets tonight about the library (#AlbanyNY).')
+    assert keep.matched is True
+
+
+def test_rotterdam_glasgow_scotland_bio_not_ny() -> None:
+    bio = match_post(
+        'Edward A. Wilson was born in Glasgow, Scotland. He moved with his family '
+        'to Rotterdam, and then to Chicago. He settled in New York City and '
+        'summered on Cape Cod.'
+    )
+    assert bio.matched is False
+    assert bio.reason == 'hard_negative:malta_europe'
+
+    keep = match_post('Town of Rotterdam thruway crash closed the westbound lanes.')
+    assert keep.matched is True
+
+
+def test_burnt_hills_italy_travel_poetry_not_town() -> None:
+    poetry = match_post(
+        '…burnt hills, sweet wine, olive cicada summons to cross ocean, drink sea '
+        'air, climb medieval walls… #lucca #italy #poetry #travel'
+    )
+    assert poetry.matched is False
+    assert poetry.reason == 'hard_negative:burnt_hills_descriptive'
+
+    keep = match_post('Burnt Hills-Ballston Lake delayed opening (#AlbanyNY).')
+    assert keep.matched is True
+
+
+def test_pa_harrisburg_capital_district_job_not_ny() -> None:
+    job = match_post(
+        'Senior Branch Premier Banker Capital District - 140207-PA-Harrisburg Capitol Job'
+    )
+    assert job.matched is False
+    assert job.reason == 'hard_negative:pennsylvania_capital_region'
+
+    keep = match_post(
+        'Capital District residents visited Harrisburg before returning to #AlbanyNY.'
+    )
+    assert keep.matched is True
+
+
+def test_united_tenants_of_albany_recall() -> None:
+    award = match_post(
+        'I was honored last night to receive the Legislator of the Year award from '
+        'the United Tenants of Albany.'
+    )
+    assert award.matched is True
+    assert award.reason == 'strong_positive'

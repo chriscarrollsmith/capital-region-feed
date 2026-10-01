@@ -96,6 +96,7 @@ _STRONG_POSITIVE = re.compile(
       | \balbany\b[\s\S]{0,80}corporation\s+counsel\b
       | university\s+at\s+albany
       | \bualbany\b
+      | \balbany\.edu\b
       | suny\s+albany
       # Albany music venue — often listed as "Albany: … @ Lark Hall" without ", NY".
       # Leading word boundary: "Peter Clark Hall" (Guelph) must not match "lark Hall".
@@ -171,7 +172,8 @@ _STRONG_POSITIVE = re.compile(
             \bin\s+malta\b|\bat\s+malta\b|malta\s+campus\b|malta\s*,?\s*ny\b
           )[\s\S]{0,120}globalfoundries
       # Town of Bethlehem NY civic / library copy often omits ", NY".
-      | town\s+of\s+bethlehem\b
+      # Exclude Christmas carol "little town of Bethlehem".
+      | (?<!little\s)town\s+of\s+bethlehem\b
       | bethlehem\s+(?:town\s+)?(?:board|council|planning)\b
       | town\s+board[\s\S]{0,120}\bbethlehem\b
       | \bbethlehem\b[\s\S]{0,120}town\s+board
@@ -186,10 +188,18 @@ _STRONG_POSITIVE = re.compile(
       | \buss\s+slater\b
       | \blarkfest\b
       | \bpearlpalooza\b
-      | five\s+rivers(?:\s+environmental)?\b
+      # Five Rivers Environmental Education Center (Delmar) — not idiomatic "five rivers".
+      | five\s+rivers\s+environmental(?:\s+education(?:\s+center)?)?\b
+      | five\s+rivers[\s\S]{0,60}(?:
+            delmar|wildlife|nature\s+center|education\s+center
+          )
+      | (?:
+            delmar|wildlife|nature\s+center|education\s+center
+          )[\s\S]{0,60}five\s+rivers
       | indian\s+ladder(?:\s+trail)?\b
       | thacher\s+park\b
-      | collar\s+city\b
+      # Troy's Collar City nickname — not generic "blue collar city".
+      | (?<!blue\s)collar\s+city\b
       | canfield\s+casino\b
       | vischer\s+ferry\b
       | hart\s+cluett\b
@@ -197,6 +207,11 @@ _STRONG_POSITIVE = re.compile(
       | bombers\s+burrito(?:\s+bar)?\b
       | \bwamc\b
       | siena\s+(?:college|saints)\b
+      # State-politics / Albany civic copy often omits ", NY".
+      | albany\s+democrats?\b
+      | hochul[\s\S]{0,120}\balbany\b
+      | \balbany\b[\s\S]{0,120}hochul
+      | war\s+room\s+tavern\b
       # Suburban Council districts / towns often omit ", NY".
       # Bare "Ichabod Crane" is also the Sleepy Hollow character / song lyric.
       | ichabod\s+crane\s+(?:central\s+)?(?:school|district|csd)\b
@@ -257,6 +272,11 @@ _STRONG_POSITIVE = re.compile(
       | at\s+saratoga\b[\s\S]{0,80}\bstakes\b
       # Battlefield NPS / tourism often omits ", NY".
       | saratoga\s+battlefield\b
+      | saratoga\s+national\s+historical\s+park\b
+      | \bbemus\s+heights\b
+      | \bbemis\s+heights\b
+      # Curly apostrophe (Freeman’s) appears in live AppView copy.
+      | freeman['\u2019]?s?\s+farm\b
       # Graded race titles / starts often omit "stakes" beside Saratoga.
       | christophe\s+clement[\s\S]{0,80}\bsaratoga\b
       | \bsaratoga\b[\s\S]{0,80}christophe\s+clement
@@ -316,8 +336,16 @@ _STRONG_POSITIVE = re.compile(
       | \bsaratoga\b[\s\S]{0,80}high\s+rock\s+park\b
       # Local paper — reject hyphenated "Sun-Times union" (Chicago),
       # "Seattle Times union", and "New York Times Union" guild phrasing.
-      | (?<!york\s)(?<!seattle\s)(?<![\w-])times\s+union\b
+      # "current times" + "Union Busting" alt cards must not glue into Times Union.
+      | (?<!york\s)(?<!seattle\s)(?<![\w-])times\s+union(?!\s+busting)\b
       | albany\s+business\s+review\b
+      # Albany Central Warehouse demolition / asbestos wires often omit ", NY".
+      | albany['\u2019]?s\s+central\s+warehouse\b
+      | central\s+warehouse[\s\S]{0,100}\balbany\b
+      | \balbany\b[\s\S]{0,100}central\s+warehouse\b
+      # Town of Saratoga / Schuylerville civic copy often omits ", NY".
+      | \bschuylerville\b
+      | saratoga\s+town\s+hall\b
       # Albany Riverfront Jazz Festival / Jennings Landing often omit ", NY".
       | albany\s+riverfront\s+jazz
       | jennings\s+landing\b
@@ -362,7 +390,13 @@ _STRONG_POSITIVE = re.compile(
       | \b(?:worktab|breezing|breeze[sd]?|worked)\b[\s\S]{0,80}\bat\s+saratoga\b
       # Named closing-day / summer-meet stakes often omit ", NY".
       | funny\s+cide(?:\s+stakes)?\b
-      | gio\s+ponti(?:\s+stakes)?\b
+      # Gio Ponti Stakes (Saratoga); bare "Gio Ponti" is the Italian designer.
+      | gio\s+ponti\s+stakes\b
+      | gio\s+ponti\b[\s\S]{0,80}\b(?:stakes|meet|saratoga|race\s+course|card|turf|won|wins?)\b
+      | \b(?:stakes|meet|saratoga|race\s+course|card|turf|won|wins?)\b[\s\S]{0,80}gio\s+ponti\b
+      # Funny Bones (Albany-area comedy club) often omits ", NY".
+      | funny\s+bones[\s\S]{0,60}\b(?:albany|latham|colonie)\b
+      | \b(?:albany|latham|colonie)\b[\s\S]{0,60}funny\s+bones\b
       # America250 / Revolutionary tourism often pairs bare Saratoga.
       | \bamerica\s*250\b[\s\S]{0,120}\bsaratoga\b
       | \bsaratoga\b[\s\S]{0,120}\bamerica\s*250\b
@@ -375,7 +409,8 @@ _STRONG_POSITIVE = re.compile(
       # Troy Frear Park / civic copy often omits ", NY".
       | \bfrear\s+park\b
       | troy\s+city\s+(?:officials?|council|hall|school)\b
-      | \bcity\s+of\s+troy\b
+      # Municipal "City of Troy" — not "ancient city of Troy" (Turkey archaeology).
+      | (?<!ancient\s)\bcity\s+of\s+troy\b
       # Crossings of Colonie (town park) often omits ", NY".
       | crossings\s+of\s+colonie\b
       # Distinctive Albany campuses / plazas often omit ", NY".
@@ -441,11 +476,29 @@ _STRONG_POSITIVE = re.compile(
       | albany\s+region\b
       # Crossgates Mall / Commons (Guilderland) — often omit ", NY".
       | crossgates\s+(?:commons|mall)\b
+      # Albany International Airport (ALB) — often omit ", NY"; not bare Albany.
+      | albany\s+international\s+airport\b
+      # MVP Arena (Albany) — venue-only posts often omit event cues / placename.
+      | mvp\s+arena\b
+      # Downtown Troy BID domain — Chowderfest / event cards may omit "Troy".
+      | downtowntroyny\.org
       # Tri-City ValleyCats / Joseph L. Bruno Stadium (Troy).
       | tri-?city\s+valleycats\b
       | \bvalleycats\b
       | joseph\s+l\.?\s+bruno\s+stadium
       | \bbruno\s+stadium\b
+      # Albany Firebirds (arena football) — local sports wires often omit ", NY".
+      | albany\s+firebirds?\b
+      # United Tenants of Albany — awards / advocacy cards often omit ", NY".
+      | united\s+tenants\s+of\s+albany\b
+      # Nine Pin Cider Works (Albany) — hiring / cider cards often omit ", NY".
+      | nine\s+pin(?:\s+cider(?:\s+works)?)?\b
+      # Erie Canal corridor copy that names Albany as origin/destination.
+      | erie\s+canal[\s\S]{0,100}\balbany\b
+      | \balbany\b[\s\S]{0,100}erie\s+canal
+      # Farm cidery / cider works in Albany (Canada trade / agri wires).
+      | (?:farm\s+)?cidery[\s\S]{0,60}\balbany\b
+      | \balbany\b[\s\S]{0,60}(?:farm\s+)?cidery
       # Park Playhouse (Washington Park, Albany).
       | park\s+playhouse\b
       # Town of New Scotland — not "a new Scotland" / "New Scotland Shirt".
@@ -603,6 +656,9 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
       | national\s+capital\s+region
       # Slash form appears in Brussels Times cards ("Brussels/Capital Region").
       | brussels[- /]capital\s+region
+      # Polandinsight / Eurostat cards: "Warsaw Capital Region" / Polish GDP wires.
+      | warsaw\s+capital\s+region
+      | polish\s+capital\s+region
       | canadian\s+capital\s+region
       # Other-state / non-NY newsroom jargon (e.g. Jackson MS bureau).
       | capital\s+region\s+bureau\b
@@ -766,12 +822,14 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
 # Snowbirds = RCAF demo team (Victoria-area flyovers); not birdwatching copy.
 # Window is 240 chars: CFAX call-in intros often put #yyj / #BCpoli after a long clause.
 # Goldstream / Vancouver Island rail copy often says bare "Victoria" (no "BC").
+# Sooke / South Island / firesmoke.ca wildfire cards often say bare "capital region".
 _CANADIAN_GEO_CUE = (
     r'\bcanada\b|\bcanadian\b|\bottawa\b|\#canadian\w*|'
     r'\#yyj\b|\#bcpoli\b|british\s+columbia|\blangford\b|'
     r'victoria(?:\s*,?\s*bc\b)|greater\s+victoria|'
     r'\bgoldstream\b|vancouver\s*island|vancouverisland|peers\s+victoria|'
     r'restoreislandrail|'
+    r'\bsooke\b|south\s+island|firesmoke\.ca|'
     r'capital\s+regional\s+district|\blivable\s+crd\b|'
     r'timescolonist\.com|ottawacitizen\.com|\bsnowbirds?\b|parkland\s+secondary|'
     r'\bcfax\b|cfax\.com'
@@ -800,6 +858,11 @@ _MD_DC_GEO_CUE = (
     r'(?<![\w.])dc\s+snipers?\b|national\s+law\s+enforcement\s+museum|'
     r'\bdmv\b|silver\s+spring|\bbethesda\b|\brockville\b|'
     r'olney\s+theatre|national\s+harbor|college\s+park|\bannapolis\b|'
+    # DC-metro airport cards say "capital region's … airports" with BWI/Dulles/DCA
+    # and no Maryland/DC place token beyond the airport codes.
+    r'\bbwi\b|baltimore(?:\s*[/\-]\s*washington)?\s+international|'
+    r'\bdulles\b|washington\s+dulles|'
+    r'(?<![\w.])dca\b|reagan\s+national|'
     # NPS funding wires contrast "national parks outside the capital region".
     r'national\s+parks?\s+outside|'
     # DC go-go music listings often omit Maryland / DC place tokens.
@@ -846,14 +909,16 @@ _LA_CAPITAL_REGION = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
-# Pennsylvania "capital region" (Harrisburg / Capital Region Water).
+# Pennsylvania "capital region" / job-board "Capital District" (Harrisburg).
 # Allison Hill / Wildheart Ministries are Harrisburg neighborhoods / orgs —
 # "United Way of the Capital Region" alone collides with the Albany NY chapter.
+# Educativ-style jobs: "Capital District - 140207-PA-Harrisburg Capitol".
 _PA_GEO_CUE = (
     r'\bharrisburg\b|\bpennsylvania\b|\#pa(?:wx|politics|gov)\b|'
     r'capital\s+region\s+water\b|pennlive|susquehanna\b|'
     r'pennsylvania\s+capital\s+region|'
-    r'allison\s+hill\b|wildheart\s+ministries\b'
+    r'allison\s+hill\b|wildheart\s+ministries\b|'
+    r'(?<![a-z0-9])pa[-_]harrisburg\b|(?<![a-z0-9])pa[-_](?=harrisburg)'
 )
 
 _PA_CAPITAL_REGION = re.compile(
@@ -864,6 +929,9 @@ _PA_CAPITAL_REGION = re.compile(
       | capital\s+region\s+water\b
       | capital\s+region\b[\s\S]{{0,480}}(?:{_PA_GEO_CUE})
       | (?:{_PA_GEO_CUE})[\s\S]{{0,480}}capital\s+region\b
+      # PA bank-job "Capital District" (Harrisburg Capitol) — not NY Capital District.
+      | capital\s+district[\s\S]{{0,160}}(?:{_PA_GEO_CUE})
+      | (?:{_PA_GEO_CUE})[\s\S]{{0,160}}capital\s+district
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -1226,6 +1294,26 @@ _BE_CAPITAL_REGION = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
+# Warsaw / Poland "Capital Region" (Eurostat / Polandinsight GDP cards).
+_PL_GEO_CUE = (
+    r'\bwarsaw\b|\bpoland\b|\bpolish\b|\bpln\b|'
+    r'\#warsaw\b|\#poland\b|\#polish\b|'
+    r'polandinsight|eurostat\b|mazowieckie\b'
+)
+
+_PL_CAPITAL_REGION = re.compile(
+    rf"""
+    (?:
+        warsaw\s+capital\s+region
+      | polish\s+capital\s+region
+      | capital\s+region\s+of\s+(?:poland|warsaw)\b
+      | capital\s+region\b[\s\S]{{0,280}}(?:{_PL_GEO_CUE})
+      | (?:{_PL_GEO_CUE})[\s\S]{{0,280}}capital\s+region\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
 # Delhi / India "capital region" (IMD flood cards; not NY Capital Region).
 _IN_GEO_CUE = (
     r'\bdelhi\b|\bindia\b|\bindian\b|new\s+delhi\b|'
@@ -1350,12 +1438,16 @@ _NEWTONVILLE_MA = re.compile(
         newtonville[\s\S]{0,220}(?:
             \bboston\b|\bmbta\b|\#mbta\b|newton\s+ma\b|newton\s+highlands|
             west\s+newton|worcester\s+line|garden\s+city|
-            \bnj\b|\bnew\s+jersey\b|\#newjersey\b
+            \bnj\b|\bnew\s+jersey\b|\#newjersey\b|
+            village\s+day|setti\s+(?:d\.?\s+)?warren|marc\s+laredo|
+            austin\s+street|john\s+kerry|newton\s+turned\s+out
         )
       | (?:
             \bboston\b|\bmbta\b|\#mbta\b|newton\s+ma\b|newton\s+highlands|
             west\s+newton|worcester\s+line|
-            \bnj\b|\bnew\s+jersey\b|\#newjersey\b
+            \bnj\b|\bnew\s+jersey\b|\#newjersey\b|
+            village\s+day|setti\s+(?:d\.?\s+)?warren|marc\s+laredo|
+            austin\s+street|john\s+kerry|newton\s+turned\s+out
         )[\s\S]{0,220}newtonville
       | newtonville\s*,?\s*(?:nj|n\.j\.|new\s+jersey)\b
     )
@@ -1588,7 +1680,8 @@ _JP_CAPITAL_DISTRICT = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
-# Image alt-text "drought/burnt hills" / "Burnt hillside" — not the town of Burnt Hills.
+# Image alt-text "drought/burnt hills" / "Burnt hillside" / Italy travel poetry —
+# not the town of Burnt Hills.
 _BURNT_HILLS_DESCRIPTIVE = re.compile(
     r"""
     (?:
@@ -1597,6 +1690,15 @@ _BURNT_HILLS_DESCRIPTIVE = re.compile(
          charred|fire|gorse|huddersfield)
       | drought\s*/\s*burnt\s+hills
       | burnt\s+hillside\b
+      # Lucca / Italy travel poetry: "burnt hills, sweet wine, olive cicada…"
+      | burnt\s+hills[\s\S]{0,160}(?:
+            \#lucca\b|\#italy\b|\blucca\b|\bitaly\b|olive\s+cicada|
+            sweet\s+wine|medieval\s+walls|\#poetry\b|\#travel\b
+          )
+      | (?:
+            \#lucca\b|\#italy\b|\blucca\b|\bitaly\b|olive\s+cicada|
+            sweet\s+wine|medieval\s+walls
+          )[\s\S]{0,160}burnt\s+hills
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -1670,6 +1772,12 @@ _MALTA_EUROPE = re.compile(
       | delta(?:['\u2019]?s)?\s+nonstop[\s\S]{0,60}\bmalta\b
       | \beturbonews\b
       | eturbonews\.com
+      # Country of Malta national holidays / republic cues (not Town of Malta NY).
+      | malta\s+independence(?:\s+day)?\b
+      | independence\s+day[\s\S]{0,40}\bmalta\b
+      | \bmalta\b[\s\S]{0,40}independence\s+day
+      | republic\s+of\s+malta\b
+      | \bvalletta\b
       # Rotterdam, The Netherlands (architecture / football wire mirrors).
       | \bthe\s+netherlands\b
       | \bnetherlands\b
@@ -1692,6 +1800,12 @@ _MALTA_EUROPE = re.compile(
       | rotterdam\s+film(?:s)?\b
       | film\s+festival[\s\S]{0,40}\brotterdam\b
       | \biffr\b
+      # DrupalCon Rotterdam / #DrupalConRotterdam — not Town of Rotterdam NY.
+      | drupalcon\s*rotterdam\b
+      | \#drupalconrotterdam\b
+      | drupalcon[\s\S]{0,60}\brotterdam\b
+      | \brotterdam\b[\s\S]{0,60}drupalcon
+      | \#drupal\b[\s\S]{0,80}\#?drupalconrotterdam\b
       # Book / tourism photos of Hotel New York in Rotterdam.
       | new\s+york\s+hotel[\s\S]{0,60}\brotterdam\b
       | \brotterdam\b[\s\S]{0,60}new\s+york\s+hotel
@@ -1702,10 +1816,23 @@ _MALTA_EUROPE = re.compile(
       | \brotterdam\b[\s\S]{0,160}architecture\s+(?:&|and)\s+design
       | \b(?:paris|london|hong\s+kong|detroit)\b[\s\S]{0,220}\brotterdam\b
       | \brotterdam\b[\s\S]{0,220}\b(?:paris|london|hong\s+kong|detroit)\b
+      # Artist bios: Glasgow/Scotland → Rotterdam → Chicago / Cape Cod / NYC.
+      | \bglasgow\b[\s\S]{0,240}\brotterdam\b
+      | \brotterdam\b[\s\S]{0,240}\bglasgow\b
+      | \bscotland\b[\s\S]{0,240}\brotterdam\b
+      | \brotterdam\b[\s\S]{0,240}\bscotland\b
+      | \bcape\s+cod\b[\s\S]{0,240}\brotterdam\b
+      | \brotterdam\b[\s\S]{0,240}\bcape\s+cod\b
+      | moved\s+with\s+(?:his|her|their)\s+family\s+to\s+rotterdam\b
       # Dutch domestic news (AD.nl) often names Rotterdam + Den Haag without
-      # the English word "Netherlands".
+      # the English word "Netherlands". Hashtag forms (#DenHaag / #Curaçao)
+      # lack the space that ``den haag`` requires.
       | \bden\s+haag\b
+      | \#denhaag\b
+      | \bdenhaag\b
       | \bthe\s+hague\b
+      | \bcura[cç]ao\b
+      | \#cura[cç]ao\b
       | \bnederland(?:er|se)?\b
       | \#nederland\b
       | \bahoy\s+rotterdam\b
@@ -1734,12 +1861,36 @@ _MALTA_EUROPE = re.compile(
       | \b[oö]lpreis(?:es)?\b
       | oil\s+(?:price|market|hub)[\s\S]{0,140}\brotterdam\b
       | \brotterdam\b[\s\S]{0,140}oil\s+(?:price|market|hub)
+      # Diesel / fuel export wires: "New York futures and prices in Rotterdam".
+      | prices?\s+in\s+rotterdam\b
+      | \bdiesel\b[\s\S]{0,140}\brotterdam\b
+      | \brotterdam\b[\s\S]{0,140}\bdiesel\b
+      | new\s+york\s+futures[\s\S]{0,100}\brotterdam\b
+      | \brotterdam\b[\s\S]{0,100}new\s+york\s+futures
+      | fuel\s+(?:exports?|traders?)[\s\S]{0,140}\brotterdam\b
+      | \brotterdam\b[\s\S]{0,140}fuel\s+(?:exports?|traders?)
+      # Dutch landscape / architecture firms listing Rotterdam + NYC offices.
+      | dutch\s+landscape
+      | offices\s+in\s+rotterdam\b
+      | rotterdam\s+and\s+new\s+york\s+city\b
+      | new\s+york\s+city[\s\S]{0,80}offices?\s+in\s+rotterdam\b
+      | \bhouston\b[\s\S]{0,220}\brotterdam\b
+      | \brotterdam\b[\s\S]{0,220}\bhouston\b
       | \brotterdam\b[\s\S]{0,180}(?:
             frankfurt|niederlanden|niederlande|\bbrd\b|saudi|yemen|houthi|huthi
           )
       | (?:
             frankfurt|niederlanden|niederlande|\bbrd\b|saudi|yemen|houthi|huthi
           )[\s\S]{0,180}\brotterdam\b
+      # Country of Malta at the UN / Netanyahu walkouts (NYC headquarters photo).
+      | \bmalta\b[\s\S]{0,180}(?:
+            netanyahu|united\s+nations|\bun\s+chamber|general\s+assembly|
+            u\.?n\.?\s+headquarters
+          )
+      | (?:
+            netanyahu|united\s+nations|\bun\s+chamber|general\s+assembly|
+            u\.?n\.?\s+headquarters
+          )[\s\S]{0,180}\bmalta\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -1751,7 +1902,25 @@ _BRUNSWICK_RECORDS = re.compile(
     (?:
         \(\s*brunswick\s*,\s*\d{4}\s*\)
       | brunswick\s+records?\b
+      | brunswick\s+recording\s+session
       | on\s+brunswick\s+(?:records?\b|78s?\b|label\b)
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Nouveau-Brunswick / New Brunswick (Canada) French copy — not Town of Brunswick NY.
+# Lookbehind on ambiguous ``brunswick`` already skips ``new-brunswick``; French
+# ``Nouveau-Brunswick`` still unlocks via New York sports context.
+_BRUNSWICK_NB = re.compile(
+    r"""
+    (?:
+        nouveau[\s\-]+brunswick\b
+      | \bnew\s+brunswick\b
+      | p[eé]ninsule\s+acadienne
+      | \btracadie\b
+      | \bacadie\b[\s\S]{0,80}\bbrunswick\b
+      | \bbrunswick\b[\s\S]{0,80}\bacadie\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -1764,6 +1933,24 @@ _BRUNSWICK_OK = re.compile(
         brunswick[\s\S]{0,80}\b(?:tulsa|oklahoma|\bok\b)\b
       | \b(?:tulsa|oklahoma)\b[\s\S]{0,80}brunswick
       | brunswick\s*,?\s*ok\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Brunswick Corporation (boats / engines / NYSE) — not Town of Brunswick NY.
+# "New York-listed boat manufacturer Brunswick" unlocks via bare New York context.
+_BRUNSWICK_CORP = re.compile(
+    r"""
+    (?:
+        boat\s+manufacturer\s+brunswick\b
+      | brunswick\s+(?:corporation|boat(?:s|ing)?|marine|engines?)\b
+      | new\s+york[- ]listed[\s\S]{0,80}\bbrunswick\b
+      | \bbrunswick\b[\s\S]{0,80}new\s+york[- ]listed
+      | \bnyse\b[\s\S]{0,80}\bbrunswick\b
+      | \bbrunswick\b[\s\S]{0,80}\bnyse\b
+      | \bmercury\s+marine\b[\s\S]{0,80}\bbrunswick\b
+      | \bbrunswick\b[\s\S]{0,80}\bmercury\s+marine\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -1994,6 +2181,21 @@ _CLIFTON_PARK_MD = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
+# Lakewood / Cleveland OH Clifton Park neighborhood — not Clifton Park, NY.
+_CLIFTON_PARK_OH = re.compile(
+    r"""
+    (?:
+        \blakewood\b
+      | \bcleveland\b
+      | cleveland\.com
+      | \bohio\b
+      | \#ohio\b
+      | private\s+beach
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
 # Bethlehem, Pennsylvania (SteelStacks / Lehigh Valley) — not Town of Bethlehem NY.
 _BETHLEHEM_PA = re.compile(
     r"""
@@ -2074,6 +2276,69 @@ _BETHLEHEM_STAR_OF = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
+# Biblical / West Bank Bethlehem and Christmas carol — not Town of Bethlehem NY.
+# "#nyc" / "New York" tags on Palestine solidarity posts must not unlock keep.
+_BETHLEHEM_HOLY_LAND = re.compile(
+    r"""
+    (?:
+        little\s+town\s+of\s+bethlehem\b
+      | o\s+little\s+town\s+(?:of\s+)?bethlehem\b
+      | bethlehem[\s\S]{0,200}(?:
+            \bpalestine\b|\bisrael\b|west\s+bank|jerusalem|
+            \#palestine\b|\#israel\b|palestinian|
+            za['\u2019]?atar|earworm|christmas\s+carol|\bhymn\b
+          )
+      | (?:
+            \bpalestine\b|\bisrael\b|west\s+bank|jerusalem|
+            \#palestine\b|\#israel\b|palestinian|
+            za['\u2019]?atar|earworm|christmas\s+carol|\bhymn\b
+          )[\s\S]{0,200}bethlehem
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# NYC-borough churches named Bethlehem — not Town of Bethlehem NY.
+# "Bethlehem Lutheran Church … Brooklyn, NY" unlocks NY context without Cap Region.
+_BETHLEHEM_OTHER_CITY = re.compile(
+    r"""
+    (?:
+        bethlehem\s+(?:lutheran\s+)?(?:church|congregation|parish)\b[\s\S]{0,120}(?:
+            \bbrooklyn\b|\bqueens\b|\bmanhattan\b|\bbronx\b|staten\s+island|
+            \#brooklyn\b|\#nyc\b
+          )
+      | (?:
+            \bbrooklyn\b|\bqueens\b|\bmanhattan\b|\bbronx\b|staten\s+island|
+            \#brooklyn\b|\#nyc\b
+          )[\s\S]{0,120}bethlehem\s+(?:lutheran\s+)?(?:church|congregation|parish)\b
+      | bethlehem[\s\S]{0,80}(?:
+            \bbrooklyn\b|\bqueens\b|\bmanhattan\b|\bbronx\b|staten\s+island|
+            \#brooklyn\b|\#nyc\b
+          )
+      | (?:
+            \bbrooklyn\b|\bqueens\b|\bmanhattan\b|\bbronx\b|staten\s+island|
+            \#brooklyn\b|\#nyc\b
+          )[\s\S]{0,80}bethlehem
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Algerian Centre de Développement des Technologies Avancées — not Cap Region CDTA.
+_CDTA_ALGERIA = re.compile(
+    r"""
+    (?:
+        \bcdta\b[\s\S]{0,220}(?:
+            alg[eé]rie|alg[eé]rienne|alg[eé]rien|\balgeria\b|\#algeria\b
+          )
+      | (?:
+            alg[eé]rie|alg[eé]rienne|alg[eé]rien|\balgeria\b|\#algeria\b
+          )[\s\S]{0,220}\bcdta\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
 # Cuisine adjective "Schenectady-style …" (LA food trucks) — not the city.
 _SCHENECTADY_STYLE = re.compile(
     r'\bschenectady[\s-]+style\b',
@@ -2120,6 +2385,19 @@ _TROY_PERSON_NAME = re.compile(
       | \btroy\s+kingston\b
       | immigration\s+attorney\s+troy\b
       | attorney\s+troy\s+[a-z]+\b
+      # Ancient / archaeological Troy (Turkey / Çanakkale) — not City of Troy NY.
+      | ancient\s+city\s+of\s+troy\b
+      | archaeological[\s\S]{0,100}\btroy\b
+      | \btroy\b[\s\S]{0,100}archaeological
+      | \btroy\b[\s\S]{0,140}(?:
+            \bturkey\b|\bt[uü]rkiye\b|\bçanakkale\b|\bcanakkale\b|
+            turkish\s+ministry|2[\s,]*800[- ]year
+          )
+      | (?:
+            \bturkey\b|\bt[uü]rkiye\b|\bçanakkale\b|\bcanakkale\b|
+            turkish\s+ministry
+          )[\s\S]{0,140}\btroy\b
+      | northwestern\s+turkey[\s\S]{0,80}\btroy\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -2234,6 +2512,9 @@ _HARD_NEGATIVE = re.compile(
       | national\s+capital\s+district
       # Slash form appears in Brussels Times cards ("Brussels/Capital Region").
       | brussels[- /]capital\s+region
+      # Polandinsight / Eurostat cards: "Warsaw Capital Region".
+      | warsaw\s+capital\s+region
+      | polish\s+capital\s+region
       | canadian\s+capital\s+region
       | capital\s+region\s+bureau\b
       # Putnam / Hudson Valley street — not City of Albany.
@@ -2361,6 +2642,12 @@ _HARD_NEGATIVE = re.compile(
       | colonie\s+num[eé]rique
       | une\s+colonie
       | m[eê]me\s+colonie
+      # French "sa colonie tech" / néocolons (Praxis Uruguay) — not Town of Colonie.
+      | sa\s+colonie
+      | son\s+colonie
+      | leur\s+colonie
+      | colonie\s+tech\b
+      | n[eé]ocolons?
       | university\s+of\s+galway
       | galway\s*,?\s*ireland\b
       | galway\s+united\b
@@ -2608,11 +2895,14 @@ def _canadian_capital_region_conflict(haystack: str, author_handle: str | None =
         return False
     if _CANADIAN_CAPITAL_REGION.search(haystack):
         return True
-    # Times Colonist / CFAX / Ottawa Citizen / Island rail cards often omit domain cues.
+    # Times Colonist / CFAX / Ottawa Citizen / Island rail / CTV Vancouver cards
+    # often omit domain cues in the body.
     handle = (author_handle or '').strip().lower()
-    if re.search(r'timescolonist|\bcfax|ottawacitizen|restoreislandrail', handle) and re.search(
-        r'capital\s+region\b', haystack, flags=re.IGNORECASE
-    ):
+    if re.search(
+        r'timescolonist|\bcfax|ottawacitizen|restoreislandrail|ctvnewsvancouver|'
+        r'ctv\.?news.*vancouver',
+        handle,
+    ) and re.search(r'capital\s+region\b', haystack, flags=re.IGNORECASE):
         return True
     return False
 
@@ -2858,6 +3148,13 @@ def _france_capital_region_conflict(haystack: str) -> bool:
 def _belgium_capital_region_conflict(haystack: str) -> bool:
     """True when 'capital region' refers to Brussels / Belgium, not NY."""
     if not _BE_CAPITAL_REGION.search(haystack):
+        return False
+    return not _ny_capital_region_context(haystack)
+
+
+def _poland_capital_region_conflict(haystack: str) -> bool:
+    """True when 'capital region' refers to Warsaw / Poland, not NY."""
+    if not _PL_CAPITAL_REGION.search(haystack):
         return False
     return not _ny_capital_region_context(haystack)
 
@@ -3118,7 +3415,7 @@ def _louisiana_capital_region_conflict(haystack: str, author_handle: str | None 
 
 
 def _pennsylvania_capital_region_conflict(haystack: str) -> bool:
-    """True when 'capital region' refers to Harrisburg / PA, not NY."""
+    """True when 'capital region/district' refers to Harrisburg / PA, not NY."""
     if not _PA_CAPITAL_REGION.search(haystack):
         return False
     return not _ny_capital_region_context(haystack)
@@ -3301,11 +3598,41 @@ def _brunswick_records_conflict(haystack: str) -> bool:
     return True
 
 
+def _brunswick_nb_conflict(haystack: str) -> bool:
+    """True when Brunswick refers to Nouveau-Brunswick / New Brunswick CA, not NY."""
+    if not re.search(r'\bbrunswick\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not _BRUNSWICK_NB.search(haystack):
+        return False
+    if re.search(
+        r'brunswick\s*,?\s*(?:ny|n\.y\.|new\s+york)\b|town\s+of\s+brunswick',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    return True
+
+
 def _brunswick_ok_conflict(haystack: str) -> bool:
     """True when Brunswick refers to Tulsa OK / corp jobs, not Town of Brunswick NY."""
     if not re.search(r'\bbrunswick\b', haystack, flags=re.IGNORECASE):
         return False
     if not _BRUNSWICK_OK.search(haystack):
+        return False
+    if re.search(
+        r'brunswick\s*,?\s*(?:ny|n\.y\.|new\s+york)\b|town\s+of\s+brunswick',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    return True
+
+
+def _brunswick_corp_conflict(haystack: str) -> bool:
+    """True when Brunswick refers to the boat/engine corporation, not Town NY."""
+    if not re.search(r'\bbrunswick\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not _BRUNSWICK_CORP.search(haystack):
         return False
     if re.search(
         r'brunswick\s*,?\s*(?:ny|n\.y\.|new\s+york)\b|town\s+of\s+brunswick',
@@ -3400,6 +3727,76 @@ def _bethlehem_star_of_conflict(haystack: str) -> bool:
           | bethlehem\s+(?:town\s+)?(?:board|council|planning|public\s+library)
           | town\s+board[\s\S]{0,120}\bbethlehem\b
           | \bbethlehem\b[\s\S]{0,120}town\s+board
+        )
+        """,
+        haystack,
+        flags=re.IGNORECASE | re.VERBOSE,
+    ):
+        return False
+    return True
+
+
+def _bethlehem_holy_land_conflict(haystack: str) -> bool:
+    """True when Bethlehem is the biblical/West Bank city or carol, not NY."""
+    if not re.search(r'\bbethlehem\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not _BETHLEHEM_HOLY_LAND.search(haystack):
+        return False
+    if re.search(
+        r"""
+        (?:
+            bethlehem\s*,?\s*(?:ny|n\.y\.)\b
+          | (?<!little\s)town\s+of\s+bethlehem
+          | bethlehem\s+(?:town\s+)?(?:board|council|planning|public\s+library)
+          | town\s+board[\s\S]{0,120}\bbethlehem\b
+          | \bbethlehem\b[\s\S]{0,120}town\s+board
+        )
+        """,
+        haystack,
+        flags=re.IGNORECASE | re.VERBOSE,
+    ):
+        return False
+    return True
+
+
+def _bethlehem_other_city_conflict(haystack: str) -> bool:
+    """True when Bethlehem is an NYC-borough church/place name, not Town of Bethlehem."""
+    if not re.search(r'\bbethlehem\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not _BETHLEHEM_OTHER_CITY.search(haystack):
+        return False
+    if re.search(
+        r"""
+        (?:
+            bethlehem\s*,?\s*(?:ny|n\.y\.)\b
+          | (?<!little\s)town\s+of\s+bethlehem
+          | bethlehem\s+(?:town\s+)?(?:board|council|planning|public\s+library)
+          | town\s+board[\s\S]{0,120}\bbethlehem\b
+          | \bbethlehem\b[\s\S]{0,120}town\s+board
+        )
+        """,
+        haystack,
+        flags=re.IGNORECASE | re.VERBOSE,
+    ):
+        return False
+    return True
+
+
+def _cdta_algeria_conflict(haystack: str) -> bool:
+    """True when CDTA refers to Algeria's tech center, not Cap Region transit."""
+    if not re.search(r'\bcdta\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not _CDTA_ALGERIA.search(haystack):
+        return False
+    if re.search(
+        r"""
+        (?:
+            \bcdta\b[\s\S]{0,80}(?:
+                albany|troy|schenectady|capital\s+(?:region|district)|\#albanyny\b
+              )
+          | (?:
+                albany|troy|schenectady|capital\s+(?:region|district)|\#albanyny\b
+              )[\s\S]{0,80}\bcdta\b
         )
         """,
         haystack,
@@ -3530,18 +3927,55 @@ def _troy_person_name_conflict(haystack: str) -> bool:
     if not _TROY_PERSON_NAME.search(haystack):
         return False
     # Real place mentions still keep. Bare "in Troy" is too loose for film titles
-    # like "Brad Pitt in Troy (2004)".
+    # like "Brad Pitt in Troy (2004)". Do not rescue archaeological "city of Troy".
     if re.search(
         r"""
         (?:
             \btroy\s*,?\s*(?:ny|n\.y\.|new\s+york)\b
-          | city\s+of\s+troy
+          | (?<!ancient\s)city\s+of\s+troy
           | troy\s+(?:street|avenue|ave)\b
           | \balbany\s+and\s+troy\b
         )
         """,
         haystack,
         flags=re.IGNORECASE | re.VERBOSE,
+    ):
+        # Ancient / Turkey archaeology still conflicts even when "city of Troy" appears.
+        if _troy_ancient_conflict(haystack):
+            return True
+        return False
+    return True
+
+
+def _troy_ancient_conflict(haystack: str) -> bool:
+    """True when Troy is the Anatolian archaeological site, not City of Troy NY."""
+    if not re.search(r'\btroy\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not re.search(
+        r"""
+        (?:
+            ancient\s+city\s+of\s+troy\b
+          | archaeological[\s\S]{0,100}\btroy\b
+          | \btroy\b[\s\S]{0,100}archaeological
+          | \btroy\b[\s\S]{0,140}(?:
+                \bturkey\b|\bt[uü]rkiye\b|\bçanakkale\b|\bcanakkale\b|
+                turkish\s+ministry|2[\s,]*800[- ]year
+              )
+          | (?:
+                \bturkey\b|\bt[uü]rkiye\b|\bçanakkale\b|\bcanakkale\b|
+                turkish\s+ministry
+              )[\s\S]{0,140}\btroy\b
+          | northwestern\s+turkey[\s\S]{0,80}\btroy\b
+        )
+        """,
+        haystack,
+        flags=re.IGNORECASE | re.VERBOSE,
+    ):
+        return False
+    if re.search(
+        r'troy\s*,?\s*(?:ny|n\.y\.|new\s+york)\b|troy\s+(?:music\s+hall|savings\s+bank)',
+        haystack,
+        flags=re.IGNORECASE,
     ):
         return False
     return True
@@ -3618,6 +4052,7 @@ _ALBANY_WIRE_LOCAL_RESCUE = re.compile(
         empire\s+state\s+plaza
       | lark\s+(?:street|hall)\b
       | \bualbany\b
+      | \balbany\.edu\b
       | university\s+at\s+albany
       | capital\s+(?:region|district)\b
       | \bschenectady\b
@@ -3665,6 +4100,7 @@ def _albany_ithaca_contrast_conflict(haystack: str) -> bool:
         (?:
             albany\s*,?\s*(?:ny|n\.y\.)\b
           | \bualbany\b
+          | \balbany\.edu\b
           | university\s+at\s+albany
           | capital\s+(?:region|district)\b
           | \bschenectady\b
@@ -3807,6 +4243,26 @@ def _clifton_park_md_conflict(haystack: str, author_handle: str | None = None) -
         return True
     handle = (author_handle or '').strip().lower()
     if re.search(r'wmar|baltimore|catonsville|maryland', handle):
+        return True
+    return False
+
+
+def _clifton_park_oh_conflict(haystack: str, author_handle: str | None = None) -> bool:
+    """True when Clifton Park refers to Lakewood/Cleveland OH, not NY."""
+    if not re.search(r'clifton\s+park', haystack, flags=re.IGNORECASE):
+        return False
+    if re.search(
+        r'clifton\s+park\s*,?\s*(?:ny|n\.y\.|new\s+york)\b',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    if _ny_capital_region_context(haystack):
+        return False
+    if _CLIFTON_PARK_OH.search(haystack):
+        return True
+    handle = (author_handle or '').strip().lower()
+    if re.search(r'cleveland|lakewood|\.oh\b|ohio', handle):
         return True
     return False
 
@@ -4002,6 +4458,8 @@ def match_post(
             return MatchResult(False, 'hard_negative:france_capital_region')
         if _belgium_capital_region_conflict(haystack):
             return MatchResult(False, 'hard_negative:belgium_capital_region')
+        if _poland_capital_region_conflict(haystack):
+            return MatchResult(False, 'hard_negative:poland_capital_region')
         if _india_capital_region_conflict(haystack):
             return MatchResult(False, 'hard_negative:india_capital_region')
         if _uk_wales_capital_region_conflict(haystack, author_handle):
@@ -4054,6 +4512,8 @@ def match_post(
             return MatchResult(False, 'hard_negative:clifton_park_uk')
         if _clifton_park_md_conflict(haystack, author_handle):
             return MatchResult(False, 'hard_negative:clifton_park_md')
+        if _clifton_park_oh_conflict(haystack, author_handle):
+            return MatchResult(False, 'hard_negative:clifton_park_oh')
         if _newtonville_ma_conflict(haystack):
             return MatchResult(False, 'hard_negative:newtonville_ma')
         if _ct_capital_district_conflict(haystack):
@@ -4062,6 +4522,14 @@ def match_post(
             return MatchResult(False, 'hard_negative:schaghticoke_ct')
         if _albany_wire_remote_conflict(haystack):
             return MatchResult(False, 'hard_negative:albany_wire_remote')
+        if _bethlehem_holy_land_conflict(haystack):
+            return MatchResult(False, 'hard_negative:bethlehem_holy_land')
+        if _bethlehem_other_city_conflict(haystack):
+            return MatchResult(False, 'hard_negative:bethlehem_other_city')
+        if _cdta_algeria_conflict(haystack):
+            return MatchResult(False, 'hard_negative:cdta_algeria')
+        if _troy_ancient_conflict(haystack):
+            return MatchResult(False, 'hard_negative:troy_ancient')
         return MatchResult(True, 'strong_positive')
 
     if _COLONIE_LOCAL.search(haystack):
@@ -4131,6 +4599,10 @@ def match_post(
                 return MatchResult(False, 'hard_negative:bethlehem_person_name')
             if _bethlehem_star_of_conflict(haystack) and 'bethlehem' in multi_eligible:
                 return MatchResult(False, 'hard_negative:bethlehem_star_of')
+            if _bethlehem_holy_land_conflict(haystack) and 'bethlehem' in multi_eligible:
+                return MatchResult(False, 'hard_negative:bethlehem_holy_land')
+            if _bethlehem_other_city_conflict(haystack) and 'bethlehem' in multi_eligible:
+                return MatchResult(False, 'hard_negative:bethlehem_other_city')
             if _latham_person_name_conflict(haystack) and 'latham' in multi_eligible:
                 return MatchResult(False, 'hard_negative:latham_person_name')
             return MatchResult(True, 'multi_local_places')
@@ -4190,14 +4662,26 @@ def match_post(
         if term == 'bethlehem' and _bethlehem_star_of_conflict(haystack):
             return MatchResult(False, 'hard_negative:bethlehem_star_of')
 
+        if term == 'bethlehem' and _bethlehem_holy_land_conflict(haystack):
+            return MatchResult(False, 'hard_negative:bethlehem_holy_land')
+
+        if term == 'bethlehem' and _bethlehem_other_city_conflict(haystack):
+            return MatchResult(False, 'hard_negative:bethlehem_other_city')
+
         if term == 'latham' and _latham_person_name_conflict(haystack):
             return MatchResult(False, 'hard_negative:latham_person_name')
 
         if term == 'brunswick' and _brunswick_records_conflict(haystack):
             return MatchResult(False, 'hard_negative:brunswick_records')
 
+        if term == 'brunswick' and _brunswick_nb_conflict(haystack):
+            return MatchResult(False, 'hard_negative:brunswick_nb')
+
         if term == 'brunswick' and _brunswick_ok_conflict(haystack):
             return MatchResult(False, 'hard_negative:brunswick_ok')
+
+        if term == 'brunswick' and _brunswick_corp_conflict(haystack):
+            return MatchResult(False, 'hard_negative:brunswick_corp')
 
         if term == 'brunswick' and _brunswick_schools_other_conflict(haystack):
             return MatchResult(False, 'hard_negative:brunswick_schools_other')
@@ -4248,6 +4732,9 @@ def match_post(
 
         if term == 'troy' and _troy_person_name_conflict(haystack):
             return MatchResult(False, 'hard_negative:troy_person_name')
+
+        if term == 'troy' and _troy_ancient_conflict(haystack):
+            return MatchResult(False, 'hard_negative:troy_ancient')
 
         if term == 'troy' and _troy_pa_conflict(haystack):
             return MatchResult(False, 'hard_negative:troy_pa')
