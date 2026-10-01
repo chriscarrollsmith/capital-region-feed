@@ -489,6 +489,8 @@ _STRONG_POSITIVE = re.compile(
       | \bbruno\s+stadium\b
       # Albany Firebirds (arena football) — local sports wires often omit ", NY".
       | albany\s+firebirds?\b
+      # United Tenants of Albany — awards / advocacy cards often omit ", NY".
+      | united\s+tenants\s+of\s+albany\b
       # Nine Pin Cider Works (Albany) — hiring / cider cards often omit ", NY".
       | nine\s+pin(?:\s+cider(?:\s+works)?)?\b
       # Erie Canal corridor copy that names Albany as origin/destination.
@@ -654,6 +656,9 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
       | national\s+capital\s+region
       # Slash form appears in Brussels Times cards ("Brussels/Capital Region").
       | brussels[- /]capital\s+region
+      # Polandinsight / Eurostat cards: "Warsaw Capital Region" / Polish GDP wires.
+      | warsaw\s+capital\s+region
+      | polish\s+capital\s+region
       | canadian\s+capital\s+region
       # Other-state / non-NY newsroom jargon (e.g. Jackson MS bureau).
       | capital\s+region\s+bureau\b
@@ -904,14 +909,16 @@ _LA_CAPITAL_REGION = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
-# Pennsylvania "capital region" (Harrisburg / Capital Region Water).
+# Pennsylvania "capital region" / job-board "Capital District" (Harrisburg).
 # Allison Hill / Wildheart Ministries are Harrisburg neighborhoods / orgs —
 # "United Way of the Capital Region" alone collides with the Albany NY chapter.
+# Educativ-style jobs: "Capital District - 140207-PA-Harrisburg Capitol".
 _PA_GEO_CUE = (
     r'\bharrisburg\b|\bpennsylvania\b|\#pa(?:wx|politics|gov)\b|'
     r'capital\s+region\s+water\b|pennlive|susquehanna\b|'
     r'pennsylvania\s+capital\s+region|'
-    r'allison\s+hill\b|wildheart\s+ministries\b'
+    r'allison\s+hill\b|wildheart\s+ministries\b|'
+    r'(?<![a-z0-9])pa[-_]harrisburg\b|(?<![a-z0-9])pa[-_](?=harrisburg)'
 )
 
 _PA_CAPITAL_REGION = re.compile(
@@ -922,6 +929,9 @@ _PA_CAPITAL_REGION = re.compile(
       | capital\s+region\s+water\b
       | capital\s+region\b[\s\S]{{0,480}}(?:{_PA_GEO_CUE})
       | (?:{_PA_GEO_CUE})[\s\S]{{0,480}}capital\s+region\b
+      # PA bank-job "Capital District" (Harrisburg Capitol) — not NY Capital District.
+      | capital\s+district[\s\S]{{0,160}}(?:{_PA_GEO_CUE})
+      | (?:{_PA_GEO_CUE})[\s\S]{{0,160}}capital\s+district
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -1279,6 +1289,26 @@ _BE_CAPITAL_REGION = re.compile(
       | capital\s+region\s+of\s+(?:belgium|brussels)\b
       | capital\s+region\b[\s\S]{{0,280}}(?:{_BE_GEO_CUE})
       | (?:{_BE_GEO_CUE})[\s\S]{{0,280}}capital\s+region\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Warsaw / Poland "Capital Region" (Eurostat / Polandinsight GDP cards).
+_PL_GEO_CUE = (
+    r'\bwarsaw\b|\bpoland\b|\bpolish\b|\bpln\b|'
+    r'\#warsaw\b|\#poland\b|\#polish\b|'
+    r'polandinsight|eurostat\b|mazowieckie\b'
+)
+
+_PL_CAPITAL_REGION = re.compile(
+    rf"""
+    (?:
+        warsaw\s+capital\s+region
+      | polish\s+capital\s+region
+      | capital\s+region\s+of\s+(?:poland|warsaw)\b
+      | capital\s+region\b[\s\S]{{0,280}}(?:{_PL_GEO_CUE})
+      | (?:{_PL_GEO_CUE})[\s\S]{{0,280}}capital\s+region\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -1650,7 +1680,8 @@ _JP_CAPITAL_DISTRICT = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
-# Image alt-text "drought/burnt hills" / "Burnt hillside" — not the town of Burnt Hills.
+# Image alt-text "drought/burnt hills" / "Burnt hillside" / Italy travel poetry —
+# not the town of Burnt Hills.
 _BURNT_HILLS_DESCRIPTIVE = re.compile(
     r"""
     (?:
@@ -1659,6 +1690,15 @@ _BURNT_HILLS_DESCRIPTIVE = re.compile(
          charred|fire|gorse|huddersfield)
       | drought\s*/\s*burnt\s+hills
       | burnt\s+hillside\b
+      # Lucca / Italy travel poetry: "burnt hills, sweet wine, olive cicada…"
+      | burnt\s+hills[\s\S]{0,160}(?:
+            \#lucca\b|\#italy\b|\blucca\b|\bitaly\b|olive\s+cicada|
+            sweet\s+wine|medieval\s+walls|\#poetry\b|\#travel\b
+          )
+      | (?:
+            \#lucca\b|\#italy\b|\blucca\b|\bitaly\b|olive\s+cicada|
+            sweet\s+wine|medieval\s+walls
+          )[\s\S]{0,160}burnt\s+hills
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -1776,6 +1816,14 @@ _MALTA_EUROPE = re.compile(
       | \brotterdam\b[\s\S]{0,160}architecture\s+(?:&|and)\s+design
       | \b(?:paris|london|hong\s+kong|detroit)\b[\s\S]{0,220}\brotterdam\b
       | \brotterdam\b[\s\S]{0,220}\b(?:paris|london|hong\s+kong|detroit)\b
+      # Artist bios: Glasgow/Scotland → Rotterdam → Chicago / Cape Cod / NYC.
+      | \bglasgow\b[\s\S]{0,240}\brotterdam\b
+      | \brotterdam\b[\s\S]{0,240}\bglasgow\b
+      | \bscotland\b[\s\S]{0,240}\brotterdam\b
+      | \brotterdam\b[\s\S]{0,240}\bscotland\b
+      | \bcape\s+cod\b[\s\S]{0,240}\brotterdam\b
+      | \brotterdam\b[\s\S]{0,240}\bcape\s+cod\b
+      | moved\s+with\s+(?:his|her|their)\s+family\s+to\s+rotterdam\b
       # Dutch domestic news (AD.nl) often names Rotterdam + Den Haag without
       # the English word "Netherlands". Hashtag forms (#DenHaag / #Curaçao)
       # lack the space that ``den haag`` requires.
@@ -2250,6 +2298,32 @@ _BETHLEHEM_HOLY_LAND = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
+# NYC-borough churches named Bethlehem — not Town of Bethlehem NY.
+# "Bethlehem Lutheran Church … Brooklyn, NY" unlocks NY context without Cap Region.
+_BETHLEHEM_OTHER_CITY = re.compile(
+    r"""
+    (?:
+        bethlehem\s+(?:lutheran\s+)?(?:church|congregation|parish)\b[\s\S]{0,120}(?:
+            \bbrooklyn\b|\bqueens\b|\bmanhattan\b|\bbronx\b|staten\s+island|
+            \#brooklyn\b|\#nyc\b
+          )
+      | (?:
+            \bbrooklyn\b|\bqueens\b|\bmanhattan\b|\bbronx\b|staten\s+island|
+            \#brooklyn\b|\#nyc\b
+          )[\s\S]{0,120}bethlehem\s+(?:lutheran\s+)?(?:church|congregation|parish)\b
+      | bethlehem[\s\S]{0,80}(?:
+            \bbrooklyn\b|\bqueens\b|\bmanhattan\b|\bbronx\b|staten\s+island|
+            \#brooklyn\b|\#nyc\b
+          )
+      | (?:
+            \bbrooklyn\b|\bqueens\b|\bmanhattan\b|\bbronx\b|staten\s+island|
+            \#brooklyn\b|\#nyc\b
+          )[\s\S]{0,80}bethlehem
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
 # Algerian Centre de Développement des Technologies Avancées — not Cap Region CDTA.
 _CDTA_ALGERIA = re.compile(
     r"""
@@ -2438,6 +2512,9 @@ _HARD_NEGATIVE = re.compile(
       | national\s+capital\s+district
       # Slash form appears in Brussels Times cards ("Brussels/Capital Region").
       | brussels[- /]capital\s+region
+      # Polandinsight / Eurostat cards: "Warsaw Capital Region".
+      | warsaw\s+capital\s+region
+      | polish\s+capital\s+region
       | canadian\s+capital\s+region
       | capital\s+region\s+bureau\b
       # Putnam / Hudson Valley street — not City of Albany.
@@ -3075,6 +3152,13 @@ def _belgium_capital_region_conflict(haystack: str) -> bool:
     return not _ny_capital_region_context(haystack)
 
 
+def _poland_capital_region_conflict(haystack: str) -> bool:
+    """True when 'capital region' refers to Warsaw / Poland, not NY."""
+    if not _PL_CAPITAL_REGION.search(haystack):
+        return False
+    return not _ny_capital_region_context(haystack)
+
+
 def _india_capital_region_conflict(haystack: str) -> bool:
     """True when 'capital region' refers to Delhi / India, not NY."""
     if not _IN_CAPITAL_REGION.search(haystack):
@@ -3331,7 +3415,7 @@ def _louisiana_capital_region_conflict(haystack: str, author_handle: str | None 
 
 
 def _pennsylvania_capital_region_conflict(haystack: str) -> bool:
-    """True when 'capital region' refers to Harrisburg / PA, not NY."""
+    """True when 'capital region/district' refers to Harrisburg / PA, not NY."""
     if not _PA_CAPITAL_REGION.search(haystack):
         return False
     return not _ny_capital_region_context(haystack)
@@ -3657,6 +3741,29 @@ def _bethlehem_holy_land_conflict(haystack: str) -> bool:
     if not re.search(r'\bbethlehem\b', haystack, flags=re.IGNORECASE):
         return False
     if not _BETHLEHEM_HOLY_LAND.search(haystack):
+        return False
+    if re.search(
+        r"""
+        (?:
+            bethlehem\s*,?\s*(?:ny|n\.y\.)\b
+          | (?<!little\s)town\s+of\s+bethlehem
+          | bethlehem\s+(?:town\s+)?(?:board|council|planning|public\s+library)
+          | town\s+board[\s\S]{0,120}\bbethlehem\b
+          | \bbethlehem\b[\s\S]{0,120}town\s+board
+        )
+        """,
+        haystack,
+        flags=re.IGNORECASE | re.VERBOSE,
+    ):
+        return False
+    return True
+
+
+def _bethlehem_other_city_conflict(haystack: str) -> bool:
+    """True when Bethlehem is an NYC-borough church/place name, not Town of Bethlehem."""
+    if not re.search(r'\bbethlehem\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not _BETHLEHEM_OTHER_CITY.search(haystack):
         return False
     if re.search(
         r"""
@@ -4351,6 +4458,8 @@ def match_post(
             return MatchResult(False, 'hard_negative:france_capital_region')
         if _belgium_capital_region_conflict(haystack):
             return MatchResult(False, 'hard_negative:belgium_capital_region')
+        if _poland_capital_region_conflict(haystack):
+            return MatchResult(False, 'hard_negative:poland_capital_region')
         if _india_capital_region_conflict(haystack):
             return MatchResult(False, 'hard_negative:india_capital_region')
         if _uk_wales_capital_region_conflict(haystack, author_handle):
@@ -4415,6 +4524,8 @@ def match_post(
             return MatchResult(False, 'hard_negative:albany_wire_remote')
         if _bethlehem_holy_land_conflict(haystack):
             return MatchResult(False, 'hard_negative:bethlehem_holy_land')
+        if _bethlehem_other_city_conflict(haystack):
+            return MatchResult(False, 'hard_negative:bethlehem_other_city')
         if _cdta_algeria_conflict(haystack):
             return MatchResult(False, 'hard_negative:cdta_algeria')
         if _troy_ancient_conflict(haystack):
@@ -4490,6 +4601,8 @@ def match_post(
                 return MatchResult(False, 'hard_negative:bethlehem_star_of')
             if _bethlehem_holy_land_conflict(haystack) and 'bethlehem' in multi_eligible:
                 return MatchResult(False, 'hard_negative:bethlehem_holy_land')
+            if _bethlehem_other_city_conflict(haystack) and 'bethlehem' in multi_eligible:
+                return MatchResult(False, 'hard_negative:bethlehem_other_city')
             if _latham_person_name_conflict(haystack) and 'latham' in multi_eligible:
                 return MatchResult(False, 'hard_negative:latham_person_name')
             return MatchResult(True, 'multi_local_places')
@@ -4551,6 +4664,9 @@ def match_post(
 
         if term == 'bethlehem' and _bethlehem_holy_land_conflict(haystack):
             return MatchResult(False, 'hard_negative:bethlehem_holy_land')
+
+        if term == 'bethlehem' and _bethlehem_other_city_conflict(haystack):
+            return MatchResult(False, 'hard_negative:bethlehem_other_city')
 
         if term == 'latham' and _latham_person_name_conflict(haystack):
             return MatchResult(False, 'hard_negative:latham_person_name')

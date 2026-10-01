@@ -476,6 +476,12 @@ def test_pennsylvania_capital_region_is_hard_negative() -> None:
     assert allison.matched is False
     assert allison.reason == 'hard_negative:pennsylvania_capital_region'
 
+    harrisburg_job = match_post(
+        'Senior Branch Premier Banker Capital District - 140207-PA-Harrisburg Capitol Job'
+    )
+    assert harrisburg_job.matched is False
+    assert harrisburg_job.reason == 'hard_negative:pennsylvania_capital_region'
+
     keep = match_post('Capital Region students visited Harrisburg before returning to #AlbanyNY.')
     assert keep.matched is True
     assert (
@@ -3932,3 +3938,77 @@ def test_albany_firebirds_nine_pin_erie_canal_cidery_recall() -> None:
     cidery = match_post("How Trump's trade war with Canada is squeezing a farm cidery in Albany")
     assert cidery.matched is True
     assert cidery.reason == 'strong_positive'
+
+
+def test_poland_warsaw_capital_region_is_hard_negative() -> None:
+    warsaw = match_post(
+        'Five Polish regions generated 56.4% of national GDP in 2024. The Warsaw '
+        'Capital Region alone accounted for 18.6%, while GDP per capita there '
+        'exceeded PLN 197,000 — more than twice the national average.'
+    )
+    assert warsaw.matched is False
+    assert warsaw.reason in {
+        'hard_negative',
+        'hard_negative:poland_capital_region',
+    }
+
+    keep = match_post(
+        'Capital Region exporters shipped goods through Poland before returning to #AlbanyNY.'
+    )
+    assert keep.matched is True
+
+
+def test_bethlehem_brooklyn_church_not_town() -> None:
+    church = match_post('Bethlehem Lutheran Church, 6917 4th Ave, Brooklyn, NY 11209')
+    assert church.matched is False
+    assert church.reason == 'hard_negative:bethlehem_other_city'
+
+    keep = match_post('Town of Bethlehem board meets tonight about the library (#AlbanyNY).')
+    assert keep.matched is True
+
+
+def test_rotterdam_glasgow_scotland_bio_not_ny() -> None:
+    bio = match_post(
+        'Edward A. Wilson was born in Glasgow, Scotland. He moved with his family '
+        'to Rotterdam, and then to Chicago. He settled in New York City and '
+        'summered on Cape Cod.'
+    )
+    assert bio.matched is False
+    assert bio.reason == 'hard_negative:malta_europe'
+
+    keep = match_post('Town of Rotterdam thruway crash closed the westbound lanes.')
+    assert keep.matched is True
+
+
+def test_burnt_hills_italy_travel_poetry_not_town() -> None:
+    poetry = match_post(
+        '…burnt hills, sweet wine, olive cicada summons to cross ocean, drink sea '
+        'air, climb medieval walls… #lucca #italy #poetry #travel'
+    )
+    assert poetry.matched is False
+    assert poetry.reason == 'hard_negative:burnt_hills_descriptive'
+
+    keep = match_post('Burnt Hills-Ballston Lake delayed opening (#AlbanyNY).')
+    assert keep.matched is True
+
+
+def test_pa_harrisburg_capital_district_job_not_ny() -> None:
+    job = match_post(
+        'Senior Branch Premier Banker Capital District - 140207-PA-Harrisburg Capitol Job'
+    )
+    assert job.matched is False
+    assert job.reason == 'hard_negative:pennsylvania_capital_region'
+
+    keep = match_post(
+        'Capital District residents visited Harrisburg before returning to #AlbanyNY.'
+    )
+    assert keep.matched is True
+
+
+def test_united_tenants_of_albany_recall() -> None:
+    award = match_post(
+        'I was honored last night to receive the Legislator of the Year award from '
+        'the United Tenants of Albany.'
+    )
+    assert award.matched is True
+    assert award.reason == 'strong_positive'
