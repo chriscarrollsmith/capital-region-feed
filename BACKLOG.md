@@ -538,6 +538,28 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-108 — Daily feed audit: Warsaw Capital Region, Brooklyn Bethlehem church, Rotterdam Glasgow bio, Lucca burnt hills, PA Harrisburg Capital District; United Tenants of Albany FN
+- **Status:** in progress
+- **Why:** 2026-10-01 audit of last-24h AppView feed (~139 posts since 2026-09-30T09:07Z)
+  found active FPs after unmerged #83/#82 lineage (incl. 2026-09-26 branch work):
+  Polandinsight `Warsaw Capital Region` / PLN GDP cards kept as `strong_positive`;
+  Brooklyn `Bethlehem Lutheran Church` unlocked Town of Bethlehem via `NY` context
+  (`ambiguous_with_context:bethlehem`); Glasgow/Scotland→Rotterdam artist bios with
+  New York City / Cape Cod unlocked Town of Rotterdam; Lucca Italy travel poetry
+  `burnt hills, sweet wine, olive cicada` matched Burnt Hills strong; Educativ
+  `Capital District - PA-Harrisburg Capitol` jobs kept as Capital District strong.
+  FN: Assemblymember award from `United Tenants of Albany` (`bare_albany`). Residual:
+  bare Albany job spam; allowlisted non-local; WAMC / Siena intentional; NWS Albany
+  CWA; national MiniVAN / eBay seller-location Saratoga Springs lists; Lucknow News
+  Flash `(Albany, New York)` wire datelines; ~26 rematch-drops until purge.
+- **Work:**
+  - Poland/Warsaw capital-region gate; Bethlehem+Brooklyn church conflict; malta_europe
+    Glasgow/Scotland/Cape Cod Rotterdam cues; burnt-hills Italy/Lucca descriptive
+    gate; PA Capital District+Harrisburg job gate; strong-positive United Tenants of
+    Albany; grow eval with 2026-10-01 FP/TP/FN anchors (builds on 2026-09-26 / B-107).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-107 — Daily feed audit: Rotterdam diesel/Dutch landscape, Nouveau-Brunswick, Brunswick recording, Malta UN, CTV Vancouver capital region, Lakewood Clifton Park; Firebirds / Nine Pin / Erie Canal / cidery FNs
 - **Status:** in progress
 - **Why:** 2026-09-26 audit of last-24h AppView feed (~123 posts since 2026-09-25T09:08Z)

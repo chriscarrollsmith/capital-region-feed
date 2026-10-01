@@ -9752,5 +9752,175 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-09-26 audit: Gothamist farm cidery in Albany Canada trade card was bare_albany"
+  },
+  {
+    "id": "fp-warsaw-capital-region-1001",
+    "text": "Five Polish regions generated 56.4% of national GDP in 2024. The Warsaw Capital Region alone accounted for 18.6%, while GDP per capita there exceeded PLN 197,000 — more than twice the national average.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-01 audit: Warsaw/Poland Capital Region GDP wire kept as strong_positive"
+  },
+  {
+    "id": "fp-warsaw-capital-region-holdout-1001",
+    "text": "Warsaw Capital Region led Polish GDP growth last year, with PLN figures far above the national average.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-01 audit: Warsaw Capital Region holdout"
+  },
+  {
+    "id": "tp-capital-region-poland-counterpart-1001",
+    "text": "Capital Region exporters shipped goods through Poland before returning to #AlbanyNY.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-01 audit: Cap Region + Poland counterpart must keep"
+  },
+  {
+    "id": "fp-bethlehem-lutheran-brooklyn-1001",
+    "text": "Bethlehem Lutheran Church, 6917 4th Ave, Brooklyn, NY 11209",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-01 audit: Brooklyn Bethlehem church unlocked via NY context"
+  },
+  {
+    "id": "fp-bethlehem-brooklyn-holdout-1001",
+    "text": "Stopped by Bethlehem Lutheran Church while walking 4th Ave in Brooklyn #nyc",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-01 audit: Brooklyn Bethlehem church holdout"
+  },
+  {
+    "id": "tp-town-bethlehem-counterpart-1001",
+    "text": "Town of Bethlehem board meets tonight about the public library (#AlbanyNY).",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-01 audit: Town of Bethlehem counterpart must keep"
+  },
+  {
+    "id": "fp-rotterdam-glasgow-scotland-bio-1001",
+    "text": "Edward A. Wilson was born in Glasgow, Scotland. He moved with his family to Rotterdam, and then to Chicago. He settled in New York City and summered on Cape Cod.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-01 audit: NL Rotterdam artist bio + NYC unlocked Town of Rotterdam"
+  },
+  {
+    "id": "fp-rotterdam-cape-cod-holdout-1001",
+    "text": "The printmaker left Glasgow for Rotterdam before settling near Cape Cod and New York City.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-01 audit: Rotterdam+Glasgow/Cape Cod holdout"
+  },
+  {
+    "id": "tp-town-rotterdam-counterpart-1001",
+    "text": "Town of Rotterdam thruway crash closed the westbound lanes this morning.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-01 audit: Town of Rotterdam counterpart must keep"
+  },
+  {
+    "id": "fp-burnt-hills-lucca-italy-1001",
+    "text": "…burnt hills, sweet wine, olive cicada summons to cross ocean, drink sea air, climb medieval walls… #lucca #italy #poetry #travel",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-01 audit: Lucca Italy travel poetry matched Burnt Hills strong"
+  },
+  {
+    "id": "fp-burnt-hills-italy-holdout-1001",
+    "text": "Walking Lucca's medieval walls above burnt hills and sweet wine country #italy",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-01 audit: Italy burnt hills poetry holdout"
+  },
+  {
+    "id": "tp-burnt-hills-ny-counterpart-1001",
+    "text": "Burnt Hills-Ballston Lake delayed opening after overnight ice (#AlbanyNY).",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-01 audit: Burnt Hills NY counterpart must keep"
+  },
+  {
+    "id": "fp-pa-harrisburg-capital-district-job-1001",
+    "text": "Senior Branch Premier Banker Capital District - 140207-PA-Harrisburg Capitol Job",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-01 audit: Harrisburg PA Capital District job kept as strong"
+  },
+  {
+    "id": "fp-pa-capital-district-holdout-1001",
+    "text": "Roving Banker Capital District role posted for PA-Harrisburg Capitol branch hiring.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-01 audit: PA Capital District job holdout"
+  },
+  {
+    "id": "tp-capital-district-harrisburg-counterpart-1001",
+    "text": "Capital District residents visited Harrisburg before returning to #AlbanyNY.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-01 audit: Cap District + Harrisburg trip counterpart must keep"
+  },
+  {
+    "id": "fn-united-tenants-of-albany-1001",
+    "text": "I was honored last night to receive the Legislator of the Year award from the United Tenants of Albany.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-01 audit: United Tenants of Albany award was bare_albany FN"
+  },
+  {
+    "id": "fn-united-tenants-holdout-1001",
+    "text": "United Tenants of Albany hosted their annual awards dinner recognizing tenant advocates.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-01 audit: United Tenants of Albany holdout FN"
   }
 ]
