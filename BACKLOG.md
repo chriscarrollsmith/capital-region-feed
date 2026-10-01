@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-108 — Daily feed audit: Warsaw Capital Region, Brooklyn Bethlehem church, Rotterdam Glasgow bio, Lucca burnt hills, PA Harrisburg Capital District; United Tenants of Albany FN
-- **Status:** in progress
+- **Status:** done ([#84](https://github.com/chriscarrollsmith/capital-region-feed/pull/84))
 - **Why:** 2026-10-01 audit of last-24h AppView feed (~139 posts since 2026-09-30T09:07Z)
   found active FPs after unmerged #83/#82 lineage (incl. 2026-09-26 branch work):
   Polandinsight `Warsaw Capital Region` / PLN GDP cards kept as `strong_positive`;
@@ -561,7 +561,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-107 — Daily feed audit: Rotterdam diesel/Dutch landscape, Nouveau-Brunswick, Brunswick recording, Malta UN, CTV Vancouver capital region, Lakewood Clifton Park; Firebirds / Nine Pin / Erie Canal / cidery FNs
-- **Status:** in progress
+- **Status:** done ([#84](https://github.com/chriscarrollsmith/capital-region-feed/pull/84))
 - **Why:** 2026-09-26 audit of last-24h AppView feed (~123 posts since 2026-09-25T09:08Z)
   found active FPs after #83: diesel export wires comparing New York futures to
   `prices in Rotterdam` (8 mirror copies) and Dutch West 8 landscape firm cards
