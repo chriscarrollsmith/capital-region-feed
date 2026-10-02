@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-109 — Daily feed audit: Dutch Rotterdam burgemeester/NYC summit, Fredericton Capital Region, Burnt Hills USPS multi-state; Viaport / Northern Rivers / Parting Glass / Preservation Hall FNs
-- **Status:** in progress
+- **Status:** done ([#85](https://github.com/chriscarrollsmith/capital-region-feed/pull/85))
 - **Why:** 2026-10-02 audit of last-24h AppView feed (~110 posts since 2026-10-01T09:02Z)
   found active FPs after unmerged #84 lineage: Dutch AD.nl mirrors (`krimpen-ad` /
   `barendrecht-ad` / `capelle-ad`) about Rotterdam mayor Carola Schouten skipping a
