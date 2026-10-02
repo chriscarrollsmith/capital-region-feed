@@ -342,6 +342,41 @@ def test_brechin_angus_river_street_not_local_micro() -> None:
     assert match_post('Open mic tomorrow on River Street — sign-ups start at 6.').matched is True
 
 
+def test_birmingham_artisans_river_street_not_local_micro() -> None:
+    uk = match_post(
+        'Markets are where we get to talk to people face to face. The next one is '
+        'Alternative Artisans in Birmingham on Sunday 27 September, midday until 5pm '
+        'at Secret Space.',
+        alt_text=(
+            'Find us at Alternative Artisans Birmingham. Midday to 5pm, Secret Space, '
+            '30-34 River Street, Birmingham, B5 5SA.'
+        ),
+    )
+    assert uk.matched is False
+    assert match_post('Open mic tomorrow on River Street — sign-ups start at 6.').matched is True
+
+
+def test_aurora_montgomery_il_river_street_not_local_micro() -> None:
+    aurora = match_post(
+        'Aurora Fall Food Truck Festival Sept. 25',
+        alt_text=(
+            'The City of Aurora government will host its third annual Fall Food Truck '
+            'Festival. More than 30 food trucks will line up on Benton Street between '
+            'River Street and Broadway.'
+        ),
+    )
+    assert aurora.matched is False
+    montgomery = match_post(
+        'Montgomery Historic Cemetery Walk to return October 7',
+        alt_text=(
+            "The Montgomery Historic Preservation Commission's Cemetery Walk returns "
+            'Oct. 7 at Riverside Cemetery, 414 N. River Street in Montgomery.'
+        ),
+    )
+    assert montgomery.matched is False
+    assert match_post('Open mic tomorrow on River Street — sign-ups start at 6.').matched is True
+
+
 def test_classify_drops_bare_albany_event_without_micro() -> None:
     decision = classify_candidate(
         "Don't miss the Albany Veterans Day Parade this Saturday downtown!",
