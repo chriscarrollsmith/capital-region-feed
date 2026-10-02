@@ -538,6 +538,30 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-109 — Daily feed audit: Dutch Rotterdam burgemeester/NYC summit, Fredericton Capital Region, Burnt Hills USPS multi-state; Viaport / Northern Rivers / Parting Glass / Preservation Hall FNs
+- **Status:** in progress
+- **Why:** 2026-10-02 audit of last-24h AppView feed (~110 posts since 2026-10-01T09:02Z)
+  found active FPs after unmerged #84 lineage: Dutch AD.nl mirrors (`krimpen-ad` /
+  `barendrecht-ad` / `capelle-ad`) about Rotterdam mayor Carola Schouten skipping a
+  US mayor summit with NYC's Mamdani for Veteranendag unlocked Town of Rotterdam via
+  bare "New York" context (`ambiguous_with_context:rotterdam`); canadasmagic
+  `Fredericton Capital Region` concert cards kept as `strong_positive`; national
+  `every-usps-box` dumps listing `BURNT HILLS NY` beside PA/TX ZIPs kept as Burnt Hills
+  strong. FNs: Assemblymember `Viaport Mall` / `Concerned for the Hungry` food-drive
+  post (`ambiguous_no_context:rotterdam`); `Living Resources` / `Northern Rivers` in
+  Albany (`bare_albany`); `The Parting Glass` / `Preservation Hall` in Saratoga Springs
+  venue cards (`ambiguous_no_context:saratoga springs`). Residual: bare Albany job spam;
+  allowlisted non-local; WAMC / Siena intentional; MiniVAN/eBay seller-location lists;
+  Lucknow News Flash datelines; ~25 rematch-drops until purge.
+- **Work:**
+  - Expand malta_europe Dutch mayor/Veteranendag / `in de VS` cues; Fredericton capital-
+    region hard-negative + Canadian geo cue; Burnt Hills multi-state USPS conflict;
+    strong positives for Viaport Mall / Concerned for the Hungry / Northern Rivers /
+    Living Resources+Albany / Parting Glass / Preservation Hall+Saratoga; grow eval with
+    2026-10-02 FP/TP/FN anchors (builds on #84 / B-108).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-108 — Daily feed audit: Warsaw Capital Region, Brooklyn Bethlehem church, Rotterdam Glasgow bio, Lucca burnt hills, PA Harrisburg Capital District; United Tenants of Albany FN
 - **Status:** done ([#84](https://github.com/chriscarrollsmith/capital-region-feed/pull/84))
 - **Why:** 2026-10-01 audit of last-24h AppView feed (~139 posts since 2026-09-30T09:07Z)

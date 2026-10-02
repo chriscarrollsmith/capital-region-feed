@@ -9922,5 +9922,175 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-10-01 audit: United Tenants of Albany holdout FN"
+  },
+  {
+    "id": "fp-dutch-burgemeester-rotterdam-nyc-1002",
+    "text": "Carola Schouten ontmoet Mamdani op burgemeesterstop, maar slaat deel over wegens Veteranendag in Rotterdam. Burgemeester Carola Schouten heeft vorige week tijdens een burgemeesterstop in de VS kennisgemaakt met collega Zohran Mamdani van New York.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-02 audit: Dutch AD Rotterdam + NYC mayor summit"
+  },
+  {
+    "id": "fp-dutch-veteranendag-rotterdam-holdout-1002",
+    "text": "Burgemeester Carola Schouten gaf voorrang aan Veteranendag in Rotterdam na een burgemeesterstop in de VS met collega Mamdani van New York.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-02 audit: Dutch Veteranendag Rotterdam holdout"
+  },
+  {
+    "id": "tp-rotterdam-thruway-counterpart-1002",
+    "text": "Town of Rotterdam thruway crash closed the westbound lanes near exit 25A.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-02 audit: Cap Region Rotterdam counterpart"
+  },
+  {
+    "id": "fp-fredericton-capital-region-1002",
+    "text": "Jesse Campbell has 2 shows in Fredericton on October 24th. Family show matinee information from the Fredericton Capital Region.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-02 audit: Fredericton Capital Region Canada"
+  },
+  {
+    "id": "fp-fredericton-capital-region-holdout-1002",
+    "text": "Showtimes announced across the Fredericton Capital Region this October.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-02 audit: Fredericton Capital Region holdout"
+  },
+  {
+    "id": "tp-capital-region-fredericton-visit-1002",
+    "text": "Capital Region students visited Fredericton before returning to #AlbanyNY.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-02 audit: NY Capital Region + Fredericton visit counterpart"
+  },
+  {
+    "id": "fp-burnt-hills-usps-multi-state-1002",
+    "text": "BLUE BOX: 43 ROUND LAKE RD, BURNT HILLS NY 12027\nBLUE BOX: 2759 MEMORIAL HWY, DALLAS PA 18612\nPO LOBBY: 16015 CAIRNWAY DR, HOUSTON TX 77084",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-02 audit: USPS multi-state Burnt Hills dump"
+  },
+  {
+    "id": "fp-burnt-hills-usps-multi-state-holdout-1002",
+    "text": "BLUE BOX: 12 MAIN ST, BURNT HILLS NY 12027\nBLUE BOX: 500 MARKET ST, PHILADELPHIA PA 19106",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-02 audit: USPS Burnt Hills multi-state holdout"
+  },
+  {
+    "id": "tp-burnt-hills-ballston-counterpart-1002",
+    "text": "Burnt Hills-Ballston Lake delayed opening (#AlbanyNY).",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-02 audit: Burnt Hills local counterpart"
+  },
+  {
+    "id": "tp-viaport-mall-concerned-hungry-1002",
+    "text": "Meeting with the Viaport Mall in Rotterdam — discussing some space that may be needed for the Concerned for the Hungry, Thanksgiving food drive this year",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-02 audit: Viaport Mall / Concerned for the Hungry FN"
+  },
+  {
+    "id": "tp-viaport-mall-holdout-1002",
+    "text": "Viaport Mall hosts a community food drive this weekend.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-02 audit: Viaport Mall holdout"
+  },
+  {
+    "id": "tp-living-resources-northern-rivers-1002",
+    "text": "Kicked off National Disability Employment Awareness Month with Living Resources and Northern Rivers in Albany.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-02 audit: Living Resources / Northern Rivers FN"
+  },
+  {
+    "id": "tp-northern-rivers-holdout-1002",
+    "text": "Northern Rivers Family Services is hiring peer advocates this fall.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-02 audit: Northern Rivers holdout"
+  },
+  {
+    "id": "tp-parting-glass-saratoga-1002",
+    "text": "Fast Tony Productions has announced a new annual holiday concert at The Parting Glass in Saratoga Springs.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-02 audit: Parting Glass Saratoga FN"
+  },
+  {
+    "id": "tp-preservation-hall-saratoga-1002",
+    "text": "Looking forward to sharing my new book at The Preservation Hall in Saratoga Springs tonight at 7.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-02 audit: Preservation Hall Saratoga FN"
+  },
+  {
+    "id": "tn-malta-gibraltar-soccer-1002",
+    "text": "Malta vs Gibraltar – Prediction, where to watch, kick-off time and line-ups",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-02 audit: country-of-Malta soccer near-miss (already drops)"
+  },
+  {
+    "id": "tn-troy-parrott-ireland-1002",
+    "text": "Republic of Ireland 2-2 Austria: Troy Parrott double not enough for hosts in game briefly halted by protests",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-02 audit: Troy Parrott soccer near-miss (already drops)"
   }
 ]
