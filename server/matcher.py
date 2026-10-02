@@ -491,6 +491,19 @@ _STRONG_POSITIVE = re.compile(
       | albany\s+firebirds?\b
       # United Tenants of Albany — awards / advocacy cards often omit ", NY".
       | united\s+tenants\s+of\s+albany\b
+      # Viaport Mall (Rotterdam NY) / Concerned for the Hungry food-drive copy.
+      | viaport\s+(?:mall|plaza)\b
+      | concerned\s+for\s+the\s+hungry\b
+      # Northern Rivers Family Services / Living Resources (Albany) advocacy.
+      | northern\s+rivers(?:\s+family\s+services)?\b
+      | living\s+resources[\s\S]{0,80}\balbany\b
+      | \balbany\b[\s\S]{0,80}living\s+resources
+      # The Parting Glass / Preservation Hall (Saratoga Springs) venue cards.
+      | \bthe\s+parting\s+glass\b
+      | parting\s+glass[\s\S]{0,80}saratoga(?:\s+springs)?\b
+      | saratoga(?:\s+springs)?\b[\s\S]{0,80}parting\s+glass
+      | preservation\s+hall[\s\S]{0,80}saratoga(?:\s+springs)?\b
+      | saratoga(?:\s+springs)?\b[\s\S]{0,80}preservation\s+hall
       # Nine Pin Cider Works (Albany) — hiring / cider cards often omit ", NY".
       | nine\s+pin(?:\s+cider(?:\s+works)?)?\b
       # Erie Canal corridor copy that names Albany as origin/destination.
@@ -660,6 +673,8 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
       | warsaw\s+capital\s+region
       | polish\s+capital\s+region
       | canadian\s+capital\s+region
+      # New Brunswick tourism / concert cards: "Fredericton Capital Region".
+      | fredericton\s+capital\s+region
       # Other-state / non-NY newsroom jargon (e.g. Jackson MS bureau).
       | capital\s+region\s+bureau\b
       # Putnam / Hudson Valley street — not City of Albany.
@@ -823,6 +838,7 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
 # Window is 240 chars: CFAX call-in intros often put #yyj / #BCpoli after a long clause.
 # Goldstream / Vancouver Island rail copy often says bare "Victoria" (no "BC").
 # Sooke / South Island / firesmoke.ca wildfire cards often say bare "capital region".
+# Fredericton is New Brunswick's capital (tourism / concert "Fredericton Capital Region").
 _CANADIAN_GEO_CUE = (
     r'\bcanada\b|\bcanadian\b|\bottawa\b|\#canadian\w*|'
     r'\#yyj\b|\#bcpoli\b|british\s+columbia|\blangford\b|'
@@ -832,7 +848,8 @@ _CANADIAN_GEO_CUE = (
     r'\bsooke\b|south\s+island|firesmoke\.ca|'
     r'capital\s+regional\s+district|\blivable\s+crd\b|'
     r'timescolonist\.com|ottawacitizen\.com|\bsnowbirds?\b|parkland\s+secondary|'
-    r'\bcfax\b|cfax\.com'
+    r'\bcfax\b|cfax\.com|'
+    r'\bfredericton\b|nouveau[\s\-]+brunswick\b|\bnew\s+brunswick\b'
 )
 
 # Ottawa / Canada / BC "capital region" co-occurring with Canadian cues (not NY).
@@ -1704,6 +1721,23 @@ _BURNT_HILLS_DESCRIPTIVE = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
+# National USPS / mailbox dump bots list Burnt Hills NY beside out-of-state ZIPs.
+_OTHER_STATE_ZIP = (
+    r'(?-i:\b(?:'
+    r'AL|AK|AZ|AR|CA|CO|CT|DE|FL|GA|HI|ID|IL|IN|IA|KS|KY|LA|ME|MD|MA|MI|MN|MS|MO|'
+    r'MT|NE|NV|NH|NJ|NM|NC|ND|OH|OK|OR|PA|RI|SC|SD|TN|TX|UT|VT|VA|WA|WV|WI|WY'
+    r')\b)\s+\d{5}\b'
+)
+_BURNT_HILLS_MULTI_STATE = re.compile(
+    rf"""
+    (?:
+        burnt\s+hills\s*,?\s*ny\s+\d{{5}}[\s\S]{{0,500}}(?:{_OTHER_STATE_ZIP})
+      | (?:{_OTHER_STATE_ZIP})[\s\S]{{0,500}}burnt\s+hills\s*,?\s*ny\s+\d{{5}}
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
 # Roblox game maps named after Rensselaer County — not local news.
 _RENSSELAER_ROBLOX = re.compile(
     r"""
@@ -1882,6 +1916,15 @@ _MALTA_EUROPE = re.compile(
       | (?:
             frankfurt|niederlanden|niederlande|\bbrd\b|saudi|yemen|houthi|huthi
           )[\s\S]{0,180}\brotterdam\b
+      # Dutch AD.nl / mayor-summit wires: Rotterdam + New York (Mamdani) unlocked
+      # Town of Rotterdam via bare "New York" context without English "Netherlands".
+      | \bburgemeester(?:stop)?\b
+      | \bveteranendag\b
+      | carola\s+schouten
+      | \bin\s+de\s+vs\b
+      | \bkennisgemaakt\b
+      | \bcollega\b[\s\S]{0,80}\b(?:new\s+york|mamdani)\b
+      | \b(?:new\s+york|mamdani)\b[\s\S]{0,80}\bcollega\b
       # Country of Malta at the UN / Netanyahu walkouts (NYC headquarters photo).
       | \bmalta\b[\s\S]{0,180}(?:
             netanyahu|united\s+nations|\bun\s+chamber|general\s+assembly|
@@ -2516,6 +2559,8 @@ _HARD_NEGATIVE = re.compile(
       | warsaw\s+capital\s+region
       | polish\s+capital\s+region
       | canadian\s+capital\s+region
+      # New Brunswick tourism / concert cards: "Fredericton Capital Region".
+      | fredericton\s+capital\s+region
       | capital\s+region\s+bureau\b
       # Putnam / Hudson Valley street — not City of Albany.
       | albany\s+post\s+road
@@ -3376,6 +3421,13 @@ def _burnt_hills_descriptive_conflict(haystack: str) -> bool:
     ):
         return False
     return not _ny_capital_region_context(haystack)
+
+
+def _burnt_hills_multi_state_conflict(haystack: str) -> bool:
+    """True when Burnt Hills NY appears in a multi-state USPS address dump."""
+    if not re.search(r'burnt\s+hills', haystack, flags=re.IGNORECASE):
+        return False
+    return _BURNT_HILLS_MULTI_STATE.search(haystack) is not None
 
 
 def _rensselaer_roblox_conflict(haystack: str) -> bool:
@@ -4502,6 +4554,8 @@ def match_post(
             return MatchResult(False, 'hard_negative:japan_capital_district')
         if _burnt_hills_descriptive_conflict(haystack):
             return MatchResult(False, 'hard_negative:burnt_hills_descriptive')
+        if _burnt_hills_multi_state_conflict(haystack):
+            return MatchResult(False, 'hard_negative:burnt_hills_multi_state')
         if _loudonville_oh_conflict(haystack, author_handle):
             return MatchResult(False, 'hard_negative:loudonville_oh')
         if _times_union_photo_credit_conflict(haystack):

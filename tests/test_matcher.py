@@ -4012,3 +4012,75 @@ def test_united_tenants_of_albany_recall() -> None:
     )
     assert award.matched is True
     assert award.reason == 'strong_positive'
+
+
+def test_dutch_burgemeester_rotterdam_nyc_summit_not_ny() -> None:
+    dutch = match_post(
+        'Carola Schouten ontmoet Mamdani op burgemeesterstop, maar slaat deel over '
+        'wegens Veteranendag in Rotterdam. Burgemeester Carola Schouten heeft vorige '
+        'week tijdens een burgemeesterstop in de VS kennisgemaakt met collega Zohran '
+        'Mamdani van New York.'
+    )
+    assert dutch.matched is False
+    assert dutch.reason == 'hard_negative:malta_europe'
+
+    keep = match_post('Town of Rotterdam thruway crash closed the westbound lanes.')
+    assert keep.matched is True
+
+
+def test_fredericton_capital_region_not_ny() -> None:
+    fredericton = match_post(
+        'Jesse Campbell has 2 shows in Fredericton on October 24th. Family show '
+        'matinee information from the Fredericton Capital Region.'
+    )
+    assert fredericton.matched is False
+    assert fredericton.reason in {
+        'hard_negative',
+        'hard_negative:canadian_capital_region',
+    }
+
+    keep = match_post('Capital Region students visited Fredericton before returning to #AlbanyNY.')
+    assert keep.matched is True
+
+
+def test_burnt_hills_multi_state_usps_dump_not_town() -> None:
+    usps = match_post(
+        'BLUE BOX: 43 ROUND LAKE RD, BURNT HILLS NY 12027\n'
+        'BLUE BOX: 2759 MEMORIAL HWY, DALLAS PA 18612\n'
+        'PO LOBBY: 16015 CAIRNWAY DR, HOUSTON TX 77084'
+    )
+    assert usps.matched is False
+    assert usps.reason == 'hard_negative:burnt_hills_multi_state'
+
+    keep = match_post('Burnt Hills-Ballston Lake delayed opening (#AlbanyNY).')
+    assert keep.matched is True
+
+
+def test_viaport_northern_rivers_parting_glass_preservation_hall_recall() -> None:
+    viaport = match_post(
+        'Meeting with the Viaport Mall in Rotterdam — discussing some space that may '
+        'be needed for the Concerned for the Hungry, Thanksgiving food drive this year'
+    )
+    assert viaport.matched is True
+    assert viaport.reason == 'strong_positive'
+
+    living = match_post(
+        'Kicked off National Disability Employment Awareness Month with Living '
+        'Resources and Northern Rivers in Albany.'
+    )
+    assert living.matched is True
+    assert living.reason == 'strong_positive'
+
+    parting = match_post(
+        'Fast Tony Productions has announced a new annual holiday concert at '
+        'The Parting Glass in Saratoga Springs.'
+    )
+    assert parting.matched is True
+    assert parting.reason == 'strong_positive'
+
+    hall = match_post(
+        'Looking forward to sharing my new book at The Preservation Hall in '
+        'Saratoga Springs tonight at 7.'
+    )
+    assert hall.matched is True
+    assert hall.reason == 'strong_positive'
