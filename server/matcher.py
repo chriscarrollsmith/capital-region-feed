@@ -1514,15 +1514,44 @@ _BRUNSWICK_SCHOOLS_OTHER = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
-# Kansas City "The Egg and Art Garden" — not Albany's The Egg.
+# Off-region "The Egg" — Kansas City Art Garden, Brussels EGG, egg festivals.
 _EGG_KANSAS_CITY = re.compile(
     r"""
     (?:
         (?:the\s+)?egg\s+and\s+art\s+garden
       | art\s+garden\s+kc\b
-      | \bat\s+the\s+egg\b[\s\S]{0,120}(?:kansas\s+city|\bkc\b)
-      | (?:kansas\s+city|\bkc\b)[\s\S]{0,120}\bat\s+the\s+egg\b
+      | \bat\s+the\s+egg\b[\s\S]{0,120}(?:
+            kansas\s+city|\bkc\b|\bbrussels\b|\bbelgium\b|\beurope(?:'s|s)?\b
+        )
+      | (?:
+            kansas\s+city|\bkc\b|\bbrussels\b|\bbelgium\b|\beurope(?:'s|s)?\b
+        )[\s\S]{0,120}\bat\s+the\s+egg\b
       | bottoms?\s+up\s+festival[\s\S]{0,80}\bthe\s+egg\b
+      | \bat\s+the\s+egg\s+festival\b
+      | \begg\s+festival\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Saratoga stakes titles often appear as prior form in Keeneland / Breeders' Cup
+# workout wires — not Cap Region race-day copy.
+_SARATOGA_STAKES_AWAY = re.compile(
+    r"""
+    (?:
+        (?:h\.?\s*allen\s+)?jerkens(?:\s+memorial)?\b
+      | personal\s+ensign(?:\s+stakes)?\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+_KEENELAND_AWAY = re.compile(
+    r"""
+    (?:
+        \bkeeneland\b
+      | breeders['\u2019]?\s+cup\b[\s\S]{0,80}\bkeeneland\b
+      | \bkeeneland\b[\s\S]{0,80}breeders['\u2019]?\s+cup\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -2105,7 +2134,8 @@ _GALWAY_IRELAND = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
-# Scotia (Village of Scotia NY) vs Montreal Banque Scotia / Osheaga stage.
+# Scotia (Village of Scotia NY) vs Montreal Banque Scotia / Osheaga stage /
+# Stena Line ship names on Rotterdam–Harwich freight routes.
 _SCOTIA_MONTREAL = re.compile(
     r"""
     (?:
@@ -2115,6 +2145,12 @@ _SCOTIA_MONTREAL = re.compile(
       | parc\s+jean[-\s]?drapeau
       | \bosheaga\b
       | \bmontr[eé]al\b
+      | stena\s+scotia\b
+      | \b(?:ms|mv)\s+scotia\b
+      | stena\s+line[\s\S]{0,160}\bscotia\b
+      | \bscotia\b[\s\S]{0,160}stena\s+line
+      | \bscotia\b[\s\S]{0,120}(?:\brotterdam\b|\bharwich\b)
+      | (?:\brotterdam\b|\bharwich\b)[\s\S]{0,120}\bscotia\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -2715,6 +2751,11 @@ _COLONIE_LOCAL = re.compile(
       | towers\s+of\s+colonie
       | south\s+colonie\b
       | north\s+colonie\b
+      # Cap Region Junior's / BMT Hospitality often omit ", NY".
+      | junior['\u2019]?s[\s\S]{0,100}\bcolonie\b
+      | \bcolonie\b[\s\S]{0,100}junior['\u2019]?s
+      | bmt\s+hospitality[\s\S]{0,100}\bcolonie\b
+      | \bcolonie\b[\s\S]{0,100}bmt\s+hospitality
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -2757,7 +2798,8 @@ _LOCAL_EVENT_VENUE = re.compile(
       | troy\s+music\s+hall
       | cohoes\s+music\s+hall
       | caffe?\s+lena
-      | \bat\s+the\s+egg\b
+      # Negative lookahead: "at the egg festival" is not Albany's The Egg.
+      | \bat\s+the\s+egg\b(?!\s+festival)
       | \bthe\s+egg\s+presents\b
       | albany\s+palace\s+(?:theatre|theater)
       | albany['\u2019]?s\s+palace\s+(?:theatre|theater)
@@ -3311,8 +3353,12 @@ def _brunswick_schools_other_conflict(haystack: str) -> bool:
 
 
 def _egg_kansas_city_conflict(haystack: str) -> bool:
-    """True when 'The Egg' refers to Kansas City's Art Garden venue, not Albany."""
-    if not re.search(r'\bthe\s+egg\b|\begg\s+and\s+art\s+garden\b', haystack, flags=re.IGNORECASE):
+    """True when 'The Egg' refers to an off-region venue/festival, not Albany."""
+    if not re.search(
+        r'\bthe\s+egg\b|\begg\s+and\s+art\s+garden\b|\begg\s+festival\b',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
         return False
     if re.search(
         r'(?:the\s+egg|egg)\s*,?\s*(?:albany|ny|n\.y\.)|'
@@ -3324,6 +3370,25 @@ def _egg_kansas_city_conflict(haystack: str) -> bool:
     ):
         return False
     return _EGG_KANSAS_CITY.search(haystack) is not None
+
+
+def _saratoga_stakes_away_conflict(haystack: str) -> bool:
+    """True when Saratoga stakes titles are prior-form copy at Keeneland."""
+    if not _SARATOGA_STAKES_AWAY.search(haystack):
+        return False
+    if not _KEENELAND_AWAY.search(haystack):
+        return False
+    # Cap Region race-day / press cues keep (including The Saratoga Special).
+    if re.search(
+        r'\bat\s+saratoga\b|'
+        r'saratoga\s+(?:springs|race\s+course|meet)\b|'
+        r'(?:the\s+|grade\s+[12]\s+)?saratoga\s+special\b|'
+        r'\#saratogaracing\b',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    return True
 
 
 def _finland_capital_region_conflict(haystack: str) -> bool:
@@ -3521,14 +3586,14 @@ def _galway_ireland_conflict(haystack: str) -> bool:
 
 
 def _scotia_montreal_conflict(haystack: str) -> bool:
-    """True when Scotia refers to Montreal Banque Scotia / Osheaga, not NY."""
+    """True when Scotia refers to Montreal banking / Stena ships, not NY."""
     if not re.search(r'\bscotia\b', haystack, flags=re.IGNORECASE):
         return False
     if not _SCOTIA_MONTREAL.search(haystack):
         return False
     if re.search(
         r'scotia\s*,?\s*(?:ny|n\.y\.|new\s+york)\b|town\s+of\s+scotia|'
-        r'village\s+of\s+scotia',
+        r'village\s+of\s+scotia|scotia[-\s]?glenville',
         haystack,
         flags=re.IGNORECASE,
     ):
@@ -4584,6 +4649,10 @@ def match_post(
             return MatchResult(False, 'hard_negative:cdta_algeria')
         if _troy_ancient_conflict(haystack):
             return MatchResult(False, 'hard_negative:troy_ancient')
+        if _egg_kansas_city_conflict(haystack):
+            return MatchResult(False, 'hard_negative:egg_off_region')
+        if _saratoga_stakes_away_conflict(haystack):
+            return MatchResult(False, 'hard_negative:saratoga_stakes_away')
         return MatchResult(True, 'strong_positive')
 
     if _COLONIE_LOCAL.search(haystack):

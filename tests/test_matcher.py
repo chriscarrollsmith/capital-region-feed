@@ -4084,3 +4084,77 @@ def test_viaport_northern_rivers_parting_glass_preservation_hall_recall() -> Non
     )
     assert hall.matched is True
     assert hall.reason == 'strong_positive'
+
+
+def test_egg_brussels_and_egg_festival_not_albany_venue() -> None:
+    brussels = match_post(
+        "On 18 November 2026, the fourth xTEF event brings Europe's four "
+        'sectorial AI Testing and Experimentation Facilities under one roof '
+        'at The EGG in Brussels.'
+    )
+    assert brussels.matched is False
+
+    festival = match_post(
+        'Had lots of fun together with the cuet bnuy — we took part at the '
+        'egg festival and the bnuy did win!'
+    )
+    assert festival.matched is False
+
+    keep = match_post('Join us tonight at The Egg for jazz.')
+    assert keep.matched is True
+    assert keep.reason == 'event_local_venue:at the egg'
+
+
+def test_stena_scotia_rotterdam_not_village_of_scotia() -> None:
+    stena = match_post(
+        'Stena Line zet twee eigen schepen in op vrachtverbinding '
+        'Rotterdam-Harwich. De Stena Hibernia en Stena Scotia vervangen de '
+        'momenteel gecharterde Mistral.'
+    )
+    assert stena.matched is False
+    assert stena.reason == 'hard_negative:scotia_montreal'
+
+    keep = match_post('Town board meets in Scotia, NY tonight.')
+    assert keep.matched is True
+
+
+def test_keeneland_jerkens_personal_ensign_not_saratoga_meet() -> None:
+    jerkens = match_post(
+        "Breeders' Cup Sprint hopefuls missed English workout at Keeneland. "
+        'He progressed with a 3-length victory in the Grade 1 H. Allen '
+        'Jerkens Memorial.'
+    )
+    assert jerkens.matched is False
+    assert jerkens.reason == 'hard_negative:saratoga_stakes_away'
+
+    ensign = match_post(
+        'Fully Subscribed heads the Oct. 4 Spinster at Keeneland after wins '
+        'in the Shuvee and Personal Ensign.'
+    )
+    assert ensign.matched is False
+    assert ensign.reason == 'hard_negative:saratoga_stakes_away'
+
+    keep_jerkens = match_post(
+        'Mike Welsch previews the Grade 1, $500,000 H. Allen Jerkens Memorial.'
+    )
+    assert keep_jerkens.matched is True
+
+    # Cap Region press credit still keeps Keeneland form copy.
+    special = match_post(
+        'Saratoga maiden winner Forever Carina is entered in the Grade I '
+        'Alcibiades Stakes at Keeneland today. Shot for The Saratoga Special'
+    )
+    assert special.matched is True
+
+
+def test_juniors_colonie_hospitality_recall() -> None:
+    juniors = match_post(
+        'The hospitality group is taking over a location in Colonie.',
+        alt_text="BMT Hospitality to open another Junior's",
+    )
+    assert juniors.matched is True
+    assert juniors.reason == 'colonie_local'
+
+    bare = match_post('The hospitality group is taking over a location in Colonie.')
+    assert bare.matched is False
+    assert bare.reason == 'bare_colonie'
