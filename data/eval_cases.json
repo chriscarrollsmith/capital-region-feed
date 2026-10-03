@@ -10092,5 +10092,166 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-10-02 audit: Troy Parrott soccer near-miss (already drops)"
+  },
+  {
+    "id": "fp-egg-brussels-xtef-1003",
+    "text": "On 18 November 2026, the fourth xTEF event brings Europe's four sectorial AI Testing and Experimentation Facilities under one roof at The EGG in Brussels. Read more and register.",
+    "expected": false,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-03 audit FP: Brussels The EGG venue unlocked Albany The Egg"
+  },
+  {
+    "id": "fp-egg-festival-vtuber-1003",
+    "text": "Had lots of fun together with the cuet bnuy — we took part at the egg festival and the bnuy did win!",
+    "expected": false,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-03 audit FP: egg festival matched at the egg venue"
+  },
+  {
+    "id": "tp-egg-jazz-tonight-1003",
+    "text": "Join us tonight at The Egg for jazz.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-03 audit TP counterpart: Albany The Egg with event cue"
+  },
+  {
+    "id": "fp-stena-scotia-rotterdam-1003",
+    "text": "Stena Line zet twee eigen schepen in op vrachtverbinding Rotterdam-Harwich. De Stena Hibernia en Stena Scotia vervangen de momenteel gecharterde Mistral.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-03 audit FP: Stena Scotia ship + Rotterdam multi_local"
+  },
+  {
+    "id": "tp-scotia-ny-board-1003",
+    "text": "Town board meets in Scotia, NY tonight.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-03 audit TP counterpart: Village of Scotia NY"
+  },
+  {
+    "id": "fp-jerkens-keeneland-workout-1003",
+    "text": "Breeders' Cup Sprint hopefuls missed English workout at Keeneland. He progressed with a 3-length victory in the Grade 1 H. Allen Jerkens Memorial.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-03 audit FP: Jerkens Memorial prior form in Keeneland Breeders Cup wire"
+  },
+  {
+    "id": "fp-personal-ensign-keeneland-1003",
+    "text": "Fully Subscribed heads the Oct. 4 Spinster at Keeneland after wins in the Shuvee and Personal Ensign.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-03 audit FP: Personal Ensign prior form in Keeneland Spinster card"
+  },
+  {
+    "id": "tp-jerkens-memorial-preview-1003",
+    "text": "Mike Welsch previews the Grade 1, $500,000 H. Allen Jerkens Memorial.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-03 audit TP counterpart: Jerkens Memorial without Keeneland"
+  },
+  {
+    "id": "tp-saratoga-special-keeneland-credit-1003",
+    "text": "Saratoga maiden winner Forever Carina is entered in the Grade I Alcibiades Stakes at Keeneland today. Shot for The Saratoga Special",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-03 audit TP: The Saratoga Special press credit keeps Keeneland form copy"
+  },
+  {
+    "id": "tp-juniors-colonie-hospitality-1003",
+    "text": "The hospitality group is taking over a location in Colonie.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "BMT Hospitality to open another Junior's",
+    "note": "2026-10-03 audit FN: Junior's / BMT Hospitality in Colonie"
+  },
+  {
+    "id": "tn-bare-colonie-location-1003",
+    "text": "The hospitality group is taking over a location in Colonie.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-03 audit: bare Colonie without Junior's/BMT still drops"
+  },
+  {
+    "id": "tn-malta-football-centre-1003",
+    "text": "Malta's New Football Centre Provides Players With Professional Training Facilities",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-03 audit rematch-drop: country of Malta football (already drops)"
+  },
+  {
+    "id": "tn-bethlehem-nh-map-1003",
+    "text": "Bird's eye view of Bethlehem, Grafton County, N.H. 1883 By: Poole & Norris",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-03 audit rematch-drop: Bethlehem NH antique map (already drops)"
+  },
+  {
+    "id": "tn-saratoga-ca-resist-bot-1003",
+    "text": "From a constituent in Saratoga, CA",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-03 audit rematch-drop: Saratoga CA constituent bot (already drops)"
+  },
+  {
+    "id": "tp-yaddo-saratoga-springs-1003",
+    "text": "Renowned artist residency program Yaddo in Saratoga Springs, New York, has appointed Cyra Levenson as its new president.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-03 audit TP: Yaddo / Saratoga Springs keep"
+  },
+  {
+    "id": "tp-stewarts-shops-recall-saratoga-1003",
+    "text": "Stewart's Shops Corp. of Saratoga Springs, New York, is recalling two flavors of its half-gallon ice cream.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-03 audit TP: Stewart's Shops Saratoga Springs recall"
   }
 ]

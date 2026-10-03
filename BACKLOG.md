@@ -538,6 +538,28 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-110 — Daily feed audit: Brussels The EGG / egg festival, Stena Scotia+Rotterdam, Keeneland Jerkens/Personal Ensign; Junior's Colonie FN
+- **Status:** in progress
+- **Why:** 2026-10-03 audit of last-24h AppView feed (~115 posts since 2026-10-02T09:01Z)
+  found active FPs after unmerged #85 lineage: `coordinatef` Europe xTEF card `at The
+  EGG in Brussels` and VT `at the egg festival` kept as `event_local_venue:at the egg`;
+  Dutch `transportonline` Stena Line Rotterdam–Harwich freight card kept as
+  `multi_local_places` via ship name `Stena Scotia`; mlbmania/mlbnews24 Keeneland
+  Breeders' Cup workout wires and BloodHorse Keeneland Spinster cards kept via
+  strong-positive `H. Allen Jerkens` / `Personal Ensign` prior-form mentions. FN:
+  bizjournals `Junior's` / BMT Hospitality opening in Colonie (`bare_colonie` without
+  link-card title). Rematch already drops Dutch AD/Malta/Bethlehem NH/Saratoga CA
+  stale index rows (~25). Residual: bare Albany job spam; allowlisted non-local;
+  WAMC / Siena intentional; The Saratoga Special press credits at Keeneland; Albany
+  rename jokes with NYC context; ~25 rematch-drops until purge.
+- **Work:**
+  - Expand Egg off-region cues (Brussels/Europe/egg festival) + venue lookahead;
+    Scotia ship / Stena Line+Rotterdam/Harwich conflict; Keeneland stakes-away gate
+    for Jerkens / Personal Ensign; Colonie local Junior's / BMT Hospitality cues;
+    grow eval with 2026-10-03 FP/TP/FN anchors (builds on #85 / B-109).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-109 — Daily feed audit: Dutch Rotterdam burgemeester/NYC summit, Fredericton Capital Region, Burnt Hills USPS multi-state; Viaport / Northern Rivers / Parting Glass / Preservation Hall FNs
 - **Status:** done ([#85](https://github.com/chriscarrollsmith/capital-region-feed/pull/85))
 - **Why:** 2026-10-02 audit of last-24h AppView feed (~110 posts since 2026-10-01T09:02Z)
