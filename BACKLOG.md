@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-110 — Daily feed audit: Brussels The EGG / egg festival, Stena Scotia+Rotterdam, Keeneland Jerkens/Personal Ensign; Junior's Colonie FN
-- **Status:** in progress
+- **Status:** done ([#86](https://github.com/chriscarrollsmith/capital-region-feed/pull/86))
 - **Why:** 2026-10-03 audit of last-24h AppView feed (~115 posts since 2026-10-02T09:01Z)
   found active FPs after unmerged #85 lineage: `coordinatef` Europe xTEF card `at The
   EGG in Brussels` and VT `at the egg festival` kept as `event_local_venue:at the egg`;
