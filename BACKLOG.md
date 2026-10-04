@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-111 — Daily feed audit: Troy ACCNYC pet, USPS Duanesburg/Slingerlands multi-state; Saratoga Springs library/rankings / Thirty Year Farm / Funny Bone / food scene / Cook Park FNs
-- **Status:** in progress
+- **Status:** done ([#87](https://github.com/chriscarrollsmith/capital-region-feed/pull/87))
 - **Why:** 2026-10-04 audit of last-24h AppView feed (~90 posts since 2026-10-03T09:02Z)
   found active FPs after unmerged #86 lineage: `mmpvoirdire` ACCNYC Queens urgency card
   named pet `Troy 204602` kept as `ambiguous_with_context:troy` via NYC/Queens; national
