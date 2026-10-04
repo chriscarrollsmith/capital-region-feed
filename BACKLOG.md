@@ -538,6 +538,29 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-111 — Daily feed audit: Troy ACCNYC pet, USPS Duanesburg/Slingerlands multi-state; Saratoga Springs library/rankings / Thirty Year Farm / Funny Bone / food scene / Cook Park FNs
+- **Status:** in progress
+- **Why:** 2026-10-04 audit of last-24h AppView feed (~90 posts since 2026-10-03T09:02Z)
+  found active FPs after unmerged #86 lineage: `mmpvoirdire` ACCNYC Queens urgency card
+  named pet `Troy 204602` kept as `ambiguous_with_context:troy` via NYC/Queens; national
+  `every-usps-box` dumps listing `DUANESBURG NY` / `SLINGERLANDS NY` beside WI/CO/IA/LA/WV/FL
+  ZIPs kept as strong Cap Region places (Burnt Hills gate was too narrow). FNs: Saratoga
+  Springs Public Library / America’s best-small-cities ranking cards and Thirty Year Farm
+  weanling posts (`ambiguous_no_context:saratoga[ springs]`); singular `Albany Funny Bone`
+  / `Albany food scene` (`bare_albany`); Cook Park Colonie Walk for Wildwood
+  (`bare_colonie`). Rematch already drops Malta/Brunswick NC/Troy Trojans/Rotterdam NL
+  stale index rows (~17). Residual: bare Albany job spam; allowlisted non-local; WAMC /
+  Siena intentional; The Saratoga Special@Belmont press credits; Albany rename jokes;
+  eBay seller-location Schenectady lists; ~17 rematch-drops until purge.
+- **Work:**
+  - Troy NYC Animal Care / ACCNYC pet-name gate; expand USPS multi-state dumps from
+    Burnt Hills to Duanesburg / Slingerlands; strong positives for Saratoga Springs
+    Public Library / rankings / Thirty Year Farm / Troy Record / Funny Bone singular /
+    Albany food scene / Stacks Espresso; Colonie Cook Park local cue; grow eval with
+    2026-10-04 FP/TP/FN anchors (builds on #86 / B-110).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-110 — Daily feed audit: Brussels The EGG / egg festival, Stena Scotia+Rotterdam, Keeneland Jerkens/Personal Ensign; Junior's Colonie FN
 - **Status:** done ([#86](https://github.com/chriscarrollsmith/capital-region-feed/pull/86))
 - **Why:** 2026-10-03 audit of last-24h AppView feed (~115 posts since 2026-10-02T09:01Z)

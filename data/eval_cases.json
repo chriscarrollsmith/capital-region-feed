@@ -10253,5 +10253,166 @@
     "split": "dev",
     "regression": true,
     "note": "2026-10-03 audit TP: Stewart's Shops Saratoga Springs recall"
+  },
+  {
+    "id": "fp-troy-nyc-animal-acc-204602-1004",
+    "text": "URGENT LIST. This sweet boy is located at the NYC Animal Care Center NYC QUEENS LOCATION. accnyc.org",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Troy 204602 back again and in need! YouTube video by Rachel Bennett",
+    "note": "2026-10-04 audit FP: ACCNYC pet named Troy unlocked via NYC/Queens"
+  },
+  {
+    "id": "tp-troy-record-coverage-1004",
+    "text": "Thank you Troy Record for the coverage of tonight's council meeting.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-04 audit TP: Troy Record newspaper counterpart to ACCNYC pet FP"
+  },
+  {
+    "id": "fp-usps-duanesburg-multi-state-1004",
+    "text": "PO LOBBY: 16771 S MAIN ST, GALESVILLE WI 54630\nBLUE BOX: 2150 W 29TH AVE, DENVER CO 80211\nPO LOBBY: 7000 DUANESBURG RD, DUANESBURG NY 12056\nPO LOBBY: 609 MAPLE ST, FENTON IA 50539",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-04 audit FP: every-usps-box Duanesburg NY beside WI/CO/IA ZIPs"
+  },
+  {
+    "id": "fp-usps-slingerlands-multi-state-1004",
+    "text": "BLUE BOX: 707 8TH ST, COLFAX LA 71417\nPO LOBBY: 1214 3RD ST, MOUNDSVILLE WV 26041\nBLUE BOX: 1011 MAITLAND CENTER COMMONS BLVD, MAITLAND FL 32751\nPO LOBBY: 1399 NEW SCOTLAND RD, SLINGERLANDS NY 12159",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-04 audit FP: every-usps-box Slingerlands NY beside LA/WV/FL ZIPs"
+  },
+  {
+    "id": "tp-duanesburg-delay-albany-ny-1004",
+    "text": "Duanesburg Central delayed opening (#AlbanyNY).",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-04 audit TP: Cap Region Duanesburg counterpart to USPS multi-state FP"
+  },
+  {
+    "id": "fn-saratoga-springs-public-library-1004",
+    "text": "Trevor Oakley, librarian at the Saratoga Springs Public Library, has been snapping shots of horror authors for years.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-04 audit FN: Saratoga Springs Public Library without , NY"
+  },
+  {
+    "id": "fn-saratoga-springs-best-small-cities-1004",
+    "text": "Saratoga Springs ranked No. 5 among America's best small cities for 2026, recognized for quality of life, amenities, culture, safety, and walkability.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-04 audit FN: Saratoga Springs city ranking card without , NY"
+  },
+  {
+    "id": "fn-thirty-year-farm-saratoga-1004",
+    "text": "Weanlings at Thirty Year Farm in Saratoga, fall 2025.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-04 audit FN: Cap Region Thoroughbred nursery bare Saratoga"
+  },
+  {
+    "id": "fn-albany-funny-bone-singular-1004",
+    "text": "The Albany Funny Bone will be hosting multiple stand-up performances by Jersey Shore star Vinny Guadagnino on January 22 and 23.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-04 audit FN: singular Funny Bone with Albany (prior gate was plural only)"
+  },
+  {
+    "id": "fn-albany-food-scene-1004",
+    "text": "So, I think the Albany food scene punches below its weight for a city of its size, but these are the reasons why.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-04 audit FN: Albany food scene commentary without , NY"
+  },
+  {
+    "id": "fn-cook-park-colonie-wildwood-1004",
+    "text": "Were you Seen at the Walk for Wildwood on Sept. 26, 2026, at Cook Park in Colonie?",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-04 audit FN: Cook Park Colonie community walk without , NY"
+  },
+  {
+    "id": "fn-stacks-espresso-bar-1004",
+    "text": "Pumpkin lattes at Stacks Espresso Bar this fall.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-04 audit FN: Stacks Espresso Bar without placename"
+  },
+  {
+    "id": "tn-funny-bones-dayton-1004",
+    "text": "Caught a set at Funny Bones in Dayton last night.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-04 audit TN: other-city Funny Bone franchise stays out"
+  },
+  {
+    "id": "tp-troy-ny-animal-shelter-local-1004",
+    "text": "Adoptable pups at the Troy, NY municipal shelter need fosters this weekend.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-04 audit TP: real Troy NY shelter counterpart to ACCNYC pet FP"
+  },
+  {
+    "id": "tn-malta-price-hike-fruit-1004",
+    "text": "Minister urges quick LCs to boost fruit imports, orders action against any unjustified malta price hike",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-04 audit TN: malta fruit commodity price (island/Europe) rematch-drop residual"
+  },
+  {
+    "id": "tn-brunswick-county-nc-dems-1004",
+    "text": "Thanks to our new outreach tool, Brunswick County Dems (NC) had a whopping 115 people turn out to their latest volunteer event.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-04 audit TN: Brunswick County NC politics rematch-drop residual"
   }
 ]
