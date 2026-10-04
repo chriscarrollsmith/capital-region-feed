@@ -394,15 +394,33 @@ _STRONG_POSITIVE = re.compile(
       | gio\s+ponti\s+stakes\b
       | gio\s+ponti\b[\s\S]{0,80}\b(?:stakes|meet|saratoga|race\s+course|card|turf|won|wins?)\b
       | \b(?:stakes|meet|saratoga|race\s+course|card|turf|won|wins?)\b[\s\S]{0,80}gio\s+ponti\b
-      # Funny Bones (Albany-area comedy club) often omits ", NY".
-      | funny\s+bones[\s\S]{0,60}\b(?:albany|latham|colonie)\b
-      | \b(?:albany|latham|colonie)\b[\s\S]{0,60}funny\s+bones\b
+      # Funny Bone(s) (Albany-area comedy club) often omits ", NY".
+      # Singular "Funny Bone" appears in venue wires; plural is the club brand.
+      | funny\s+bones?[\s\S]{0,60}\b(?:albany|latham|colonie)\b
+      | \b(?:albany|latham|colonie)\b[\s\S]{0,60}funny\s+bones?\b
+      # Distinctive local dining / food-scene copy often omits ", NY".
+      | albany\s+food\s+scene\b
+      | stacks\s+espresso(?:\s+bar)?\b
+      # Saratoga Springs Public Library / civic ranking wires often omit ", NY".
+      | saratoga\s+springs\s+public\s+library\b
+      | saratoga\s+springs\s+ranked\b
+      | ranked[\s\S]{0,80}saratoga\s+springs\b
+      | saratoga\s+springs[\s\S]{0,80}(?:
+            best\s+small\s+cities|america['\u2019]?s\s+best\s+small
+          )
+      | (?:
+            best\s+small\s+cities|america['\u2019]?s\s+best\s+small
+          )[\s\S]{0,80}saratoga\s+springs\b
+      # Cap Region Thoroughbred nursery — race cards often say bare Saratoga.
+      | thirty\s+year\s+farm\b
       # America250 / Revolutionary tourism often pairs bare Saratoga.
       | \bamerica\s*250\b[\s\S]{0,120}\bsaratoga\b
       | \bsaratoga\b[\s\S]{0,120}\bamerica\s*250\b
       # Historic Troy Iron Works / Nail Factory tourism often omits ", NY".
       | troy\s+iron\s+and\s+nail(?:\s+factory)?\b
       | iron\s+and\s+nail\s+factory\b
+      # Troy Record (local newspaper) bylines / shout-outs often omit ", NY".
+      | troy\s+record\b
       # Downtown Albany / Troy redevelopment wires often omit ", NY".
       | downtown\s+albany\b
       | downtown\s+troy\b
@@ -1750,18 +1768,26 @@ _BURNT_HILLS_DESCRIPTIVE = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
-# National USPS / mailbox dump bots list Burnt Hills NY beside out-of-state ZIPs.
+# National USPS / mailbox dump bots list Cap Region places beside out-of-state ZIPs.
 _OTHER_STATE_ZIP = (
     r'(?-i:\b(?:'
     r'AL|AK|AZ|AR|CA|CO|CT|DE|FL|GA|HI|ID|IL|IN|IA|KS|KY|LA|ME|MD|MA|MI|MN|MS|MO|'
     r'MT|NE|NV|NH|NJ|NM|NC|ND|OH|OK|OR|PA|RI|SC|SD|TN|TX|UT|VT|VA|WA|WV|WI|WY'
     r')\b)\s+\d{5}\b'
 )
-_BURNT_HILLS_MULTI_STATE = re.compile(
+# Cap Region places seen in national mailbox dumps beside out-of-state ZIPs.
+# Keep this list narrow: some single Cap Region rows in dump bots are intentional
+# keeps (e.g. Wynantskill alone with one PA ZIP).
+_CAP_REGION_USPS_PLACE = (
+    r'(?:'
+    r'burnt\s+hills|duanesburg|slingerlands'
+    r')'
+)
+_USPS_MULTI_STATE = re.compile(
     rf"""
     (?:
-        burnt\s+hills\s*,?\s*ny\s+\d{{5}}[\s\S]{{0,500}}(?:{_OTHER_STATE_ZIP})
-      | (?:{_OTHER_STATE_ZIP})[\s\S]{{0,500}}burnt\s+hills\s*,?\s*ny\s+\d{{5}}
+        {_CAP_REGION_USPS_PLACE}\s*,?\s*ny\s+\d{{5}}[\s\S]{{0,500}}(?:{_OTHER_STATE_ZIP})
+      | (?:{_OTHER_STATE_ZIP})[\s\S]{{0,500}}{_CAP_REGION_USPS_PLACE}\s*,?\s*ny\s+\d{{5}}
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -2424,6 +2450,35 @@ _SCHENECTADY_STYLE = re.compile(
     re.IGNORECASE,
 )
 
+# NYC Animal Care Center / ACCNYC share cards name pets "Troy ####" — not City of Troy.
+# Queens / ACCNYC copy unlocks via bare NYC context unless gated.
+_TROY_NYC_ANIMAL = re.compile(
+    r"""
+    (?:
+        # Shelter ID style common on ACCNYC urgency cards.
+        \btroy\s+\d{5,}\b
+      | (?:
+            \baccnyc\b
+          | accnyc\.org
+          | nyc\s+animal\s+care
+          | animal\s+care\s+center[\s\S]{0,40}\bnyc\b
+          | \bnyc\b[\s\S]{0,40}animal\s+care\s+center
+          | queens\s+location
+          | \bacc\s+nyc\b
+        )[\s\S]{0,240}\btroy\b
+      | \btroy\b[\s\S]{0,240}(?:
+            \baccnyc\b
+          | accnyc\.org
+          | nyc\s+animal\s+care
+          | animal\s+care\s+center
+          | queens\s+location
+          | \bacc\s+nyc\b
+        )
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
 # Conversational "Firstname and Troy," person address — not the city.
 # Keep Cap Region place lists ("Albany and Troy, NY") via the NY/place rescue below.
 _TROY_PERSON_NAME = re.compile(
@@ -2756,6 +2811,9 @@ _COLONIE_LOCAL = re.compile(
       | \bcolonie\b[\s\S]{0,100}junior['\u2019]?s
       | bmt\s+hospitality[\s\S]{0,100}\bcolonie\b
       | \bcolonie\b[\s\S]{0,100}bmt\s+hospitality
+      # Cook Park (Colonie) community events often omit ", NY".
+      | cook\s+park[\s\S]{0,60}\bcolonie\b
+      | \bcolonie\b[\s\S]{0,60}cook\s+park
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -3488,11 +3546,18 @@ def _burnt_hills_descriptive_conflict(haystack: str) -> bool:
     return not _ny_capital_region_context(haystack)
 
 
+def _usps_multi_state_conflict(haystack: str) -> bool:
+    """True when a Cap Region place NY ZIP appears in a multi-state USPS dump."""
+    if not re.search(_CAP_REGION_USPS_PLACE, haystack, flags=re.IGNORECASE):
+        return False
+    return _USPS_MULTI_STATE.search(haystack) is not None
+
+
 def _burnt_hills_multi_state_conflict(haystack: str) -> bool:
-    """True when Burnt Hills NY appears in a multi-state USPS address dump."""
+    """Backward-compatible alias for Burnt Hills USPS multi-state dumps."""
     if not re.search(r'burnt\s+hills', haystack, flags=re.IGNORECASE):
         return False
-    return _BURNT_HILLS_MULTI_STATE.search(haystack) is not None
+    return _usps_multi_state_conflict(haystack)
 
 
 def _rensselaer_roblox_conflict(haystack: str) -> bool:
@@ -4030,6 +4095,30 @@ def _albany_bandscan_conflict(haystack: str) -> bool:
           | capital\s+(?:region|district)\b
           | \bschenectady\b
           | \btroy\s*,?\s*(?:ny|n\.y\.)\b
+        )
+        """,
+        haystack,
+        flags=re.IGNORECASE | re.VERBOSE,
+    ):
+        return False
+    return True
+
+
+def _troy_nyc_animal_conflict(haystack: str) -> bool:
+    """True when Troy is an ACCNYC pet name, not City of Troy NY."""
+    if not re.search(r'\btroy\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not _TROY_NYC_ANIMAL.search(haystack):
+        return False
+    # Real place mentions still keep (Troy Record coverage of shelters is local).
+    if re.search(
+        r"""
+        (?:
+            \btroy\s*,?\s*(?:ny|n\.y\.|new\s+york)\b
+          | (?<!ancient\s)city\s+of\s+troy
+          | troy\s+(?:street|avenue|ave|record|police|pd)\b
+          | \balbany\s+and\s+troy\b
+          | downtown\s+troy\b
         )
         """,
         haystack,
@@ -4619,8 +4708,8 @@ def match_post(
             return MatchResult(False, 'hard_negative:japan_capital_district')
         if _burnt_hills_descriptive_conflict(haystack):
             return MatchResult(False, 'hard_negative:burnt_hills_descriptive')
-        if _burnt_hills_multi_state_conflict(haystack):
-            return MatchResult(False, 'hard_negative:burnt_hills_multi_state')
+        if _usps_multi_state_conflict(haystack):
+            return MatchResult(False, 'hard_negative:usps_multi_state')
         if _loudonville_oh_conflict(haystack, author_handle):
             return MatchResult(False, 'hard_negative:loudonville_oh')
         if _times_union_photo_credit_conflict(haystack):
@@ -4712,6 +4801,8 @@ def match_post(
                 return MatchResult(False, 'hard_negative:troy_michigan')
             if _troy_sc_conflict(haystack, author_handle) and 'troy' in multi_eligible:
                 return MatchResult(False, 'hard_negative:troy_sc')
+            if _troy_nyc_animal_conflict(haystack) and 'troy' in multi_eligible:
+                return MatchResult(False, 'hard_negative:troy_nyc_animal')
             if _troy_person_name_conflict(haystack) and 'troy' in multi_eligible:
                 return MatchResult(False, 'hard_negative:troy_person_name')
             if _troy_pa_conflict(haystack) and 'troy' in multi_eligible:
@@ -4852,6 +4943,9 @@ def match_post(
 
         if term == 'troy' and _troy_sc_conflict(haystack, author_handle):
             return MatchResult(False, 'hard_negative:troy_sc')
+
+        if term == 'troy' and _troy_nyc_animal_conflict(haystack):
+            return MatchResult(False, 'hard_negative:troy_nyc_animal')
 
         if term == 'troy' and _troy_person_name_conflict(haystack):
             return MatchResult(False, 'hard_negative:troy_person_name')

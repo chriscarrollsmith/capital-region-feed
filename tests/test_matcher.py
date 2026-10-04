@@ -4050,10 +4050,94 @@ def test_burnt_hills_multi_state_usps_dump_not_town() -> None:
         'PO LOBBY: 16015 CAIRNWAY DR, HOUSTON TX 77084'
     )
     assert usps.matched is False
-    assert usps.reason == 'hard_negative:burnt_hills_multi_state'
+    assert usps.reason == 'hard_negative:usps_multi_state'
 
     keep = match_post('Burnt Hills-Ballston Lake delayed opening (#AlbanyNY).')
     assert keep.matched is True
+
+
+def test_usps_multi_state_duanesburg_slingerlands_not_local_only() -> None:
+    duanesburg = match_post(
+        'PO LOBBY: 16771 S MAIN ST, GALESVILLE WI 54630\n'
+        'BLUE BOX: 2150 W 29TH AVE, DENVER CO 80211\n'
+        'PO LOBBY: 7000 DUANESBURG RD, DUANESBURG NY 12056\n'
+        'PO LOBBY: 609 MAPLE ST, FENTON IA 50539'
+    )
+    assert duanesburg.matched is False
+    assert duanesburg.reason == 'hard_negative:usps_multi_state'
+
+    slingerlands = match_post(
+        'BLUE BOX: 707 8TH ST, COLFAX LA 71417\n'
+        'PO LOBBY: 1214 3RD ST, MOUNDSVILLE WV 26041\n'
+        'BLUE BOX: 1011 MAITLAND CENTER COMMONS BLVD, MAITLAND FL 32751\n'
+        'PO LOBBY: 1399 NEW SCOTLAND RD, SLINGERLANDS NY 12159'
+    )
+    assert slingerlands.matched is False
+    assert slingerlands.reason == 'hard_negative:usps_multi_state'
+
+    keep = match_post('Duanesburg Central delayed opening (#AlbanyNY).')
+    assert keep.matched is True
+
+
+def test_troy_nyc_animal_care_pet_not_city() -> None:
+    pet = match_post(
+        'URGENT LIST. This sweet boy is located at the NYC Animal Care Center '
+        'NYC QUEENS LOCATION. accnyc.org',
+        alt_text='Troy 204602 back again and in need! YouTube video by Rachel Bennett',
+    )
+    assert pet.matched is False
+    assert pet.reason == 'hard_negative:troy_nyc_animal'
+
+    keep = match_post('Thank you Troy Record for the coverage of tonight’s council meeting.')
+    assert keep.matched is True
+    assert keep.reason == 'strong_positive'
+
+
+def test_saratoga_springs_library_rankings_thirty_year_farm_recall() -> None:
+    library = match_post(
+        'Trevor Oakley, librarian at the Saratoga Springs Public Library, has '
+        'been snapping shots of horror authors for years.'
+    )
+    assert library.matched is True
+    assert library.reason == 'strong_positive'
+
+    ranked = match_post(
+        'Saratoga Springs ranked No. 5 among America’s best small cities for '
+        '2026, recognized for quality of life, amenities, culture, safety, '
+        'and walkability.'
+    )
+    assert ranked.matched is True
+    assert ranked.reason == 'strong_positive'
+
+    farm = match_post('Weanlings at Thirty Year Farm in Saratoga, fall 2025.')
+    assert farm.matched is True
+    assert farm.reason == 'strong_positive'
+
+
+def test_albany_funny_bone_food_scene_cook_park_recall() -> None:
+    funny = match_post(
+        'The Albany Funny Bone will be hosting multiple stand-up performances '
+        'by “Jersey Shore” star Vinny Guadagnino on January 22 and 23.'
+    )
+    assert funny.matched is True
+    assert funny.reason == 'strong_positive'
+
+    food = match_post(
+        'So, I think the Albany food scene punches below its weight for a '
+        'city of its size, but these are the reasons why.'
+    )
+    assert food.matched is True
+    assert food.reason == 'strong_positive'
+
+    cook = match_post(
+        'Were you Seen at the Walk for Wildwood on Sept. 26, 2026, at Cook Park in Colonie?'
+    )
+    assert cook.matched is True
+    assert cook.reason == 'colonie_local'
+
+    stacks = match_post('Pumpkin lattes at Stacks Espresso Bar this fall.')
+    assert stacks.matched is True
+    assert stacks.reason == 'strong_positive'
 
 
 def test_viaport_northern_rivers_parting_glass_preservation_hall_recall() -> None:
