@@ -530,8 +530,12 @@ _STRONG_POSITIVE = re.compile(
       # Farm cidery / cider works in Albany (Canada trade / agri wires).
       | (?:farm\s+)?cidery[\s\S]{0,60}\balbany\b
       | \balbany\b[\s\S]{0,60}(?:farm\s+)?cidery
-      # Park Playhouse (Washington Park, Albany).
-      | park\s+playhouse\b
+      # Park Playhouse (Washington Park, Albany) — not Winter Park Playhouse (FL).
+      | (?<!\bwinter\s)park\s+playhouse\b
+      # Town of Rotterdam Elks Lodge / scholarship dinners often omit ", NY".
+      | rotterdam\s+elks(?:\s+lodge)?\b
+      # Mohawk Hudson Humane Society shelter wires often omit placenames.
+      | mohawk\s+hudson(?:\s+humane(?:\s+society)?)?\b
       # Town of New Scotland — not "a new Scotland" / "New Scotland Shirt".
       | new\s+scotland(?:\s*,?\s*ny\b|\s+town\b)
       # New Scotland Avenue (Albany) sports-bar / corridor copy often omits ", NY".
@@ -1905,6 +1909,14 @@ _MALTA_EUROPE = re.compile(
       | \brotterdam\b[\s\S]{0,160}architecture\s+(?:&|and)\s+design
       | \b(?:paris|london|hong\s+kong|detroit)\b[\s\S]{0,220}\brotterdam\b
       | \brotterdam\b[\s\S]{0,220}\b(?:paris|london|hong\s+kong|detroit)\b
+      # Dutch copy uses Parijs / Londen (not Paris / London) next to Rotterdam.
+      | \b(?:parijs|londen)\b[\s\S]{0,220}\brotterdam\b
+      | \brotterdam\b[\s\S]{0,220}\b(?:parijs|londen)\b
+      # Rotterdam-Zuid fashion week / Trouw binnenland cards + bare "New York".
+      | rotterdam[\s\-]+zuid\b
+      | fashion\s+week[\s\S]{0,80}\brotterdam\b
+      | \brotterdam\b[\s\S]{0,80}fashion\s+week
+      | trouw\.nl
       # Artist bios: Glasgow/Scotland → Rotterdam → Chicago / Cape Cod / NYC.
       | \bglasgow\b[\s\S]{0,240}\brotterdam\b
       | \brotterdam\b[\s\S]{0,240}\bglasgow\b
@@ -2301,14 +2313,15 @@ _CLIFTON_PARK_OH = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
-# Bethlehem, Pennsylvania (SteelStacks / Lehigh Valley) — not Town of Bethlehem NY.
+# Bethlehem, Pennsylvania (SteelStacks / Lehigh Valley) or Bethlehem, Maryland
+# (USPS / Eastern Shore) — not Town of Bethlehem NY.
 _BETHLEHEM_PA = re.compile(
     r"""
     (?:
-        bethlehem\s*,?\s*(?:pa|pennsylvania)\b
+        bethlehem\s*,?\s*(?:pa|pennsylvania|md|maryland)\b
       | bethlehem\s+area\b
-      | bethlehem[\s\S]{0,160}\b(?:pa|pennsylvania|philly|philadelphia)\b
-      | \b(?:pa|pennsylvania|philly|philadelphia)\b[\s\S]{0,160}bethlehem
+      | bethlehem[\s\S]{0,160}\b(?:pa|pennsylvania|philly|philadelphia|md|maryland)\b
+      | \b(?:pa|pennsylvania|philly|philadelphia|md|maryland)\b[\s\S]{0,160}bethlehem
       # Travel/heritage cards often omit ", PA" (CNN steel town / UNESCO / SteelStacks).
       # Lehigh Valley Morning Call / Allentown–Easton civic copy likewise omits ", PA".
       | bethlehem[\s\S]{0,220}(?:
@@ -3856,7 +3869,7 @@ def _gta_albany_conflict(haystack: str) -> bool:
 
 
 def _bethlehem_pa_conflict(haystack: str) -> bool:
-    """True when Bethlehem refers to Pennsylvania, not Town of Bethlehem NY."""
+    """True when Bethlehem refers to PA or MD, not Town of Bethlehem NY."""
     if not re.search(r'\bbethlehem\b', haystack, flags=re.IGNORECASE):
         return False
     if not _BETHLEHEM_PA.search(haystack):

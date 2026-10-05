@@ -4140,6 +4140,66 @@ def test_albany_funny_bone_food_scene_cook_park_recall() -> None:
     assert stacks.reason == 'strong_positive'
 
 
+def test_winter_park_playhouse_not_albany_park_playhouse() -> None:
+    orlando = match_post(
+        'After a decade, “Rat Pack Lounge” is back with an almost all-new production '
+        'at Winter Park Playhouse. I checked it out.',
+        alt_text='At Winter Park Playhouse, good-time ‘Rat Pack’ is back | Review',
+    )
+    assert orlando.matched is False
+
+    keep = match_post('Park Playhouse is back in Washington Park with free seats.')
+    assert keep.matched is True
+    assert keep.reason == 'strong_positive'
+
+
+def test_dutch_rotterdam_zuid_fashion_week_not_town() -> None:
+    dutch = match_post(
+        'In Rotterdam-Zuid houden ze hun eigen fashion week: geen champagne maar halve liters bier',
+        alt_text=(
+            'In Rotterdam-Zuid houden ze hun eigen fashion week: geen champagne maar '
+            'halve liters bier Na Parijs, Londen en New York heeft nu ook Rotterdam-Zuid '
+            'een eigen Fashion Week. Die moet een brug slaan tussen de inwoners van het '
+            'snel veranderde stadsdeel.'
+        ),
+    )
+    assert dutch.matched is False
+    assert dutch.reason == 'hard_negative:malta_europe'
+
+    keep = match_post('Town of Rotterdam Thruway exit closed overnight (#AlbanyNY).')
+    assert keep.matched is True
+
+
+def test_bethlehem_md_usps_dump_not_town() -> None:
+    usps = match_post(
+        'PO LOBBY: 22015 DOVER BRIDGE RD, BETHLEHEM MD 21609\n'
+        'BLUE BOX: 420 KENYON RD, FORT DODGE IA 50501\n'
+        'PO LOBBY: 817 E DALE ST, NEW IBERIA LA 70560\n'
+        'BLUE BOX: 1900 LEXINGTON AVE, NEW YORK NY 10035'
+    )
+    assert usps.matched is False
+    assert usps.reason == 'hard_negative:bethlehem_pa'
+
+    keep = match_post('Bethlehem Town Board meets Thursday at Town Hall.')
+    assert keep.matched is True
+
+
+def test_rotterdam_elks_mohawk_hudson_recall() -> None:
+    elks = match_post(
+        'Stopped by today’s LORE Harvest Dinner at the Rotterdam Elks Lodge to '
+        'support their Scholarship Fund!'
+    )
+    assert elks.matched is True
+    assert elks.reason == 'strong_positive'
+
+    humane = match_post(
+        'The Mohawk Hudson Humane Society has temporarily paused all on-site cat '
+        'adoptions following suspected cases of feline panleukopenia.'
+    )
+    assert humane.matched is True
+    assert humane.reason == 'strong_positive'
+
+
 def test_viaport_northern_rivers_parting_glass_preservation_hall_recall() -> None:
     viaport = match_post(
         'Meeting with the Viaport Mall in Rotterdam — discussing some space that may '

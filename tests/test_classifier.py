@@ -206,6 +206,15 @@ def test_center_square_wire_byline_is_not_local_micro() -> None:
     )
     assert source.matched is False
 
+    # Prose attribution without paren/dash: "told The Center Square" / "asked".
+    told = match_post(
+        'GAO: NASA has no single cost estimate for Moon-to-Mars program\n\n'
+        'NASA has not provided a single total cost estimate for its Moon-to-Mars '
+        'effort, a federal auditor told The Center Square, because the agency does '
+        'not maintain one. The Center Square asked NASA for…'
+    )
+    assert told.matched is False
+
 
 def test_crossgates_tammany_and_chippewa_river_street_not_local_micro() -> None:
     la = match_post(

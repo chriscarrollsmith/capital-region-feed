@@ -101,6 +101,9 @@ _CENTER_SQUARE_WIRE = re.compile(
       | [-–—]\s*the\s+center\s+square\b
       | \band\s+the\s+center\s+square\b
       | the\s+center\s+square\s+reports\b
+      # Prose attributions: "told The Center Square" / "The Center Square asked".
+      | (?:told|asks?|asked|says?|said|reports?|reported)\s+the\s+center\s+square\b
+      | the\s+center\s+square\s+(?:asked|asks?|says?|said|reports?|reported|told)\b
       # NewsBreak / aggregator bylines: "Source: The Center Square".
       | (?:source|via|byline)\s*:\s*the\s+center\s+square\b
       | newsbreak[\s\S]{0,100}the\s+center\s+square\b
