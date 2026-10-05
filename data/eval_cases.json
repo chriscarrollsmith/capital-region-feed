@@ -10414,5 +10414,125 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-10-04 audit TN: Brunswick County NC politics rematch-drop residual"
+  },
+  {
+    "id": "fp-winter-park-playhouse-orlando-1005",
+    "text": "After a decade, “Rat Pack Lounge” is back with an almost all-new production at Winter Park Playhouse. I checked it out.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-05 audit FP: Orlando Sentinel Winter Park Playhouse matched park playhouse strong positive"
+  },
+  {
+    "id": "tp-park-playhouse-washington-park-1005",
+    "text": "Park Playhouse is back in Washington Park with free seats this summer.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-05 audit TP: Albany Park Playhouse counterpart after Winter Park gate"
+  },
+  {
+    "id": "fp-center-square-nasa-wire-1005",
+    "text": "GAO: NASA has no single cost estimate for Moon-to-Mars program. A federal auditor told The Center Square the agency does not maintain one. The Center Square asked NASA for details.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-05 audit FP: Center Square news wire prose attribution unlocked local_micro"
+  },
+  {
+    "id": "tp-center-square-porchfest-1005",
+    "text": "Center Square Porchfest is this weekend. Maps at noon.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "ambiguous_classifier",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-05 audit TP: Albany Center Square neighborhood still keeps"
+  },
+  {
+    "id": "fp-rotterdam-zuid-fashion-week-1005",
+    "text": "In Rotterdam-Zuid houden ze hun eigen fashion week: geen champagne maar halve liters bier. Na Parijs, Londen en New York heeft nu ook Rotterdam-Zuid een eigen Fashion Week.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-05 audit FP: Dutch Trouw Rotterdam-Zuid fashion week unlocked via New York"
+  },
+  {
+    "id": "tp-town-rotterdam-thruway-1005",
+    "text": "Town of Rotterdam Thruway exit closed overnight (#AlbanyNY).",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-05 audit TP: Town of Rotterdam counterpart after Dutch fashion-week gate"
+  },
+  {
+    "id": "fp-bethlehem-md-usps-nyc-1005",
+    "text": "PO LOBBY: 22015 DOVER BRIDGE RD, BETHLEHEM MD 21609 BLUE BOX: 420 KENYON RD, FORT DODGE IA 50501 PO LOBBY: 817 E DALE ST, NEW IBERIA LA 70560 BLUE BOX: 1900 LEXINGTON AVE, NEW YORK NY 10035",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-05 audit FP: USPS Bethlehem MD dump unlocked via NEW YORK NY"
+  },
+  {
+    "id": "tp-bethlehem-town-board-1005",
+    "text": "Bethlehem Town Board meets Thursday at Town Hall.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-05 audit TP: Town of Bethlehem civic counterpart after MD USPS gate"
+  },
+  {
+    "id": "fn-rotterdam-elks-lodge-1005",
+    "text": "Stopped by today’s LORE Harvest Dinner at the Rotterdam Elks Lodge to support their Scholarship Fund!",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-05 audit FN: Rotterdam Elks Lodge was ambiguous_no_context:rotterdam"
+  },
+  {
+    "id": "fn-mohawk-hudson-humane-1005",
+    "text": "The Mohawk Hudson Humane Society has temporarily paused all on-site cat adoptions following suspected cases of feline panleukopenia.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-05 audit FN: Mohawk Hudson Humane Society shelter card without placename"
+  },
+  {
+    "id": "tn-malta-eu-overcrowding-1005",
+    "text": "Malta Has EU’s Third-Lowest Rate Of Young People Living In Overcrowded Homes according to new Eurostat data.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-05 audit TN: Malta EU overcrowding rematch-drop residual"
+  },
+  {
+    "id": "tn-brunswick-mo-flood-1005",
+    "text": "Flood Warning issued by NWS Kansas City/Pleasant Hill MO for Grand River near Brunswick affecting Carroll and Chariton Counties. #Flood #wx #MOwx",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-05 audit TN: Brunswick MO flood rematch-drop residual"
   }
 ]

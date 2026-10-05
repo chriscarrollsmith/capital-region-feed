@@ -538,6 +538,30 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-112 — Daily feed audit: Winter Park Playhouse, Center Square NASA wire, Dutch Rotterdam-Zuid fashion week, Bethlehem MD USPS; Rotterdam Elks / Mohawk Hudson FNs
+- **Status:** in progress
+- **Why:** 2026-10-05 audit of last-24h AppView feed (~108 posts since 2026-10-04T09:01Z)
+  found active FPs after unmerged #87 lineage: Orlando Sentinel `Winter Park Playhouse`
+  kept as `strong_positive` via bare `park playhouse`; `newsarea` NASA Moon-to-Mars card
+  kept as `classifier:local_micro` via prose “told The Center Square” / “The Center Square
+  asked”; Dutch Trouw `Rotterdam-Zuid` fashion week kept as `ambiguous_with_context:rotterdam`
+  via “Na Parijs, Londen en New York”; `every-usps-box` `BETHLEHEM MD` dump unlocked via
+  `NEW YORK NY` as `ambiguous_with_context:bethlehem`. FNs: Angelo Santabarbara
+  Rotterdam Elks Lodge scholarship dinner (`ambiguous_no_context:rotterdam`); NEWS10
+  Mohawk Hudson Humane Society share without placename (`bare_albany`). Rematch already
+  drops Malta/Brunswick MO/Troy Trojans/Rotterdam NL stale index rows (~31). Residual:
+  bare Albany job spam; allowlisted non-local; WAMC / Siena intentional; Citizen Portal
+  MO-path Troy content that is Cap Region text; Albany rename / Belmont press credits;
+  ~31 rematch-drops until purge.
+- **Work:**
+  - Winter Park negative lookbehind on Park Playhouse; Center Square wire prose
+    attributions; Dutch Parijs/Londen / Rotterdam-Zuid / fashion week / trouw.nl cues;
+    Bethlehem MD (and Maryland) co-occurrence on Bethlehem PA gate; strong positives for
+    Rotterdam Elks Lodge and Mohawk Hudson Humane Society; grow eval with 2026-10-05
+    FP/TP/FN anchors (builds on #87 / B-111).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-111 — Daily feed audit: Troy ACCNYC pet, USPS Duanesburg/Slingerlands multi-state; Saratoga Springs library/rankings / Thirty Year Farm / Funny Bone / food scene / Cook Park FNs
 - **Status:** done ([#87](https://github.com/chriscarrollsmith/capital-region-feed/pull/87))
 - **Why:** 2026-10-04 audit of last-24h AppView feed (~90 posts since 2026-10-03T09:02Z)
