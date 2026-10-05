@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-112 — Daily feed audit: Winter Park Playhouse, Center Square NASA wire, Dutch Rotterdam-Zuid fashion week, Bethlehem MD USPS; Rotterdam Elks / Mohawk Hudson FNs
-- **Status:** in progress
+- **Status:** done ([#88](https://github.com/chriscarrollsmith/capital-region-feed/pull/88))
 - **Why:** 2026-10-05 audit of last-24h AppView feed (~108 posts since 2026-10-04T09:01Z)
   found active FPs after unmerged #87 lineage: Orlando Sentinel `Winter Park Playhouse`
   kept as `strong_positive` via bare `park playhouse`; `newsarea` NASA Moon-to-Mars card
