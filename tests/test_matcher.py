@@ -4302,3 +4302,111 @@ def test_juniors_colonie_hospitality_recall() -> None:
     bare = match_post('The hospitality group is taking over a location in Colonie.')
     assert bare.matched is False
     assert bare.reason == 'bare_colonie'
+
+
+def test_care_bears_cup_not_bears_cup_bakehouse() -> None:
+    care = match_post('Creamy asparagus soup in a Care Bears cup and homemade buttermilk bread.')
+    assert care.matched is False
+    assert (
+        match_post("Noah's Italian and Bear's Cup Bakehouse opened within a week.").matched is True
+    )
+
+
+def test_troy_michigan_city_council_oakland_not_troy_ny() -> None:
+    mi = match_post(
+        'The Troy City Council has just approved a bold new firefighter incentive plan '
+        'that prioritizes annual benefits over lump-sum payouts!\n\n'
+        '#TroyCityOaklandCounty #MI #CitizenPortal #TroyCityCouncil'
+    )
+    assert mi.matched is False
+    assert mi.reason == 'hard_negative:troy_michigan'
+    assert match_post('Troy City Council meets Tuesday at City Hall in Troy, NY.').matched is True
+
+
+def test_troy_sowell_greece_ny_not_troy_ny() -> None:
+    greece = match_post(
+        'Man arrested in deadly shooting at Greece apartment complex\n\n'
+        'Greece, N.Y. — A man has been arrested after he shot and killed another man '
+        'at an apartment complex early Friday, according to the Greece Police Department. '
+        'Police said Troy Sowell, 36, fatally shot …'
+    )
+    assert greece.matched is False
+    assert greece.reason == 'hard_negative:troy_person_name'
+    assert match_post('Dinner in Troy, NY tonight.').matched is True
+
+
+def test_quebec_national_capital_region_hyphen_not_ny() -> None:
+    hyphen = match_post(
+        "The PQ wasn't able to beat any of the QS seats (the Liberals grabbed two) "
+        "and they didn't win a single seat in the National-Capital region, which "
+        'will make governing pretty weird.'
+    )
+    assert hyphen.matched is False
+
+    quebec = match_post(
+        "It looks like we'll end up with the Quebec Liberals in control of Montreal "
+        'and the Conservatives dominant in the capital region. The PQ will have fun '
+        'navigating the politics of that.'
+    )
+    assert quebec.matched is False
+    assert quebec.reason == 'hard_negative:canadian_capital_region'
+
+    assert (
+        match_post(
+            'Capital Region students visited Ottawa after studying Canada, '
+            'then returned to #AlbanyNY.'
+        ).matched
+        is True
+    )
+
+
+def test_peru_lima_capital_region_not_ny() -> None:
+    lima = match_post(
+        '',
+        alt_text=(
+            'Lima Municipal Elections: Right-Wing Bloc Gains Administrative Control '
+            'in Key Districts Municipal elections in Lima, Peru, scheduled for 2026, '
+            'are unfolding amid a shift in the electoral landscape where right-wing '
+            'and centrist forces hold a sustained advantage in key districts of the '
+            'capital region.'
+        ),
+    )
+    assert lima.matched is False
+    assert lima.reason in {'hard_negative', 'hard_negative:peru_capital_region'}
+    assert (
+        match_post(
+            'Capital Region students visited Lima after studying Peru, then returned to #AlbanyNY.'
+        ).matched
+        is True
+    )
+
+
+def test_cheknews_capital_region_not_ny() -> None:
+    chek = match_post(
+        'Commuters across the capital region are once again facing longer waits, '
+        'packed buses, and sudden cancellations as labour talks stall.',
+        author_handle='cheknews.ca',
+    )
+    assert chek.matched is False
+    assert chek.reason == 'hard_negative:canadian_capital_region'
+
+
+def test_in_saratoga_springs_and_albany_community_recall() -> None:
+    assert (
+        match_post(
+            'In Saratoga Springs with my wife while she attends some... law conference?'
+        ).matched
+        is True
+    )
+    # Utah crash copy uses "in Saratoga Springs crash" — must not keep.
+    utah = match_post(
+        'Via KSL 5 News: Semi-tractor driver charged in Saratoga Springs crash '
+        'that killed 13-year-old boy #Utah'
+    )
+    assert utah.matched is False
+    assert (
+        match_post(
+            'Albany community recalls moments after shooting kills 15-year-old on Hudson Ave'
+        ).matched
+        is True
+    )

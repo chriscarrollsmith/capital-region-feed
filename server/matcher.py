@@ -549,7 +549,13 @@ _STRONG_POSITIVE = re.compile(
       | \bsaratoga\b[\s\S]{0,40}pumpkinfest
       # Saratoga Springs dining wires often say bare "Saratoga" without Springs/NY.
       | noah['\u2019]?s\s+italian\b
-      | bear['\u2019]?s\s+cup(?:\s+bakehouse)?\b
+      # Require apostrophe so "Care Bears cup" does not match Bear's Cup Bakehouse.
+      | bear['\u2019]s\s+cup(?:\s+bakehouse)?\b
+      # Conversational "in Saratoga Springs with …" travel posts often omit ", NY".
+      # Avoid "charged in Saratoga Springs crash" (UT) by requiring "with".
+      | \bin\s+saratoga\s+springs\s+with\b
+      # Local crime / community wires often say "Albany community" without ", NY".
+      | albany\s+community\b
       # Thruway incident wires for Town of Rotterdam often omit ", NY".
       | thruway[\s\S]{0,80}\brotterdam\b
       | \brotterdam\b[\s\S]{0,80}thruway
@@ -688,7 +694,8 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
         albany\s+park
       | new\s+albany(?!\s+bus\s+(?:station|terminal|depot))
       | albany\s+state\s+university
-      | national\s+capital\s+region
+      # Hyphen form appears in Quebec politics ("National-Capital region").
+      | national[\s\-]+capital\s+region
       # Slash form appears in Brussels Times cards ("Brussels/Capital Region").
       | brussels[- /]capital\s+region
       # Polandinsight / Eurostat cards: "Warsaw Capital Region" / Polish GDP wires.
@@ -697,6 +704,8 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
       | canadian\s+capital\s+region
       # New Brunswick tourism / concert cards: "Fredericton Capital Region".
       | fredericton\s+capital\s+region
+      # Lima / Peru municipal wires: "districts of the capital region".
+      | (?:lima|peru(?:vian)?)\s+capital\s+region
       # Other-state / non-NY newsroom jargon (e.g. Jackson MS bureau).
       | capital\s+region\s+bureau\b
       # Putnam / Hudson Valley street — not City of Albany.
@@ -753,7 +762,7 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
             iceland|reykjav[ií]k|finland|helsinki|australia|
             georgia|atlanta|russia|moscow|bulgaria|sofia|japan|tokyo|
             michigan|lansing|wales|cardiff|manila|philippines|metro\s+manila|
-            venezuela|caracas|la\s+guaira
+            venezuela|caracas|la\s+guaira|peru|lima
           )\b
       | ukrainian\s+capital\s+region
       | (?:russian|moscow)\s+capital\s+region
@@ -774,6 +783,8 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
       | (?:manila|metro\s+manila)\s+capital\s+region
       | venezuela(?:n)?\s+capital\s+region
       | (?:caracas|la\s+guaira)\s+capital\s+region
+      | peru(?:vian)?\s+capital\s+region
+      | lima\s+capital\s+region
       | bogot[aá]\s+capital\s+district
       | capital\s+district\s*,?\s*colombia\b
       | icelandic\s+capital\s+district
@@ -781,7 +792,7 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
       | (?:the\s+)?egg\s+and\s+art\s+garden
       | art\s+garden\s+kc\b
       # Papua New Guinea — "National Capital District" contains Cap District.
-      | national\s+capital\s+district
+      | national[\s\-]+capital\s+district
       # Harrisburg PA utility — not NY Capital Region.
       | capital\s+region\s+water\b
       | pennsylvania\s+capital\s+region
@@ -861,6 +872,7 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
 # Goldstream / Vancouver Island rail copy often says bare "Victoria" (no "BC").
 # Sooke / South Island / firesmoke.ca wildfire cards often say bare "capital region".
 # Fredericton is New Brunswick's capital (tourism / concert "Fredericton Capital Region").
+# Quebec politics often says "National-Capital region" or bare "capital region" with PQ/Montreal.
 _CANADIAN_GEO_CUE = (
     r'\bcanada\b|\bcanadian\b|\bottawa\b|\#canadian\w*|'
     r'\#yyj\b|\#bcpoli\b|british\s+columbia|\blangford\b|'
@@ -871,7 +883,9 @@ _CANADIAN_GEO_CUE = (
     r'capital\s+regional\s+district|\blivable\s+crd\b|'
     r'timescolonist\.com|ottawacitizen\.com|\bsnowbirds?\b|parkland\s+secondary|'
     r'\bcfax\b|cfax\.com|'
-    r'\bfredericton\b|nouveau[\s\-]+brunswick\b|\bnew\s+brunswick\b'
+    r'\bfredericton\b|nouveau[\s\-]+brunswick\b|\bnew\s+brunswick\b|'
+    r'\bquebec\b|\bqu[eé]bec\b|\bmontr[eé]al\b|\#qcpoli\b|\#polqc\b|'
+    r'parti\s+qu[eé]b[eé]cois|\bthe\s+pq\b|\bquebec\s+liberals\b'
 )
 
 # Ottawa / Canada / BC "capital region" co-occurring with Canadian cues (not NY).
@@ -1247,6 +1261,18 @@ _TROY_MICHIGAN = re.compile(
       | \b(?:mi|michigan)\b[\s\S]{0,40}(?<![\w.])troy(?![\w@.-])
       | \#troy\b[\s\S]{0,280}(?:\#michigan\b|\#detroit\b|\#grandrapids\b)
       | (?:\#michigan\b|\#detroit\b|\#grandrapids\b)[\s\S]{0,280}\#troy\b
+      # Citizen Portal / Oakland County municipal cards use Troy City Council.
+      | \#troycityoaklandcounty\b
+      | troy\s+city\s+(?:council|officials?|hall|school)[\s\S]{0,240}(?:
+            \#mi\b|\#michigan\b|\#citizenportal\b|oakland\s+county|
+            \#troycityoaklandcounty\b
+          )
+      | (?:
+            \#mi\b|\#michigan\b|\#citizenportal\b|oakland\s+county|
+            \#troycityoaklandcounty\b
+          )[\s\S]{0,240}troy\s+city\s+(?:council|officials?|hall|school)
+      | oakland\s+county[\s\S]{0,160}\btroy\b
+      | \btroy\b[\s\S]{0,160}oakland\s+county
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -1465,6 +1491,25 @@ _VE_CAPITAL_REGION = re.compile(
       | (?:caracas|la\s+guaira)\s+capital\s+region
       | capital\s+region\b[\s\S]{{0,280}}(?:{_VE_GEO_CUE})
       | (?:{_VE_GEO_CUE})[\s\S]{{0,280}}capital\s+region\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Lima / Peru "capital region" municipal election wires — not NY.
+_PE_GEO_CUE = (
+    r'\bperu\b|\bperuvian\b|\blima\b|'
+    r'\#peru\b|\#lima\b|\#peruvian\b'
+)
+
+_PE_CAPITAL_REGION = re.compile(
+    rf"""
+    (?:
+        peru(?:vian)?\s+capital\s+region
+      | lima\s+capital\s+region
+      | capital\s+region\s+of\s+(?:peru|lima)\b
+      | capital\s+region\b[\s\S]{{0,280}}(?:{_PE_GEO_CUE})
+      | (?:{_PE_GEO_CUE})[\s\S]{{0,280}}capital\s+region\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -2526,6 +2571,12 @@ _TROY_PERSON_NAME = re.compile(
       # Crime / court wires: victim or defendant "Troy Conner" — not City of Troy.
       | \btroy\s+conner\b
       | shot\s+troy\s+[a-z]+\b
+      # Age-tagged crime wires: "Police said Troy Sowell, 36, fatally shot".
+      | \btroy\s+[a-z]+,\s*\d{1,2},
+      | (?:police\s+said|arrested)\s+troy\s+[a-z]+\b
+      # Rochester-suburb Greece, N.Y. + person Troy unlocked via NY context.
+      | greece,\s*n\.?y\.?[\s\S]{0,200}\btroy\s+[a-z]+\b
+      | \btroy\s+[a-z]+\b[\s\S]{0,200}greece,\s*n\.?y
       # Immigration / sports person names unlocked by NYC / New York context.
       | \btroy\s+nader\b
       | \btroy\s+davis\b
@@ -2655,8 +2706,9 @@ _HARD_NEGATIVE = re.compile(
       | aging\s*\(\s*albany\s*ny\s*\)
       # National politician, not Troy NY.
       | \btroy\s+jackson\b
-      | national\s+capital\s+region
-      | national\s+capital\s+district
+      # Hyphen form appears in Quebec politics ("National-Capital region").
+      | national[\s\-]+capital\s+region
+      | national[\s\-]+capital\s+district
       # Slash form appears in Brussels Times cards ("Brussels/Capital Region").
       | brussels[- /]capital\s+region
       # Polandinsight / Eurostat cards: "Warsaw Capital Region".
@@ -2665,6 +2717,7 @@ _HARD_NEGATIVE = re.compile(
       | canadian\s+capital\s+region
       # New Brunswick tourism / concert cards: "Fredericton Capital Region".
       | fredericton\s+capital\s+region
+      | (?:lima|peru(?:vian)?)\s+capital\s+region
       | capital\s+region\s+bureau\b
       # Putnam / Hudson Valley street — not City of Albany.
       | albany\s+post\s+road
@@ -2719,7 +2772,7 @@ _HARD_NEGATIVE = re.compile(
             sudan|khartoum|virginia|richmond|colombia|bogot[aá]|
             iceland|reykjav[ií]k|bulgaria|sofia|japan|michigan|lansing|
             wales|cardiff|manila|philippines|metro\s+manila|
-            venezuela|caracas|la\s+guaira
+            venezuela|caracas|la\s+guaira|peru|lima
           )\b
       | ukrainian\s+capital\s+region
       | sudan(?:ese)?\s+capital\s+region
@@ -2735,6 +2788,8 @@ _HARD_NEGATIVE = re.compile(
       | (?:manila|metro\s+manila)\s+capital\s+region
       | venezuela(?:n)?\s+capital\s+region
       | (?:caracas|la\s+guaira)\s+capital\s+region
+      | peru(?:vian)?\s+capital\s+region
+      | lima\s+capital\s+region
       | capital\s+region\s+international\s+airport
       | liberty\s+city
       | \bgta\s*iv?\b
@@ -3058,7 +3113,7 @@ def _canadian_capital_region_conflict(haystack: str, author_handle: str | None =
     handle = (author_handle or '').strip().lower()
     if re.search(
         r'timescolonist|\bcfax|ottawacitizen|restoreislandrail|ctvnewsvancouver|'
-        r'ctv\.?news.*vancouver',
+        r'ctv\.?news.*vancouver|cheknews',
         handle,
     ) and re.search(r'capital\s+region\b', haystack, flags=re.IGNORECASE):
         return True
@@ -3367,6 +3422,13 @@ def _florida_crtpa_capital_region_conflict(haystack: str) -> bool:
 def _venezuela_capital_region_conflict(haystack: str) -> bool:
     """True when 'capital region' refers to Caracas / Venezuela, not NY."""
     if not _VE_CAPITAL_REGION.search(haystack):
+        return False
+    return not _ny_capital_region_context(haystack)
+
+
+def _peru_capital_region_conflict(haystack: str) -> bool:
+    """True when 'capital region' refers to Lima / Peru, not NY."""
+    if not _PE_CAPITAL_REGION.search(haystack):
         return False
     return not _ny_capital_region_context(haystack)
 
@@ -4691,6 +4753,8 @@ def match_post(
             return MatchResult(False, 'hard_negative:florida_crtpa_capital_region')
         if _venezuela_capital_region_conflict(haystack):
             return MatchResult(False, 'hard_negative:venezuela_capital_region')
+        if _peru_capital_region_conflict(haystack):
+            return MatchResult(False, 'hard_negative:peru_capital_region')
         if _finland_capital_region_conflict(haystack):
             return MatchResult(False, 'hard_negative:finland_capital_region')
         if _denmark_capital_region_conflict(haystack):
@@ -4751,6 +4815,12 @@ def match_post(
             return MatchResult(False, 'hard_negative:cdta_algeria')
         if _troy_ancient_conflict(haystack):
             return MatchResult(False, 'hard_negative:troy_ancient')
+        if _troy_michigan_conflict(haystack):
+            return MatchResult(False, 'hard_negative:troy_michigan')
+        if _troy_person_name_conflict(haystack):
+            return MatchResult(False, 'hard_negative:troy_person_name')
+        if _disney_saratoga_conflict(haystack, author_handle):
+            return MatchResult(False, 'hard_negative:disney_saratoga')
         if _egg_kansas_city_conflict(haystack):
             return MatchResult(False, 'hard_negative:egg_off_region')
         if _saratoga_stakes_away_conflict(haystack):
