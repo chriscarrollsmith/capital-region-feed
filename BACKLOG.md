@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-113 — Daily feed audit: Care Bears cup, Troy MI council, Troy Sowell Greece NY, Quebec National-Capital / CHEK / Lima Peru; Saratoga Springs with / Albany community FNs
-- **Status:** in progress
+- **Status:** done ([#89](https://github.com/chriscarrollsmith/capital-region-feed/pull/89))
 - **Why:** 2026-10-06 audit of last-24h AppView feed (~166 posts since 2026-10-05T09:08Z)
   found active FPs after unmerged #88 lineage: `pedersen74` Care Bears cup kept as
   `strong_positive` via optional-apostrophe `bear's cup`; Citizen Portal
