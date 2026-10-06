@@ -538,6 +538,31 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-113 — Daily feed audit: Care Bears cup, Troy MI council, Troy Sowell Greece NY, Quebec National-Capital / CHEK / Lima Peru; Saratoga Springs with / Albany community FNs
+- **Status:** in progress
+- **Why:** 2026-10-06 audit of last-24h AppView feed (~166 posts since 2026-10-05T09:08Z)
+  found active FPs after unmerged #88 lineage: `pedersen74` Care Bears cup kept as
+  `strong_positive` via optional-apostrophe `bear's cup`; Citizen Portal
+  `#TroyCityOaklandCounty` / `#MI` Troy City Council kept as `strong_positive` (Michigan
+  conflict not applied on the strong path); `byteseu` Greece, N.Y. crime wire naming
+  `Troy Sowell, 36` kept as `ambiguous_with_context:troy`; Quebec `National-Capital`
+  hyphen + Montreal/PQ capital-region politics; `cheknews.ca` Victoria BC capital region;
+  Lima Peru municipal “capital region” Pravda card. FNs: conversational
+  `In Saratoga Springs with …` (`ambiguous_no_context:saratoga springs`);
+  `Albany community … Hudson Ave` (`bare_albany`). Rematch already drops Malta /
+  Rotterdam NL / Troy Carter / Brunswick MO stale index rows (~54). Residual: bare
+  Albany job spam; allowlisted non-local; WAMC / Siena intentional; ~54 rematch-drops
+  until purge.
+- **Work:**
+  - Require apostrophe on Bear's Cup; expand Troy Michigan Oakland County / #MI cues and
+    apply on strong path; Troy person age-tag / Greece N.Y. cues; hyphen
+    `National-Capital region` hard-negative; Quebec/Montreal/PQ Canadian cues;
+    `cheknews` handle gate; Peru/Lima capital-region conflict; strong positives for
+    `in Saratoga Springs with` and `Albany community`; grow eval with 2026-10-06
+    FP/TP/FN anchors (builds on #88 / B-112).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-112 — Daily feed audit: Winter Park Playhouse, Center Square NASA wire, Dutch Rotterdam-Zuid fashion week, Bethlehem MD USPS; Rotterdam Elks / Mohawk Hudson FNs
 - **Status:** done ([#88](https://github.com/chriscarrollsmith/capital-region-feed/pull/88))
 - **Why:** 2026-10-05 audit of last-24h AppView feed (~108 posts since 2026-10-04T09:01Z)
@@ -568,6 +593,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   found active FPs after unmerged #86 lineage: `mmpvoirdire` ACCNYC Queens urgency card
   named pet `Troy 204602` kept as `ambiguous_with_context:troy` via NYC/Queens; national
   `every-usps-box` dumps listing `DUANESBURG NY` / `SLINGERLANDS NY` beside WI/CO/IA/LA/WV/FL
+
   ZIPs kept as strong Cap Region places (Burnt Hills gate was too narrow). FNs: Saratoga
   Springs Public Library / America’s best-small-cities ranking cards and Thirty Year Farm
   weanling posts (`ambiguous_no_context:saratoga[ springs]`); singular `Albany Funny Bone`

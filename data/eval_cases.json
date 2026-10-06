@@ -10534,5 +10534,136 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-10-05 audit TN: Brunswick MO flood rematch-drop residual"
+  },
+  {
+    "id": "fp-care-bears-cup-not-bakehouse",
+    "text": "Creamy asparagus soup in a Care Bears cup and homemade buttermilk bread.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-06 audit: Care Bears cup must not match Bear's Cup Bakehouse"
+  },
+  {
+    "id": "tp-bears-cup-bakehouse-saratoga",
+    "text": "Noah's Italian and Bear's Cup Bakehouse opened within about a week in downtown.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-06 audit: Cap Region Bear's Cup Bakehouse counterpart"
+  },
+  {
+    "id": "fp-troy-city-council-oakland-mi",
+    "text": "The Troy City Council has just approved a bold new firefighter incentive plan!\n\n#TroyCityOaklandCounty #MI #CitizenPortal #TroyCityCouncil",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-06 audit: Oakland County MI Troy City Council strong_positive"
+  },
+  {
+    "id": "tp-troy-city-council-ny",
+    "text": "Troy City Council meets Tuesday at City Hall in Troy, NY.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-06 audit: City of Troy NY council counterpart"
+  },
+  {
+    "id": "fp-troy-sowell-greece-ny",
+    "text": "Greece, N.Y. — Police said Troy Sowell, 36, fatally shot another man at an apartment complex, according to the Greece Police Department.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-06 audit: person Troy Sowell + Greece NY unlocked ambiguous troy"
+  },
+  {
+    "id": "fp-quebec-national-capital-hyphen",
+    "text": "The PQ wasn't able to beat any of the QS seats and they didn't win a single seat in the National-Capital region, which will make governing pretty weird.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-06 audit: Quebec National-Capital hyphen form"
+  },
+  {
+    "id": "fp-quebec-montreal-capital-region-pq",
+    "text": "It looks like we'll end up with the Quebec Liberals in control of Montreal and the Conservatives dominant in the capital region. The PQ will have fun navigating that.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-06 audit: Quebec/Montreal capital region politics"
+  },
+  {
+    "id": "tp-capital-region-albany-ny-canada-contrast",
+    "text": "Capital Region students visited Ottawa after studying Canada, then returned to #AlbanyNY.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-06 audit: NY Cap Region rescue beside Canadian cue"
+  },
+  {
+    "id": "fp-lima-peru-capital-region",
+    "text": "Municipal elections in Lima, Peru are unfolding amid a shift where right-wing forces hold an advantage in key districts of the capital region.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-06 audit: Lima Peru capital region municipal wire"
+  },
+  {
+    "id": "tp-capital-region-peru-contrast",
+    "text": "Capital Region students visited Lima after studying Peru, then returned to #AlbanyNY.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-06 audit: NY Cap Region rescue beside Peru cue"
+  },
+  {
+    "id": "fp-cheknews-capital-region-victoria",
+    "text": "Commuters across the capital region are once again facing longer waits, packed buses, and sudden cancellations as labour talks stall.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "author_handle": "cheknews.ca",
+    "note": "2026-10-06 audit: CHEK Victoria BC capital region via handle"
+  },
+  {
+    "id": "fn-in-saratoga-springs-travel",
+    "text": "In Saratoga Springs with my wife while she attends some... law conference? idk I'm an artist and only know pencil",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-06 audit FN: conversational in Saratoga Springs without , NY"
+  },
+  {
+    "id": "fn-albany-community-hudson-ave",
+    "text": "Albany community recalls moments after shooting kills 15-year-old on Hudson Ave",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-06 audit FN: Albany community crime wire without , NY"
   }
 ]
