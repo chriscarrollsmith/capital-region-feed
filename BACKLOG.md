@@ -538,6 +538,30 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-114 — Daily feed audit: Dutch de Kooning/Rijksmuseum Rotterdam, Newtonville Books MA, Milford CT River Street; Saratoga Rte 50 / Skidmore / Stewart's / PIP FNs
+- **Status:** in progress
+- **Why:** 2026-10-07 audit of last-24h AppView feed (~133 posts since 2026-10-06T09:00Z)
+  found active FPs after unmerged #89 lineage: `news-flows-nl` Dutch Telegraaf /
+  Rijksmuseum de Kooning wire kept as `ambiguous_with_context:rotterdam` via New York;
+  `akashicbooks` Newtonville Books / Newton, MA event kept as `strong_positive` (comma
+  form `Newton, MA` missed `newton ma` conflict); `milfordphoto` Milford CT camera-shop
+  event kept as `classifier:local_micro` via River Street. FNs: educativ Saratoga
+  Springs Rte 50 job (`ambiguous_no_context:saratoga springs`); nystatemusic Skidmore
+  College residency (`no_match`); Stewart's Shops recall without dateline (`no_match`);
+  PIP Global Safety Latham product wire (`ambiguous_no_context:latham`). Rematch already
+  drops Troy Trojans / Saratoga CA / Malta / NL Rotterdam stale index rows. Residual:
+  bare Albany job spam; allowlisted non-local (Times Union Buffalo / News10 Poughkeepsie);
+  WAMC western Mass intentional; NYC Mamdani “changes in Albany” capital-politics soft
+  keeps; USPS Albany multi-state dumps intentional.
+- **Work:**
+  - Expand `_MALTA_EUROPE` Dutch art/Telegraaf cues; widen `_NEWTONVILLE_MA` for
+    `Newton, MA` / Newtonville Books; gate Milford CT River Street in classifier;
+    strong positives for Saratoga Springs Rte 50, Skidmore College, Stewart's Shops,
+    PIP Global Safety; grow eval with 2026-10-07 FP/TP/FN anchors (builds on #89 /
+    B-113).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-113 — Daily feed audit: Care Bears cup, Troy MI council, Troy Sowell Greece NY, Quebec National-Capital / CHEK / Lima Peru; Saratoga Springs with / Albany community FNs
 - **Status:** done ([#89](https://github.com/chriscarrollsmith/capital-region-feed/pull/89))
 - **Why:** 2026-10-06 audit of last-24h AppView feed (~166 posts since 2026-10-05T09:08Z)

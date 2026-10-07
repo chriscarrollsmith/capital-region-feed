@@ -10665,5 +10665,125 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-10-06 audit FN: Albany community crime wire without , NY"
+  },
+  {
+    "id": "fp-dutch-de-kooning-rijksmuseum-rotterdam",
+    "text": "Willem de Kooning verovert plek in Eregalerij Rijksmuseum. Precies honderd jaar nadat Willem de Kooning vanuit Rotterdam als verstekeling aan boord van een vrachtschip naar New York reisde om een carrière als reclametekenaar na te jagen. Meer op telegraaf.nl",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-07 audit: Dutch Telegraaf/Rijksmuseum de Kooning wire unlocked Rotterdam via New York"
+  },
+  {
+    "id": "tp-rotterdam-carman-little-league-ny",
+    "text": "ROTTERDAM, N.Y. – Senator Fahy announced $50,000 in capital funds for Rotterdam-Carman Little League turf and batting cages.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-07 audit: Town of Rotterdam NY counterpart to Dutch Rijksmuseum FP"
+  },
+  {
+    "id": "fp-newtonville-books-newton-ma",
+    "text": "OCTOBER 7- NEWTON, MA Join Marianne Leone at Newtonville Books 7PM Newtonville Books 10 Langley Rd Newton, MA",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-07 audit: Newtonville Books Newton MA event kept as strong_positive newtonville"
+  },
+  {
+    "id": "tp-newtonville-avenue-colonie",
+    "text": "Road work on Newtonville Avenue in Colonie near #AlbanyNY.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-07 audit: Colonie Newtonville counterpart to Newton MA bookstore FP"
+  },
+  {
+    "id": "fp-milford-ct-photo-river-street",
+    "text": "Milford Photo's Sony rep will be here on Saturday! Milford Photo 22 River Street Milford, CT 06460",
+    "expected": false,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-07 audit: Milford CT camera shop unlocked classifier local_micro via River Street"
+  },
+  {
+    "id": "tp-saratoga-springs-rte-50-job",
+    "text": "Party and Event Host - Saratoga Springs-3037 Rte 50 Job",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-07 audit FN: Saratoga Springs Route 50 job listing dropped as ambiguous_no_context"
+  },
+  {
+    "id": "tp-skidmore-college-ensemble-connect",
+    "text": "Ensemble Connect Residency Program to Return to Skidmore College. Skidmore College will host Ensemble Connect musicians from Carnegie Hall.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-07 audit FN: Skidmore College residency dropped; stakes pattern required Saratoga co-mention"
+  },
+  {
+    "id": "tn-skidmore-owings-merrill",
+    "text": "Designed by Skidmore, Owings & Merrill in a Chicago style Beaux-Arts tower at Canary Wharf.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-07 audit: SOM architecture firm must not keep via Skidmore College strong positive"
+  },
+  {
+    "id": "tp-stewarts-shops-ice-cream-recall",
+    "text": "Stewart's Shops recalls some ice cream over possible metal contamination",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-07 audit FN: Stewart's Shops recall without Saratoga Springs dateline"
+  },
+  {
+    "id": "tp-pip-global-safety-latham",
+    "text": "PIP Global Safety and W. L. Gore Team Up to Boost Worker Protection #USA #Latham",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-07 audit FN: PIP Global Safety (Latham HQ) product wire dropped as bare Latham"
+  },
+  {
+    "id": "fp-troy-trojans-southern-miss",
+    "text": "Southern Miss vs Troy Prediction: Tuesday College Football Best Bet. Southern Miss Golden Eagles vs Troy Trojans.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-07 audit: Troy Trojans CFB correctly dropped; anchor residual precision"
+  },
+  {
+    "id": "fp-saratoga-ca-resist-bot",
+    "text": "From a constituent in Saratoga, CA. Text RESIST to 50409.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-07 audit: Saratoga CA letter correctly dropped; anchor residual precision"
   }
 ]
