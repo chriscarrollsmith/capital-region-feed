@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-114 — Daily feed audit: Dutch de Kooning/Rijksmuseum Rotterdam, Newtonville Books MA, Milford CT River Street; Saratoga Rte 50 / Skidmore / Stewart's / PIP FNs
-- **Status:** in progress
+- **Status:** done ([#90](https://github.com/chriscarrollsmith/capital-region-feed/pull/90))
 - **Why:** 2026-10-07 audit of last-24h AppView feed (~133 posts since 2026-10-06T09:00Z)
   found active FPs after unmerged #89 lineage: `news-flows-nl` Dutch Telegraaf /
   Rijksmuseum de Kooning wire kept as `ambiguous_with_context:rotterdam` via New York;
