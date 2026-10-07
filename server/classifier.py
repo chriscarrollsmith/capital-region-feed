@@ -205,6 +205,12 @@ _RIVER_STREET_OTHER = re.compile(
             \bbirmingham\b|\bb5\s*5sa\b|secret\s+space|alternative\s+artisans|
             \#birmingham\b
           )
+      # Milford Photo / Milford CT camera-shop events — not Troy's corridor.
+      | milford\s+photo
+      | milford\s*,?\s*ct\b
+      | \bct\s*06460\b
+      | \bmilford\b[\s\S]{0,280}river\s+street
+      | river\s+street[\s\S]{0,280}\bmilford\b
       # Aurora / Montgomery (Kane County IL) festival & cemetery cards — not Troy.
       | (?:
             city\s+of\s+aurora|kane\s+county|benton\s+street|

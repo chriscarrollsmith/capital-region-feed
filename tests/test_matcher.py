@@ -4410,3 +4410,67 @@ def test_in_saratoga_springs_and_albany_community_recall() -> None:
         ).matched
         is True
     )
+
+
+def test_dutch_de_kooning_rijksmuseum_rotterdam_not_town() -> None:
+    dutch = match_post(
+        'Willem de Kooning verovert plek in Eregalerij Rijksmuseum: woest geschilderde '
+        'vrouwen tegenover Rembrandts Joodse bruidje\n\n'
+        'Precies honderd jaar nadat Willem de Kooning vanuit Rotterdam als verstekeling '
+        'aan boord van een vrachtschip naar New York reisde om een carrière als '
+        'reclametekenaar na te jagen.',
+        alt_text=(
+            'Willem de Kooning tussen Oude Meesters in het Rijksmuseum: ontdek op '
+            'telegraaf.nl meer over zijn unieke teken- en schildertechnieken.'
+        ),
+        author_handle='news-flows-nl.bsky.social',
+    )
+    assert dutch.matched is False
+    assert dutch.reason == 'hard_negative:malta_europe'
+
+    keep = match_post(
+        'ROTTERDAM, N.Y. – Senator Fahy announced capital funds for Rotterdam-Carman '
+        'Little League turf and batting cages.'
+    )
+    assert keep.matched is True
+
+
+def test_newtonville_books_newton_ma_not_colonie() -> None:
+    books = match_post(
+        'OCTOBER 7- NEWTON, MA\n'
+        'Join Marianne Leone in discussion with Elizabeth Searle at Newtonville Books\n'
+        '7PM\nNewtonville Books\n10 Langley Rd\nNewton, MA'
+    )
+    assert books.matched is False
+    assert books.reason == 'hard_negative:newtonville_ma'
+
+    assert match_post('Road work on Newtonville Avenue in Colonie near #AlbanyNY.').matched is True
+
+
+def test_saratoga_springs_rte50_skidmore_stewarts_pip_recall() -> None:
+    rte = match_post('Party and Event Host - Saratoga Springs-3037 Rte 50 Job')
+    assert rte.matched is True
+    assert rte.reason == 'strong_positive'
+
+    skidmore = match_post(
+        'Ensemble Connect Residency Program to Return to Skidmore College. '
+        'Skidmore College will host Ensemble Connect musicians from Carnegie Hall.'
+    )
+    assert skidmore.matched is True
+    assert skidmore.reason == 'strong_positive'
+
+    # Architecture firm must not match via bare Skidmore.
+    som = match_post('Designed by Skidmore, Owings & Merrill in a Chicago style Beaux-Arts tower.')
+    assert som.matched is False
+
+    stewarts = match_post(
+        "Stewart's Shops recalls some ice cream over possible metal contamination"
+    )
+    assert stewarts.matched is True
+    assert stewarts.reason == 'strong_positive'
+
+    pip = match_post(
+        'PIP Global Safety and W. L. Gore Team Up to Boost Worker Protection #USA #Latham'
+    )
+    assert pip.matched is True
+    assert pip.reason == 'strong_positive'

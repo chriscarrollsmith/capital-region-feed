@@ -237,6 +237,15 @@ _STRONG_POSITIVE = re.compile(
       | personal\s+ensign(?:\s+stakes)?\b
       | \bskidmore(?:\s+stakes)?\b[\s\S]{0,80}\bsaratoga\b
       | \bsaratoga\b[\s\S]{0,80}\bskidmore(?:\s+stakes)?\b
+      # Skidmore College (Saratoga Springs) — not Skidmore, Owings & Merrill.
+      | \bskidmore\s+college\b
+      # Stewart's Shops (Cap Region convenience chain) recalls / store copy.
+      | stewart['\u2019]?s\s+shops?\b
+      # Saratoga Springs Route 50 corridor job / retail listings often omit ", NY".
+      | saratoga\s+springs[\s\-–—,]{0,12}\d{0,6}\s*(?:rte|route)\s*50\b
+      | (?:rte|route)\s*50\b[\s\S]{0,60}saratoga\s+springs\b
+      # PIP Global Safety (Latham HQ) product wires often omit ", NY".
+      | pip\s+global\s+safety\b
       # "Grade 1 runners at Saratoga" wires omit the word "stakes".
       | grade\s+[123i]+\b[\s\S]{0,80}\bat\s+saratoga\b
       | at\s+saratoga\b[\s\S]{0,80}grade\s+[123i]+\b
@@ -1520,20 +1529,25 @@ _NEWTONVILLE_MA = re.compile(
     r"""
     (?:
         newtonville[\s\S]{0,220}(?:
-            \bboston\b|\bmbta\b|\#mbta\b|newton\s+ma\b|newton\s+highlands|
+            \bboston\b|\bmbta\b|\#mbta\b|newton\s*,?\s*ma\b|newton\s+highlands|
             west\s+newton|worcester\s+line|garden\s+city|
             \bnj\b|\bnew\s+jersey\b|\#newjersey\b|
             village\s+day|setti\s+(?:d\.?\s+)?warren|marc\s+laredo|
-            austin\s+street|john\s+kerry|newton\s+turned\s+out
+            austin\s+street|john\s+kerry|newton\s+turned\s+out|
+            newtonville\s+books|langley\s+rd|newtonvillebooks\.com|
+            \bmassachusetts\b|\#massachusetts\b
         )
       | (?:
-            \bboston\b|\bmbta\b|\#mbta\b|newton\s+ma\b|newton\s+highlands|
+            \bboston\b|\bmbta\b|\#mbta\b|newton\s*,?\s*ma\b|newton\s+highlands|
             west\s+newton|worcester\s+line|
             \bnj\b|\bnew\s+jersey\b|\#newjersey\b|
             village\s+day|setti\s+(?:d\.?\s+)?warren|marc\s+laredo|
-            austin\s+street|john\s+kerry|newton\s+turned\s+out
+            austin\s+street|john\s+kerry|newton\s+turned\s+out|
+            newtonville\s+books|langley\s+rd|newtonvillebooks\.com|
+            \bmassachusetts\b|\#massachusetts\b
         )[\s\S]{0,220}newtonville
-      | newtonville\s*,?\s*(?:nj|n\.j\.|new\s+jersey)\b
+      | newtonville\s*,?\s*(?:nj|n\.j\.|new\s+jersey|ma|m\.a\.|massachusetts)\b
+      | newtonville\s+books\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -2037,6 +2051,16 @@ _MALTA_EUROPE = re.compile(
       | \bkennisgemaakt\b
       | \bcollega\b[\s\S]{0,80}\b(?:new\s+york|mamdani)\b
       | \b(?:new\s+york|mamdani)\b[\s\S]{0,80}\bcollega\b
+      # Dutch art / Telegraaf wires: de Kooning left Rotterdam for New York +
+      # Rijksmuseum — not Town of Rotterdam NY.
+      | \brijksmuseum\b
+      | telegraaf\.nl
+      | \btelegraaf\b
+      | \beregalerij\b
+      | de\s+kooning
+      | \bverstekeling\b
+      | \breclametekenaar\b
+      | \bvrachtschip\b
       # Country of Malta at the UN / Netanyahu walkouts (NYC headquarters photo).
       | \bmalta\b[\s\S]{0,180}(?:
             netanyahu|united\s+nations|\bun\s+chamber|general\s+assembly|
