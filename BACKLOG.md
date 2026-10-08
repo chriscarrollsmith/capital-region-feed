@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-115 — Daily feed audit: Troy Reeder Jets, Dutch LuxorTheater Rotterdam, Newtonville MA jobs, Surfliner/Via Rail, center-squares bake; Saratoga Springs civic / #TroyNY / SPAC / Oktoberfest FNs
-- **Status:** in progress
+- **Status:** done ([#91](https://github.com/chriscarrollsmith/capital-region-feed/pull/91))
 - **Why:** 2026-10-08 audit of last-24h AppView feed (~188 posts since 2026-10-07T09:00Z)
   found active FPs after unmerged #90 lineage: NFL scouting cards naming linebacker
   Troy Reeder + New York Jets kept as `ambiguous_with_context:troy`; Dutch
