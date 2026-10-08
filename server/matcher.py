@@ -563,6 +563,21 @@ _STRONG_POSITIVE = re.compile(
       # Conversational "in Saratoga Springs with …" travel posts often omit ", NY".
       # Avoid "charged in Saratoga Springs crash" (UT) by requiring "with".
       | \bin\s+saratoga\s+springs\s+with\b
+      # Civic / tourism / bookstore copy often omits ", NY" for Saratoga Springs.
+      | \bin\s+saratoga\s+springs\s+to\b
+      | saratoga\s+springs\s+(?:
+            store|location|parade|clubhouse|freezes|hires|library|city\s+council
+          )\b
+      | (?:flag\s+day\s+parade|homebase\s+clubhouse)[\s\S]{0,80}saratoga\s+springs\b
+      | saratoga\s+springs[\s\S]{0,80}(?:flag\s+day\s+parade|homebase\s+clubhouse)
+      | uncommon\s+grounds\b
+      | \bnorthshire\b
+      # Hashtag city form (mirrors #AlbanyNY) — not bare #Troy (MI/person noise).
+      | \#troyny\b
+      # SPAC lodging copy often omits Saratoga / ", NY".
+      | staying\s+near\s+\#?spac\b
+      | near\s+\#?spac\b[\s\S]{0,100}(?:hotels?|inns?|concert)
+      | (?:hotels?|inns?)[\s\S]{0,100}near\s+\#?spac\b
       # Local crime / community wires often say "Albany community" without ", NY".
       | albany\s+community\b
       # Thruway incident wires for Town of Rotterdam often omit ", NY".
@@ -731,10 +746,12 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
             \#southafrica\b|\#africa\b|sweet\s+paws|pressportal\.co\.za
           )[\s\S]{0,280}helderberg
       # Seattle / New York Times guild phrasing — not Albany Times Union.
+      # Bare "New York Times" (bestselling author cards) is handled by stripping
+      # the masthead from NY context, not a whole-post hard negative.
       | seattle\s+times(?:\s+union)?\b
       | seattle[\s\S]{0,100}times\s+union\b
       | times\s+union[\s\S]{0,100}seattle
-      | new\s+york\s+times(?:\s+union)?\b
+      | new\s+york\s+times\s+union\b
       | times\s+union[\s\S]{0,100}new\s+york\s+times
       # SoCal / multi-track handicap hashtag stuffing — not Race Course NY.
       | (?:\#socal\b|\#losangeles\b|southern\s+california)[\s\S]{0,200}\#saratoga\b
@@ -1547,6 +1564,9 @@ _NEWTONVILLE_MA = re.compile(
             \bmassachusetts\b|\#massachusetts\b
         )[\s\S]{0,220}newtonville
       | newtonville\s*,?\s*(?:nj|n\.j\.|new\s+jersey|ma|m\.a\.|massachusetts)\b
+      # Job boards: "MA - Newtonville" / "Massachusetts - Newtonville".
+      | \bma\s*[-–—]\s*newtonville\b
+      | \bmassachusetts\s*[-–—]\s*newtonville\b
       | newtonville\s+books\b
     )
     """,
@@ -2061,6 +2081,13 @@ _MALTA_EUROPE = re.compile(
       | \bverstekeling\b
       | \breclametekenaar\b
       | \bvrachtschip\b
+      # Dutch musical calendars: LuxorTheater Rotterdam + Winter Garden NYC premiere.
+      | \bluxortheater\b
+      | luxor\s+theater
+      | \bde\s+musical\b
+      | in\s+premi[eè]re
+      | \belaine\s+paige\b
+      | winter\s+garden[- ]theater
       # Country of Malta at the UN / Netanyahu walkouts (NYC headquarters photo).
       | \bmalta\b[\s\S]{0,180}(?:
             netanyahu|united\s+nations|\bun\s+chamber|general\s+assembly|
@@ -2607,6 +2634,16 @@ _TROY_PERSON_NAME = re.compile(
       | \btroy\s+kingston\b
       | immigration\s+attorney\s+troy\b
       | attorney\s+troy\s+[a-z]+\b
+      # NFL scouting cards: "linebacker Troy Reeder" + New York Jets — not City of Troy.
+      | \btroy\s+reeder\b
+      | \#troyreeder\b
+      | linebacker\s+troy\s+[a-z]+\b
+      | \btroy\s+[a-z]+\b[\s\S]{0,80}(?:
+            linebacker|\#newyorkjets\b|new\s+york\s+jets\b
+          )
+      | (?:
+            linebacker|\#newyorkjets\b|new\s+york\s+jets\b
+          )[\s\S]{0,80}\btroy\s+[a-z]+\b
       # Ancient / archaeological Troy (Turkey / Çanakkale) — not City of Troy NY.
       | ancient\s+city\s+of\s+troy\b
       | archaeological[\s\S]{0,100}\btroy\b
@@ -2757,10 +2794,12 @@ _HARD_NEGATIVE = re.compile(
             \#southafrica\b|\#africa\b|sweet\s+paws|pressportal\.co\.za
           )[\s\S]{0,280}helderberg
       # Seattle / New York Times guild phrasing — not Albany Times Union.
+      # Bare "New York Times" (bestselling author cards) is handled by stripping
+      # the masthead from NY context, not a whole-post hard negative.
       | seattle\s+times(?:\s+union)?\b
       | seattle[\s\S]{0,100}times\s+union\b
       | times\s+union[\s\S]{0,100}seattle
-      | new\s+york\s+times(?:\s+union)?\b
+      | new\s+york\s+times\s+union\b
       | times\s+union[\s\S]{0,100}new\s+york\s+times
       # SoCal / multi-track handicap hashtag stuffing — not Race Course NY.
       | (?:\#socal\b|\#losangeles\b|southern\s+california)[\s\S]{0,200}\#saratoga\b
@@ -2853,7 +2892,12 @@ _HARD_NEGATIVE = re.compile(
       | jc\s+latham
       | saratoga\s+springs\s*,\s*ut\b
       | saratoga\s+springs\s+ut\b
+      | saratoga\s+springs\s+utah\b
       | disney(?:['\u2019]?s)?\s+saratoga\s+springs
+      # California Surfliner / Via Rail alerts — not Cap Region Amtrak (Ethan Allen).
+      | pacific\s+surfliner\b
+      | \bvia_rail\b
+      | \bvia\s+rail\b
       | watervliet\s*,?\s*(?:mi|michigan)\b
       | troy\s*,?\s*(?:mi|michigan)\b
       | detroit\s*/\s*troy\b
@@ -3358,7 +3402,13 @@ def _germany_capital_region_conflict(haystack: str) -> bool:
     """True when 'capital region' refers to Berlin-Brandenburg / Germany, not NY."""
     if not _DE_CAPITAL_REGION.search(haystack):
         return False
-    return not _ny_capital_region_context(haystack)
+    if _ny_capital_region_context(haystack):
+        return False
+    # Local Oktoberfest destination lists cite Munich/Germany origin then the NY
+    # Capital Region — do not treat that origin story as Berlin-Brandenburg.
+    if re.search(r'\boktoberfest\b', haystack, flags=re.IGNORECASE):
+        return False
+    return True
 
 
 def _colombia_capital_district_conflict(haystack: str) -> bool:

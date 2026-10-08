@@ -4474,3 +4474,134 @@ def test_saratoga_springs_rte50_skidmore_stewarts_pip_recall() -> None:
     )
     assert pip.matched is True
     assert pip.reason == 'strong_positive'
+
+
+def test_troy_reeder_jets_not_troy_ny() -> None:
+    reeder = match_post(
+        'Scouting New York Jets linebacker Troy Reeder\n\n'
+        'The Jets recently acquired former Rams linebacker Troy Reeder, who has been '
+        'active several times due to linebacker injuries.'
+    )
+    assert reeder.matched is False
+    assert reeder.reason == 'hard_negative:troy_person_name'
+
+    hashtag = match_post(
+        'Scouting New York Jets linebacker Troy Reeder '
+        '#NewYorkJets #TroyReeder #NFL #Football #Linebacker'
+    )
+    assert hashtag.matched is False
+    assert hashtag.reason == 'hard_negative:troy_person_name'
+
+    keep = match_post(
+        'Register Democrats in the Empire State! Join us for an upcoming drive in Troy on Oct. 11.',
+        alt_text='Sign up to register Dems in NY!',
+    )
+    assert keep.matched is True
+
+
+def test_dutch_luxor_theater_rotterdam_not_town() -> None:
+    cats = match_post(
+        'In het Winter Garden-theater in New York ging op 7 oktober 1982 de musical '
+        'Cats in première. Ook vanaf 7 oktober, maar dan in 2006, was de musical te '
+        'zien in het @LuxorTheater in Rotterdam. Elaine Paige’s versie van ‘Memory’, '
+        'komt uit de Britse versie.'
+    )
+    assert cats.matched is False
+    assert cats.reason == 'hard_negative:malta_europe'
+
+    keep = match_post(
+        'A vehicle and a train were involved in an accident in Rotterdam on Wednesday '
+        'night near #AlbanyNY.'
+    )
+    assert keep.matched is True
+
+
+def test_newtonville_ma_dash_job_not_colonie() -> None:
+    job = match_post('Store Associate - MA - Newtonville Job educativ.net/jobs/job/66550...')
+    assert job.matched is False
+    assert job.reason == 'hard_negative:newtonville_ma'
+
+    assert match_post('Road work on Newtonville Avenue in Colonie near #AlbanyNY.').matched is True
+
+
+def test_pacific_surfliner_via_rail_not_amtrak_alb() -> None:
+    surfliner = match_post(
+        'AMTRAK Pacific Surfliner (782) GTA->SAN Alert: Train 782 is late.',
+        alt_text=(
+            'Mechanical Assessment: Train 291 is currently experiencing a delay at '
+            'Albany-Rensselaer (ALB) station due to a mechanical assessment.'
+        ),
+    )
+    assert surfliner.matched is False
+    assert surfliner.reason == 'hard_negative'
+
+    via = match_post(
+        'VIA_RAIL Corridor (54) TRTO->OTTW Alert: delay due to rail traffic.',
+        alt_text=('Mechanical Assessment: Train 291 delay at Albany-Rensselaer (ALB) station.'),
+    )
+    assert via.matched is False
+    assert via.reason == 'hard_negative'
+
+    ethan = match_post(
+        'AMTRAK Ethan Allen Express (291) NYP->BTN Alert: delay at '
+        'Albany-Rensselaer (ALB) station due to a mechanical assessment.'
+    )
+    assert ethan.matched is True
+
+
+def test_nyt_bestseller_saratoga_store_and_civic_recall() -> None:
+    store = match_post(
+        'New York Times bestselling author Andrea Bartz stopped by our '
+        'Saratoga Springs store to sign copies of her latest mystery novel.'
+    )
+    assert store.matched is True
+    assert store.reason == 'strong_positive'
+
+    parade = match_post('Photos: Saratoga Springs Flag Day Parade')
+    assert parade.matched is True
+
+    freezes = match_post('Saratoga Springs freezes new employee hires for the year')
+    assert freezes.matched is True
+
+    rise = match_post(
+        'Today, I was thrilled to be in Saratoga Springs to celebrate the opening of '
+        'RISE’s new Homebase Clubhouse.'
+    )
+    assert rise.matched is True
+
+    grounds = match_post(
+        'Our Coffee with Comrades event will be in Saratoga Springs this Sunday at '
+        'Uncommon Grounds 11-1!'
+    )
+    assert grounds.matched is True
+
+    utah = match_post('Saratoga Springs Utah library event this weekend.')
+    assert utah.matched is False
+
+
+def test_troyny_hashtag_and_spac_lodging_recall() -> None:
+    troy = match_post('Get the Flock out of #TroyNY!')
+    assert troy.matched is True
+    assert troy.reason == 'strong_positive'
+
+    spac = match_post(
+        'Staying near SPAC makes concert nights even better. Find hotels, inns, and '
+        'nearby places to stay so you can spend less time driving.'
+    )
+    assert spac.matched is True
+    assert spac.reason == 'strong_positive'
+
+
+def test_oktoberfest_capital_region_not_germany_conflict() -> None:
+    local = match_post(
+        'Oktoberfest originated in Munich, Germany as a way to celebrate German culture, '
+        'food and beer. Here’s where you can find Oktoberfest events in the Capital Region.'
+    )
+    assert local.matched is True
+    assert local.reason == 'strong_positive'
+
+    de = match_post(
+        'Economic growth in Germany and the capital region remains uneven this quarter.'
+    )
+    assert de.matched is False
+    assert de.reason == 'hard_negative:germany_capital_region'

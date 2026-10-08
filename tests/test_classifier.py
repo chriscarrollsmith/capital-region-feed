@@ -181,6 +181,17 @@ def test_center_square_wire_byline_is_not_local_micro() -> None:
     )
     assert nj_rd.matched is False
 
+    # Bread-scoring "four center squares" / quilt pattern is not Albany Center Square.
+    bake = match_post(
+        'today I laminated crusty sourdough and baked a loaf for spinach-artichoke dip.',
+        alt_text=(
+            '2 1/2 pound sourdough bake with a quilt pattern scoring, cooling on a rack. '
+            '(carve into the bread around the four center squares and take the bread out '
+            'to create a well for spinach artichoke dip.)'
+        ),
+    )
+    assert bake.matched is False
+
     # Prose attribution "The Center Square reports …" (no paren/dash byline).
     reports = match_post(
         'Dem AGs Planned Trump Lawsuits Months Before Election — Now They’re Fighting '

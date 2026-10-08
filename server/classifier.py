@@ -118,6 +118,7 @@ _CENTER_SQUARE_WIRE = re.compile(
 
 # Hollywood Squares / Paul Lynde "center square" — not the Albany neighborhood.
 # "Center Square Rd/Road/St" is a street name elsewhere (e.g. Gloucester Co, NJ).
+# Plural "center squares" appears in bread-scoring / quilt-pattern bake alt text.
 _HOLLYWOOD_CENTER_SQUARE = re.compile(
     r"""
     (?:
@@ -127,6 +128,8 @@ _HOLLYWOOD_CENTER_SQUARE = re.compile(
       | paul\s+lynde
       | center\s+square\s+on\b
       | center\s+square\s+(?:rd|road|st|street)\b
+      | (?:four\s+)?center\s+squares\b
+      | quilt\s+pattern\s+scoring
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -298,9 +301,10 @@ def _local_micro_hits(haystack: str) -> list[str]:
     """Return micro-signal hits eligible for classifier features."""
     # Scrub wire bylines before matching so they cannot unlock event+micro keeps.
     scan = _CENTER_SQUARE_WIRE.sub(' ', haystack)
-    # Hollywood Squares / Paul Lynde / "Center Square Rd" must not unlock micros.
+    # Hollywood Squares / Paul Lynde / "Center Square Rd" / bake "center squares"
+    # must not unlock micros.
     if _HOLLYWOOD_CENTER_SQUARE.search(scan):
-        scan = re.sub(r'center\s+square', ' ', scan, flags=re.IGNORECASE)
+        scan = re.sub(r'center\s+squares?', ' ', scan, flags=re.IGNORECASE)
     hits = list(_DISTINCTIVE_LOCAL_MICRO.findall(scan))
     if _CAP_REGION_HINT.search(scan):
         hits.extend(_COLLISION_LOCAL_MICRO.findall(scan))
