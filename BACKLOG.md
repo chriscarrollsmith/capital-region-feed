@@ -538,6 +538,34 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-115 — Daily feed audit: Troy Reeder Jets, Dutch LuxorTheater Rotterdam, Newtonville MA jobs, Surfliner/Via Rail, center-squares bake; Saratoga Springs civic / #TroyNY / SPAC / Oktoberfest FNs
+- **Status:** in progress
+- **Why:** 2026-10-08 audit of last-24h AppView feed (~188 posts since 2026-10-07T09:00Z)
+  found active FPs after unmerged #90 lineage: NFL scouting cards naming linebacker
+  Troy Reeder + New York Jets kept as `ambiguous_with_context:troy`; Dutch
+  LuxorTheater / Cats premiere + Winter Garden NYC kept as
+  `ambiguous_with_context:rotterdam`; educativ `MA - Newtonville` job kept as
+  `strong_positive`; Amtrak Pacific Surfliner / Via Rail alerts kept as
+  `multi_local_places` via stale Albany-Rensselaer image alt; sourdough bake alt
+  "four center squares" kept as `classifier:local_micro`. FNs: bare Saratoga Springs
+  civic/tourism (parade, freezes hires, Homebase Clubhouse, Uncommon Grounds) and
+  NYT-bestseller + Saratoga Springs store blocked by whole-post `New York Times`
+  hard negative; `#TroyNY` hashtag; SPAC lodging without Saratoga token; NEWS10
+  Oktoberfest Capital Region listing gated by Germany capital-region conflict.
+  Rematch already drops ~51 stale NL Rotterdam / Brunswick / Malta index rows.
+  Residual: bare Albany remote-job spam; allowlisted non-local (News10 Hudson Valley);
+  USPS Delmar multi-state dumps intentional; WAMC / Siena intentional.
+- **Work:**
+  - Expand Troy person-name NFL/Jets cues; LuxorTheater Dutch musical cues on
+    `_MALTA_EUROPE`; `MA - Newtonville` on `_NEWTONVILLE_MA`; Pacific Surfliner /
+    Via Rail hard negatives; bake "center squares" classifier scrub; narrow NYT
+    hard negative to guild `New York Times Union`; Saratoga Springs civic/tourism
+    + `#TroyNY` + SPAC lodging strong positives; Oktoberfest exception on Germany
+    capital-region conflict; grow eval with 2026-10-08 FP/TP/FN anchors (builds on
+    #90 / B-114).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-114 — Daily feed audit: Dutch de Kooning/Rijksmuseum Rotterdam, Newtonville Books MA, Milford CT River Street; Saratoga Rte 50 / Skidmore / Stewart's / PIP FNs
 - **Status:** done ([#90](https://github.com/chriscarrollsmith/capital-region-feed/pull/90))
 - **Why:** 2026-10-07 audit of last-24h AppView feed (~133 posts since 2026-10-06T09:00Z)

@@ -10785,5 +10785,219 @@
     "split": "dev",
     "regression": true,
     "note": "2026-10-07 audit: Saratoga CA letter correctly dropped; anchor residual precision"
+  },
+  {
+    "id": "fp-troy-reeder-jets-linebacker",
+    "text": "Scouting New York Jets linebacker Troy Reeder\n\nThe Jets recently acquired former Rams linebacker Troy Reeder, who has been active several times due to linebacker injuries.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-08 audit: NFL person Troy Reeder + Jets unlocked City of Troy"
+  },
+  {
+    "id": "fp-troy-reeder-hashtag",
+    "text": "Scouting New York Jets linebacker Troy Reeder #NewYorkJets #TroyReeder #NFL #Football #Linebacker",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-08 audit: #TroyReeder / #NewYorkJets person-name FP"
+  },
+  {
+    "id": "tp-troy-voter-drive-empire-state",
+    "text": "Register Democrats in the Empire State! Join us for an upcoming drive in Troy on Oct. 11 - training will be provided!",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-08 audit: Cap Region Troy voter drive counterpart to Troy Reeder FP",
+    "alt_text": "Sign up to register Dems in NY!"
+  },
+  {
+    "id": "fp-dutch-luxor-rotterdam-cats",
+    "text": "In het Winter Garden-theater in New York ging op 7 oktober 1982 de musical Cats in première. Ook vanaf 7 oktober, maar dan in 2006, was de musical te zien in het @LuxorTheater in Rotterdam. Elaine Paige’s versie van ‘Memory’, komt uit de Britse versie.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-08 audit: Dutch LuxorTheater Rotterdam + NYC premiere unlocked Town of Rotterdam"
+  },
+  {
+    "id": "tp-rotterdam-ny-train-incident",
+    "text": "A vehicle and a train were involved in an accident in Rotterdam on Wednesday night near downtown #AlbanyNY.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-08 audit: Town of Rotterdam NY counterpart to LuxorTheater FP"
+  },
+  {
+    "id": "fp-newtonville-ma-dash-job",
+    "text": "Store Associate - MA - Newtonville Job listing on a national board",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-08 audit: MA - Newtonville job board strong_positive miss"
+  },
+  {
+    "id": "fp-pacific-surfliner-stale-alb-alt",
+    "text": "AMTRAK Pacific Surfliner (782) GTA->SAN Alert: Train 782 is late due to rail congestion.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Mechanical Assessment: Train 291 delay at Albany-Rensselaer (ALB) station.",
+    "note": "2026-10-08 audit: CA Surfliner kept via stale Albany-Rensselaer image alt"
+  },
+  {
+    "id": "fp-via-rail-stale-alb-alt",
+    "text": "VIA_RAIL Corridor (54) TRTO->OTTW Alert: This train accumulated a delay due to rail traffic on route.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "Mechanical Assessment: Train 291 delay at Albany-Rensselaer (ALB) station.",
+    "note": "2026-10-08 audit: Via Rail Canada kept via stale Albany-Rensselaer image alt"
+  },
+  {
+    "id": "tp-ethan-allen-albany-rensselaer",
+    "text": "AMTRAK Ethan Allen Express (291) NYP->BTN Alert: delay at Albany-Rensselaer (ALB) station due to a mechanical assessment.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-08 audit: Cap Region Ethan Allen counterpart to Surfliner/Via FPs"
+  },
+  {
+    "id": "fp-sourdough-center-squares",
+    "text": "today I laminated crusty sourdough and baked a loaf for spinach-artichoke dip.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "2 1/2 pound sourdough bake with a quilt pattern scoring. (carve into the bread around the four center squares for spinach artichoke dip.)",
+    "note": "2026-10-08 audit: bread four center squares unlocked classifier:local_micro"
+  },
+  {
+    "id": "tp-center-square-porchfest",
+    "text": "Center Square Porchfest is this weekend downtown. Maps at noon.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "ambiguous_classifier",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-08 audit: real Center Square event counterpart to bake FP"
+  },
+  {
+    "id": "tp-saratoga-springs-store-nyt-author",
+    "text": "New York Times bestselling author Andrea Bartz stopped by our Saratoga Springs store to sign copies of her latest mystery novel.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-08 audit: NYT masthead hard-negative blocked Saratoga Springs store"
+  },
+  {
+    "id": "tp-saratoga-springs-flag-day-parade",
+    "text": "Photos: Saratoga Springs Flag Day Parade",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-08 audit: bare Saratoga Springs parade FN"
+  },
+  {
+    "id": "tp-saratoga-springs-freezes-hires",
+    "text": "Saratoga Springs freezes new employee hires for the year",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-08 audit: Saratoga Springs civic FN"
+  },
+  {
+    "id": "tp-saratoga-springs-homebase-clubhouse",
+    "text": "Today, I was thrilled to be in Saratoga Springs to celebrate the opening of RISE’s new Homebase Clubhouse.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-08 audit: in Saratoga Springs to celebrate FN"
+  },
+  {
+    "id": "tp-saratoga-springs-uncommon-grounds",
+    "text": "Our Coffee with Comrades event will be in Saratoga Springs this Sunday at Uncommon Grounds 11-1!",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-08 audit: Uncommon Grounds Saratoga Springs FN"
+  },
+  {
+    "id": "tn-saratoga-springs-utah-library",
+    "text": "Saratoga Springs Utah library event this weekend.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-08 audit: UT Saratoga Springs counterpart"
+  },
+  {
+    "id": "tp-troyny-hashtag-deflock",
+    "text": "Get the Flock out of #TroyNY! City council talking points inside.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-08 audit: #TroyNY hashtag FN"
+  },
+  {
+    "id": "tp-spac-staying-near-hotels",
+    "text": "Staying near SPAC makes concert nights even better. Find hotels, inns, and nearby places to stay.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-08 audit: SPAC lodging FN without Saratoga token"
+  },
+  {
+    "id": "tp-oktoberfest-capital-region-events",
+    "text": "Oktoberfest originated in Munich, Germany as a way to celebrate German culture, food and beer. Here’s where you can find Oktoberfest events in the Capital Region.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-08 audit: Germany origin story gated NY Capital Region Oktoberfest FN"
+  },
+  {
+    "id": "tn-germany-capital-region-economy",
+    "text": "Economic growth in Germany and the capital region remains uneven this quarter.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-08 audit: Germany capital region counterpart to Oktoberfest FN"
   }
 ]
