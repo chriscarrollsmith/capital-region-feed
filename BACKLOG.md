@@ -538,6 +538,357 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-116 — Daily feed audit: Richmond Capital Region Airport Commission, KLAN Lansing flights, DelveInsight Albany dateline, Bedford UK River Street; Saint Rose / KALB / Saratoga Springs / Rensselaer I-90 FNs
+- **Status:** done ([#92](https://github.com/chriscarrollsmith/capital-region-feed/pull/92))
+- **Why:** 2026-10-09 audit of last-24h AppView feed (~129 posts since 2026-10-08T09:00Z)
+  found active FPs after unmerged #91 lineage: Henrico Citizen Capital Region Airport
+  Commission + Sandston kept as `strong_positive`; celebplanes `KLAN (Capital Region)` /
+  `Capital Region→Pittsburgh` Lansing MI flights kept as `strong_positive`; rheumnow
+  DelveInsight `(Albany, New York)` market-research dateline kept as `strong_positive`;
+  UK `#Bedford` River Street street-works kept as `classifier:local_micro`. FNs: College
+  of Saint Rose campus bare Albany (`bare_albany`); `KALB (Albany)` / Albany International
+  flight cards (`bare_albany`); Eric Idle / George Crum potato chip / historic homes
+  Saratoga Springs without `, NY`; I-90 bridge in Rensselaer. Rematch already drops
+  Dutch AD Rotterdam / Malta / Troy AL weather from #91. Residual: bare Albany remote-job
+  spam; allowlisted non-local (News10 Hudson Valley / Times Union statewide); USPS
+  Saratoga multi-state dumps intentional; WAMC / Siena intentional.
+- **Work:**
+  - Expand VA capital-region cues (`Capital Region Airport Commission`, Sandston,
+    Henrico); MI capital-region ICAO `KLAN` + Capital Region→Pittsburgh; DelveInsight
+    Albany dateline conflict; Bedford UK River Street classifier scrub; Saint Rose /
+    KALB / Albany International / Saratoga Springs civic-history / I-90 Rensselaer
+    strong positives; grow eval with 2026-10-09 FP/TP/FN anchors (builds on #91 /
+    B-115).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
+### B-115 — Daily feed audit: Troy Reeder Jets, Dutch LuxorTheater Rotterdam, Newtonville MA jobs, Surfliner/Via Rail, center-squares bake; Saratoga Springs civic / #TroyNY / SPAC / Oktoberfest FNs
+- **Status:** done ([#91](https://github.com/chriscarrollsmith/capital-region-feed/pull/91))
+- **Why:** 2026-10-08 audit of last-24h AppView feed (~188 posts since 2026-10-07T09:00Z)
+  found active FPs after unmerged #90 lineage: NFL scouting cards naming linebacker
+  Troy Reeder + New York Jets kept as `ambiguous_with_context:troy`; Dutch
+  LuxorTheater / Cats premiere + Winter Garden NYC kept as
+  `ambiguous_with_context:rotterdam`; educativ `MA - Newtonville` job kept as
+  `strong_positive`; Amtrak Pacific Surfliner / Via Rail alerts kept as
+  `multi_local_places` via stale Albany-Rensselaer image alt; sourdough bake alt
+  "four center squares" kept as `classifier:local_micro`. FNs: bare Saratoga Springs
+  civic/tourism (parade, freezes hires, Homebase Clubhouse, Uncommon Grounds) and
+  NYT-bestseller + Saratoga Springs store blocked by whole-post `New York Times`
+  hard negative; `#TroyNY` hashtag; SPAC lodging without Saratoga token; NEWS10
+  Oktoberfest Capital Region listing gated by Germany capital-region conflict.
+  Rematch already drops ~51 stale NL Rotterdam / Brunswick / Malta index rows.
+  Residual: bare Albany remote-job spam; allowlisted non-local (News10 Hudson Valley);
+  USPS Delmar multi-state dumps intentional; WAMC / Siena intentional.
+- **Work:**
+  - Expand Troy person-name NFL/Jets cues; LuxorTheater Dutch musical cues on
+    `_MALTA_EUROPE`; `MA - Newtonville` on `_NEWTONVILLE_MA`; Pacific Surfliner /
+    Via Rail hard negatives; bake "center squares" classifier scrub; narrow NYT
+    hard negative to guild `New York Times Union`; Saratoga Springs civic/tourism
+    + `#TroyNY` + SPAC lodging strong positives; Oktoberfest exception on Germany
+    capital-region conflict; grow eval with 2026-10-08 FP/TP/FN anchors (builds on
+    #90 / B-114).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
+### B-114 — Daily feed audit: Dutch de Kooning/Rijksmuseum Rotterdam, Newtonville Books MA, Milford CT River Street; Saratoga Rte 50 / Skidmore / Stewart's / PIP FNs
+- **Status:** done ([#90](https://github.com/chriscarrollsmith/capital-region-feed/pull/90))
+- **Why:** 2026-10-07 audit of last-24h AppView feed (~133 posts since 2026-10-06T09:00Z)
+  found active FPs after unmerged #89 lineage: `news-flows-nl` Dutch Telegraaf /
+  Rijksmuseum de Kooning wire kept as `ambiguous_with_context:rotterdam` via New York;
+  `akashicbooks` Newtonville Books / Newton, MA event kept as `strong_positive` (comma
+  form `Newton, MA` missed `newton ma` conflict); `milfordphoto` Milford CT camera-shop
+  event kept as `classifier:local_micro` via River Street. FNs: educativ Saratoga
+  Springs Rte 50 job (`ambiguous_no_context:saratoga springs`); nystatemusic Skidmore
+  College residency (`no_match`); Stewart's Shops recall without dateline (`no_match`);
+  PIP Global Safety Latham product wire (`ambiguous_no_context:latham`). Rematch already
+  drops Troy Trojans / Saratoga CA / Malta / NL Rotterdam stale index rows. Residual:
+  bare Albany job spam; allowlisted non-local (Times Union Buffalo / News10 Poughkeepsie);
+  WAMC western Mass intentional; NYC Mamdani “changes in Albany” capital-politics soft
+  keeps; USPS Albany multi-state dumps intentional.
+- **Work:**
+  - Expand `_MALTA_EUROPE` Dutch art/Telegraaf cues; widen `_NEWTONVILLE_MA` for
+    `Newton, MA` / Newtonville Books; gate Milford CT River Street in classifier;
+    strong positives for Saratoga Springs Rte 50, Skidmore College, Stewart's Shops,
+    PIP Global Safety; grow eval with 2026-10-07 FP/TP/FN anchors (builds on #89 /
+    B-113).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
+### B-113 — Daily feed audit: Care Bears cup, Troy MI council, Troy Sowell Greece NY, Quebec National-Capital / CHEK / Lima Peru; Saratoga Springs with / Albany community FNs
+- **Status:** done ([#89](https://github.com/chriscarrollsmith/capital-region-feed/pull/89))
+- **Why:** 2026-10-06 audit of last-24h AppView feed (~166 posts since 2026-10-05T09:08Z)
+  found active FPs after unmerged #88 lineage: `pedersen74` Care Bears cup kept as
+  `strong_positive` via optional-apostrophe `bear's cup`; Citizen Portal
+  `#TroyCityOaklandCounty` / `#MI` Troy City Council kept as `strong_positive` (Michigan
+  conflict not applied on the strong path); `byteseu` Greece, N.Y. crime wire naming
+  `Troy Sowell, 36` kept as `ambiguous_with_context:troy`; Quebec `National-Capital`
+  hyphen + Montreal/PQ capital-region politics; `cheknews.ca` Victoria BC capital region;
+  Lima Peru municipal “capital region” Pravda card. FNs: conversational
+  `In Saratoga Springs with …` (`ambiguous_no_context:saratoga springs`);
+  `Albany community … Hudson Ave` (`bare_albany`). Rematch already drops Malta /
+  Rotterdam NL / Troy Carter / Brunswick MO stale index rows (~54). Residual: bare
+  Albany job spam; allowlisted non-local; WAMC / Siena intentional; ~54 rematch-drops
+  until purge.
+- **Work:**
+  - Require apostrophe on Bear's Cup; expand Troy Michigan Oakland County / #MI cues and
+    apply on strong path; Troy person age-tag / Greece N.Y. cues; hyphen
+    `National-Capital region` hard-negative; Quebec/Montreal/PQ Canadian cues;
+    `cheknews` handle gate; Peru/Lima capital-region conflict; strong positives for
+    `in Saratoga Springs with` and `Albany community`; grow eval with 2026-10-06
+    FP/TP/FN anchors (builds on #88 / B-112).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
+### B-112 — Daily feed audit: Winter Park Playhouse, Center Square NASA wire, Dutch Rotterdam-Zuid fashion week, Bethlehem MD USPS; Rotterdam Elks / Mohawk Hudson FNs
+- **Status:** done ([#88](https://github.com/chriscarrollsmith/capital-region-feed/pull/88))
+- **Why:** 2026-10-05 audit of last-24h AppView feed (~108 posts since 2026-10-04T09:01Z)
+  found active FPs after unmerged #87 lineage: Orlando Sentinel `Winter Park Playhouse`
+  kept as `strong_positive` via bare `park playhouse`; `newsarea` NASA Moon-to-Mars card
+  kept as `classifier:local_micro` via prose “told The Center Square” / “The Center Square
+  asked”; Dutch Trouw `Rotterdam-Zuid` fashion week kept as `ambiguous_with_context:rotterdam`
+  via “Na Parijs, Londen en New York”; `every-usps-box` `BETHLEHEM MD` dump unlocked via
+  `NEW YORK NY` as `ambiguous_with_context:bethlehem`. FNs: Angelo Santabarbara
+  Rotterdam Elks Lodge scholarship dinner (`ambiguous_no_context:rotterdam`); NEWS10
+  Mohawk Hudson Humane Society share without placename (`bare_albany`). Rematch already
+  drops Malta/Brunswick MO/Troy Trojans/Rotterdam NL stale index rows (~31). Residual:
+  bare Albany job spam; allowlisted non-local; WAMC / Siena intentional; Citizen Portal
+  MO-path Troy content that is Cap Region text; Albany rename / Belmont press credits;
+  ~31 rematch-drops until purge.
+- **Work:**
+  - Winter Park negative lookbehind on Park Playhouse; Center Square wire prose
+    attributions; Dutch Parijs/Londen / Rotterdam-Zuid / fashion week / trouw.nl cues;
+    Bethlehem MD (and Maryland) co-occurrence on Bethlehem PA gate; strong positives for
+    Rotterdam Elks Lodge and Mohawk Hudson Humane Society; grow eval with 2026-10-05
+    FP/TP/FN anchors (builds on #87 / B-111).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
+### B-111 — Daily feed audit: Troy ACCNYC pet, USPS Duanesburg/Slingerlands multi-state; Saratoga Springs library/rankings / Thirty Year Farm / Funny Bone / food scene / Cook Park FNs
+- **Status:** done ([#87](https://github.com/chriscarrollsmith/capital-region-feed/pull/87))
+- **Why:** 2026-10-04 audit of last-24h AppView feed (~90 posts since 2026-10-03T09:02Z)
+  found active FPs after unmerged #86 lineage: `mmpvoirdire` ACCNYC Queens urgency card
+  named pet `Troy 204602` kept as `ambiguous_with_context:troy` via NYC/Queens; national
+  `every-usps-box` dumps listing `DUANESBURG NY` / `SLINGERLANDS NY` beside WI/CO/IA/LA/WV/FL
+
+  ZIPs kept as strong Cap Region places (Burnt Hills gate was too narrow). FNs: Saratoga
+  Springs Public Library / America’s best-small-cities ranking cards and Thirty Year Farm
+  weanling posts (`ambiguous_no_context:saratoga[ springs]`); singular `Albany Funny Bone`
+  / `Albany food scene` (`bare_albany`); Cook Park Colonie Walk for Wildwood
+  (`bare_colonie`). Rematch already drops Malta/Brunswick NC/Troy Trojans/Rotterdam NL
+  stale index rows (~17). Residual: bare Albany job spam; allowlisted non-local; WAMC /
+  Siena intentional; The Saratoga Special@Belmont press credits; Albany rename jokes;
+  eBay seller-location Schenectady lists; ~17 rematch-drops until purge.
+- **Work:**
+  - Troy NYC Animal Care / ACCNYC pet-name gate; expand USPS multi-state dumps from
+    Burnt Hills to Duanesburg / Slingerlands; strong positives for Saratoga Springs
+    Public Library / rankings / Thirty Year Farm / Troy Record / Funny Bone singular /
+    Albany food scene / Stacks Espresso; Colonie Cook Park local cue; grow eval with
+    2026-10-04 FP/TP/FN anchors (builds on #86 / B-110).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
+### B-110 — Daily feed audit: Brussels The EGG / egg festival, Stena Scotia+Rotterdam, Keeneland Jerkens/Personal Ensign; Junior's Colonie FN
+- **Status:** done ([#86](https://github.com/chriscarrollsmith/capital-region-feed/pull/86))
+- **Why:** 2026-10-03 audit of last-24h AppView feed (~115 posts since 2026-10-02T09:01Z)
+  found active FPs after unmerged #85 lineage: `coordinatef` Europe xTEF card `at The
+  EGG in Brussels` and VT `at the egg festival` kept as `event_local_venue:at the egg`;
+  Dutch `transportonline` Stena Line Rotterdam–Harwich freight card kept as
+  `multi_local_places` via ship name `Stena Scotia`; mlbmania/mlbnews24 Keeneland
+  Breeders' Cup workout wires and BloodHorse Keeneland Spinster cards kept via
+  strong-positive `H. Allen Jerkens` / `Personal Ensign` prior-form mentions. FN:
+  bizjournals `Junior's` / BMT Hospitality opening in Colonie (`bare_colonie` without
+  link-card title). Rematch already drops Dutch AD/Malta/Bethlehem NH/Saratoga CA
+  stale index rows (~25). Residual: bare Albany job spam; allowlisted non-local;
+  WAMC / Siena intentional; The Saratoga Special press credits at Keeneland; Albany
+  rename jokes with NYC context; ~25 rematch-drops until purge.
+- **Work:**
+  - Expand Egg off-region cues (Brussels/Europe/egg festival) + venue lookahead;
+    Scotia ship / Stena Line+Rotterdam/Harwich conflict; Keeneland stakes-away gate
+    for Jerkens / Personal Ensign; Colonie local Junior's / BMT Hospitality cues;
+    grow eval with 2026-10-03 FP/TP/FN anchors (builds on #85 / B-109).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
+### B-109 — Daily feed audit: Dutch Rotterdam burgemeester/NYC summit, Fredericton Capital Region, Burnt Hills USPS multi-state; Viaport / Northern Rivers / Parting Glass / Preservation Hall FNs
+- **Status:** done ([#85](https://github.com/chriscarrollsmith/capital-region-feed/pull/85))
+- **Why:** 2026-10-02 audit of last-24h AppView feed (~110 posts since 2026-10-01T09:02Z)
+  found active FPs after unmerged #84 lineage: Dutch AD.nl mirrors (`krimpen-ad` /
+  `barendrecht-ad` / `capelle-ad`) about Rotterdam mayor Carola Schouten skipping a
+  US mayor summit with NYC's Mamdani for Veteranendag unlocked Town of Rotterdam via
+  bare "New York" context (`ambiguous_with_context:rotterdam`); canadasmagic
+  `Fredericton Capital Region` concert cards kept as `strong_positive`; national
+  `every-usps-box` dumps listing `BURNT HILLS NY` beside PA/TX ZIPs kept as Burnt Hills
+  strong. FNs: Assemblymember `Viaport Mall` / `Concerned for the Hungry` food-drive
+  post (`ambiguous_no_context:rotterdam`); `Living Resources` / `Northern Rivers` in
+  Albany (`bare_albany`); `The Parting Glass` / `Preservation Hall` in Saratoga Springs
+  venue cards (`ambiguous_no_context:saratoga springs`). Residual: bare Albany job spam;
+  allowlisted non-local; WAMC / Siena intentional; MiniVAN/eBay seller-location lists;
+  Lucknow News Flash datelines; ~25 rematch-drops until purge.
+- **Work:**
+  - Expand malta_europe Dutch mayor/Veteranendag / `in de VS` cues; Fredericton capital-
+    region hard-negative + Canadian geo cue; Burnt Hills multi-state USPS conflict;
+    strong positives for Viaport Mall / Concerned for the Hungry / Northern Rivers /
+    Living Resources+Albany / Parting Glass / Preservation Hall+Saratoga; grow eval with
+    2026-10-02 FP/TP/FN anchors (builds on #84 / B-108).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
+### B-108 — Daily feed audit: Warsaw Capital Region, Brooklyn Bethlehem church, Rotterdam Glasgow bio, Lucca burnt hills, PA Harrisburg Capital District; United Tenants of Albany FN
+- **Status:** done ([#84](https://github.com/chriscarrollsmith/capital-region-feed/pull/84))
+- **Why:** 2026-10-01 audit of last-24h AppView feed (~139 posts since 2026-09-30T09:07Z)
+  found active FPs after unmerged #83/#82 lineage (incl. 2026-09-26 branch work):
+  Polandinsight `Warsaw Capital Region` / PLN GDP cards kept as `strong_positive`;
+  Brooklyn `Bethlehem Lutheran Church` unlocked Town of Bethlehem via `NY` context
+  (`ambiguous_with_context:bethlehem`); Glasgow/Scotland→Rotterdam artist bios with
+  New York City / Cape Cod unlocked Town of Rotterdam; Lucca Italy travel poetry
+  `burnt hills, sweet wine, olive cicada` matched Burnt Hills strong; Educativ
+  `Capital District - PA-Harrisburg Capitol` jobs kept as Capital District strong.
+  FN: Assemblymember award from `United Tenants of Albany` (`bare_albany`). Residual:
+  bare Albany job spam; allowlisted non-local; WAMC / Siena intentional; NWS Albany
+  CWA; national MiniVAN / eBay seller-location Saratoga Springs lists; Lucknow News
+  Flash `(Albany, New York)` wire datelines; ~26 rematch-drops until purge.
+- **Work:**
+  - Poland/Warsaw capital-region gate; Bethlehem+Brooklyn church conflict; malta_europe
+    Glasgow/Scotland/Cape Cod Rotterdam cues; burnt-hills Italy/Lucca descriptive
+    gate; PA Capital District+Harrisburg job gate; strong-positive United Tenants of
+    Albany; grow eval with 2026-10-01 FP/TP/FN anchors (builds on 2026-09-26 / B-107).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
+### B-107 — Daily feed audit: Rotterdam diesel/Dutch landscape, Nouveau-Brunswick, Brunswick recording, Malta UN, CTV Vancouver capital region, Lakewood Clifton Park; Firebirds / Nine Pin / Erie Canal / cidery FNs
+- **Status:** done ([#84](https://github.com/chriscarrollsmith/capital-region-feed/pull/84))
+- **Why:** 2026-09-26 audit of last-24h AppView feed (~123 posts since 2026-09-25T09:08Z)
+  found active FPs after #83: diesel export wires comparing New York futures to
+  `prices in Rotterdam` (8 mirror copies) and Dutch West 8 landscape firm cards
+  (`offices in Rotterdam and New York City` / Houston Botanic Garden) kept as
+  `ambiguous_with_context:rotterdam`; French `Nouveau-Brunswick` + New York
+  Islanders hockey cards and jazz `Brunswick recording session` + NYC unlocked
+  Town of Brunswick; country-of-Malta UN / Netanyahu walkout cards with NYC
+  headquarters photo unlocked Town of Malta; CTV Vancouver municipal-election
+  sign cards saying bare `capital region` kept as strong; Cleveland.com
+  Lakewood OH `Clifton Park` private-beach listing kept as strong. FNs:
+  `Albany Firebirds` arena football (`bare_albany`); venue-less
+  `Nine Pin Cider Works` hiring (`bare_albany`); Erie Canal Albany-to-Buffalo
+  accessibility ride and Gothamist farm-cidery-in-Albany Canada trade cards
+  (`bare_albany`). Residual: bare Albany job spam; allowlisted non-local;
+  WAMC / Siena intentional; NWS Albany CWA CT / Poughkeepsie advisories;
+  ~33 rematch-drops until purge; bare Albany marches without NY cues.
+- **Work:**
+  - Expand malta_europe diesel/futures/Dutch-landscape/Houston/UN-Malta cues;
+    Brunswick recording session + Nouveau-Brunswick gates; CTV Vancouver handle
+    on Canadian capital-region conflict; Lakewood/Cleveland Clifton Park OH
+    conflict; strong-positive Albany Firebirds / Nine Pin / Erie Canal+Albany /
+    farm cidery+Albany; grow eval with 2026-09-26 FP/TP/FN anchors (builds on
+    #83 / B-106).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
+### B-106 — Daily feed audit: BWI/Dulles/DCA capital region; Albany International Airport / MVP Arena / downtowntroyny.org FNs
+- **Status:** done ([#83](https://github.com/chriscarrollsmith/capital-region-feed/pull/83))
+- **Why:** 2026-09-25 audit of last-24h AppView feed (~129 posts since 2026-09-24T09:13Z)
+  found active FPs after #82: Baltimore Banner SMART air-traffic cards saying the
+  `capital region's three main airports — BWI, Dulles and DCA` kept as
+  `strong_positive` because MD/DC geo cues lacked airport codes. FNs from
+  synthetic probes (AppView `searchPosts` still 403): bare
+  `Albany International Airport` was `bare_albany`; venue-only `MVP Arena`
+  without event cues was `no_match`; Downtown Troy BID `downtowntroyny.org`
+  Chowderfest cards without "Troy" were `no_match`. Residual: bare Albany job
+  spam; allowlisted non-local; WAMC / Siena intentional; NWS Albany CWA CT
+  advisories; ~29 rematch-drops until purge (Malta EU / Brunswick NC / Troy OH).
+- **Work:**
+  - Add BWI / Dulles / DCA / Reagan National to MD/DC capital-region geo cues;
+    strong-positive `albany international airport`, `mvp arena`,
+    `downtowntroyny.org`; grow eval with 2026-09-25 FP/TP/FN anchors (builds on
+    #82 / B-105).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
+### B-105 — Daily feed audit: French colonie tech, Aurora/Montgomery IL River Street, ancient Troy, DrupalCon Rotterdam, idiomatic five rivers; Freeman’s Farm / albany.edu FNs
+- **Status:** done ([#82](https://github.com/chriscarrollsmith/capital-region-feed/pull/82))
+- **Why:** 2026-09-23 audit of last-24h AppView feed (~168 posts since 2026-09-22T09:02Z)
+  found active FPs after #81: French `sa colonie tech` / `néocolons` Praxis Uruguay
+  cards unlocked Town of Colonie via `New York-based` (`colonie_with_context`);
+  Kane County IL Aurora food-truck and Montgomery IL cemetery cards hit classifier
+  `River Street` local_micro; Anatolian `ancient city of Troy` / Turkey archaeology
+  matched municipal `city of Troy` strong; DrupalCon Rotterdam + NYC photo credit
+  unlocked Town of Rotterdam; idiomatic `pee five rivers` matched Five Rivers
+  Environmental Education Center strong. FNs: curly-apostrophe `Freeman’s Farm`
+  (`bare_albany`); `albany.edu` campus URL without placename (`bare_albany`).
+  AppView `searchPosts` still mostly 403. Residual: bare Albany job spam;
+  allowlisted non-local; WAMC / Siena intentional; ~33 rematch-drops until purge;
+  bare Rotterdam cafe / Rensselaer-woman wires remain fail-closed without NY cues.
+- **Work:**
+  - Expand French colonie hard negatives; Aurora/Montgomery IL River Street classifier
+    gate; ancient/Turkey Troy conflict + `(?<!ancient )city of troy`; DrupalCon
+    Rotterdam in malta_europe; narrow five rivers to environmental/Delmar cues;
+    curly apostrophe on Freeman’s Farm; `albany.edu` strong; grow eval with
+    2026-09-23 FP/TP/FN anchors (builds on #81 / B-104).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
+### B-104 — Daily feed audit: Sooke capital region, Times Union Busting, Brunswick boats, Malta Independence, Birmingham River Street; Schuylerville / Central Warehouse FNs
+- **Status:** done ([#81](https://github.com/chriscarrollsmith/capital-region-feed/pull/81))
+- **Why:** 2026-09-22 audit of last-24h AppView feed (~134 posts since 2026-09-21T09:13Z)
+  found active FPs after #80: Victoria BC / Sooke wildfire alt cards saying
+  `capital region` (firesmoke.ca / South Island) kept as strong; YouTube
+  `current times` + `Union Busting` alt glued into `times union` strong; Irish
+  Times `New York-listed boat manufacturer Brunswick` unlocked Town of Brunswick
+  via NY context; country-of-Malta `Malta Independence Day` + `New York City`
+  appreciation lists; Birmingham UK `River Street` / Secret Space / B5 5SA hit
+  classifier local_micro. FNs from rematch drops / bare Albany: Saratoga Town Hall
+  in Schuylerville (`ambiguous_no_context:saratoga`); Albany's Central Warehouse
+  demolition (`bare_albany`). AppView `searchPosts` still 403. Residual: bare
+  Albany job spam; allowlisted non-local; WAMC national wires / Siena College poll
+  wires (intentional strong); ~24 rematch-drops until purge.
+- **Work:**
+  - Expand Canadian capital-region cues (Sooke / South Island / firesmoke.ca);
+    `times union(?! busting)`; Brunswick Corporation boat/NYSE conflict; Malta
+    Independence / Valletta in malta_europe; Birmingham River Street classifier
+    gate; Schuylerville / Saratoga Town Hall / Albany Central Warehouse strong;
+    grow eval with 2026-09-22 FP/TP/FN anchors (builds on #80 / B-103).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
+### B-103 — Daily feed audit: Bethlehem carol/Palestine, Newtonville Village Day, CDTA Algeria, blue collar city, #DenHaag; Albany Democrats / War Room FNs
+- **Status:** done ([#80](https://github.com/chriscarrollsmith/capital-region-feed/pull/80))
+- **Why:** 2026-09-21 audit of last-24h AppView feed (~142 posts since 2026-09-20T09:04Z)
+  found active FPs after #79: Christmas carol `O Little Town Of Bethlehem` /
+  `Oh little town of Bethlehem` matched `town of bethlehem` strong; West Bank
+  Bethlehem za'atar copy unlocked via `#nyc`; Newton MA Village Day / Setti Warren /
+  Marc Laredo matched bare `newtonville` strong; Algerian `CDTA` chip-fab copy matched
+  Cap Region transit strong; generic `blue collar city` substring hit Troy's
+  `collar city` nickname; Dutch `#Rotterdam #DenHaag #Curaçao #NewYork` kept because
+  hashtag forms lack the space in `den haag`. FNs from rematch drops: Hochul +
+  `Albany Democrats` and War Room Tavern lobbyist-bar wire were `bare_albany`.
+  AppView `searchPosts` still 403. Residual: bare Albany job spam; allowlisted
+  non-local; WAMC national wires / Siena College poll wires (intentional strong);
+  ~33 rematch-drops until purge (Malta EU / Rotterdam NL / Troy Trojans / OH Albany).
+- **Work:**
+  - Exclude `little town of` before Bethlehem strong; holy-land / carol conflict;
+    expand Newtonville MA cues; CDTA↔Algeria conflict; `(?<!blue )collar city`;
+    `#denhaag` / Curaçao in malta_europe; Albany Democrats / Hochul / War Room Tavern
+    strong; grow eval with 2026-09-21 FP/TP/FN anchors (builds on #79 / B-102).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
+### B-102 — Daily feed audit: Gio Ponti designer FP; Saratoga NHP / Funny Bones Albany FNs
+- **Status:** done ([#79](https://github.com/chriscarrollsmith/capital-region-feed/pull/79))
+- **Why:** 2026-09-20 audit of last-24h AppView feed (~99 posts since 2026-09-19T09:02Z)
+  found an active FP after #78: Les Echos French design copy naming Italian architect
+  `Gio Ponti` matched bare `gio ponti(?:\s+stakes)?` strong meant for the Saratoga
+  Gio Ponti Stakes. FNs from rematch / local venue text: `Saratoga National Historical
+  Park` / Bemus Heights / Freeman's Farm battlefield tourism (Burgoyne/1777 windows too
+  narrow when landmarks carry locality); Funny Bones comedy club in Albany without
+  `, NY`. AppView `searchPosts` still 403. Residual: bare Albany job spam; allowlisted
+  non-local; Siena sports / Battle of Saratoga history wires (intentional strong);
+  ~40 rematch-drops until purge (Malta EU / Rotterdam NL / Troy Trojans / OH Albany).
+- **Work:**
+  - Gate Gio Ponti to stakes/racing cues; strong positives for Saratoga National
+    Historical Park, Bemus/Bemis Heights, Freeman's Farm; Funny Bones↔Albany/Latham/
+    Colonie; grow eval with 2026-09-20 FP/TP/FN anchors (builds on #78 / B-101).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-101 — Daily feed audit: Brechin River Street, #thespa Gunma, Ichabod literary, GF wordcloud, Troy Kingston; Frear Park / downtown Troy / Crossings Colonie FNs
 - **Status:** done ([#78](https://github.com/chriscarrollsmith/capital-region-feed/pull/78))
 - **Why:** 2026-09-19 audit of last-24h AppView feed (~155 posts since 2026-09-18T09:15Z)

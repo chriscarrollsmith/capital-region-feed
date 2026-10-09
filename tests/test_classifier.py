@@ -181,6 +181,17 @@ def test_center_square_wire_byline_is_not_local_micro() -> None:
     )
     assert nj_rd.matched is False
 
+    # Bread-scoring "four center squares" / quilt pattern is not Albany Center Square.
+    bake = match_post(
+        'today I laminated crusty sourdough and baked a loaf for spinach-artichoke dip.',
+        alt_text=(
+            '2 1/2 pound sourdough bake with a quilt pattern scoring, cooling on a rack. '
+            '(carve into the bread around the four center squares and take the bread out '
+            'to create a well for spinach artichoke dip.)'
+        ),
+    )
+    assert bake.matched is False
+
     # Prose attribution "The Center Square reports …" (no paren/dash byline).
     reports = match_post(
         'Dem AGs Planned Trump Lawsuits Months Before Election — Now They’re Fighting '
@@ -205,6 +216,15 @@ def test_center_square_wire_byline_is_not_local_micro() -> None:
         ),
     )
     assert source.matched is False
+
+    # Prose attribution without paren/dash: "told The Center Square" / "asked".
+    told = match_post(
+        'GAO: NASA has no single cost estimate for Moon-to-Mars program\n\n'
+        'NASA has not provided a single total cost estimate for its Moon-to-Mars '
+        'effort, a federal auditor told The Center Square, because the agency does '
+        'not maintain one. The Center Square asked NASA for…'
+    )
+    assert told.matched is False
 
 
 def test_crossgates_tammany_and_chippewa_river_street_not_local_micro() -> None:
@@ -241,6 +261,26 @@ def test_boston_open_streets_river_street_not_local_micro() -> None:
     )
     assert boston.matched is False
     assert match_post('Art walk on River Street in Troy this Saturday at noon.').matched is True
+
+
+def test_milford_ct_photo_river_street_not_local_micro() -> None:
+    milford = match_post(
+        "Milford Photo's Sony rep will be here on Saturday!\n\n"
+        '📍 Milford Photo\n22 River Street\nMilford, CT 06460'
+    )
+    assert milford.matched is False
+    assert match_post('Open mic tomorrow on River Street — sign-ups start at 6.').matched is True
+
+
+def test_bedford_uk_river_street_not_local_micro() -> None:
+    bedford = match_post(
+        'Planned road closures starting tomorrow in #Bedford, Fri 9 Oct, 2026:\n\n'
+        'Midland Road, until 15 Oct\n'
+        'River Street, until 15 Oct\n\n'
+        'CheapFuelNearMe.uk/street-manager/bedford/'
+    )
+    assert bedford.matched is False
+    assert match_post('Open mic tomorrow on River Street — sign-ups start at 6.').matched is True
 
 
 def test_cape_town_soetriver_street_not_local_micro() -> None:
@@ -339,6 +379,41 @@ def test_brechin_angus_river_street_not_local_micro() -> None:
         alt_text='Image shows the river South Esk flowing through Brechin',
     )
     assert angus.matched is False
+    assert match_post('Open mic tomorrow on River Street — sign-ups start at 6.').matched is True
+
+
+def test_birmingham_artisans_river_street_not_local_micro() -> None:
+    uk = match_post(
+        'Markets are where we get to talk to people face to face. The next one is '
+        'Alternative Artisans in Birmingham on Sunday 27 September, midday until 5pm '
+        'at Secret Space.',
+        alt_text=(
+            'Find us at Alternative Artisans Birmingham. Midday to 5pm, Secret Space, '
+            '30-34 River Street, Birmingham, B5 5SA.'
+        ),
+    )
+    assert uk.matched is False
+    assert match_post('Open mic tomorrow on River Street — sign-ups start at 6.').matched is True
+
+
+def test_aurora_montgomery_il_river_street_not_local_micro() -> None:
+    aurora = match_post(
+        'Aurora Fall Food Truck Festival Sept. 25',
+        alt_text=(
+            'The City of Aurora government will host its third annual Fall Food Truck '
+            'Festival. More than 30 food trucks will line up on Benton Street between '
+            'River Street and Broadway.'
+        ),
+    )
+    assert aurora.matched is False
+    montgomery = match_post(
+        'Montgomery Historic Cemetery Walk to return October 7',
+        alt_text=(
+            "The Montgomery Historic Preservation Commission's Cemetery Walk returns "
+            'Oct. 7 at Riverside Cemetery, 414 N. River Street in Montgomery.'
+        ),
+    )
+    assert montgomery.matched is False
     assert match_post('Open mic tomorrow on River Street — sign-ups start at 6.').matched is True
 
 

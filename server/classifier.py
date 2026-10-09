@@ -101,6 +101,9 @@ _CENTER_SQUARE_WIRE = re.compile(
       | [-–—]\s*the\s+center\s+square\b
       | \band\s+the\s+center\s+square\b
       | the\s+center\s+square\s+reports\b
+      # Prose attributions: "told The Center Square" / "The Center Square asked".
+      | (?:told|asks?|asked|says?|said|reports?|reported)\s+the\s+center\s+square\b
+      | the\s+center\s+square\s+(?:asked|asks?|says?|said|reports?|reported|told)\b
       # NewsBreak / aggregator bylines: "Source: The Center Square".
       | (?:source|via|byline)\s*:\s*the\s+center\s+square\b
       | newsbreak[\s\S]{0,100}the\s+center\s+square\b
@@ -115,6 +118,7 @@ _CENTER_SQUARE_WIRE = re.compile(
 
 # Hollywood Squares / Paul Lynde "center square" — not the Albany neighborhood.
 # "Center Square Rd/Road/St" is a street name elsewhere (e.g. Gloucester Co, NJ).
+# Plural "center squares" appears in bread-scoring / quilt-pattern bake alt text.
 _HOLLYWOOD_CENTER_SQUARE = re.compile(
     r"""
     (?:
@@ -124,6 +128,8 @@ _HOLLYWOOD_CENTER_SQUARE = re.compile(
       | paul\s+lynde
       | center\s+square\s+on\b
       | center\s+square\s+(?:rd|road|st|street)\b
+      | (?:four\s+)?center\s+squares\b
+      | quilt\s+pattern\s+scoring
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -193,6 +199,38 @@ _RIVER_STREET_OTHER = re.compile(
             \bbrechin\b|\bangus\b|storm\s+babet|south\s+esk|
             \bscotland\b|\#scotland\b|angus\s+council
           )
+      # Birmingham UK artisans / Secret Space — not Troy's corridor.
+      | (?:
+            \bbirmingham\b|\bb5\s*5sa\b|secret\s+space|alternative\s+artisans|
+            \#birmingham\b
+          )[\s\S]{0,280}river\s+street
+      | river\s+street[\s\S]{0,280}(?:
+            \bbirmingham\b|\bb5\s*5sa\b|secret\s+space|alternative\s+artisans|
+            \#birmingham\b
+          )
+      # Milford Photo / Milford CT camera-shop events — not Troy's corridor.
+      | milford\s+photo
+      | milford\s*,?\s*ct\b
+      | \bct\s*06460\b
+      | \bmilford\b[\s\S]{0,280}river\s+street
+      | river\s+street[\s\S]{0,280}\bmilford\b
+      # Bedford UK street-works / CheapFuelNearMe — not Troy's corridor.
+      | (?:
+            \#bedford\b|\bbedford\b|cheapfuelnearme\.uk|street-manager/bedford
+          )[\s\S]{0,280}river\s+street
+      | river\s+street[\s\S]{0,280}(?:
+            \#bedford\b|\bbedford\b|cheapfuelnearme\.uk|street-manager/bedford
+          )
+      # Aurora / Montgomery (Kane County IL) festival & cemetery cards — not Troy.
+      | (?:
+            city\s+of\s+aurora|kane\s+county|benton\s+street|
+            montgomery\s+historic|riverside\s+cemetery
+          )[\s\S]{0,280}river\s+street
+      | river\s+street[\s\S]{0,280}(?:
+            city\s+of\s+aurora|kane\s+county|benton\s+street|
+            montgomery\s+historic|riverside\s+cemetery
+          )
+      | 414\s+n\.?\s+river\s+street
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -270,9 +308,10 @@ def _local_micro_hits(haystack: str) -> list[str]:
     """Return micro-signal hits eligible for classifier features."""
     # Scrub wire bylines before matching so they cannot unlock event+micro keeps.
     scan = _CENTER_SQUARE_WIRE.sub(' ', haystack)
-    # Hollywood Squares / Paul Lynde / "Center Square Rd" must not unlock micros.
+    # Hollywood Squares / Paul Lynde / "Center Square Rd" / bake "center squares"
+    # must not unlock micros.
     if _HOLLYWOOD_CENTER_SQUARE.search(scan):
-        scan = re.sub(r'center\s+square', ' ', scan, flags=re.IGNORECASE)
+        scan = re.sub(r'center\s+squares?', ' ', scan, flags=re.IGNORECASE)
     hits = list(_DISTINCTIVE_LOCAL_MICRO.findall(scan))
     if _CAP_REGION_HINT.search(scan):
         hits.extend(_COLLISION_LOCAL_MICRO.findall(scan))
