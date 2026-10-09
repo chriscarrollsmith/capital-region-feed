@@ -10999,5 +10999,187 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-10-08 audit: Germany capital region counterpart to Oktoberfest FN"
+  },
+  {
+    "id": "fp-va-capital-region-airport-commission-sandston",
+    "text": "The Capital Region Airport Commission is seeking to rezone the 1.7-acre site at Lewis and Huntsman roads in Sandston for a YMCA facility.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-09 audit: Richmond VA airport authority, not NY Capital Region"
+  },
+  {
+    "id": "tp-ny-capital-region-measles-dashboard",
+    "text": "Two cases of measles have been reported in the Capital Region for the first time on the state's dashboard tracking the disease.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-09 audit: NY Capital Region counterpart to VA airport commission FP"
+  },
+  {
+    "id": "fp-klan-capital-region-pittsburgh-flight",
+    "text": "Dick's Sporting Goods Gulfstream just touched down at KLAN (Capital Region) — 47m from Pittsburgh.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-09 audit: Lansing MI Capital Region International Airport ICAO KLAN"
+  },
+  {
+    "id": "fp-capital-region-arrow-pittsburgh-klan-alt",
+    "text": "Closed out a 41m Capital Region→Pittsburgh run.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Gulfstream · KLAN → KPIT · 41m. Hero card with photo and route.",
+    "note": "2026-10-09 audit: celebplanes KLAN alt + Capital Region arrow to Pittsburgh"
+  },
+  {
+    "id": "tp-kalb-albany-touchdown",
+    "text": "HondaJet just touched down at KALB (Albany) — 1h 30m from Cincinnati Northern Kentucky.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-09 audit: Albany International ICAO KALB counterpart to KLAN FP"
+  },
+  {
+    "id": "tp-albany-international-private-jet-deal",
+    "text": "Headed ALBANY INTERNATIONAL → BALTIMORE/WASHINGTON INTERNATIONAL on a private jet this week?",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-09 audit: Albany International Airport recall without comma NY"
+  },
+  {
+    "id": "fp-delveinsight-albany-dateline-gca",
+    "text": "Giant Cell Arteritis market size was valued approximately $960 million USD in 2023.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "(Albany, New York) – October 07, 2026 – DelveInsight’s Giant Cell Arteritis Market Insights report",
+    "note": "2026-10-09 audit: DelveInsight presswire stamps Albany dateline on unrelated pharma market copy"
+  },
+  {
+    "id": "tp-albany-medical-gca-research",
+    "text": "Albany Medical Center researchers presented new findings on giant cell arteritis near #AlbanyNY.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-09 audit: local medical counterpart to DelveInsight FP"
+  },
+  {
+    "id": "fp-bedford-uk-river-street-closures",
+    "text": "Planned road closures starting tomorrow in #Bedford:\n\nMidland Road, until 15 Oct\nRiver Street, until 15 Oct\n\nCheapFuelNearMe.uk/street-manager/bedford/",
+    "expected": false,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-09 audit: Bedford UK street-works River Street classifier micro"
+  },
+  {
+    "id": "tp-troy-river-street-open-mic",
+    "text": "Open mic tomorrow on River Street in Troy — sign-ups start at 6.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-09 audit: Troy River Street counterpart to Bedford UK FP"
+  },
+  {
+    "id": "tp-saint-rose-campus-albany",
+    "text": "The county-backed organization overseeing redevelopment of the former College of Saint Rose campus in Albany selected a developer for a key corner of the site.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-09 audit: Saint Rose campus bare-Albany FN restored"
+  },
+  {
+    "id": "tp-eric-idle-saratoga-springs",
+    "text": "Eric Idle was in Saratoga Springs last week, sharing stories from his new memoir.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-09 audit: was in Saratoga Springs FN without comma NY"
+  },
+  {
+    "id": "tp-george-crum-potato-chip-saratoga",
+    "text": "A Black chef named George Crum created the potato chip in Saratoga Springs.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-09 audit: George Crum / potato chip Saratoga Springs history FN"
+  },
+  {
+    "id": "tp-historic-saratoga-springs-homes",
+    "text": "Residents planted signs saying Save our historic Saratoga Springs homes.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-09 audit: historic Saratoga Springs homes civic FN"
+  },
+  {
+    "id": "tp-i90-bridge-rensselaer",
+    "text": "Come join us on the bridge over I-90 in Rensselaer — Oct 10, 12-1:30!",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-09 audit: I-90 bridge Rensselaer visibility event FN"
+  },
+  {
+    "id": "tn-utah-saratoga-springs-temple",
+    "text": "Making Memories at Saratoga Springs Utah Temple this weekend.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-09 audit: Utah temple counterpart must stay dropped"
+  },
+  {
+    "id": "tn-troy-alabama-tropical-storm",
+    "text": "Tropical Storm Warning issued by NWS Birmingham AL\n* LOCATIONS AFFECTED\n- Troy",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-09 audit: Troy AL NWS wire remains ambiguous drop"
+  },
+  {
+    "id": "tn-malta-junior-eurovision",
+    "text": "Who is Beppe Caruana? Meet Malta’s representative at Junior Eurovision 2026",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-09 audit: country of Malta Eurovision remains drop"
   }
 ]

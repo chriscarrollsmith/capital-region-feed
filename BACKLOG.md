@@ -538,6 +538,30 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-116 — Daily feed audit: Richmond Capital Region Airport Commission, KLAN Lansing flights, DelveInsight Albany dateline, Bedford UK River Street; Saint Rose / KALB / Saratoga Springs / Rensselaer I-90 FNs
+- **Status:** in progress
+- **Why:** 2026-10-09 audit of last-24h AppView feed (~129 posts since 2026-10-08T09:00Z)
+  found active FPs after unmerged #91 lineage: Henrico Citizen Capital Region Airport
+  Commission + Sandston kept as `strong_positive`; celebplanes `KLAN (Capital Region)` /
+  `Capital Region→Pittsburgh` Lansing MI flights kept as `strong_positive`; rheumnow
+  DelveInsight `(Albany, New York)` market-research dateline kept as `strong_positive`;
+  UK `#Bedford` River Street street-works kept as `classifier:local_micro`. FNs: College
+  of Saint Rose campus bare Albany (`bare_albany`); `KALB (Albany)` / Albany International
+  flight cards (`bare_albany`); Eric Idle / George Crum potato chip / historic homes
+  Saratoga Springs without `, NY`; I-90 bridge in Rensselaer. Rematch already drops
+  Dutch AD Rotterdam / Malta / Troy AL weather from #91. Residual: bare Albany remote-job
+  spam; allowlisted non-local (News10 Hudson Valley / Times Union statewide); USPS
+  Saratoga multi-state dumps intentional; WAMC / Siena intentional.
+- **Work:**
+  - Expand VA capital-region cues (`Capital Region Airport Commission`, Sandston,
+    Henrico); MI capital-region ICAO `KLAN` + Capital Region→Pittsburgh; DelveInsight
+    Albany dateline conflict; Bedford UK River Street classifier scrub; Saint Rose /
+    KALB / Albany International / Saratoga Springs civic-history / I-90 Rensselaer
+    strong positives; grow eval with 2026-10-09 FP/TP/FN anchors (builds on #91 /
+    B-115).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-115 — Daily feed audit: Troy Reeder Jets, Dutch LuxorTheater Rotterdam, Newtonville MA jobs, Surfliner/Via Rail, center-squares bake; Saratoga Springs civic / #TroyNY / SPAC / Oktoberfest FNs
 - **Status:** done ([#91](https://github.com/chriscarrollsmith/capital-region-feed/pull/91))
 - **Why:** 2026-10-08 audit of last-24h AppView feed (~188 posts since 2026-10-07T09:00Z)
