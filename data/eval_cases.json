@@ -11181,5 +11181,45 @@
     "split": "dev",
     "regression": true,
     "note": "2026-10-09 audit: country of Malta Eurovision remains drop"
+  },
+  {
+    "id": "tn-klan-word-capital-region",
+    "text": "Protesters in the Capital Region condemned the Klan after flyers appeared downtown.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "Uppercase ICAO KLAN is Lansing; the word Klan must not drop a NY capital-region post"
+  },
+  {
+    "id": "tn-kalb-tv-alexandria",
+    "text": "KALB News at 6: Alexandria city council approved the budget tonight in Louisiana.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "KALB-TV Alexandria LA is not Albany ICAO KALB"
+  },
+  {
+    "id": "tn-northern-rivers-australia",
+    "text": "Flooding across the Northern Rivers has cut the Pacific Highway near Lismore.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "Australia's Northern Rivers is not Northern Rivers Family Services"
+  },
+  {
+    "id": "tn-nine-pin-bowling",
+    "text": "Nine pin bowling league results from the weekend.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "Nine-pin bowling is not Nine Pin Cider Works"
   }
 ]

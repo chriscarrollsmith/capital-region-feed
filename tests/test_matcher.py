@@ -3927,6 +3927,7 @@ def test_albany_firebirds_nine_pin_erie_canal_cidery_recall() -> None:
     nine_pin = match_post('Nine Pin Cider Works is hiring an experienced Head Cider Maker.')
     assert nine_pin.matched is True
     assert nine_pin.reason == 'strong_positive'
+    assert match_post('Nine pin bowling league results from the weekend.').matched is False
 
     erie = match_post(
         'Ian Mackay is traveling 351 miles in his wheelchair along the Erie Canal '
@@ -4214,6 +4215,16 @@ def test_viaport_northern_rivers_parting_glass_preservation_hall_recall() -> Non
     )
     assert living.matched is True
     assert living.reason == 'strong_positive'
+    assert (
+        match_post(
+            'Flooding across the Northern Rivers has cut the Pacific Highway near Lismore.'
+        ).matched
+        is False
+    )
+    assert (
+        match_post('Northern Rivers Family Services is hiring peer advocates this fall.').matched
+        is True
+    )
 
     parting = match_post(
         'Fast Tony Productions has announced a new annual holiday concert at '
@@ -4644,6 +4655,19 @@ def test_klan_lansing_capital_region_not_kalb() -> None:
     )
     assert kalb.matched is True
     assert kalb.reason == 'strong_positive'
+
+    # "Klan" is not Lansing ICAO KLAN; a Capital Region post should stay.
+    kkk = match_post(
+        'Protesters in the Capital Region condemned the Klan after flyers appeared downtown.'
+    )
+    assert kkk.matched is True
+    assert kkk.reason == 'strong_positive'
+
+    # KALB-TV (Alexandria, LA) is not Albany International.
+    kalb_tv = match_post(
+        'KALB News at 6: Alexandria city council approved the budget tonight in Louisiana.'
+    )
+    assert kalb_tv.matched is False
 
 
 def test_delveinsight_albany_dateline_not_local() -> None:

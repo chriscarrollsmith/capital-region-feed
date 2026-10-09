@@ -521,8 +521,10 @@ _STRONG_POSITIVE = re.compile(
       # Viaport Mall (Rotterdam NY) / Concerned for the Hungry food-drive copy.
       | viaport\s+(?:mall|plaza)\b
       | concerned\s+for\s+the\s+hungry\b
-      # Northern Rivers Family Services / Living Resources (Albany) advocacy.
-      | northern\s+rivers(?:\s+family\s+services)?\b
+      # Northern Rivers Family Services (Albany) — not Australia's Northern Rivers.
+      | northern\s+rivers\s+family\s+services\b
+      | northern\s+rivers[\s\S]{0,40}\balbany\b
+      | \balbany\b[\s\S]{0,40}northern\s+rivers\b
       | living\s+resources[\s\S]{0,80}\balbany\b
       | \balbany\b[\s\S]{0,80}living\s+resources
       # The Parting Glass / Preservation Hall (Saratoga Springs) venue cards.
@@ -531,8 +533,8 @@ _STRONG_POSITIVE = re.compile(
       | saratoga(?:\s+springs)?\b[\s\S]{0,80}parting\s+glass
       | preservation\s+hall[\s\S]{0,80}saratoga(?:\s+springs)?\b
       | saratoga(?:\s+springs)?\b[\s\S]{0,80}preservation\s+hall
-      # Nine Pin Cider Works (Albany) — hiring / cider cards often omit ", NY".
-      | nine\s+pin(?:\s+cider(?:\s+works)?)?\b
+      # Nine Pin Cider Works (Albany) — not nine-pin bowling.
+      | nine\s+pin\s+cider(?:\s+works)?\b
       # Erie Canal corridor copy that names Albany as origin/destination.
       | erie\s+canal[\s\S]{0,100}\balbany\b
       | \balbany\b[\s\S]{0,100}erie\s+canal
@@ -583,8 +585,10 @@ _STRONG_POSITIVE = re.compile(
       | college\s+of\s+saint\s+rose\b
       | saint\s+rose\s+campus\b
       # Albany International / ICAO KALB flight cards often omit ", NY".
+      # Bare KALB is also KALB-TV (Alexandria, LA) and the surname Kalb.
       | albany\s+international(?:\s+airport)?\b
-      | \bkalb\b
+      | \bkalb\b[\s\S]{0,40}\balbany\b
+      | \balbany\b[\s\S]{0,40}\bkalb\b
       # I-90 visibility bridges in the City of Rensselaer often omit ", NY".
       | (?:bridge\s+over\s+)?i-?90[\s\S]{0,60}\brensselaer\b
       | \brensselaer\b[\s\S]{0,60}(?:bridge\s+over\s+)?i-?90
@@ -1778,8 +1782,9 @@ _MI_GEO_CUE = (
     r'\blansing\b|\bmichigan\b|\#miwx\b|'
     r'grand\s+rapids|nws\s+grand\s+rapids|'
     r'capital\s+region\s+international\s+airport|'
-    # ICAO for Capital Region International Airport (Lansing) — not KALB Albany.
-    r'\bklan\b'
+    # ICAO for Capital Region International Airport (Lansing). Case-sensitive so
+    # "the Klan" next to a NY capital-region post is not a Michigan cue.
+    r'(?-i:\bKLAN\b)'
 )
 
 _MI_CAPITAL_REGION = re.compile(
@@ -1789,8 +1794,9 @@ _MI_CAPITAL_REGION = re.compile(
       | capital\s+region\s+international\s+airport
       | capital\s+region\s+of\s+(?:michigan|lansing)\b
       # Celebplanes / flight trackers: "KLAN (Capital Region)" / "Capital Region→PIT".
-      | \bklan\b[\s\S]{{0,80}}capital\s+region\b
-      | capital\s+region\b[\s\S]{{0,80}}\bklan\b
+      # Uppercase ICAO only — "Klan" is not Lansing.
+      | (?-i:\bKLAN\b)[\s\S]{{0,80}}capital\s+region\b
+      | capital\s+region\b[\s\S]{{0,80}}(?-i:\bKLAN\b)
       | capital\s+region\s*[→\->]+\s*pittsburgh\b
       | capital\s+region\b[\s\S]{{0,200}}(?:{_MI_GEO_CUE})
       | (?:{_MI_GEO_CUE})[\s\S]{{0,200}}capital\s+region\b
