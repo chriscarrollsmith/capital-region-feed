@@ -214,6 +214,13 @@ _RIVER_STREET_OTHER = re.compile(
       | \bct\s*06460\b
       | \bmilford\b[\s\S]{0,280}river\s+street
       | river\s+street[\s\S]{0,280}\bmilford\b
+      # Bedford UK street-works / CheapFuelNearMe — not Troy's corridor.
+      | (?:
+            \#bedford\b|\bbedford\b|cheapfuelnearme\.uk|street-manager/bedford
+          )[\s\S]{0,280}river\s+street
+      | river\s+street[\s\S]{0,280}(?:
+            \#bedford\b|\bbedford\b|cheapfuelnearme\.uk|street-manager/bedford
+          )
       # Aurora / Montgomery (Kane County IL) festival & cemetery cards — not Troy.
       | (?:
             city\s+of\s+aurora|kane\s+county|benton\s+street|

@@ -4605,3 +4605,88 @@ def test_oktoberfest_capital_region_not_germany_conflict() -> None:
     )
     assert de.matched is False
     assert de.reason == 'hard_negative:germany_capital_region'
+
+
+def test_richmond_capital_region_airport_commission_not_ny() -> None:
+    sandston = match_post(
+        'The Capital Region Airport Commission is seeking to rezone the 1.7-acre site at '
+        'the southeastern corner of Lewis and Huntsman roads in Sandston to allow the '
+        'YMCA to operate the facility.'
+    )
+    assert sandston.matched is False
+    assert sandston.reason == 'hard_negative:virginia_capital_region'
+
+    keep = match_post(
+        'Two cases of measles have been reported in the Capital Region for the first time.'
+    )
+    assert keep.matched is True
+
+
+def test_klan_lansing_capital_region_not_kalb() -> None:
+    klan = match_post(
+        "Dick's Sporting Goods's Gulfstream G280 just touched down at KLAN "
+        '(Capital Region) — 47m from Pittsburgh.',
+        alt_text="Dick's Sporting Goods · KPIT → KLAN · 47m.",
+    )
+    assert klan.matched is False
+    assert klan.reason == 'hard_negative:michigan_capital_region'
+
+    arrow = match_post(
+        "Dick's Sporting Goods's Gulfstream G280 closed out a 41m Capital Region→Pittsburgh run.",
+        alt_text="Dick's Sporting Goods · KLAN → KPIT · 41m.",
+    )
+    assert arrow.matched is False
+    assert arrow.reason == 'hard_negative:michigan_capital_region'
+
+    kalb = match_post(
+        "General Electric's HondaJet HA-420 just touched down at KALB (Albany) — "
+        '1h 30m from Cincinnati Northern Kentucky.'
+    )
+    assert kalb.matched is True
+    assert kalb.reason == 'strong_positive'
+
+
+def test_delveinsight_albany_dateline_not_local() -> None:
+    delve = match_post(
+        'Giant Cell Arteritis market size was valued approximately $960 million USD in 2023.',
+        alt_text=(
+            '(Albany, New York) – October 07, 2026 – DelveInsight’s Giant Cell Arteritis '
+            'Market Insights, Epidemiology, and Market Forecast-2034'
+        ),
+    )
+    assert delve.matched is False
+    assert delve.reason == 'hard_negative:delveinsight_albany'
+
+    keep = match_post(
+        'Albany Medical Center researchers presented new findings on giant cell arteritis '
+        'at a conference downtown near #AlbanyNY.'
+    )
+    assert keep.matched is True
+
+
+def test_saint_rose_kalb_saratoga_rensselaer_recall() -> None:
+    saint = match_post(
+        'The county-backed organization overseeing redevelopment of the former College of '
+        'Saint Rose campus in Albany selected a developer for a key corner of the site.'
+    )
+    assert saint.matched is True
+    assert saint.reason == 'strong_positive'
+
+    airport = match_post(
+        'Headed ALBANY INTERNATIONAL → BALTIMORE/WASHINGTON on a private jet this week?'
+    )
+    assert airport.matched is True
+
+    idle = match_post(
+        'Eric Idle was in Saratoga Springs last week, sharing stories from his new memoir.'
+    )
+    assert idle.matched is True
+
+    chip = match_post('A Black chef named George Crum created the potato chip in Saratoga Springs.')
+    assert chip.matched is True
+
+    homes = match_post('Residents planted signs saying Save our historic Saratoga Springs homes.')
+    assert homes.matched is True
+
+    bridge = match_post('Come join us on the bridge over I-90 in Rensselaer — Oct 10, 12-1:30!')
+    assert bridge.matched is True

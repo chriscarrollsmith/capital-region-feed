@@ -565,13 +565,29 @@ _STRONG_POSITIVE = re.compile(
       | \bin\s+saratoga\s+springs\s+with\b
       # Civic / tourism / bookstore copy often omits ", NY" for Saratoga Springs.
       | \bin\s+saratoga\s+springs\s+to\b
+      | (?:was|were)\s+in\s+saratoga\s+springs\b
+      | \bin\s+saratoga\s+springs\s+last\b
+      | historic\s+saratoga\s+springs\b
+      | potato\s+chips?[\s\S]{0,80}saratoga\s+springs\b
+      | saratoga\s+springs[\s\S]{0,80}potato\s+chips?\b
+      | \bgeorge\s+crum\b
       | saratoga\s+springs\s+(?:
-            store|location|parade|clubhouse|freezes|hires|library|city\s+council
+            store|location|parade|clubhouse|freezes|hires|library|city\s+council|
+            homes
           )\b
       | (?:flag\s+day\s+parade|homebase\s+clubhouse)[\s\S]{0,80}saratoga\s+springs\b
       | saratoga\s+springs[\s\S]{0,80}(?:flag\s+day\s+parade|homebase\s+clubhouse)
       | uncommon\s+grounds\b
       | \bnorthshire\b
+      # College of Saint Rose campus redevelopment wires often omit ", NY".
+      | college\s+of\s+saint\s+rose\b
+      | saint\s+rose\s+campus\b
+      # Albany International / ICAO KALB flight cards often omit ", NY".
+      | albany\s+international(?:\s+airport)?\b
+      | \bkalb\b
+      # I-90 visibility bridges in the City of Rensselaer often omit ", NY".
+      | (?:bridge\s+over\s+)?i-?90[\s\S]{0,60}\brensselaer\b
+      | \brensselaer\b[\s\S]{0,60}(?:bridge\s+over\s+)?i-?90
       # Hashtag city form (mirrors #AlbanyNY) — not bare #Troy (MI/person noise).
       | \#troyny\b
       # SPAC lodging copy often omits Saratoga / ", NY".
@@ -1109,7 +1125,8 @@ _VA_GEO_CUE = (
     r'\bvirginia\b|\brichmond\b|\#va(?:wx|politics|gov|news)?\b|'
     r'\#virginia\w*|'
     r'\bspanberger\b|dominion(?:\s+energy)?\b|\bnextera\b|'
-    r'hampton\s+roads|northern\s+virginia'
+    r'hampton\s+roads|northern\s+virginia|'
+    r'\bsandston\b|\bhenrico\b|\bhenricocitizen\b'
 )
 
 _VA_CAPITAL_REGION = re.compile(
@@ -1117,6 +1134,8 @@ _VA_CAPITAL_REGION = re.compile(
     (?:
         (?:virginia|richmond)\s+capital\s+region
       | capital\s+region\s+of\s+(?:virginia|richmond)\b
+      # Richmond-area airport authority — not Albany County Airport Authority.
+      | capital\s+region\s+airport\s+commission
       | capital\s+region\b[\s\S]{{0,280}}(?:{_VA_GEO_CUE})
       | (?:{_VA_GEO_CUE})[\s\S]{{0,280}}capital\s+region\b
     )
@@ -1758,7 +1777,9 @@ _JP_CAPITAL_REGION = re.compile(
 _MI_GEO_CUE = (
     r'\blansing\b|\bmichigan\b|\#miwx\b|'
     r'grand\s+rapids|nws\s+grand\s+rapids|'
-    r'capital\s+region\s+international\s+airport'
+    r'capital\s+region\s+international\s+airport|'
+    # ICAO for Capital Region International Airport (Lansing) — not KALB Albany.
+    r'\bklan\b'
 )
 
 _MI_CAPITAL_REGION = re.compile(
@@ -1767,6 +1788,10 @@ _MI_CAPITAL_REGION = re.compile(
         michigan\s+capital\s+region
       | capital\s+region\s+international\s+airport
       | capital\s+region\s+of\s+(?:michigan|lansing)\b
+      # Celebplanes / flight trackers: "KLAN (Capital Region)" / "Capital Region→PIT".
+      | \bklan\b[\s\S]{{0,80}}capital\s+region\b
+      | capital\s+region\b[\s\S]{{0,80}}\bklan\b
+      | capital\s+region\s*[→\->]+\s*pittsburgh\b
       | capital\s+region\b[\s\S]{{0,200}}(?:{_MI_GEO_CUE})
       | (?:{_MI_GEO_CUE})[\s\S]{{0,200}}capital\s+region\b
     )
@@ -4443,6 +4468,25 @@ def _albany_wire_remote_conflict(haystack: str) -> bool:
     return True
 
 
+def _delveinsight_albany_conflict(haystack: str) -> bool:
+    """True when DelveInsight market-research wires stamp an Albany dateline.
+
+    DelveInsight press releases open with ``(Albany, New York)`` regardless of
+    topic (pharma market size, epidemiology). Not Cap Region news.
+    """
+    if not re.search(r'\bdelveinsight\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not re.search(
+        r'\balbany,?\s*(?:n\.?\s*y\.?|new\s+york)\b',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    if _ALBANY_WIRE_LOCAL_RESCUE.search(haystack):
+        return False
+    return True
+
+
 def _albany_ithaca_contrast_conflict(haystack: str) -> bool:
     """True when Albany is only a contrast to Ithaca/Tompkins, not Cap Region news."""
     if not re.search(r'\balbany\b', haystack, flags=re.IGNORECASE):
@@ -4881,6 +4925,8 @@ def match_post(
             return MatchResult(False, 'hard_negative:schaghticoke_ct')
         if _albany_wire_remote_conflict(haystack):
             return MatchResult(False, 'hard_negative:albany_wire_remote')
+        if _delveinsight_albany_conflict(haystack):
+            return MatchResult(False, 'hard_negative:delveinsight_albany')
         if _bethlehem_holy_land_conflict(haystack):
             return MatchResult(False, 'hard_negative:bethlehem_holy_land')
         if _bethlehem_other_city_conflict(haystack):

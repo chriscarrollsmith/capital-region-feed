@@ -272,6 +272,17 @@ def test_milford_ct_photo_river_street_not_local_micro() -> None:
     assert match_post('Open mic tomorrow on River Street — sign-ups start at 6.').matched is True
 
 
+def test_bedford_uk_river_street_not_local_micro() -> None:
+    bedford = match_post(
+        'Planned road closures starting tomorrow in #Bedford, Fri 9 Oct, 2026:\n\n'
+        'Midland Road, until 15 Oct\n'
+        'River Street, until 15 Oct\n\n'
+        'CheapFuelNearMe.uk/street-manager/bedford/'
+    )
+    assert bedford.matched is False
+    assert match_post('Open mic tomorrow on River Street — sign-ups start at 6.').matched is True
+
+
 def test_cape_town_soetriver_street_not_local_micro() -> None:
     cape = match_post(
         'Burst Water Main - Closed\n'
