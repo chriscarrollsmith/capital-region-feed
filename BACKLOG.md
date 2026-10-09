@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-116 — Daily feed audit: Richmond Capital Region Airport Commission, KLAN Lansing flights, DelveInsight Albany dateline, Bedford UK River Street; Saint Rose / KALB / Saratoga Springs / Rensselaer I-90 FNs
-- **Status:** in progress
+- **Status:** done ([#92](https://github.com/chriscarrollsmith/capital-region-feed/pull/92))
 - **Why:** 2026-10-09 audit of last-24h AppView feed (~129 posts since 2026-10-08T09:00Z)
   found active FPs after unmerged #91 lineage: Henrico Citizen Capital Region Airport
   Commission + Sandston kept as `strong_positive`; celebplanes `KLAN (Capital Region)` /
