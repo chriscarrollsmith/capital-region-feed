@@ -1,0 +1,107 @@
+{
+  "version": 1,
+  "notes": "Recall-oriented AppView searchPosts strategies for the daily false-negative review. Each query is one strategy; family is the coarse bucket used to measure entropy. This catalog is not the high-precision backfill list in scripts/backfill_gap.py (those presets mostly return posts the matcher already keeps). Append a query here when a review surfaces false negatives with a strategy that was not already listed.",
+  "families": [
+    {
+      "id": "bare_place",
+      "queries": [
+        "Albany",
+        "Troy",
+        "Saratoga Springs",
+        "Saratoga",
+        "Latham",
+        "Malta",
+        "Scotia",
+        "Bethlehem",
+        "Brunswick",
+        "Galway",
+        "Stillwater",
+        "Waterford",
+        "Rotterdam",
+        "Halfmoon",
+        "Colonie",
+        "Rensselaer",
+        "Round Lake",
+        "Delmar",
+        "Ravena",
+        "Altamont",
+        "Sand Lake",
+        "Green Island",
+        "Loudonville",
+        "Clifton Park",
+        "Cohoes",
+        "Watervliet",
+        "Guilderland",
+        "East Greenbush",
+        "Menands"
+      ]
+    },
+    {
+      "id": "neighborhood",
+      "queries": [
+        "Frear Park",
+        "Washington Park Albany",
+        "Lincoln Park Albany",
+        "Center Square Albany",
+        "Pine Hills Albany",
+        "Congress Park",
+        "Oakwood Cemetery Troy",
+        "Lark Street",
+        "Helderberg"
+      ]
+    },
+    {
+      "id": "venue",
+      "queries": [
+        "Proctors",
+        "Universal Preservation Hall",
+        "Houston Field House",
+        "Curtain Call Theatre",
+        "Palace Theatre Albany",
+        "Howes Cave",
+        "Lark Hall",
+        "Crossings of Colonie",
+        "MVP Arena",
+        "Music Haven",
+        "Park Playhouse",
+        "The Egg",
+        "SPAC",
+        "Fasig-Tipton"
+      ]
+    },
+    {
+      "id": "civic",
+      "queries": [
+        "Bethlehem Town Board",
+        "Albany Common Council",
+        "Shenendehowa",
+        "City of Rensselaer",
+        "Town of Halfmoon",
+        "Town of Colonie",
+        "Guilderland Central School"
+      ]
+    },
+    {
+      "id": "event_phrase",
+      "queries": [
+        "Saratoga Battlefield",
+        "race at Saratoga",
+        "stakes at Saratoga",
+        "Travers Stakes",
+        "Alive at Five",
+        "this weekend Albany",
+        "tonight Troy"
+      ]
+    },
+    {
+      "id": "hashtag",
+      "queries": [
+        "#518",
+        "#Saratoga",
+        "#TroyNY",
+        "#upstateny",
+        "#CapitalRegion"
+      ]
+    }
+  ]
+}
