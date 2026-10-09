@@ -239,6 +239,45 @@ uv run python scripts/append_eval_cases.py --input /tmp/labeled.jsonl
 `collect_eval_sample.py search --query '…'` is available for one-off queries.
 Rows already present in `data/eval_cases.json` are skipped by default.
 
+### Daily false-negative search
+
+The served index is a poor false-negative sample: only matcher keeps are stored,
+and `POST_RETENTION_DAYS` deletes them. Review misses with AppView `searchPosts`,
+and append every attempt to `data/fn_search_log.jsonl` (query, hits, and how many
+false negatives that query surfaced).
+
+Do not use the high-precision presets in `scripts/backfill_gap.py` (`Capital Region NY`,
+`Albany NY`, and the rest of `DEFAULT_SEARCH_QUERIES`). Those mostly return posts
+the matcher already keeps. Plan the day from the strategy catalog and the log:
+
+```bash
+uv run python scripts/fn_search.py summary
+uv run python scripts/fn_search.py plan
+```
+
+`plan` mixes two kinds of query:
+
+- **exploit** — strategies that have already surfaced false negatives, weighted by
+  how many, with a penalty for repeating one that ran in the last day and a half
+- **explore** — queries from families the log has used least
+  (`data/fn_search_strategies.json`), so the strategy distribution does not collapse
+  and untried queries stay in rotation
+
+Judge only the last 24 hours of hits. Count a hit as a false negative when the post
+should be in the feed and the current matcher would drop it. Off-region noise and
+posts the matcher already keeps are not false negatives. Then record the query:
+
+```bash
+uv run python scripts/fn_search.py record \
+  --query "Frear Park" --family neighborhood \
+  --hits 14 --false-negatives 2 \
+  --false-negative-id at://did:plc:example/app.bsky.feed.post/abc
+```
+
+Use `--status blocked` when `searchPosts` cannot be run. That keeps the attempt in
+the log without treating the yield as zero. A new query that surfaces at least one
+false negative is added to the catalog for later reviews.
+
 ### Backfill a Jetstream gap
 
 When the live consumer skips a lagged cursor (or otherwise misses a window),
