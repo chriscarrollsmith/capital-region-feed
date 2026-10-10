@@ -538,6 +538,25 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-117 — Daily feed audit: Victoria BC Capital Region, Utah Saratoga Springs City Council, exam proctors; Saratoga Springs healthcare / Spa City / Albany Academy FNs
+- **Status:** in progress
+- **Why:** 2026-10-10 audit of last-24h AppView feed (~149 posts since 2026-10-09T09:00Z)
+  found active FPs: `victoria.ca` municipal GOTV "Capital Region" kept as `strong_positive`;
+  Citizen Portal UT `Saratoga Springs City Council` + Redwood Road / `#UT` kept as
+  `strong_positive`; Tone Glow "teachers and proctors" / exam copy kept as
+  `event_local_venue:proctors`. FN: Albany Business Review Saratoga Springs healthcare
+  staffing shutdown dropped as `ambiguous_no_context:saratoga springs`. Near-miss recall:
+  bare Spa City nickname and Albany Academy sports wires. Rematch already drops Dutch AD
+  Rotterdam / Troy AL / Malta / Tallahassee Albany weather. Residual: allowlisted News10 /
+  Times Union statewide; Amtrak Empire ALB; intentional Eufuria / Stewart's / Burnt Hills.
+- **Work:**
+  - Gate Victoria BC via `victoria.ca` domain/handle on Canadian capital-region conflict;
+    Utah Saratoga Springs conflict (`#UT`, Redwood Road, citizenptnewsut); expand academic
+    proctors cues; strong positives for Saratoga Springs healthcare/staffing, Spa City,
+    Albany Academy; grow eval + fn_search log (builds on #92 / B-116).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-116 — Daily feed audit: Richmond Capital Region Airport Commission, KLAN Lansing flights, DelveInsight Albany dateline, Bedford UK River Street; Saint Rose / KALB / Saratoga Springs / Rensselaer I-90 FNs
 - **Status:** done ([#92](https://github.com/chriscarrollsmith/capital-region-feed/pull/92))
 - **Why:** 2026-10-09 audit of last-24h AppView feed (~129 posts since 2026-10-08T09:00Z)

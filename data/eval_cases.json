@@ -11221,5 +11221,120 @@
     "split": "dev",
     "regression": true,
     "note": "Nine-pin bowling is not Nine Pin Cider Works"
+  },
+  {
+    "id": "fp-victoria-ca-capital-region-voter-turnout-1010",
+    "text": "Make your voice heard – and help Victoria lead voter turnout in the Capital Region.\nvictoria.ca/election",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "author_handle": "victoria.ca",
+    "note": "2026-10-10 audit: Victoria BC municipal Capital Region via victoria.ca"
+  },
+  {
+    "id": "tp-capital-region-albany-schenectady-track-1010",
+    "text": "Track work continues across the Capital Region from Albany to Schenectady.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-10 audit: NY Capital Region counterpart to Victoria BC FP"
+  },
+  {
+    "id": "fp-utah-saratoga-springs-city-council-redwood-1010",
+    "text": "Saratoga Springs City Council approved a rezone near Redwood Road.\n\n#UT #CitizenPortal",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "author_handle": "citizenptnewsut.bsky.social",
+    "alt_text": "Council approves Spring Heights 2 near 2300 North Redwood Road. The Saratoga Springs City Council unanimously approved the plan.",
+    "note": "2026-10-10 audit: Utah Saratoga Springs City Council + Redwood Road / #UT"
+  },
+  {
+    "id": "fp-utah-saratoga-springs-fox-hollow-flood-1010",
+    "text": "Fox Hollow residents demanded answers from the city council after basement floods.\n\n#UT #CitizenPortal",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "author_handle": "citizenptnewsut.bsky.social",
+    "alt_text": "Fox Hollow homeowners told the Saratoga Springs City Council that a storm flooded basements.",
+    "note": "2026-10-10 audit: Utah Fox Hollow / Saratoga Springs City Council"
+  },
+  {
+    "id": "tp-saratoga-springs-city-council-parking-1010",
+    "text": "Saratoga Springs City Council approved the downtown parking plan this week.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-10 audit: NY Saratoga Springs City Council counterpart"
+  },
+  {
+    "id": "fp-exam-teachers-and-proctors-album-party-1010",
+    "text": "Some will take an exam while others will act as teachers and proctors at the album-release party in New York.",
+    "expected": false,
+    "signal": "event",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-10 audit: academic teachers and proctors unlocked event_local_venue:proctors"
+  },
+  {
+    "id": "tp-proctors-comedy-saturday-1010",
+    "text": "Comedy night at Proctors this Saturday — tickets on sale.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-10 audit: Proctors theatre counterpart to exam-proctor FP"
+  },
+  {
+    "id": "fn-saratoga-springs-healthcare-staffing-1010",
+    "text": "A Saratoga Springs healthcare staffing firm that generated $110 million has shut down.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-10 audit: Albany Business Review Saratoga Springs healthcare staffing FN"
+  },
+  {
+    "id": "fn-spa-city-restaurants-1010",
+    "text": "Five new restaurants opened in the Spa City this month.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-10 audit: Spa City nickname for Saratoga Springs"
+  },
+  {
+    "id": "fn-albany-academy-golf-1010",
+    "text": "Albany Academy girls' golf regains Section 2 championship.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-10 audit: Albany Academy sports wire without , NY"
+  },
+  {
+    "id": "tn-foot-spa-over-city-1010",
+    "text": "And a free roof top foot spa with views over the City",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-10 audit: foot spa + City must not match Spa City"
   }
 ]
