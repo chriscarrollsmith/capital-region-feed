@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-117 — Daily feed audit: Victoria BC Capital Region, Utah Saratoga Springs City Council, exam proctors; Saratoga Springs healthcare / Spa City / Albany Academy FNs
-- **Status:** in progress
+- **Status:** done ([#95](https://github.com/chriscarrollsmith/capital-region-feed/pull/95))
 - **Why:** 2026-10-10 audit of last-24h AppView feed (~149 posts since 2026-10-09T09:00Z)
   found active FPs: `victoria.ca` municipal GOTV "Capital Region" kept as `strong_positive`;
   Citizen Portal UT `Saratoga Springs City Council` + Redwood Road / `#UT` kept as
