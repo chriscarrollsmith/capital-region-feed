@@ -1,0 +1,11 @@
+{"used_at": "2026-10-10T09:07:31Z", "query": "Saratoga Battlefield", "family": "event_phrase", "status": "ok", "hits": 1, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-10-10T09:07:32Z", "query": "Saratoga Springs", "family": "bare_place", "status": "ok", "hits": 14, "false_negatives": 1, "false_negative_ids": ["at://did:plc:777newmi4lyf3edemasdgcl2/app.bsky.feed.post/3mxgxahmoc72h"], "notes": "Albany Business Review healthcare staffing firm shutdown (Saratoga Springs NY)"}
+{"used_at": "2026-10-10T09:07:32Z", "query": "Lincoln Park Albany", "family": "neighborhood", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-10-10T09:07:32Z", "query": "#Saratoga", "family": "hashtag", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-10-10T09:07:32Z", "query": "Howes Cave", "family": "venue", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-10-10T09:07:32Z", "query": "Town of Colonie", "family": "civic", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-10-10T09:07:32Z", "query": "Bethlehem Town Board", "family": "civic", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-10-10T09:07:32Z", "query": "Washington Park Albany", "family": "neighborhood", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-10-10T09:07:32Z", "query": "Spa City", "family": "nickname", "status": "ok", "hits": 6, "false_negatives": 0, "false_negative_ids": [], "notes": "Times Union Spa City keep via allowlist/multi_local; off-region spa+city noise dropped"}
+{"used_at": "2026-10-10T09:07:32Z", "query": "Albany Academy", "family": "institution", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-10-10T09:07:32Z", "query": "Proctors", "family": "venue", "status": "ok", "hits": 2, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
