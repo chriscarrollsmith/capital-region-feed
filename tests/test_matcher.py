@@ -4714,3 +4714,47 @@ def test_saint_rose_kalb_saratoga_rensselaer_recall() -> None:
 
     bridge = match_post('Come join us on the bridge over I-90 in Rensselaer — Oct 10, 12-1:30!')
     assert bridge.matched is True
+
+
+def test_victoria_ca_capital_region_and_utah_saratoga_and_exam_proctors() -> None:
+    """2026-10-10 audit: Victoria BC / Utah Saratoga / exam-proctor FPs; Spa City FNs."""
+    victoria = match_post(
+        'Make your voice heard – and help Victoria lead voter turnout in the Capital Region.\n'
+        'victoria.ca/election',
+        author_handle='victoria.ca',
+    )
+    assert victoria.matched is False
+    assert victoria.reason == 'hard_negative:canadian_capital_region'
+
+    utah = match_post(
+        'Saratoga Springs City Council approved a rezone near Redwood Road.\n\n#UT #CitizenPortal',
+        alt_text=(
+            'Council approves Spring Heights 2 near 2300 North Redwood Road. '
+            'The Saratoga Springs City Council unanimously approved the plan.'
+        ),
+        author_handle='citizenptnewsut.bsky.social',
+    )
+    assert utah.matched is False
+    assert utah.reason == 'hard_negative:saratoga_springs_utah'
+
+    exam = match_post(
+        'Some will take an exam while others will act as teachers and proctors at the '
+        'album-release party in New York.'
+    )
+    assert exam.matched is False
+
+    assert (
+        match_post(
+            'A Saratoga Springs healthcare staffing firm that generated $110 million has shut down.'
+        ).matched
+        is True
+    )
+    assert match_post('Five new restaurants opened in the Spa City this month.').matched is True
+    assert match_post("Albany Academy girls' golf regains Section 2 championship.").matched is True
+    assert (
+        match_post(
+            'Saratoga Springs City Council approved the downtown parking plan this week.'
+        ).matched
+        is True
+    )
+    assert match_post('Comedy night at Proctors this Saturday — tickets on sale.').matched is True
