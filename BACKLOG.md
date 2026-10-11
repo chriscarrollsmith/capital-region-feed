@@ -538,6 +538,26 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-118 — Daily feed audit: Parting Glass song/film, Greater Albany OR school district; Saratoga Springs crime/finance / Assembly #Rotterdam FNs
+- **Status:** in progress
+- **Why:** 2026-10-11 audit of last-24h AppView feed (~93 posts since 2026-10-10T09:00Z)
+  found active FPs: bare `The Parting Glass` (Ted Lasso / FFXIV / Amazon film / Ontario
+  blog) kept as `strong_positive`; Greater Albany School District student `(OR)` kept as
+  `strong_positive` despite existing public-schools OR gate. FNs: Saratoga Springs crime
+  and finance/tax wire cards without `, NY` dropped as `ambiguous_no_context:saratoga
+  springs`; Assemblymember Angelo Santabarbara `#Rotterdam` Columbus Day dinner dropped
+  as `ambiguous_no_context:rotterdam` (Dutch homograph gate correctly strict). Rematch
+  already drops Dutch AD Rotterdam / Malta EU / Brunswick NC / Tallahassee Albany from
+  prior audits. Residual: allowlisted News10 / Times Union statewide; USPS multi-state
+  Albany NY dump intentional; Yaddo culture roundup intentional.
+- **Work:**
+  - Require Saratoga cues for Parting Glass venue strong positive; expand Greater Albany
+    OR school-district / `(OR)` paren cues; Saratoga Springs crime/finance/tax strong
+    positives; allowlist `angelosantabarbara.bsky.social`; grow eval + fn_search log
+    (builds on #95 / B-117).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-117 — Daily feed audit: Victoria BC Capital Region, Utah Saratoga Springs City Council, exam proctors; Saratoga Springs healthcare / Spa City / Albany Academy FNs
 - **Status:** done ([#95](https://github.com/chriscarrollsmith/capital-region-feed/pull/95))
 - **Why:** 2026-10-10 audit of last-24h AppView feed (~149 posts since 2026-10-09T09:00Z)

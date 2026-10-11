@@ -11336,5 +11336,121 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-10-10 audit: foot spa + City must not match Spa City"
+  },
+  {
+    "id": "fp-parting-glass-ted-lasso-1011",
+    "text": "Oh, 'The Parting Glass' was dirty pool, Ted Lasso.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-11 audit: bare The Parting Glass folk song / Ted Lasso cue"
+  },
+  {
+    "id": "fp-parting-glass-ffxiv-1011",
+    "text": "I'm fresh off of The Parting Glass so this one's for the WoL's who started in Ul'dah (or anyone else, I don't pay your sub): How did The Bloody Banquet affect your perception of Ul'dah?",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-11 audit: bare The Parting Glass FFXIV / song title"
+  },
+  {
+    "id": "fp-parting-glass-amazon-film-1011",
+    "text": "Watch The Parting Glass on Amazon prime (Affiliate link)",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-11 audit: Amazon film title The Parting Glass"
+  },
+  {
+    "id": "fp-parting-glass-meaford-ontario-1011",
+    "text": "The end of an era. The Dam Pub in Meaford, Ontario closes.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "The parting glass Last night I visited Meaford with my mom and her partners to hear The Irish Descendants.",
+    "note": "2026-10-11 audit: Ontario blog titled The parting glass"
+  },
+  {
+    "id": "tp-parting-glass-saratoga-venue-1011",
+    "text": "Holiday concert at The Parting Glass in Saratoga Springs this December.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-11 audit: Saratoga venue counterpart for Parting Glass gate"
+  },
+  {
+    "id": "fp-greater-albany-school-district-or-paren-1011",
+    "text": "ICE arrests parent of Greater Albany School District student (OR)\n\nThe school district postponed two high school soccer games Thursday night.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "ICE arrest multiple people in Albany this week, nonprofit says",
+    "note": "2026-10-11 audit: Greater Albany OR school district via (OR) paren"
+  },
+  {
+    "id": "tp-greater-albany-trail-albanyny-1011",
+    "text": "Greater Albany trail network expansions were discussed at City Hall (#AlbanyNY).",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-11 audit: Cap Region Greater Albany counterpart"
+  },
+  {
+    "id": "fn-saratoga-springs-crime-wire-1011",
+    "text": "www.news10.com/news/crime/m...",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Man accused of slashing coworker's throat in Saratoga Springs A Mexican man was arrested on Friday after he allegedly attacked his coworker as she was driving in Saratoga Springs, according to police.",
+    "note": "2026-10-11 audit: Saratoga Springs crime card without , NY"
+  },
+  {
+    "id": "fn-saratoga-springs-finance-plan-1011",
+    "text": "#trumprecession\nwww.yahoo.com/news/politic...",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "Saratoga Springs finance leader's 2027 plan seeks layoffs, 18% property tax hike The city's finance commissioner says a tax increase is needed to address an underlying structural imbalance in the budget.",
+    "note": "2026-10-11 audit: Saratoga Springs finance/tax card without , NY"
+  },
+  {
+    "id": "tp-saratoga-springs-police-dept-1011",
+    "text": "Saratoga Springs Police Department released body-camera footage from downtown.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-11 audit: existing Saratoga Springs Police strong token still keeps"
+  },
+  {
+    "id": "tp-angelo-santabarbara-allowlist-rotterdam-1011",
+    "text": "Celebrating family, heritage and community at our annual Sons and Daughters of Italy Columbus Day Dinner! #ItalianHeritage #SonsAndDaughtersOfItaly #Rotterdam #Community",
+    "expected": true,
+    "signal": "author",
+    "bucket": "author_allowlist",
+    "split": "dev",
+    "regression": true,
+    "author_handle": "angelosantabarbara.bsky.social",
+    "author_did": "did:plc:jxe57jskj4ucvmvjcd5ojyq6",
+    "note": "2026-10-11 audit: NY Assembly allowlist keeps #Rotterdam without , NY"
   }
 ]
