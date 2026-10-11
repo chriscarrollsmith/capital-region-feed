@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-118 — Daily feed audit: Parting Glass song/film, Greater Albany OR school district; Saratoga Springs crime/finance / Assembly #Rotterdam FNs
-- **Status:** in progress
+- **Status:** done ([#96](https://github.com/chriscarrollsmith/capital-region-feed/pull/96))
 - **Why:** 2026-10-11 audit of last-24h AppView feed (~93 posts since 2026-10-10T09:00Z)
   found active FPs: bare `The Parting Glass` (Ted Lasso / FFXIV / Amazon film / Ontario
   blog) kept as `strong_positive`; Greater Albany School District student `(OR)` kept as
