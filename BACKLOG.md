@@ -538,6 +538,45 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-118 — Daily feed audit: Parting Glass song/film, Greater Albany OR school district; Saratoga Springs crime/finance / Assembly #Rotterdam FNs
+- **Status:** done ([#96](https://github.com/chriscarrollsmith/capital-region-feed/pull/96))
+- **Why:** 2026-10-11 audit of last-24h AppView feed (~93 posts since 2026-10-10T09:00Z)
+  found active FPs: bare `The Parting Glass` (Ted Lasso / FFXIV / Amazon film / Ontario
+  blog) kept as `strong_positive`; Greater Albany School District student `(OR)` kept as
+  `strong_positive` despite existing public-schools OR gate. FNs: Saratoga Springs crime
+  and finance/tax wire cards without `, NY` dropped as `ambiguous_no_context:saratoga
+  springs`; Assemblymember Angelo Santabarbara `#Rotterdam` Columbus Day dinner dropped
+  as `ambiguous_no_context:rotterdam` (Dutch homograph gate correctly strict). Rematch
+  already drops Dutch AD Rotterdam / Malta EU / Brunswick NC / Tallahassee Albany from
+  prior audits. Residual: allowlisted News10 / Times Union statewide; USPS multi-state
+  Albany NY dump intentional; Yaddo culture roundup intentional.
+- **Work:**
+  - Require Saratoga cues for Parting Glass venue strong positive; expand Greater Albany
+    OR school-district / `(OR)` paren cues; Saratoga Springs crime/finance/tax strong
+    positives; allowlist `angelosantabarbara.bsky.social`; grow eval + fn_search log
+    (builds on #95 / B-117).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
+### B-117 — Daily feed audit: Victoria BC Capital Region, Utah Saratoga Springs City Council, exam proctors; Saratoga Springs healthcare / Spa City / Albany Academy FNs
+- **Status:** done ([#95](https://github.com/chriscarrollsmith/capital-region-feed/pull/95))
+- **Why:** 2026-10-10 audit of last-24h AppView feed (~149 posts since 2026-10-09T09:00Z)
+  found active FPs: `victoria.ca` municipal GOTV "Capital Region" kept as `strong_positive`;
+  Citizen Portal UT `Saratoga Springs City Council` + Redwood Road / `#UT` kept as
+  `strong_positive`; Tone Glow "teachers and proctors" / exam copy kept as
+  `event_local_venue:proctors`. FN: Albany Business Review Saratoga Springs healthcare
+  staffing shutdown dropped as `ambiguous_no_context:saratoga springs`. Near-miss recall:
+  bare Spa City nickname and Albany Academy sports wires. Rematch already drops Dutch AD
+  Rotterdam / Troy AL / Malta / Tallahassee Albany weather. Residual: allowlisted News10 /
+  Times Union statewide; Amtrak Empire ALB; intentional Eufuria / Stewart's / Burnt Hills.
+- **Work:**
+  - Gate Victoria BC via `victoria.ca` domain/handle on Canadian capital-region conflict;
+    Utah Saratoga Springs conflict (`#UT`, Redwood Road, citizenptnewsut); expand academic
+    proctors cues; strong positives for Saratoga Springs healthcare/staffing, Spa City,
+    Albany Academy; grow eval + fn_search log (builds on #92 / B-116).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-116 — Daily feed audit: Richmond Capital Region Airport Commission, KLAN Lansing flights, DelveInsight Albany dateline, Bedford UK River Street; Saint Rose / KALB / Saratoga Springs / Rensselaer I-90 FNs
 - **Status:** done ([#92](https://github.com/chriscarrollsmith/capital-region-feed/pull/92))
 - **Why:** 2026-10-09 audit of last-24h AppView feed (~129 posts since 2026-10-08T09:00Z)

@@ -46,6 +46,8 @@ amromero109.bsky.social
 philsteck.bsky.social
 reppaultonko.bsky.social
 kathymsheehan.bsky.social
+# NY Assembly (Schenectady / Rotterdam) — often posts #Rotterdam without ", NY".
+angelosantabarbara.bsky.social
 
 # --- Institutions, culture, community ---
 albanynylibrary.bsky.social

@@ -528,7 +528,8 @@ _STRONG_POSITIVE = re.compile(
       | living\s+resources[\s\S]{0,80}\balbany\b
       | \balbany\b[\s\S]{0,80}living\s+resources
       # The Parting Glass / Preservation Hall (Saratoga Springs) venue cards.
-      | \bthe\s+parting\s+glass\b
+      # Require Saratoga cues — bare "The Parting Glass" is also the folk song /
+      # Ted Lasso cue / Amazon film title.
       | parting\s+glass[\s\S]{0,80}saratoga(?:\s+springs)?\b
       | saratoga(?:\s+springs)?\b[\s\S]{0,80}parting\s+glass
       | preservation\s+hall[\s\S]{0,80}saratoga(?:\s+springs)?\b
@@ -575,15 +576,29 @@ _STRONG_POSITIVE = re.compile(
       | \bgeorge\s+crum\b
       | saratoga\s+springs\s+(?:
             store|location|parade|clubhouse|freezes|hires|library|city\s+council|
-            homes
+            homes|healthcare|staffing|finance|budget|layoffs
           )\b
       | (?:flag\s+day\s+parade|homebase\s+clubhouse)[\s\S]{0,80}saratoga\s+springs\b
       | saratoga\s+springs[\s\S]{0,80}(?:flag\s+day\s+parade|homebase\s+clubhouse)
+      # Crime / civic wire cards often say "in Saratoga Springs" without ", NY".
+      | (?:
+            arrested|attacked|slashing|coworker|driving\s+in|according\s+to\s+police|
+            property\s+tax|finance\s+(?:leader|commissioner)|layoffs|18%\s+property
+          )[\s\S]{0,100}saratoga\s+springs\b
+      | saratoga\s+springs[\s\S]{0,100}(?:
+            arrested|attacked|slashing|coworker|according\s+to\s+police|
+            property\s+tax|finance\s+(?:leader|commissioner)|layoffs
+          )\b
+      | driving\s+in\s+saratoga\s+springs\b
+      # Saratoga Springs nickname — require word boundaries so "foot spa … City" drops.
+      | \bspa\s+city\b
       | uncommon\s+grounds\b
       | \bnorthshire\b
       # College of Saint Rose campus redevelopment wires often omit ", NY".
       | college\s+of\s+saint\s+rose\b
       | saint\s+rose\s+campus\b
+      # Albany Academy (Boys/Girls) sports wires often omit ", NY".
+      | albany\s+academy\b
       # Albany International / ICAO KALB flight cards often omit ", NY".
       # Bare KALB is also KALB-TV (Alexandria, LA) and the surname Kalb.
       | albany\s+international(?:\s+airport)?\b
@@ -862,12 +877,13 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
           )[\s\S]{0,200}(?:south|west)\s+albany\b
       # Greater Albany OR school district / civic cards (strong "greater albany").
       | greater\s+albany\s+public\s+school(?:s|\s+district)?\b
+      | greater\s+albany\s+school\s+district\b
       | greater\s+albany\b[\s\S]{0,200}(?:
-            \boregon\b|\#oregon\b|\#or\b|corvallis|crescent\s+valley|
+            \boregon\b|\#oregon\b|\#or\b|\(\s*or\s*\)|corvallis|crescent\s+valley|
             \blebanon\b|silverton|mid[- ]?willamette|\.oregonlive\.
           )
       | (?:
-            \boregon\b|\#oregon\b|\#or\b|corvallis|crescent\s+valley|
+            \boregon\b|\#oregon\b|\#or\b|\(\s*or\s*\)|corvallis|crescent\s+valley|
             \blebanon\b|silverton|mid[- ]?willamette|\.oregonlive\.
           )[\s\S]{0,200}greater\s+albany\b
       | disney(?:['\u2019]?s)?\s+saratoga\s+springs
@@ -922,7 +938,7 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
 _CANADIAN_GEO_CUE = (
     r'\bcanada\b|\bcanadian\b|\bottawa\b|\#canadian\w*|'
     r'\#yyj\b|\#bcpoli\b|british\s+columbia|\blangford\b|'
-    r'victoria(?:\s*,?\s*bc\b)|greater\s+victoria|'
+    r'victoria(?:\s*,?\s*bc\b)|greater\s+victoria|victoria\.ca|'
     r'\bgoldstream\b|vancouver\s*island|vancouverisland|peers\s+victoria|'
     r'restoreislandrail|'
     r'\bsooke\b|south\s+island|firesmoke\.ca|'
@@ -2401,8 +2417,35 @@ _PROCTORS_ACADEMIC = re.compile(
       | \b(?:contact|notify|message|text|call|ask)\s+(?:the\s+)?proctors\b
       | \bproctors?\s+(?:exam|exams|midterms?|finals?|office\s+hours)\b
       | \bproctor\s+(?:an?\s+)?exam\b
+      | \bteachers?\s+and\s+proctors\b
+      | \bact\s+as\s+(?:[\w]+\s+){0,4}proctors\b
+      | \bexam\b[\s\S]{0,100}\bproctors\b
+      | \bproctors\b[\s\S]{0,100}\bexam\b
       | grade\s+syncing
       | letter\s+of\s+rec(?:ommendation)?\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Utah Saratoga Springs (Utah County / #UT / Redwood Road) — not NY Spa City.
+# Citizen Portal UT cards and KSL crash copy often omit "Utah" beside the city name.
+_SARATOGA_SPRINGS_UTAH = re.compile(
+    r"""
+    (?:
+        saratoga\s+springs\s*,?\s*(?:ut|utah)\b
+      | saratoga\s+springs\s+utah\b
+      | \#ut\b
+      | \#utah\b
+      | \butah\s+county\b
+      | \butah\b
+      | redwood\s+road\b
+      | \b2300\s+north\b
+      | spring\s+heights\b
+      | fox\s+hollow\b
+      | talons?\s+cove\b
+      | \bksl\b
+      | citizenportal\.ai/articles/\d+/Utah\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -2912,12 +2955,13 @@ _HARD_NEGATIVE = re.compile(
           )[\s\S]{0,200}(?:south|west)\s+albany\b
       # Greater Albany OR school district / civic cards (strong "greater albany").
       | greater\s+albany\s+public\s+school(?:s|\s+district)?\b
+      | greater\s+albany\s+school\s+district\b
       | greater\s+albany\b[\s\S]{0,200}(?:
-            \boregon\b|\#oregon\b|\#or\b|corvallis|crescent\s+valley|
+            \boregon\b|\#oregon\b|\#or\b|\(\s*or\s*\)|corvallis|crescent\s+valley|
             \blebanon\b|silverton|mid[- ]?willamette|\.oregonlive\.
           )
       | (?:
-            \boregon\b|\#oregon\b|\#or\b|corvallis|crescent\s+valley|
+            \boregon\b|\#oregon\b|\#or\b|\(\s*or\s*\)|corvallis|crescent\s+valley|
             \blebanon\b|silverton|mid[- ]?willamette|\.oregonlive\.
           )[\s\S]{0,200}greater\s+albany\b
       | jc\s+latham
@@ -3212,9 +3256,29 @@ def _canadian_capital_region_conflict(haystack: str, author_handle: str | None =
     handle = (author_handle or '').strip().lower()
     if re.search(
         r'timescolonist|\bcfax|ottawacitizen|restoreislandrail|ctvnewsvancouver|'
-        r'ctv\.?news.*vancouver|cheknews',
+        r'ctv\.?news.*vancouver|cheknews|victoria\.ca',
         handle,
     ) and re.search(r'capital\s+region\b', haystack, flags=re.IGNORECASE):
+        return True
+    return False
+
+
+def _saratoga_springs_utah_conflict(haystack: str, author_handle: str | None = None) -> bool:
+    """True when Saratoga Springs refers to Utah County UT, not NY."""
+    if not re.search(r'saratoga\s+springs', haystack, flags=re.IGNORECASE):
+        return False
+    if _ny_capital_region_context(haystack):
+        return False
+    if re.search(
+        r'saratoga\s+springs\s*,?\s*(?:ny|n\.y\.|new\s+york)\b|\#saratogasprings\b',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    if _SARATOGA_SPRINGS_UTAH.search(haystack):
+        return True
+    handle = (author_handle or '').strip().lower()
+    if re.search(r'citizenptnewsut|\.ut\b|utah|ksl\.com|deseret', handle):
         return True
     return False
 
@@ -4947,6 +5011,8 @@ def match_post(
             return MatchResult(False, 'hard_negative:troy_person_name')
         if _disney_saratoga_conflict(haystack, author_handle):
             return MatchResult(False, 'hard_negative:disney_saratoga')
+        if _saratoga_springs_utah_conflict(haystack, author_handle):
+            return MatchResult(False, 'hard_negative:saratoga_springs_utah')
         if _egg_kansas_city_conflict(haystack):
             return MatchResult(False, 'hard_negative:egg_off_region')
         if _saratoga_stakes_away_conflict(haystack):
@@ -4981,6 +5047,12 @@ def match_post(
             'saratoga springs',
         }:
             return MatchResult(False, 'hard_negative:disney_saratoga')
+        # Utah Saratoga Springs must not unlock Cap Region Spa City.
+        if _saratoga_springs_utah_conflict(haystack, author_handle) and distinct <= {
+            'saratoga',
+            'saratoga springs',
+        }:
+            return MatchResult(False, 'hard_negative:saratoga_springs_utah')
         multi_eligible = {name for name in distinct if name not in _MULTI_LOCAL_EXCLUDED}
         # Collapse nested tokens ("saratoga" ⊂ "saratoga springs") so a hyphenated
         # URL path cannot unlock multi_local from a single place name.
@@ -5002,6 +5074,10 @@ def match_post(
                 {'saratoga', 'saratoga springs'} & multi_eligible
             ):
                 return MatchResult(False, 'hard_negative:disney_saratoga')
+            if _saratoga_springs_utah_conflict(haystack, author_handle) and (
+                {'saratoga', 'saratoga springs'} & multi_eligible
+            ):
+                return MatchResult(False, 'hard_negative:saratoga_springs_utah')
             if _albany_bay_area_conflict(haystack) and (
                 {'albany', 'saratoga', 'saratoga springs'} & multi_eligible
             ):
@@ -5128,6 +5204,11 @@ def match_post(
             haystack, author_handle
         ):
             return MatchResult(False, 'hard_negative:disney_saratoga')
+
+        if term in {'saratoga', 'saratoga springs'} and _saratoga_springs_utah_conflict(
+            haystack, author_handle
+        ):
+            return MatchResult(False, 'hard_negative:saratoga_springs_utah')
 
         if term in {'saratoga', 'saratoga springs'} and _saratoga_park_ca_conflict(haystack):
             return MatchResult(False, 'hard_negative:saratoga_park_ca')
