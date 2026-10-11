@@ -4758,3 +4758,70 @@ def test_victoria_ca_capital_region_and_utah_saratoga_and_exam_proctors() -> Non
         is True
     )
     assert match_post('Comedy night at Proctors this Saturday — tickets on sale.').matched is True
+
+
+def test_parting_glass_song_greater_albany_or_and_saratoga_civic_wires() -> None:
+    """2026-10-11 audit: Parting Glass / Greater Albany OR FPs; Saratoga Springs FNs."""
+    assert match_post("Oh, 'The Parting Glass' was dirty pool, Ted Lasso.").matched is False
+    assert (
+        match_post(
+            "I'm fresh off of The Parting Glass so this one's for the WoL's who started in Ul'dah."
+        ).matched
+        is False
+    )
+    assert match_post('Watch The Parting Glass on Amazon prime.').matched is False
+    ontario = match_post(
+        'The end of an era. The Dam Pub in Meaford, Ontario closes.',
+        alt_text='The parting glass Last night I visited Meaford.',
+    )
+    assert ontario.matched is False
+    assert (
+        match_post(
+            'Holiday concert at The Parting Glass in Saratoga Springs this December.'
+        ).matched
+        is True
+    )
+
+    oregon = match_post(
+        'ICE arrests parent of Greater Albany School District student (OR)\n\n'
+        'The school district postponed two high school soccer games Thursday night.',
+        alt_text='ICE arrest multiple people in Albany this week, nonprofit says',
+    )
+    assert oregon.matched is False
+    assert oregon.reason == 'hard_negative'
+    assert (
+        match_post(
+            'Greater Albany trail network expansions were discussed at City Hall (#AlbanyNY).'
+        ).matched
+        is True
+    )
+
+    crime = match_post(
+        'www.news10.com/news/crime/m...',
+        alt_text=(
+            "Man accused of slashing coworker's throat in Saratoga Springs "
+            'A Mexican man was arrested on Friday after he allegedly attacked his '
+            'coworker as she was driving in Saratoga Springs, according to police.'
+        ),
+    )
+    assert crime.matched is True
+    assert crime.reason == 'strong_positive'
+
+    finance = match_post(
+        '#trumprecession\nwww.yahoo.com/news/politic...',
+        alt_text=(
+            "Saratoga Springs finance leader's 2027 plan seeks layoffs, "
+            "18% property tax hike The city's finance commissioner says a tax "
+            'increase is needed.'
+        ),
+    )
+    assert finance.matched is True
+    assert finance.reason == 'strong_positive'
+
+    # Utah Saratoga Springs civic cards must still drop.
+    utah = match_post(
+        'Saratoga Springs City Council approved a rezone near Redwood Road.\n\n#UT',
+        author_handle='citizenptnewsut.bsky.social',
+    )
+    assert utah.matched is False
+    assert utah.reason == 'hard_negative:saratoga_springs_utah'

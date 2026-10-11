@@ -528,7 +528,8 @@ _STRONG_POSITIVE = re.compile(
       | living\s+resources[\s\S]{0,80}\balbany\b
       | \balbany\b[\s\S]{0,80}living\s+resources
       # The Parting Glass / Preservation Hall (Saratoga Springs) venue cards.
-      | \bthe\s+parting\s+glass\b
+      # Require Saratoga cues — bare "The Parting Glass" is also the folk song /
+      # Ted Lasso cue / Amazon film title.
       | parting\s+glass[\s\S]{0,80}saratoga(?:\s+springs)?\b
       | saratoga(?:\s+springs)?\b[\s\S]{0,80}parting\s+glass
       | preservation\s+hall[\s\S]{0,80}saratoga(?:\s+springs)?\b
@@ -575,10 +576,20 @@ _STRONG_POSITIVE = re.compile(
       | \bgeorge\s+crum\b
       | saratoga\s+springs\s+(?:
             store|location|parade|clubhouse|freezes|hires|library|city\s+council|
-            homes|healthcare|staffing
+            homes|healthcare|staffing|finance|budget|layoffs
           )\b
       | (?:flag\s+day\s+parade|homebase\s+clubhouse)[\s\S]{0,80}saratoga\s+springs\b
       | saratoga\s+springs[\s\S]{0,80}(?:flag\s+day\s+parade|homebase\s+clubhouse)
+      # Crime / civic wire cards often say "in Saratoga Springs" without ", NY".
+      | (?:
+            arrested|attacked|slashing|coworker|driving\s+in|according\s+to\s+police|
+            property\s+tax|finance\s+(?:leader|commissioner)|layoffs|18%\s+property
+          )[\s\S]{0,100}saratoga\s+springs\b
+      | saratoga\s+springs[\s\S]{0,100}(?:
+            arrested|attacked|slashing|coworker|according\s+to\s+police|
+            property\s+tax|finance\s+(?:leader|commissioner)|layoffs
+          )\b
+      | driving\s+in\s+saratoga\s+springs\b
       # Saratoga Springs nickname — require word boundaries so "foot spa … City" drops.
       | \bspa\s+city\b
       | uncommon\s+grounds\b
@@ -866,12 +877,13 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
           )[\s\S]{0,200}(?:south|west)\s+albany\b
       # Greater Albany OR school district / civic cards (strong "greater albany").
       | greater\s+albany\s+public\s+school(?:s|\s+district)?\b
+      | greater\s+albany\s+school\s+district\b
       | greater\s+albany\b[\s\S]{0,200}(?:
-            \boregon\b|\#oregon\b|\#or\b|corvallis|crescent\s+valley|
+            \boregon\b|\#oregon\b|\#or\b|\(\s*or\s*\)|corvallis|crescent\s+valley|
             \blebanon\b|silverton|mid[- ]?willamette|\.oregonlive\.
           )
       | (?:
-            \boregon\b|\#oregon\b|\#or\b|corvallis|crescent\s+valley|
+            \boregon\b|\#oregon\b|\#or\b|\(\s*or\s*\)|corvallis|crescent\s+valley|
             \blebanon\b|silverton|mid[- ]?willamette|\.oregonlive\.
           )[\s\S]{0,200}greater\s+albany\b
       | disney(?:['\u2019]?s)?\s+saratoga\s+springs
@@ -2943,12 +2955,13 @@ _HARD_NEGATIVE = re.compile(
           )[\s\S]{0,200}(?:south|west)\s+albany\b
       # Greater Albany OR school district / civic cards (strong "greater albany").
       | greater\s+albany\s+public\s+school(?:s|\s+district)?\b
+      | greater\s+albany\s+school\s+district\b
       | greater\s+albany\b[\s\S]{0,200}(?:
-            \boregon\b|\#oregon\b|\#or\b|corvallis|crescent\s+valley|
+            \boregon\b|\#oregon\b|\#or\b|\(\s*or\s*\)|corvallis|crescent\s+valley|
             \blebanon\b|silverton|mid[- ]?willamette|\.oregonlive\.
           )
       | (?:
-            \boregon\b|\#oregon\b|\#or\b|corvallis|crescent\s+valley|
+            \boregon\b|\#oregon\b|\#or\b|\(\s*or\s*\)|corvallis|crescent\s+valley|
             \blebanon\b|silverton|mid[- ]?willamette|\.oregonlive\.
           )[\s\S]{0,200}greater\s+albany\b
       | jc\s+latham
