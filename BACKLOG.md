@@ -538,6 +538,29 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-119 — Daily feed audit: CT CRCOG / Cape Town Helderberg Strand / Sacramento window / egg farm / Freeman Farm Rd; Roosevelt Baths / Van Rensselaer Square FNs
+- **Status:** in progress
+- **Why:** 2026-10-12 audit of last-24h AppView feed (~89 posts since 2026-10-11T09:00Z)
+  found active FPs: CT Citizen Portal `Capital Region Council of Governments` /
+  Capitol Planning Region kept as `strong_positive`; Cape Town `Strand`→`Helderberg
+  Industrial` municipal alert kept as `strong_positive` (strand-before gap in
+  hard-negative window); Sacramento arts `capital region` card beyond the prior
+  160-char CA cue window; PETA `at the egg farm` kept as `event_local_venue:at the
+  egg`; Tesla `Freeman Farm Rd` (Duncan SC) kept via optional-`s` Freeman’s Farm
+  battlefield token. FNs: Saratoga Springs Roosevelt Baths / mineral-bath spa
+  weekend without `, NY`; Van Rensselaer Square job card without `, NY`. Rematch
+  already drops Dutch AD Rotterdam / Malta EU / Brunswick NC / Tallahassee Albany
+  / Troy MI jobs from prior audits. Residual: allowlisted News10 / Times Union
+  statewide; Autumn Glow Festival bare keep intentional.
+- **Work:**
+  - CT capital-region CRCOG / Capitol Planning Region conflict; bidirectional
+    Strand/Lwandle Helderberg Cape Town cues; widen CA capital-region window +
+    `#ca` / citizenptnewsca; egg-farm venue lookahead; require possessive on
+    Freeman’s Farm; Roosevelt Baths / mineral-bath and Van Rensselaer Square
+    strong positives; grow eval + fn_search log.
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-118 — Daily feed audit: Parting Glass song/film, Greater Albany OR school district; Saratoga Springs crime/finance / Assembly #Rotterdam FNs
 - **Status:** done ([#96](https://github.com/chriscarrollsmith/capital-region-feed/pull/96))
 - **Why:** 2026-10-11 audit of last-24h AppView feed (~93 posts since 2026-10-10T09:00Z)
