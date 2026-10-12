@@ -285,7 +285,8 @@ _STRONG_POSITIVE = re.compile(
       | \bbemus\s+heights\b
       | \bbemis\s+heights\b
       # Curly apostrophe (Freeman’s) appears in live AppView copy.
-      | freeman['\u2019]?s?\s+farm\b
+      # Require the possessive/plural ``s`` so "Freeman Farm Rd" (SC street) drops.
+      | freeman['\u2019]?s\s+farm\b
       # Graded race titles / starts often omit "stakes" beside Saratoga.
       | christophe\s+clement[\s\S]{0,80}\bsaratoga\b
       | \bsaratoga\b[\s\S]{0,80}christophe\s+clement
@@ -580,6 +581,12 @@ _STRONG_POSITIVE = re.compile(
           )\b
       | (?:flag\s+day\s+parade|homebase\s+clubhouse)[\s\S]{0,80}saratoga\s+springs\b
       | saratoga\s+springs[\s\S]{0,80}(?:flag\s+day\s+parade|homebase\s+clubhouse)
+      # Roosevelt Baths & Spa / mineral-bath tourism cards often omit ", NY".
+      | roosevelt\s+baths?(?:\s*(?:&|and)\s*spa)?\b
+      | saratoga\s+springs[\s\S]{0,100}(?:mineral\s+baths?|spa\s+weekend|spa\s+hotels?)
+      | (?:mineral\s+baths?|spa\s+weekend|spa\s+hotels?)[\s\S]{0,100}saratoga\s+springs
+      # City of Rensselaer shopping plaza — job cards often omit ", NY".
+      | van\s+rensselaer\s+square\b
       # Crime / civic wire cards often say "in Saratoga Springs" without ", NY".
       | (?:
             arrested|attacked|slashing|coworker|driving\s+in|according\s+to\s+police|
@@ -771,14 +778,18 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
       | albany\s+post\s+road
       # Cape Town suburb / wine region / municipal alerts — not Helderberg Escarpment.
       # Prefer #capetown / #southafrica / Helderberg College; window covers text→hashtag.
+      # ``Strand`` / Lwandle often precede Helderberg in City of Cape Town alerts.
       | helderberg\s+college\b
+      | helderberg\s+industrial\b
       | helderberg[\s\S]{0,280}(?:
             cape\s+town|\#capetown\b|western\s+cape|south\s+africa|
-            \#southafrica\b|\#africa\b|\bstrand\b|sweet\s+paws|pressportal\.co\.za
+            \#southafrica\b|\#africa\b|\bstrand\b|sweet\s+paws|pressportal\.co\.za|
+            \blwandle\b|mastodon\.africa
           )
       | (?:
             cape\s+town|\#capetown\b|western\s+cape|south\s+africa|
-            \#southafrica\b|\#africa\b|sweet\s+paws|pressportal\.co\.za
+            \#southafrica\b|\#africa\b|\bstrand\b|sweet\s+paws|pressportal\.co\.za|
+            \blwandle\b|mastodon\.africa
           )[\s\S]{0,280}helderberg
       # Seattle / New York Times guild phrasing — not Albany Times Union.
       # Bare "New York Times" (bestselling author cards) is handled by stripping
@@ -1054,17 +1065,17 @@ _PA_CAPITAL_REGION = re.compile(
 
 # California "capital region" (Sacramento / SacBee).
 _CA_GEO_CUE = (
-    r'\bsacramento\b|\bcalifornia\b|\#ca(?:wx|politics|gov)\b|'
+    r'\bsacramento\b|\bcalifornia\b|\#ca(?:wx|politics|gov)?\b|'
     r'\bsacbee\b|sacbee\.com|folsom\b|elk\s+grove\b|'
-    r'west\s+sacramento|roseville\b'
+    r'west\s+sacramento|roseville\b|sacramento\s+county\b'
 )
 
 _CA_CAPITAL_REGION = re.compile(
     rf"""
     (?:
         capital\s+region\s+of\s+(?:california|sacramento)\b
-      | capital\s+region\b[\s\S]{{0,160}}(?:{_CA_GEO_CUE})
-      | (?:{_CA_GEO_CUE})[\s\S]{{0,160}}capital\s+region\b
+      | capital\s+region\b[\s\S]{{0,480}}(?:{_CA_GEO_CUE})
+      | (?:{_CA_GEO_CUE})[\s\S]{{0,480}}capital\s+region\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -1622,6 +1633,30 @@ _CT_CAPITAL_DISTRICT = re.compile(
       | (?:
             east\s+hartford|\bhartford\b|\bconnecticut\b|(?<![a-z0-9])ct-
         )[\s\S]{0,140}capital\s+district
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Connecticut "Capital Region" (CRCOG / Capitol Planning Region) — not NY.
+_CT_GEO_CUE = (
+    r'\bconnecticut\b|\#ct\b|\#connecticut\b|'
+    r'\bwillington\b|\bstafford\b|\btolland\b|'
+    r'\bhartford\b|east\s+hartford|'
+    r'capitol\s+planning\s+region|'
+    r'\#\w*capitolplanningregion\b'
+)
+
+_CT_CAPITAL_REGION = re.compile(
+    rf"""
+    (?:
+        capital\s+region\s+council\s+of\s+governments\b
+      | capital\s+region\s+of\s+connecticut\b
+      | connecticut\s+capital\s+region
+      | capitol\s+planning\s+region
+      | \#\w*capitolplanningregion\b
+      | capital\s+region\b[\s\S]{{0,280}}(?:{_CT_GEO_CUE})
+      | (?:{_CT_GEO_CUE})[\s\S]{{0,280}}capital\s+region\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -2858,14 +2893,18 @@ _HARD_NEGATIVE = re.compile(
       | albany\s+post\s+road
       # Cape Town suburb / wine region / municipal alerts — not Helderberg Escarpment.
       # Prefer #capetown / #southafrica / Helderberg College; window covers text→hashtag.
+      # ``Strand`` / Lwandle often precede Helderberg in City of Cape Town alerts.
       | helderberg\s+college\b
+      | helderberg\s+industrial\b
       | helderberg[\s\S]{0,280}(?:
             cape\s+town|\#capetown\b|western\s+cape|south\s+africa|
-            \#southafrica\b|\#africa\b|\bstrand\b|sweet\s+paws|pressportal\.co\.za
+            \#southafrica\b|\#africa\b|\bstrand\b|sweet\s+paws|pressportal\.co\.za|
+            \blwandle\b|mastodon\.africa
           )
       | (?:
             cape\s+town|\#capetown\b|western\s+cape|south\s+africa|
-            \#southafrica\b|\#africa\b|sweet\s+paws|pressportal\.co\.za
+            \#southafrica\b|\#africa\b|\bstrand\b|sweet\s+paws|pressportal\.co\.za|
+            \blwandle\b|mastodon\.africa
           )[\s\S]{0,280}helderberg
       # Seattle / New York Times guild phrasing — not Albany Times Union.
       # Bare "New York Times" (bestselling author cards) is handled by stripping
@@ -3067,8 +3106,8 @@ _LOCAL_EVENT_VENUE = re.compile(
       | troy\s+music\s+hall
       | cohoes\s+music\s+hall
       | caffe?\s+lena
-      # Negative lookahead: "at the egg festival" is not Albany's The Egg.
-      | \bat\s+the\s+egg\b(?!\s+festival)
+      # Negative lookahead: egg festival / egg farm are not Albany's The Egg.
+      | \bat\s+the\s+egg\b(?!\s+(?:festival|farm)\b)
       | \bthe\s+egg\s+presents\b
       | albany\s+palace\s+(?:theatre|theater)
       | albany['\u2019]?s\s+palace\s+(?:theatre|theater)
@@ -3444,7 +3483,7 @@ def _california_capital_region_conflict(haystack: str, author_handle: str | None
     if _CA_CAPITAL_REGION.search(haystack):
         return True
     handle = (author_handle or '').strip().lower()
-    if re.search(r'\bsacbee\b', handle) and re.search(
+    if re.search(r'\bsacbee\b|citizenptnewsca\b', handle) and re.search(
         r'capital\s+region\b', haystack, flags=re.IGNORECASE
     ):
         return True
@@ -3622,6 +3661,20 @@ def _ct_capital_district_conflict(haystack: str) -> bool:
     if not _CT_CAPITAL_DISTRICT.search(haystack):
         return False
     return not _ny_capital_region_context(haystack)
+
+
+def _ct_capital_region_conflict(haystack: str, author_handle: str | None = None) -> bool:
+    """True when 'capital region' refers to CT CRCOG / Capitol Planning Region."""
+    if _ny_capital_region_context(haystack):
+        return False
+    if _CT_CAPITAL_REGION.search(haystack):
+        return True
+    handle = (author_handle or '').strip().lower()
+    if re.search(r'citizenptnewsct\b', handle) and re.search(
+        r'capital\s+region\b', haystack, flags=re.IGNORECASE
+    ):
+        return True
+    return False
 
 
 def _green_island_other_conflict(haystack: str) -> bool:
@@ -4991,6 +5044,8 @@ def match_post(
             return MatchResult(False, 'hard_negative:newtonville_ma')
         if _ct_capital_district_conflict(haystack):
             return MatchResult(False, 'hard_negative:ct_capital_district')
+        if _ct_capital_region_conflict(haystack, author_handle):
+            return MatchResult(False, 'hard_negative:ct_capital_region')
         if _schaghticoke_ct_conflict(haystack):
             return MatchResult(False, 'hard_negative:schaghticoke_ct')
         if _albany_wire_remote_conflict(haystack):
