@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-119 — Daily feed audit: CT CRCOG / Cape Town Helderberg Strand / Sacramento window / egg farm / Freeman Farm Rd; Roosevelt Baths / Van Rensselaer Square FNs
-- **Status:** in progress
+- **Status:** done ([#97](https://github.com/chriscarrollsmith/capital-region-feed/pull/97))
 - **Why:** 2026-10-12 audit of last-24h AppView feed (~89 posts since 2026-10-11T09:00Z)
   found active FPs: CT Citizen Portal `Capital Region Council of Governments` /
   Capitol Planning Region kept as `strong_positive`; Cape Town `Strand`→`Helderberg
