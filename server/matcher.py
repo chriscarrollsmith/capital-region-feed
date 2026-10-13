@@ -121,7 +121,10 @@ _STRONG_POSITIVE = re.compile(
       # Local sports/outdoors tags (#518hoops, #518outdoors) are Cap Region signal.
       | \#518(?:ny|area|outdoors|hoops|hockey|bowling)\b
       # Hashtag forms omit the space inside "capital region/district".
-      | \#capital(?:region|district)\b
+      # Trailing ny / _ny (#capitalregionny) is a common local spelling.
+      | \#capital(?:region|district)(?:ny|_ny)?\b
+      | \#albanycounty\b
+      | \#waterford(?:ny|_ny)\b
       | reddit\.com/r/albany\b
       | \br/albany\b
       | saratoga\s+springs\s+police
@@ -186,7 +189,9 @@ _STRONG_POSITIVE = re.compile(
       | howes?\s+cave\b
       | iroquois\s+museum\b
       | \buss\s+slater\b
-      | \blarkfest\b
+      # Cap Region LarkFest / Lark Fest / #larkfest — not idiomatic British "larkfest".
+      | (?-i:\bLarkFest\b|\bLark\s+Fest\b)
+      | \#larkfest\b
       | \bpearlpalooza\b
       # Five Rivers Environmental Education Center (Delmar) — not idiomatic "five rivers".
       | five\s+rivers\s+environmental(?:\s+education(?:\s+center)?)?\b
@@ -198,8 +203,8 @@ _STRONG_POSITIVE = re.compile(
           )[\s\S]{0,60}five\s+rivers
       | indian\s+ladder(?:\s+trail)?\b
       | thacher\s+park\b
-      # Troy's Collar City nickname — not generic "blue collar city".
-      | (?<!blue\s)collar\s+city\b
+      # Troy's Collar City nickname — not generic "blue collar" / "blue-collar city".
+      | (?<!blue\s)(?<!blue-)collar\s+city\b
       | canfield\s+casino\b
       | vischer\s+ferry\b
       | hart\s+cluett\b
