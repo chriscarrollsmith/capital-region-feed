@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-120 — Daily feed audit: blue-collar hyphen / idiomatic larkfest; #capitalregionny / #AlbanyCounty / #WaterfordNY FNs
-- **Status:** in progress
+- **Status:** done ([#98](https://github.com/chriscarrollsmith/capital-region-feed/pull/98))
 - **Why:** 2026-10-13 audit of last-24h AppView feed (~146 posts since 2026-10-12T09:00Z)
   found active FPs: GQ Mike Ditka `blue-collar city` kept as `strong_positive` (hyphen
   bypassed the existing `blue collar` lookbehind for Troy’s Collar City nickname);
