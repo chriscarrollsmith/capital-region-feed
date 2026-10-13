@@ -11575,5 +11575,75 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-10-12 audit: Van Rensselaer Square plaza job card without , NY"
+  },
+  {
+    "id": "fp-blue-collar-hyphen-city-1013",
+    "text": "Mike Ditka turned the cozy garment into a symbol of a blue-collar city.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-13 audit FP: hyphenated blue-collar city hit Collar City strong"
+  },
+  {
+    "id": "tp-collar-city-troy-1013",
+    "text": "Collar City Tweed Ride Sunday in downtown Troy.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-13 audit TP counterpart for Collar City nickname"
+  },
+  {
+    "id": "fp-idiomatic-larkfest-britain-1013",
+    "text": "The Sixties weren't quite the non-stop larkfest we've been led to believe.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-13 audit FP: British idiomatic larkfest hit LarkFest strong"
+  },
+  {
+    "id": "tp-larkfest-camelcase-1013",
+    "text": "LarkFest street festival this weekend on Lark Street.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-13 audit TP counterpart for LarkFest"
+  },
+  {
+    "id": "fn-capitalregionny-hashtag-1013",
+    "text": "Scran is ready for adoption day. #adoptme #upstateny #capitalregionny",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-13 audit FN: #capitalregionny lacked trailing ny in capitalregion hashtag"
+  },
+  {
+    "id": "fn-albanycounty-hashtag-1013",
+    "text": "#Catskills cemetery photos from last weekend. #AlbanyCounty #UpstateNY",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-13 audit FN: #AlbanyCounty hashtag"
+  },
+  {
+    "id": "fn-waterfordny-hashtag-1013",
+    "text": "Aerial photos from Fright of the Locks this weekend. #WaterfordNY #CapitalRegionNY",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-13 audit FN: #WaterfordNY / #CapitalRegionNY hashtags"
   }
 ]
