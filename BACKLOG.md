@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-121 — Daily feed audit: WAMC Westfield MA / Horseshoe Indy Saratoga PP; accented Caffè Lena FN
-- **Status:** in progress
+- **Status:** done ([#99](https://github.com/chriscarrollsmith/capital-region-feed/pull/99))
 - **Why:** 2026-10-14 audit of last-24h AppView feed (~138 posts since 2026-10-13T09:00Z)
   found active FPs: WAMC `@wamc.org` Westfield Planning Board / Servistar / UMass Amherst
   data-center wires kept solely via `\bwamc\b` strong positive (WAMC also covers Western
