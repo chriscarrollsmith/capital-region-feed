@@ -538,6 +538,23 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-121 — Daily feed audit: WAMC Westfield MA / Horseshoe Indy Saratoga PP; accented Caffè Lena FN
+- **Status:** in progress
+- **Why:** 2026-10-14 audit of last-24h AppView feed (~138 posts since 2026-10-13T09:00Z)
+  found active FPs: WAMC `@wamc.org` Westfield Planning Board / Servistar / UMass Amherst
+  data-center wires kept solely via `\bwamc\b` strong positive (WAMC also covers Western
+  Mass); Horseshoe Indy handicapping card kept via `won … at Saratoga` window that crossed
+  intervening `won at this track` to a past-performance `run at Saratoga`. FN: accented
+  `Caffè Lena` + Saratoga Springs missed ASCII-only `caffe\s+lena`. Rematch already drops
+  Dutch AD Rotterdam / Malta EU / Brunswick ME / Troy MI from prior audits (PR #98 still
+  open). Residual: allowlisted News10 / Times Union statewide; Siena College Texas poll /
+  Times Union fellowship / Skidmore co-author cards intentional.
+- **Work:**
+  - `_wamc_western_mass_conflict`; tighten win/at-Saratoga to skip intervening `at <other>`;
+    accent-aware `caff[eèé]\s+lena`; grow eval + fn_search log (builds on #98 / B-120).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-120 — Daily feed audit: blue-collar hyphen / idiomatic larkfest; #capitalregionny / #AlbanyCounty / #WaterfordNY FNs
 - **Status:** done ([#98](https://github.com/chriscarrollsmith/capital-region-feed/pull/98))
 - **Why:** 2026-10-13 audit of last-24h AppView feed (~146 posts since 2026-10-12T09:00Z)
