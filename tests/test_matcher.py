@@ -1025,6 +1025,12 @@ def test_saratoga_venue_cues_without_ny() -> None:
     caffe = match_post('Got to see Rory Block over the weekend at Caffe Lena in Saratoga Springs.')
     assert caffe.matched is True
 
+    accented = match_post(
+        'An Evening with Jane Monheit: Live at Caffè Lena, Saratoga Springs, July 2024.'
+    )
+    assert accented.matched is True
+    assert accented.reason == 'strong_positive'
+
     high_rock = match_post(
         'We are popping up again in SARATOGA SPRINGS in September at High Rock Park Pavilions!'
     )
@@ -2228,6 +2234,24 @@ def test_travers_saratoga_feature_and_wins_at_saratoga_recall() -> None:
         'guiding Starship Lizzy to victory in the finale.'
     )
     assert wins.matched is True
+
+    # Away-meet past-performance cards must not glue "won at this track" to a
+    # later "at Saratoga" mention (Horseshoe Indy handicapping).
+    indy = match_post(
+        'Horseshoe Indy race 2, 2:41 ET. Our top pick is #3 Fountain Lake (5-1), '
+        'the only one in the field who has won at this track and distance. '
+        'Solo Venturi is 3-2 off a pulled-up run at Saratoga. Too short.\n\n'
+        '#HorseRacing #Indy'
+    )
+    assert indy.matched is False
+
+    belmont_day = match_post(
+        'Photo Tuesday. Belmont day at Saratoga last year. Renegade walking in '
+        'the post parade, then the gates opening on the 2025 Belmont Stakes, '
+        'the first one run at the Spa. Every phone in the crowd went up. '
+        'Sovereignty won it.\n\n#HorseRacing #Saratoga'
+    )
+    assert belmont_day.matched is True
 
 
 def test_lark_hall_and_albany_mayor_recall() -> None:
@@ -3461,6 +3485,29 @@ def test_town_of_malta_cdta_and_local_venue_recall() -> None:
     assert match_post('WAMC Roundtable tomorrow morning.').matched is True
     assert match_post('Siena Saints tip off tonight.').matched is True
     assert match_post('Secret Caverns after dark tour.').matched is True
+
+
+def test_wamc_westfield_ma_not_capital_region() -> None:
+    """WAMC Western Mass Westfield/UMass wires must not keep on bare wamc."""
+    shot_down = match_post(
+        'For @wamc.org: JUST IN. The Westfield Planning Board has shot down a '
+        'request to extend special permitting for a data center project proposed '
+        'by Servistar.'
+    )
+    assert shot_down.matched is False
+    assert shot_down.reason == 'hard_negative:wamc_western_mass'
+
+    umass = match_post(
+        "For @wamc.org - Tonight, Westfield's planning board could finally vote "
+        'on a permit extension for the Servistar data center project. Last month, '
+        'we reported on UMass Amherst polling that showed dismal numbers when it '
+        'comes to support for data centers.'
+    )
+    assert umass.matched is False
+    assert umass.reason == 'hard_negative:wamc_western_mass'
+
+    assert match_post('For @wamc.org: Albany Common Council votes tonight.').matched is True
+    assert match_post('WAMC Roundtable tomorrow morning.').matched is True
 
 
 def test_bethlehem_universal_hall_houston_institute_stillwater_recall() -> None:

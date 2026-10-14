@@ -255,8 +255,10 @@ _STRONG_POSITIVE = re.compile(
       | grade\s+[123i]+\b[\s\S]{0,80}\bat\s+saratoga\b
       | at\s+saratoga\b[\s\S]{0,80}grade\s+[123i]+\b
       # Win / victory wires: "6,000 wins … at Saratoga" without Race Course.
-      | \b(?:wins?|won|victory)\b[\s\S]{0,80}\bat\s+saratoga\b
-      | \bat\s+saratoga\b[\s\S]{0,80}\b(?:wins?|won|victory)\b
+      # Do not cross an intervening "at <other track>" (Horseshoe Indy past-performance
+      # cards: "won at this track … run at Saratoga").
+      | \b(?:wins?|won|victory)\b(?:(?!\bat\s+(?!saratoga\b))[\s\S]){0,80}\bat\s+saratoga\b
+      | \bat\s+saratoga\b(?:(?!\bat\s+(?!saratoga\b))[\s\S]){0,80}\b(?:wins?|won|victory)\b
       # Legal Aid / county-exec / South Albany Airport copy often omits ", NY".
       | albany\s*/\s*amsterdam\b
       | albany\s+exec(?:utive)?\b
@@ -341,7 +343,8 @@ _STRONG_POSITIVE = re.compile(
       # City of Rensselaer / RPI (county is already covered above).
       | rensselaer\s+polytechnic
       # Distinctive Saratoga Springs venues (often omit ", NY").
-      | caffe\s+lena\b
+      # Accented "Caffè" is common in venue branding.
+      | caff[eèé]\s+lena\b
       | high\s+rock\s+park\s+pavilions?\b
       # The Egg (Empire State Plaza) — co-occur with Albany; bare "egg" is too noisy.
       | \bthe\s+egg\b[\s\S]{0,80}\balbany\b
@@ -1623,6 +1626,33 @@ _NEWTONVILLE_MA = re.compile(
       | \bma\s*[-–—]\s*newtonville\b
       | \bmassachusetts\s*[-–—]\s*newtonville\b
       | newtonville\s+books\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# WAMC covers Western Mass as well as Cap Region; Westfield MA civic / UMass
+# Amherst data-center wires must not keep on a bare ``wamc`` strong positive.
+_WAMC_WESTERN_MASS = re.compile(
+    r"""
+    (?:
+        westfield(?:['\u2019]?s)?\s+planning\s+board\b
+      | \bwestfield\b[\s\S]{0,120}(?:
+            \bumass\b|university\s+of\s+massachusetts|
+            \bamherst\b|\#amherst\b|
+            \bmassachusetts\b|\#massachusetts\b|
+            westfield\s*,?\s*ma\b|\#westfieldma\b|
+            \bservistar\b
+        )
+      | (?:
+            \bumass\b|university\s+of\s+massachusetts|
+            \bamherst\b|\#amherst\b|
+            \bmassachusetts\b|\#massachusetts\b|
+            westfield\s*,?\s*ma\b|\#westfieldma\b|
+            \bservistar\b
+        )[\s\S]{0,120}\bwestfield\b
+      | westfield\s*,?\s*ma\b
+      | \#westfieldma\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -3110,7 +3140,7 @@ _LOCAL_EVENT_VENUE = re.compile(
       | troy\s+savings\s+bank\s+music\s+hall
       | troy\s+music\s+hall
       | cohoes\s+music\s+hall
-      | caffe?\s+lena
+      | caff[eèé]?\s+lena
       # Negative lookahead: egg festival / egg farm are not Albany's The Egg.
       | \bat\s+the\s+egg\b(?!\s+(?:festival|farm)\b)
       | \bthe\s+egg\s+presents\b
@@ -3657,6 +3687,15 @@ def _newtonville_ma_conflict(haystack: str) -> bool:
         haystack,
         flags=re.IGNORECASE,
     ):
+        return False
+    return not _ny_capital_region_context(haystack)
+
+
+def _wamc_western_mass_conflict(haystack: str) -> bool:
+    """True when WAMC is covering Westfield MA / UMass Amherst, not Cap Region."""
+    if not re.search(r'\bwamc\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not _WAMC_WESTERN_MASS.search(haystack):
         return False
     return not _ny_capital_region_context(haystack)
 
@@ -5047,6 +5086,8 @@ def match_post(
             return MatchResult(False, 'hard_negative:clifton_park_oh')
         if _newtonville_ma_conflict(haystack):
             return MatchResult(False, 'hard_negative:newtonville_ma')
+        if _wamc_western_mass_conflict(haystack):
+            return MatchResult(False, 'hard_negative:wamc_western_mass')
         if _ct_capital_district_conflict(haystack):
             return MatchResult(False, 'hard_negative:ct_capital_district')
         if _ct_capital_region_conflict(haystack, author_handle):
