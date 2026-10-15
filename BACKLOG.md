@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-122 — Daily feed audit: Spanish cdta / 🇨🇦 capital region / Hot Springs Spa City / Troy Hills NJ / Cazenovia Albany Street
-- **Status:** in progress
+- **Status:** done ([#100](https://github.com/chriscarrollsmith/capital-region-feed/pull/100))
 - **Why:** 2026-10-15 audit of last-24h AppView feed (~153 posts since 2026-10-14T09:00Z)
   found active FPs: Spanish vegan recipe `4 cdta` (cucharadita) kept via `\bcdta\b` transit
   token; bare `capital region` + 🇨🇦 kept without Canadian geo cues; Hot Springs AR
