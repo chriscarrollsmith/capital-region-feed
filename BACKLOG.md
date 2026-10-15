@@ -538,6 +538,26 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-122 — Daily feed audit: Spanish cdta / 🇨🇦 capital region / Hot Springs Spa City / Troy Hills NJ / Cazenovia Albany Street
+- **Status:** in progress
+- **Why:** 2026-10-15 audit of last-24h AppView feed (~153 posts since 2026-10-14T09:00Z)
+  found active FPs: Spanish vegan recipe `4 cdta` (cucharadita) kept via `\bcdta\b` transit
+  token; bare `capital region` + 🇨🇦 kept without Canadian geo cues; Hot Springs AR
+  Documentary Film Festival `Spa City` kept via Saratoga nickname; Parsippany-Troy Hills,
+  NJ internship card kept via Troy + NYC context glue; Cazenovia Public Library
+  `100 Albany Street Cazenovia, NY` kept via albany+NY context. Planned `fn_search.py`
+  slate (8) all ran OK with no Cap Region false negatives (Oswego/Finger Lakes
+  `#UpstateNY` not counted). Rematch already drops Dutch AD Rotterdam / Malta EU /
+  Waterford CT golf from prior audits (PR #99 still open). Residual: allowlisted News10 /
+  Times Union statewide; Siena College Texas poll / WAMC statewide ICE / Albany Funny Bone
+  tour stop / MiniVAN Troy NY leaderboard intentional.
+- **Work:**
+  - `_cdta_spanish_recipe_conflict`; 🇨🇦 in `_CANADIAN_GEO_CUE`; `_spa_city_hot_springs_conflict`;
+    `_troy_hills_nj_conflict`; `_albany_street_cny_conflict`; grow eval + fn_search log
+    (builds on #99 / B-121).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-121 — Daily feed audit: WAMC Westfield MA / Horseshoe Indy Saratoga PP; accented Caffè Lena FN
 - **Status:** done ([#99](https://github.com/chriscarrollsmith/capital-region-feed/pull/99))
 - **Why:** 2026-10-14 audit of last-24h AppView feed (~138 posts since 2026-10-13T09:00Z)
