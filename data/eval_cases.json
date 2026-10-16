@@ -11827,5 +11827,89 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-10-15 audit TP counterpart: Cap Region Albany Street still keeps"
+  },
+  {
+    "id": "fp-empire-underground-fungal-mycelium-1016",
+    "text": "It's National Mushroom Day! Play Mycelium Empire about fungus that connects plant roots.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Mycelium Empire by Capra Solutions Grow a fungal empire underground — spread, mutate, and dominate every ecosystem.",
+    "note": "2026-10-16 audit FP: lowercase fungal empire underground must not keep via Empire Underground venue token"
+  },
+  {
+    "id": "tp-empire-underground-show-1016",
+    "text": "Show tonight at Empire Underground — doors at 7.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-16 audit TP counterpart: title-case Empire Underground venue still keeps"
+  },
+  {
+    "id": "fp-galway-bay-murders-rte-connemara-1016",
+    "text": "Cannot wait for this on ITV.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "The Galway Bay Murders | RTÉ Following a family tragedy, a New York detective arrives in Connemara and finds herself at the centre of a chilling murder investigation.",
+    "note": "2026-10-16 audit FP: RTÉ Galway Bay / Connemara drama must not keep via Galway + New York"
+  },
+  {
+    "id": "tp-galway-ny-town-board-1016",
+    "text": "Town of Galway, NY board meets Thursday at the community center.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-16 audit TP counterpart: Town of Galway NY still keeps"
+  },
+  {
+    "id": "fp-iceland-capital-region-byteseu-police-1016",
+    "text": "Capital Region Police are warning parents about an iPhone VPN profile.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "author_handle": "byteseu.bsky.social",
+    "alt_text": "Police Warn of Fake-ID VPN Exposing Children’s Data - Bytes Europe Capital Region Police are warning parents about an iPhone VPN profile.",
+    "note": "2026-10-16 audit FP: Reykjavik Capital Region Police via Bytes Europe without Iceland tokens"
+  },
+  {
+    "id": "tp-capital-region-iceland-export-1016",
+    "text": "Capital Region exporters shipped fish to Reykjavik from #AlbanyNY.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-16 audit TP counterpart: NY Capital Region + Reykjavik in passing still keeps"
+  },
+  {
+    "id": "fn-saratoga-springs-ny21-hashtag-1016",
+    "text": "Walking down Broadway in Saratoga Springs — not qualified to represent #NY21.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-16 audit FN: #NY21 must unlock ambiguous Saratoga Springs (hyphenated NY-21 already did)"
+  },
+  {
+    "id": "tn-saratoga-springs-broadway-bare-1016",
+    "text": "Beautiful afternoon walking Broadway in Saratoga Springs.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-16 audit TN counterpart: bare Saratoga Springs + Broadway without NY context still drops"
   }
 ]
