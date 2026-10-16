@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-123 — Daily feed audit: fungal Empire Underground / Iceland Capital Region Police / Galway Bay RTÉ; #NY21 FN
-- **Status:** in progress
+- **Status:** done ([#101](https://github.com/chriscarrollsmith/capital-region-feed/pull/101))
 - **Why:** 2026-10-16 audit of last-24h AppView feed (~88 posts) found active FPs:
   Mycelium Empire / Capra Solutions card kept via case-insensitive `empire underground`
   (fungal empire underground); Bytes Europe Reykjavik Capital Region Police VPN warning
