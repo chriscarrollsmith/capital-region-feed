@@ -11645,5 +11645,85 @@
     "split": "dev",
     "regression": true,
     "note": "2026-10-13 audit FN: #WaterfordNY / #CapitalRegionNY hashtags"
+  },
+  {
+    "id": "fp-wamc-westfield-planning-board-1014",
+    "text": "For @wamc.org: JUST IN. The Westfield Planning Board has shot down a request to extend special permitting for a data center project proposed by Servistar.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-14 audit FP: WAMC Western Mass Westfield Planning Board / Servistar"
+  },
+  {
+    "id": "fp-wamc-westfield-umass-servistar-1014",
+    "text": "For @wamc.org - Tonight, Westfield's planning board could finally vote on a permit extension for the Servistar data center project. Last month, we reported on UMass Amherst polling that showed dismal numbers when it comes to support for data centers.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-14 audit FP: WAMC Westfield MA + UMass Amherst data center"
+  },
+  {
+    "id": "tp-wamc-albany-common-council-1014",
+    "text": "For @wamc.org: Albany Common Council votes on the budget tonight.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-14 audit TP counterpart: WAMC Cap Region Albany civic"
+  },
+  {
+    "id": "fp-horseshoe-indy-won-at-track-saratoga-pp-1014",
+    "text": "Horseshoe Indy race 2, 2:41 ET. Our top pick is #3 Fountain Lake (5-1), the only one in the field who has won at this track and distance. Solo Venturi is 3-2 off a pulled-up run at Saratoga. Too short.\n\n#HorseRacing #Indy",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-14 audit FP: Horseshoe Indy card glued won-at-this-track to Saratoga PP"
+  },
+  {
+    "id": "tp-wins-at-saratoga-castellano-1014",
+    "text": "Javier Castellano reached 6,000 North American wins Aug. 26 at Saratoga, guiding Starship Lizzy to victory in the finale.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-14 audit TP counterpart: wins … at Saratoga race wire"
+  },
+  {
+    "id": "tp-belmont-day-at-saratoga-spa-1014",
+    "text": "Photo Tuesday. Belmont day at Saratoga last year. Renegade walking in the post parade, then the gates opening on the 2025 Belmont Stakes, the first one run at the Spa. Every phone in the crowd went up. Sovereignty won it.\n\n#HorseRacing #Saratoga",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-14 audit TP counterpart: Belmont day at Saratoga / the Spa"
+  },
+  {
+    "id": "fn-caffe-lena-accented-saratoga-springs-1014",
+    "text": "An Evening with Jane Monheit: Live at Caffè Lena, Saratoga Springs, July 2024.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-14 audit FN: accented Caffè Lena + Saratoga Springs omitted ASCII caffe"
+  },
+  {
+    "id": "tp-caffe-lena-ascii-saratoga-springs-1014",
+    "text": "Got to see Rory Block over the weekend at Caffe Lena in Saratoga Springs.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-14 audit TP counterpart: ASCII Caffe Lena still keeps"
   }
 ]
