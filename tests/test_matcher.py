@@ -5093,3 +5093,71 @@ def test_ny_district_hashtag_unlocks_saratoga_springs() -> None:
     bare = match_post('Beautiful afternoon walking Broadway in Saratoga Springs.')
     assert bare.matched is False
     assert bare.reason == 'ambiguous_no_context:saratoga springs'
+
+
+def test_chicago_south_albany_avenue_not_south_albany_airport() -> None:
+    chicago = match_post(
+        'The City is selling 16 vacant lots near the Kedzie Pink Line station.',
+        alt_text=(
+            'Map of blocks around the Kedzie Pink Line in Chicago, between Kedzie Avenue '
+            'and Albany Avenue. Lots along South Troy Street and South Albany Avenue.'
+        ),
+        author_handle='abundanthousingil.bsky.social',
+    )
+    assert chicago.matched is False
+    assert chicago.reason == 'hard_negative'
+    assert match_post('Sikorsky touched down at 4B0 (South Albany).').matched is True
+    assert match_post('Construction starts in South Albany near the airport.').matched is True
+
+
+def test_troy_mo_lincoln_county_not_rensselaer_county() -> None:
+    troy_mo = match_post(
+        "Troy's council is raising eyebrows over the sales tax forecast for 2027.\n\n"
+        '#TroyLincolnCounty #MO #CitizenPortal #BudgetTransparency',
+        alt_text=(
+            'Council pressed administration about sales tax assumptions; administration '
+            'said conversations with Rensselaer County have begun.'
+        ),
+        author_handle='citizenptnewsmo.bsky.social',
+    )
+    assert troy_mo.matched is False
+    assert troy_mo.reason == 'hard_negative:rensselaer_troy_mo'
+    assert (
+        match_post('Rensselaer County early voting sites open this weekend in Troy, NY.').matched
+        is True
+    )
+
+
+def test_brunswick_far_rockaway_ave_not_town_of_brunswick() -> None:
+    far_rockaway = match_post('NEW showroom: 1250 Brunswick Ave, Far Rockaway, NY\n#Sponsored')
+    assert far_rockaway.matched is False
+    assert far_rockaway.reason == 'hard_negative:brunswick_far_rockaway'
+    assert match_post('Town of Brunswick, NY board meeting tonight.').matched is True
+
+
+def test_wamc_springfield_ma_healey_not_capital_region() -> None:
+    springfield = match_post(
+        "For @wamc.org: I'm at Springfield's Union Station where Gov. Maura Healey "
+        'and WMass lawmakers announced $130M for east-west rail.'
+    )
+    assert springfield.matched is False
+    assert springfield.reason == 'hard_negative:wamc_western_mass'
+    assert match_post('For @wamc.org: Common Council votes tonight (#AlbanyNY).').matched is True
+    assert (
+        match_post('For @wamc.org: east-west rail funding would help downtown riders.').matched
+        is True
+    )
+
+
+def test_albany_governors_mansion_and_leandras_law_recall() -> None:
+    mansion = match_post("Girl, 15, shot near the governor's mansion downtown (#AlbanyNY).")
+    # Bare city name + mansion without hashtag (live FP rematch pattern).
+    mansion_bare = match_post("Girl, 15, shot in Albany near governor's mansion…")
+    assert mansion.matched is True
+    assert mansion_bare.matched is True
+    leandra = match_post(
+        'State Police reported three DWI arrests in Amsterdam, Milton and Rotterdam, '
+        "including two Leandra's Law cases involving children under 16."
+    )
+    assert leandra.matched is True
+    assert leandra.reason == 'ambiguous_with_context:rotterdam'
