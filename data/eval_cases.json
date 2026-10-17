@@ -11911,5 +11911,108 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-10-16 audit TN counterpart: bare Saratoga Springs + Broadway without NY context still drops"
+  },
+  {
+    "id": "fp-chicago-south-albany-avenue-1017",
+    "text": "The City is selling 16 vacant lots near the Kedzie Pink Line station.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Map of blocks around the Kedzie Pink Line in Chicago, between Kedzie Avenue and Albany Avenue. Lots along South Troy Street and South Albany Avenue.",
+    "note": "2026-10-17 audit FP: Chicago South Albany Avenue / Troy Street overrode street hard-neg via south albany strong"
+  },
+  {
+    "id": "tp-south-albany-airport-counterpart-1017",
+    "text": "Construction starts in South Albany near the airport.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-17 audit TP counterpart: South Albany Airport NY"
+  },
+  {
+    "id": "fp-troy-mo-rensselaer-county-1017",
+    "text": "Troy's council is raising eyebrows over the sales tax forecast for 2027.\n\n#TroyLincolnCounty #MO #CitizenPortal #BudgetTransparency",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "author_handle": "citizenptnewsmo.bsky.social",
+    "alt_text": "Council pressed administration about sales tax assumptions; administration said conversations with Rensselaer County have begun.",
+    "note": "2026-10-17 audit FP: Troy MO Lincoln County citizen portal with Rensselaer County card glue"
+  },
+  {
+    "id": "tp-rensselaer-county-troy-ny-1017",
+    "text": "Rensselaer County early voting sites open this weekend in Troy, NY.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-17 audit TP counterpart: Rensselaer County + Troy NY"
+  },
+  {
+    "id": "fp-brunswick-far-rockaway-1017",
+    "text": "NEW showroom: 1250 Brunswick Ave, Far Rockaway, NY\n#Sponsored",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-17 audit FP: Far Rockaway Brunswick Ave + NY context"
+  },
+  {
+    "id": "tp-brunswick-ny-counterpart-1017",
+    "text": "Town of Brunswick, NY board meeting tonight.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-17 audit TP counterpart: Town of Brunswick NY"
+  },
+  {
+    "id": "fp-wamc-springfield-healey-1017",
+    "text": "For @wamc.org: I'm at Springfield's Union Station where Gov. Maura Healey and WMass lawmakers announced $130M for east-west rail.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-17 audit FP: WAMC Springfield MA / Healey / WMass"
+  },
+  {
+    "id": "tp-wamc-albany-counterpart-1017",
+    "text": "For @wamc.org: Common Council votes tonight (#AlbanyNY).",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-17 audit TP counterpart: WAMC Cap Region"
+  },
+  {
+    "id": "tp-albany-governors-mansion-1017",
+    "text": "Girl, 15, shot in Albany near governor's mansion…",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-17 audit FN: NYS Executive Mansion cue with bare Albany"
+  },
+  {
+    "id": "tp-leandras-law-rotterdam-1017",
+    "text": "State Police reported three DWI arrests in Amsterdam, Milton and Rotterdam, including two Leandra's Law cases involving children under 16.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-17 audit FN: NY Leandra's Law unlocks Cap Region Rotterdam"
   }
 ]

@@ -538,6 +538,28 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-124 — Daily feed audit: Chicago South Albany Ave / Troy MO Rensselaer / Far Rockaway Brunswick / WAMC Springfield; mansion + Leandra FNs
+- **Status:** in progress
+- **Why:** 2026-10-17 audit of last-24h AppView feed (~116 posts) found active FPs:
+  Chicago Kedzie Pink Line housing map kept via `south albany` strong overriding
+  Albany Avenue / Troy Street hard-negatives; Troy MO Lincoln County citizen-portal
+  card kept via hallucinated Rensselaer County entity; Far Rockaway Brunswick Ave
+  showroom kept via Brunswick + NY context; WAMC Springfield MA / Healey / WMass
+  east-west rail kept via bare `wamc`. FNs: Albany + governor's mansion (bare_albany);
+  Amsterdam/Milton/Rotterdam DWI with Leandra's Law (rotterdam ambiguous_no_context).
+  Planned `fn_search.py` slate (8) all ran OK; 2 Cap Region FNs from ad-hoc civic
+  queries. Rematch already drops Dutch AD Rotterdam / Malta EU from prior audits
+  (PR #101 still open). Residual: allowlisted News10 / Times Union statewide;
+  University at Albany bylines / NWS Albany / Waterford NY vessel alerts intentional.
+- **Work:**
+  - Narrow `south albany` away from Avenue/Street; block Albany Ave / Troy Street over
+    strong; Troy MO / `citizenptnewsmo` Rensselaer gate; Far Rockaway Brunswick Ave
+    conflict; extend WAMC Western Mass to Springfield/Healey/WMass; governor's mansion
+    strong pairing; Leandra's Law in `_NY_CONTEXT`; grow eval + fn_search log
+    (builds on #101 / B-123).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-123 — Daily feed audit: fungal Empire Underground / Iceland Capital Region Police / Galway Bay RTÉ; #NY21 FN
 - **Status:** done ([#101](https://github.com/chriscarrollsmith/capital-region-feed/pull/101))
 - **Why:** 2026-10-16 audit of last-24h AppView feed (~88 posts) found active FPs:
