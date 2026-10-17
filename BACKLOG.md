@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-124 — Daily feed audit: Chicago South Albany Ave / Troy MO Rensselaer / Far Rockaway Brunswick / WAMC Springfield; mansion + Leandra FNs
-- **Status:** in progress
+- **Status:** done ([#102](https://github.com/chriscarrollsmith/capital-region-feed/pull/102))
 - **Why:** 2026-10-17 audit of last-24h AppView feed (~116 posts) found active FPs:
   Chicago Kedzie Pink Line housing map kept via `south albany` strong overriding
   Albany Avenue / Troy Street hard-negatives; Troy MO Lincoln County citizen-portal
