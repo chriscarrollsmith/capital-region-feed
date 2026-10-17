@@ -260,10 +260,14 @@ _STRONG_POSITIVE = re.compile(
       | \b(?:wins?|won|victory)\b(?:(?!\bat\s+(?!saratoga\b))[\s\S]){0,80}\bat\s+saratoga\b
       | \bat\s+saratoga\b(?:(?!\bat\s+(?!saratoga\b))[\s\S]){0,80}\b(?:wins?|won|victory)\b
       # Legal Aid / county-exec / South Albany Airport copy often omits ", NY".
+      # Do not match Chicago "South Albany Avenue" / "South Albany Ave".
       | albany\s*/\s*amsterdam\b
       | albany\s+exec(?:utive)?\b
       | albany\s+county\s+exec(?:utive)?\b
-      | south\s+albany\b
+      | south\s+albany\b(?!\s+(?:ave(?:nue)?|av|st(?:reet)?)\b)
+      # NYS Executive Mansion wires often say "Albany" + "governor's mansion" without ", NY".
+      | albany[\s\S]{0,100}governor['\u2019]?s\s+mansion\b
+      | governor['\u2019]?s\s+mansion\b[\s\S]{0,100}albany
       # NWS / storm copy: Corinth NY cluster with Saratoga Springs (no ", NY").
       | \bcorinth\b[\s\S]{0,100}saratoga\s+springs\b
       | saratoga\s+springs\b[\s\S]{0,100}\bcorinth\b
@@ -753,6 +757,8 @@ _NY_CONTEXT = re.compile(
       | upstate\s+ny\b
       | hudson\s+valley
       | \#albanyny\b
+      # NY DWI-with-child statute — unlocks Cap Region Rotterdam / Milton wires.
+      | leandra['\u2019]?s\s+law\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -837,6 +843,10 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
       | capital\s+region\b[\s\S]{0,80}berlin[- ]brandenburg
       # NJ street — not Town of Brunswick NY.
       | brunswick\s+pike\b
+      # NYC / Chicago street names — not City of Albany / City of Troy.
+      # Otherwise ``south albany`` strong can override ``Albany Avenue`` / ``Troy Street``.
+      | albany\s+(?:ave(?:nue)?|av)\b
+      | troy\s+(?:ave(?:nue)?|st(?:reet)?)\b
       | capital\s+region\s+of\s+(?:
             madrid|spain|belgium|brussels|paris|france|berlin|germany|
             tokyo|seoul|beijing|delhi|ottawa|canberra|rome|italy|
@@ -1664,6 +1674,20 @@ _WAMC_WESTERN_MASS = re.compile(
         )[\s\S]{0,120}\bwestfield\b
       | westfield\s*,?\s*ma\b
       | \#westfieldma\b
+      # Springfield MA / Healey / WMass east-west rail wires (not Cap Region).
+      # Keep cues paired with Springfield so Cap Region WAMC east-west rail
+      # advocacy (Albany terminus) is not dropped.
+      | springfield(?:['\u2019]?s)?\s+union\s+station\b
+      | \bspringfield\b[\s\S]{0,140}(?:
+            \bhealey\b|\bwmass\b|west(?:ern)?\s+mass(?:achusetts)?\b|
+            \bmassachusetts\b|\#massachusetts\b|springfield\s*,?\s*ma\b|
+            east[\s\-]+west\s+rail\b|gov\.?\s+maura\s+healey\b
+        )
+      | (?:
+            \bhealey\b|\bwmass\b|west(?:ern)?\s+mass(?:achusetts)?\b|
+            \bmassachusetts\b|\#massachusetts\b|springfield\s*,?\s*ma\b|
+            east[\s\-]+west\s+rail\b|gov\.?\s+maura\s+healey\b
+        )[\s\S]{0,140}\bspringfield\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -2285,6 +2309,40 @@ _BRUNSWICK_CORP = re.compile(
       | \bbrunswick\b[\s\S]{0,80}\bnyse\b
       | \bmercury\s+marine\b[\s\S]{0,80}\bbrunswick\b
       | \bbrunswick\b[\s\S]{0,80}\bmercury\s+marine\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Far Rockaway / Queens "Brunswick Ave" showroom ads — not Town of Brunswick NY.
+_BRUNSWICK_FAR_ROCKAWAY = re.compile(
+    r"""
+    (?:
+        far\s+rockaway\b
+      | \#farrockaway\b
+      | brunswick\s+ave(?:nue)?\b[\s\S]{0,120}(?:
+            far\s+rockaway|\#farrockaway\b|\bqueens\b|\#queens\b
+          )
+      | (?:
+            far\s+rockaway|\#farrockaway\b|\bqueens\b|\#queens\b
+        )[\s\S]{0,120}brunswick\s+ave(?:nue)?\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Troy MO / Lincoln County MO citizen-portal cards that mention Rensselaer County
+# (often AI-glued Cap Region county names onto Missouri Troy).
+_RENSSELAER_TROY_MO = re.compile(
+    r"""
+    (?:
+        \#troylincolncounty\b
+      | troy\s+lincoln\s+county\b
+      | lincoln\s+county[\s\S]{0,80}\b(?:mo|missouri)\b
+      | \b(?:mo|missouri)\b[\s\S]{0,80}lincoln\s+county
+      | troy\s*,?\s*mo\b
+      | \#mo\b
+      | \bmissouri\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -4260,6 +4318,52 @@ def _brunswick_corp_conflict(haystack: str) -> bool:
     return True
 
 
+def _brunswick_far_rockaway_conflict(haystack: str) -> bool:
+    """True when Brunswick is Far Rockaway / Queens Ave, not Town of Brunswick NY."""
+    if not re.search(r'\bbrunswick\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not _BRUNSWICK_FAR_ROCKAWAY.search(haystack):
+        return False
+    if re.search(
+        r'brunswick\s*,?\s*(?:ny|n\.y\.|new\s+york)\b|town\s+of\s+brunswick|'
+        r'brunswick\s+(?:center|school|fire|highway)',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    return True
+
+
+def _rensselaer_troy_mo_conflict(haystack: str, author_handle: str | None = None) -> bool:
+    """True when Rensselaer County is glued onto Troy MO / Lincoln County MO."""
+    if not re.search(r'\brensselaer\b', haystack, flags=re.IGNORECASE):
+        return False
+    handle = (author_handle or '').strip().lower()
+    mo_text = _RENSSELAER_TROY_MO.search(haystack) is not None
+    mo_handle = re.search(r'citizenptnewsmo\b', handle) is not None
+    if not mo_text and not mo_handle:
+        return False
+    if not re.search(r'\btroy\b', haystack, flags=re.IGNORECASE):
+        return False
+    # Real Cap Region Troy / Rensselaer County NY.
+    if re.search(
+        r"""
+        (?:
+            troy\s*,?\s*(?:ny|n\.y\.|new\s+york)\b|
+            city\s+of\s+troy|
+            \#troyny\b|
+            rensselaer\s+county\s*,?\s*(?:ny|n\.y\.|new\s+york)\b|
+            capital\s+(?:region|district)|
+            \#albanyny\b
+        )
+        """,
+        haystack,
+        flags=re.IGNORECASE | re.VERBOSE,
+    ):
+        return False
+    return True
+
+
 def _saratoga_park_ca_conflict(haystack: str) -> bool:
     """True when Saratoga Park refers to Montclair CA, not Saratoga Springs NY."""
     if not re.search(r'\bsaratoga\b', haystack, flags=re.IGNORECASE):
@@ -5161,6 +5265,10 @@ def match_post(
             return MatchResult(False, 'entity_other:watervliet_mi')
         if entity.entity_id == 'rensselaer_county_ny' and _rensselaer_roblox_conflict(haystack):
             return MatchResult(False, 'hard_negative:rensselaer_roblox')
+        if entity.entity_id == 'rensselaer_county_ny' and _rensselaer_troy_mo_conflict(
+            haystack, author_handle
+        ):
+            return MatchResult(False, 'hard_negative:rensselaer_troy_mo')
         if entity.entity_id == 'schenectady_ny' and _schenectady_style_conflict(haystack):
             return MatchResult(False, 'hard_negative:schenectady_style')
         if entity.entity_id == 'schenectady_ny' and _schenectady_hashtag_spam_conflict(haystack):
@@ -5177,6 +5285,8 @@ def match_post(
             return MatchResult(False, 'entity_other:watervliet_mi')
         if _rensselaer_roblox_conflict(haystack):
             return MatchResult(False, 'hard_negative:rensselaer_roblox')
+        if _rensselaer_troy_mo_conflict(haystack, author_handle):
+            return MatchResult(False, 'hard_negative:rensselaer_troy_mo')
         if _schenectady_style_conflict(haystack):
             return MatchResult(False, 'hard_negative:schenectady_style')
         if _schenectady_hashtag_spam_conflict(haystack):
@@ -5476,6 +5586,9 @@ def match_post(
         if term == 'brunswick' and _brunswick_corp_conflict(haystack):
             return MatchResult(False, 'hard_negative:brunswick_corp')
 
+        if term == 'brunswick' and _brunswick_far_rockaway_conflict(haystack):
+            return MatchResult(False, 'hard_negative:brunswick_far_rockaway')
+
         if term == 'brunswick' and _brunswick_schools_other_conflict(haystack):
             return MatchResult(False, 'hard_negative:brunswick_schools_other')
 
@@ -5490,6 +5603,9 @@ def match_post(
 
         if term == 'rensselaer' and _rensselaer_indiana_conflict(haystack):
             return MatchResult(False, 'hard_negative:rensselaer_indiana')
+
+        if term == 'rensselaer' and _rensselaer_troy_mo_conflict(haystack, author_handle):
+            return MatchResult(False, 'hard_negative:rensselaer_troy_mo')
 
         if term in {'malta', 'rotterdam'} and _malta_europe_conflict(haystack):
             return MatchResult(False, 'hard_negative:malta_europe')
