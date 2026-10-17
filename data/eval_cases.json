@@ -11452,5 +11452,128 @@
     "author_handle": "angelosantabarbara.bsky.social",
     "author_did": "did:plc:jxe57jskj4ucvmvjcd5ojyq6",
     "note": "2026-10-11 audit: NY Assembly allowlist keeps #Rotterdam without , NY"
+  },
+  {
+    "id": "fp-ct-capital-region-council-governments-1012",
+    "text": "Willington selectmen signed a multi-town animal-control agreement with Stafford, Tolland, and the Capital Region Council of Governments. #WillingtonCapitolPlanningRegion #CT #CitizenPortal",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "author_handle": "citizenptnewsct.bsky.social",
+    "note": "2026-10-12 audit: CT CRCOG / Capitol Planning Region not NY Capital Region"
+  },
+  {
+    "id": "tp-ct-crcog-visit-albany-1012",
+    "text": "Capital Region Council of Governments staff visited #AlbanyNY for a CDRPC workshop on regional planning.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-12 audit: NY context keeps CRCOG mention"
+  },
+  {
+    "id": "fp-helderberg-strand-before-cape-town-1012",
+    "text": "Planned Water Maintenance in Strand. Strandfoam Group (Pty) Ltd to N2, Lwandle Helderberg Industrial & surrounding streets.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "author_handle": "coct-service-alerts.mastodon.africa.ap.brid.gy",
+    "note": "2026-10-12 audit: Cape Town Strand-before-Helderberg municipal alert"
+  },
+  {
+    "id": "tp-helderberg-escarpment-albany-1012",
+    "text": "Hike the Helderberg Escarpment this weekend near #AlbanyNY.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-12 audit: Cap Region Helderberg Escarpment counterpart"
+  },
+  {
+    "id": "fp-sacramento-capital-region-long-card-1012",
+    "text": "Sacramento's arts scene is on the rise with grants for artists! Learn more. #SacramentoSacramentoCounty #CA #CitizenPortal #SacramentoArts Office details: Creative Core Grama distributed millions to support artists and organizations in the capital region, and ARPA dollars supported nonprofit arts recovery.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "author_handle": "citizenptnewsca.bsky.social",
+    "note": "2026-10-12 audit: Sacramento capital region beyond prior 160-char window"
+  },
+  {
+    "id": "tp-capital-region-sacramento-trip-albany-1012",
+    "text": "Capital Region students visited Sacramento before returning to #AlbanyNY.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-12 audit: NY Capital Region + Sacramento keep"
+  },
+  {
+    "id": "fp-at-the-egg-farm-peta-1012",
+    "text": "PETA: Yet, at the egg farm where he worked he was fired after reuniting a baby opossum with its mom.",
+    "expected": false,
+    "signal": "event",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-12 audit: at the egg farm is not Albany The Egg"
+  },
+  {
+    "id": "tp-at-the-egg-jazz-1012",
+    "text": "Join us tonight at The Egg for jazz.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-12 audit: Albany The Egg venue counterpart"
+  },
+  {
+    "id": "fp-freeman-farm-rd-duncan-sc-1012",
+    "text": "Tesla Supercharger in Duncan, SC - Freeman Farm Rd, USA is being planned (325 kW).",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-12 audit: Freeman Farm Rd street is not Saratoga battlefield"
+  },
+  {
+    "id": "tp-freemans-farm-battlefield-1012",
+    "text": "On Sept. 19, 1777, Burgoyne won Freeman’s Farm after seven hours of fighting.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-12 audit: Saratoga Freeman’s Farm battlefield counterpart"
+  },
+  {
+    "id": "fn-saratoga-springs-roosevelt-baths-1012",
+    "text": "Planning a Saratoga Springs spa weekend. This guide explains why the naturally effervescent mineral baths at Roosevelt Baths & Spa should be your anchor.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-12 audit: Roosevelt Baths / mineral-bath tourism without , NY"
+  },
+  {
+    "id": "fn-van-rensselaer-square-job-1012",
+    "text": "Party & Event Host - Rensselaer-102 Van Rensselaer Square, Ste B",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-12 audit: Van Rensselaer Square plaza job card without , NY"
   }
 ]

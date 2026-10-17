@@ -4255,9 +4255,82 @@ def test_egg_brussels_and_egg_festival_not_albany_venue() -> None:
     )
     assert festival.matched is False
 
+    egg_farm = match_post(
+        'PETA: Yet, at the egg farm where he worked he was fired after '
+        'reuniting a baby opossum with its mom.'
+    )
+    assert egg_farm.matched is False
+
     keep = match_post('Join us tonight at The Egg for jazz.')
     assert keep.matched is True
     assert keep.reason == 'event_local_venue:at the egg'
+
+
+def test_ct_capital_region_crcog_not_ny() -> None:
+    crcog = match_post(
+        'Willington selectmen signed a multi-town animal-control agreement with '
+        'Stafford, Tolland, and the Capital Region Council of Governments. '
+        '#WillingtonCapitolPlanningRegion #CT',
+        author_handle='citizenptnewsct.bsky.social',
+    )
+    assert crcog.matched is False
+    assert crcog.reason == 'hard_negative:ct_capital_region'
+
+    keep = match_post(
+        'Capital Region Council of Governments staff visited #AlbanyNY for a CDRPC workshop.'
+    )
+    assert keep.matched is True
+
+
+def test_helderberg_strand_before_not_escarpment() -> None:
+    cape = match_post(
+        'Planned Water Maintenance in Strand. Strandfoam Group (Pty) Ltd to N2, '
+        'Lwandle Helderberg Industrial & surrounding streets.',
+        author_handle='coct-service-alerts.mastodon.africa.ap.brid.gy',
+    )
+    assert cape.matched is False
+
+    keep = match_post('Hike the Helderberg Escarpment this weekend near #AlbanyNY.')
+    assert keep.matched is True
+
+
+def test_sacramento_capital_region_long_window_not_ny() -> None:
+    pad = ' arts recovery funding notes. ' * 12
+    sac = match_post(
+        "Sacramento's arts scene is on the rise!"
+        + pad
+        + 'Staff said grants support artists and organizations in the capital region. '
+        '#SacramentoSacramentoCounty #CA',
+        author_handle='citizenptnewsca.bsky.social',
+    )
+    assert sac.matched is False
+    assert sac.reason == 'hard_negative:california_capital_region'
+
+
+def test_freeman_farm_rd_sc_not_battlefield() -> None:
+    street = match_post(
+        'Tesla Supercharger in Duncan, SC - Freeman Farm Rd, USA is being planned (325 kW).'
+    )
+    assert street.matched is False
+
+    battlefield = match_post(
+        'On Sept. 19, 1777, Burgoyne won Freeman’s Farm after seven hours of fighting.'
+    )
+    assert battlefield.matched is True
+    assert battlefield.reason == 'strong_positive'
+
+
+def test_saratoga_springs_roosevelt_baths_and_van_rensselaer_square_recall() -> None:
+    spa = match_post(
+        'Planning a Saratoga Springs spa weekend. This guide explains why the '
+        'naturally effervescent mineral baths at Roosevelt Baths & Spa should be your anchor.'
+    )
+    assert spa.matched is True
+    assert spa.reason == 'strong_positive'
+
+    plaza = match_post('Party & Event Host - Rensselaer-102 Van Rensselaer Square, Ste B')
+    assert plaza.matched is True
+    assert plaza.reason == 'strong_positive'
 
 
 def test_stena_scotia_rotterdam_not_village_of_scotia() -> None:
