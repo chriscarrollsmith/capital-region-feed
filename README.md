@@ -173,7 +173,7 @@ event/venue, classifier, and soft-prior bare names) is a candidate.
 
 When `DECISION_ENABLED` is off, that candidate is the result, including the
 existing offline floor. When it is on, `server/decider.py` POSTs the clipped
-haystack to OpenRouter's Decisions API (`perplexity/pplx-decider-v1.1-27b`) and
+haystack to OpenRouter's Decisions API (`perplexity/pplx-decider-v1.2`) and
 keeps the post only when the returned `noul` is at least `DECISION_KEEP_MIN`
 (default `0.5`). The app applies that threshold. A missing `OPENROUTER_API_KEY`,
 timeout, transport error, or unusable payload drops the candidate (fail closed).

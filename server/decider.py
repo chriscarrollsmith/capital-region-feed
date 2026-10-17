@@ -21,7 +21,7 @@ from typing import Any, Protocol
 
 PROMPT_VERSION = 'capital-region-keep-v1'
 
-DEFAULT_MODEL = 'perplexity/pplx-decider-v1.1-27b'
+DEFAULT_MODEL = 'perplexity/pplx-decider-v1.2'
 DEFAULT_API_URL = 'https://openrouter.ai/api/alpha/decisions'
 DEFAULT_KEEP_MIN = 0.5
 DEFAULT_TIMEOUT_S = 8.0

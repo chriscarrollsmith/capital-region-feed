@@ -32,9 +32,9 @@ def test_noul_threshold_and_choice_payload() -> None:
 
 
 def test_request_body_is_a_decision_not_a_chat_prompt() -> None:
-    body = _request_body('perplexity/pplx-decider-v1.1-27b', 'Schenectady tonight')
+    body = _request_body('perplexity/pplx-decider-v1.2', 'Schenectady tonight')
     assert 'messages' not in body
-    assert body['model'] == 'perplexity/pplx-decider-v1.1-27b'
+    assert body['model'] == 'perplexity/pplx-decider-v1.2'
     assert body['state'] == {'post': 'Schenectady tonight'}
     keep = body['questions']['keep']
     assert keep['type'] == 'noul'
@@ -176,10 +176,10 @@ def test_default_decider_follows_env(monkeypatch: pytest.MonkeyPatch) -> None:
     assert get_default_decider() is missing
 
     monkeypatch.setenv('OPENROUTER_API_KEY', 'test-key')
-    monkeypatch.setenv('DECISION_MODEL', 'perplexity/pplx-decider-v1.1-27b')
+    monkeypatch.setenv('DECISION_MODEL', 'perplexity/pplx-decider-v1.2')
     clear_decider_cache()
     client = get_default_decider()
     assert isinstance(client, OpenRouterDecider)
-    assert client.model == 'perplexity/pplx-decider-v1.1-27b'
+    assert client.model == 'perplexity/pplx-decider-v1.2'
     assert get_default_decider() is client
     clear_decider_cache()
