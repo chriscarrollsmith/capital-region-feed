@@ -538,6 +538,25 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-120 — Daily feed audit: blue-collar hyphen / idiomatic larkfest; #capitalregionny / #AlbanyCounty / #WaterfordNY FNs
+- **Status:** done ([#98](https://github.com/chriscarrollsmith/capital-region-feed/pull/98))
+- **Why:** 2026-10-13 audit of last-24h AppView feed (~146 posts since 2026-10-12T09:00Z)
+  found active FPs: GQ Mike Ditka `blue-collar city` kept as `strong_positive` (hyphen
+  bypassed the existing `blue collar` lookbehind for Troy’s Collar City nickname);
+  British idiomatic `larkfest` (Kynaston book post) kept via case-insensitive
+  `\blarkfest\b` for Cap Region LarkFest. FNs: `#capitalregionny` / `#CapitalRegionNY`
+  failed the `#capital(?:region|district)\b` hashtag (trailing `ny`); `#AlbanyCounty`
+  and `#WaterfordNY` had no strong-positive hashtag forms. Rematch already drops Dutch
+  AD Rotterdam / Malta EU / Brunswick ME / Troy MI / Freeman Farm Rd / CT CRCOG from
+  prior audits (PR #97 still open). Residual: allowlisted News10 / Times Union
+  statewide; Hochul “back to Albany” / LASNNY / KALB flight cards intentional.
+- **Work:**
+  - Hyphen lookbehind for Collar City; case-sensitive LarkFest / Lark Fest + `#larkfest`;
+    `#capital(?:region|district)(?:ny|_ny)?`, `#albanycounty`, `#waterford(?:ny|_ny)`;
+    grow eval + fn_search log (builds on #97 / B-119).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-119 — Daily feed audit: CT CRCOG / Cape Town Helderberg Strand / Sacramento window / egg farm / Freeman Farm Rd; Roosevelt Baths / Van Rensselaer Square FNs
 - **Status:** done ([#97](https://github.com/chriscarrollsmith/capital-region-feed/pull/97))
 - **Why:** 2026-10-12 audit of last-24h AppView feed (~89 posts since 2026-10-11T09:00Z)

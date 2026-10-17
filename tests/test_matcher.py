@@ -3725,7 +3725,31 @@ def test_blue_collar_city_not_troy_nickname() -> None:
         'especially an underdog.'
     )
     assert browns.matched is False
+    hyphen = match_post('Mike Ditka turned the cozy garment into a symbol of a blue-collar city.')
+    assert hyphen.matched is False
     assert match_post('Collar City Tweed Ride Sunday.').matched is True
+
+
+def test_idiomatic_larkfest_not_albany_festival() -> None:
+    britain = match_post(
+        "The Sixties weren't quite the non-stop larkfest we've been led to believe."
+    )
+    assert britain.matched is False
+    assert match_post('LarkFest street festival this weekend.').matched is True
+    assert match_post('See you at #larkfest downtown!').matched is True
+
+
+def test_capitalregionny_albanycounty_waterfordny_hashtags() -> None:
+    capital = match_post('Cat rescue intake day this week. #capitalregionny #adoptme')
+    assert capital.matched is True
+    assert capital.reason == 'strong_positive'
+    county = match_post('#Catskills cemetery photos from last weekend. #AlbanyCounty')
+    assert county.matched is True
+    waterford = match_post(
+        'Aerials from Fright of the Locks at the Flight of the Locks. #WaterfordNY'
+    )
+    assert waterford.matched is True
+    assert match_post('Bus trip for the show. #capitaldistrict #northcountry').matched is True
 
 
 def test_rotterdam_denhaag_hashtags_not_ny() -> None:
