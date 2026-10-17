@@ -4969,3 +4969,73 @@ def test_parting_glass_song_greater_albany_or_and_saratoga_civic_wires() -> None
     )
     assert utah.matched is False
     assert utah.reason == 'hard_negative:saratoga_springs_utah'
+
+
+def test_cdta_spanish_recipe_not_capital_district_transit() -> None:
+    recipe = match_post(
+        'Ensalada de un otoño suave.\n#govegan #coruñavegana',
+        alt_text=(
+            'ENSALADA DE SETAS Ingredientes: 100g de rúcula y canónigos mezclados '
+            '8 tomates cherry 1/2 pimiento rojo 4 cdta de aceite de oliva.'
+        ),
+    )
+    assert recipe.matched is False
+    assert recipe.reason == 'hard_negative:cdta_spanish_recipe'
+    assert match_post('CDTA route 12 schedule changes Monday.').matched is True
+    assert match_post('#10 CDTA bus into Stuyvesant Plaza').matched is True
+
+
+def test_canadian_capital_region_flag_emoji() -> None:
+    flag = match_post('Fall in the capital region is stunning. 🇨🇦')
+    assert flag.matched is False
+    assert flag.reason == 'hard_negative:canadian_capital_region'
+    keep = match_post(
+        'Capital Region exporters shipped goods to Canada through the Port of Albany (#AlbanyNY).'
+    )
+    assert keep.matched is True
+
+
+def test_spa_city_hot_springs_arkansas_not_saratoga() -> None:
+    arkansas = match_post(
+        'The Annual Hot Springs Documentary Film Festival is underway in '
+        "Arkansas's Spa City, October 9-17, 2026. #documentaries #filmfest"
+    )
+    assert arkansas.matched is False
+    assert arkansas.reason == 'hard_negative:spa_city_hot_springs'
+    assert match_post('Weekend in Spa City — mineral baths and racing.').matched is True
+    assert match_post('Spa City weekend near Saratoga Springs.').matched is True
+
+
+def test_troy_hills_nj_not_city_of_troy() -> None:
+    hills = match_post(
+        'Summer 2026 Internships\n'
+        'Data Science Intern @ GAF\n'
+        'Parsippany-Troy Hills, NJ\n'
+        'Technology Intern\n'
+        'San Diego, CA\n'
+        '#Internships'
+    )
+    # NYC on a prior line must not unlock Cap Region Troy.
+    nyc_glue = match_post('Summer 2026 Internships\nNYC\nParsippany-Troy Hills, NJ\nSan Diego, CA')
+    assert hills.matched is False
+    assert hills.reason == 'hard_negative:troy_hills_nj'
+    assert nyc_glue.matched is False
+    assert nyc_glue.reason == 'hard_negative:troy_hills_nj'
+    assert match_post('Concert at Troy Music Hall tonight.').matched is True
+
+
+def test_albany_street_cazenovia_cny_not_city_of_albany() -> None:
+    cazenovia = match_post(
+        "If you're in the CNY area, I'm at the Cazenovia Public Library next week!\n"
+        '#cazenoviany #cnywriters',
+        alt_text=(
+            'Cazenovia Public Library. 100 Albany Street Cazenovia, NY '
+            'Thursday October 22nd, 6:00-7:30 PM.'
+        ),
+    )
+    assert cazenovia.matched is False
+    assert cazenovia.reason == 'hard_negative:albany_street_cny'
+    assert (
+        match_post('Road work on Albany Street near Lark Street downtown (#AlbanyNY).').matched
+        is True
+    )

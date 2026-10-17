@@ -11725,5 +11725,107 @@
     "split": "dev",
     "regression": true,
     "note": "2026-10-14 audit TP counterpart: ASCII Caffe Lena still keeps"
+  },
+  {
+    "id": "fp-cdta-spanish-teaspoon-recipe-1015",
+    "text": "Ensalada de un otoño suave.\n#govegan #coruñavegana",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "ENSALADA DE SETAS Ingredientes: 100g de rúcula y canónigos mezclados 8 tomates cherry 1/2 pimiento rojo 4 cdta de aceite de oliva.",
+    "note": "2026-10-15 audit FP: Spanish recipe cdta (cucharadita) must not keep via CDTA transit token"
+  },
+  {
+    "id": "tp-cdta-route-schedule-1015",
+    "text": "CDTA route 12 schedule changes Monday near downtown.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-15 audit TP counterpart: Cap Region CDTA transit still keeps"
+  },
+  {
+    "id": "fp-capital-region-canada-flag-1015",
+    "text": "Fall in the capital region is stunning. 🇨🇦",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-15 audit FP: bare 🇨🇦 next to capital region is Canadian, not NY"
+  },
+  {
+    "id": "tp-capital-region-canada-export-1015",
+    "text": "Capital Region exporters shipped goods to Canada through the Port of Albany (#AlbanyNY).",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-15 audit TP counterpart: NY Capital Region + Canada in passing still keeps"
+  },
+  {
+    "id": "fp-spa-city-hot-springs-arkansas-1015",
+    "text": "The Annual Hot Springs Documentary Film Festival is underway in Arkansas's Spa City, October 9-17, 2026. #documentaries #filmfest",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-15 audit FP: Hot Springs AR Spa City nickname must not keep via Saratoga Spa City token"
+  },
+  {
+    "id": "tp-spa-city-saratoga-weekend-1015",
+    "text": "Weekend in Spa City — mineral baths and racing.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-15 audit TP counterpart: bare Spa City still keeps for Saratoga Springs"
+  },
+  {
+    "id": "fp-parsippany-troy-hills-nj-1015",
+    "text": "Summer 2026 Internships\nNYC\nParsippany-Troy Hills, NJ\nSan Diego, CA\n#Internships",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-15 audit FP: Parsippany-Troy Hills NJ must not keep via Troy + NYC context glue"
+  },
+  {
+    "id": "tp-troy-music-hall-concert-1015",
+    "text": "Concert at Troy Music Hall tonight.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-15 audit TP counterpart: City of Troy venue still keeps"
+  },
+  {
+    "id": "fp-albany-street-cazenovia-cny-1015",
+    "text": "If you're in the CNY area, I'm at the Cazenovia Public Library next week!\n#cazenoviany #cnywriters",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Cazenovia Public Library. 100 Albany Street Cazenovia, NY Thursday October 22nd, 6:00-7:30 PM.",
+    "note": "2026-10-15 audit FP: Albany Street address in Cazenovia/CNY must not keep via albany+NY context"
+  },
+  {
+    "id": "tp-albany-street-downtown-1015",
+    "text": "Road work on Albany Street near Lark Street downtown (#AlbanyNY).",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-15 audit TP counterpart: Cap Region Albany Street still keeps"
   }
 ]

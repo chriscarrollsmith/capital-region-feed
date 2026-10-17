@@ -49,3 +49,11 @@
 {"used_at": "2026-10-14T09:07:13Z", "query": "MVP Arena", "family": "venue", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
 {"used_at": "2026-10-14T09:07:13Z", "query": "Caffe Lena", "family": "venue", "status": "ok", "hits": 1, "false_negatives": 1, "false_negative_ids": ["at://did:plc:zkvzdjy2tmszex47aqs7et7y/app.bsky.feed.post/3mxrw2mw3rh27"], "notes": "Accented Caffè Lena spelling missed ASCII caffe strong-positive"}
 {"used_at": "2026-10-14T09:07:13Z", "query": "Caffè Lena", "family": "venue", "status": "ok", "hits": 1, "false_negatives": 1, "false_negative_ids": ["at://did:plc:zkvzdjy2tmszex47aqs7et7y/app.bsky.feed.post/3mxrw2mw3rh27"], "notes": ""}
+{"used_at": "2026-10-15T09:04:18Z", "query": "Caffe Lena", "family": "venue", "status": "ok", "hits": 1, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-10-15T09:04:18Z", "query": "Saratoga Springs", "family": "bare_place", "status": "ok", "hits": 7, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-10-15T09:04:18Z", "query": "Van Rensselaer Square", "family": "venue", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-10-15T09:04:18Z", "query": "upstateny", "family": "hashtag", "status": "ok", "hits": 9, "false_negatives": 0, "false_negative_ids": [], "notes": "Oswego/Finger Lakes/CNY and bare #UpstateNY not Cap Region FNs"}
+{"used_at": "2026-10-15T09:04:18Z", "query": "Sons and Daughters of Italy", "family": "event_phrase", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-10-15T09:04:18Z", "query": "Guilderland Central School", "family": "civic", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-10-15T09:04:18Z", "query": "Frear Park", "family": "neighborhood", "status": "ok", "hits": 1, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-10-15T09:04:18Z", "query": "this weekend Albany", "family": "event_phrase", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}

@@ -956,6 +956,8 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
 # Quebec politics often says "National-Capital region" or bare "capital region" with PQ/Montreal.
 _CANADIAN_GEO_CUE = (
     r'\bcanada\b|\bcanadian\b|\bottawa\b|\#canadian\w*|'
+    # Bare 🇨🇦 next to "capital region" is Ottawa / national, not NY.
+    r'🇨🇦|'
     r'\#yyj\b|\#bcpoli\b|british\s+columbia|\blangford\b|'
     r'victoria(?:\s*,?\s*bc\b)|greater\s+victoria|victoria\.ca|'
     r'\bgoldstream\b|vancouver\s*island|vancouverisland|peers\s+victoria|'
@@ -2697,6 +2699,75 @@ _CDTA_ALGERIA = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
+# Spanish recipe "cdta" (cucharadita / teaspoon) — not Cap Region transit CDTA.
+# Numeric measures ("4 cdta") and "cdta de …" are culinary; Cap Region copy uses CDTA
+# as an agency name (route / bus / schedule), not a measured ingredient.
+_CDTA_SPANISH_RECIPE = re.compile(
+    r"""
+    (?:
+        \d+\s*cdta\b
+      | \bcdta\s+de\b
+      | \bcdta\b[\s\S]{0,120}(?:
+            ingredientes?|cucharaditas?|receta|r[uú]cula|tomates?\s+cherry|
+            pimiento|aceite\s+de\s+oliva|\#\w*vegana?\b|\#govegan\b
+          )
+      | (?:
+            ingredientes?|cucharaditas?|receta|r[uú]cula|tomates?\s+cherry|
+            pimiento|aceite\s+de\s+oliva|\#\w*vegana?\b|\#govegan\b
+          )[\s\S]{0,120}\bcdta\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Hot Springs, Arkansas "Spa City" nickname — not Saratoga Springs.
+_SPA_CITY_HOT_SPRINGS = re.compile(
+    r"""
+    (?:
+        \bspa\s+city\b[\s\S]{0,200}(?:
+            hot\s+springs|\barkansas\b|\#arkansas\b|\#hotsprings\b|
+            documentary\s+film\s+festival
+          )
+      | (?:
+            hot\s+springs|\barkansas\b|\#arkansas\b|\#hotsprings\b|
+            documentary\s+film\s+festival
+          )[\s\S]{0,200}\bspa\s+city\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Parsippany-Troy Hills, NJ (and bare Troy Hills, NJ) — not City of Troy NY.
+# Job boards often list NYC on a prior line, which otherwise unlocks NY context.
+_TROY_HILLS_NJ = re.compile(
+    r"""
+    (?:
+        parsippany[\s\-]*troy\s+hills\b
+      | troy\s+hills\s*,?\s*(?:nj|n\.j\.|new\s+jersey)\b
+      | troy\s+hills[\s\S]{0,80}\b(?:nj|n\.j\.|new\s+jersey)\b
+      | \b(?:nj|n\.j\.|new\s+jersey)\b[\s\S]{0,80}troy\s+hills\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# "Albany Street" street addresses in CNY / Cazenovia — not City of Albany.
+_ALBANY_STREET_CNY = re.compile(
+    r"""
+    (?:
+        albany\s+street\b[\s\S]{0,160}(?:
+            \bcazenovia\b|\#cazenovia\w*|\bcny\b|\#cny\w*|
+            central\s+new\s+york|finger\s+lakes
+          )
+      | (?:
+            \bcazenovia\b|\#cazenovia\w*|\bcny\b|\#cny\w*|
+            central\s+new\s+york|finger\s+lakes
+          )[\s\S]{0,160}albany\s+street\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
 # Cuisine adjective "Schenectady-style …" (LA food trucks) — not the city.
 _SCHENECTADY_STYLE = re.compile(
     r'\bschenectady[\s-]+style\b',
@@ -4329,6 +4400,95 @@ def _cdta_algeria_conflict(haystack: str) -> bool:
     return True
 
 
+def _cdta_spanish_recipe_conflict(haystack: str) -> bool:
+    """True when cdta is a Spanish teaspoon measure, not Cap Region transit."""
+    if not re.search(r'\bcdta\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not _CDTA_SPANISH_RECIPE.search(haystack):
+        return False
+    if re.search(
+        r"""
+        (?:
+            \bcdta\b[\s\S]{0,80}(?:
+                albany|troy|schenectady|capital\s+(?:region|district)|\#albanyny\b|
+                \bbus\b|\broute\b|\bschedule\b|transit|stuyvesant\s+plaza
+              )
+          | (?:
+                albany|troy|schenectady|capital\s+(?:region|district)|\#albanyny\b|
+                \bbus\b|\broute\b|\bschedule\b|transit|stuyvesant\s+plaza
+              )[\s\S]{0,80}\bcdta\b
+        )
+        """,
+        haystack,
+        flags=re.IGNORECASE | re.VERBOSE,
+    ):
+        return False
+    return True
+
+
+def _spa_city_hot_springs_conflict(haystack: str) -> bool:
+    """True when Spa City refers to Hot Springs AR, not Saratoga Springs."""
+    if not re.search(r'\bspa\s+city\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not _SPA_CITY_HOT_SPRINGS.search(haystack):
+        return False
+    if re.search(
+        r"""
+        (?:
+            \bsaratoga\b|\#saratoga\b|\#thespa\b|
+            spa\s+city\s*,?\s*(?:ny|n\.y\.|new\s+york)\b|
+            capital\s+(?:region|district)|\#albanyny\b
+        )
+        """,
+        haystack,
+        flags=re.IGNORECASE | re.VERBOSE,
+    ):
+        return False
+    return True
+
+
+def _troy_hills_nj_conflict(haystack: str) -> bool:
+    """True when Troy is Parsippany-Troy Hills NJ, not City of Troy NY."""
+    if not re.search(r'\btroy\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not _TROY_HILLS_NJ.search(haystack):
+        return False
+    if re.search(
+        r"""
+        (?:
+            troy\s*,?\s*(?:ny|n\.y\.|new\s+york)\b|city\s+of\s+troy|
+            troy\s+(?:music\s+hall|savings\s+bank)|\#troyny\b|
+            capital\s+(?:region|district)|\#albanyny\b
+        )
+        """,
+        haystack,
+        flags=re.IGNORECASE | re.VERBOSE,
+    ):
+        return False
+    return True
+
+
+def _albany_street_cny_conflict(haystack: str) -> bool:
+    """True when Albany is a CNY street address (e.g. Cazenovia), not City of Albany."""
+    if not re.search(r'\balbany\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not _ALBANY_STREET_CNY.search(haystack):
+        return False
+    if re.search(
+        r"""
+        (?:
+            albany\s*,?\s*(?:ny|n\.y\.|new\s+york)\b|city\s+of\s+albany|
+            \#albanyny\b|capital\s+(?:region|district)|
+            albany\s+(?:county|city\s+hall|city\s+school)
+        )
+        """,
+        haystack,
+        flags=re.IGNORECASE | re.VERBOSE,
+    ):
+        return False
+    return True
+
+
 def _latham_person_name_conflict(haystack: str) -> bool:
     """True when Latham is an academic/author surname, not Town of Latham NY."""
     if not re.search(r'\blatham\b', haystack, flags=re.IGNORECASE):
@@ -5104,10 +5264,16 @@ def match_post(
             return MatchResult(False, 'hard_negative:bethlehem_other_city')
         if _cdta_algeria_conflict(haystack):
             return MatchResult(False, 'hard_negative:cdta_algeria')
+        if _cdta_spanish_recipe_conflict(haystack):
+            return MatchResult(False, 'hard_negative:cdta_spanish_recipe')
+        if _spa_city_hot_springs_conflict(haystack):
+            return MatchResult(False, 'hard_negative:spa_city_hot_springs')
         if _troy_ancient_conflict(haystack):
             return MatchResult(False, 'hard_negative:troy_ancient')
         if _troy_michigan_conflict(haystack):
             return MatchResult(False, 'hard_negative:troy_michigan')
+        if _troy_hills_nj_conflict(haystack):
+            return MatchResult(False, 'hard_negative:troy_hills_nj')
         if _troy_person_name_conflict(haystack):
             return MatchResult(False, 'hard_negative:troy_person_name')
         if _disney_saratoga_conflict(haystack, author_handle):
@@ -5187,6 +5353,8 @@ def match_post(
                 return MatchResult(False, 'hard_negative:troy_michigan')
             if _troy_sc_conflict(haystack, author_handle) and 'troy' in multi_eligible:
                 return MatchResult(False, 'hard_negative:troy_sc')
+            if _troy_hills_nj_conflict(haystack) and 'troy' in multi_eligible:
+                return MatchResult(False, 'hard_negative:troy_hills_nj')
             if _troy_nyc_animal_conflict(haystack) and 'troy' in multi_eligible:
                 return MatchResult(False, 'hard_negative:troy_nyc_animal')
             if _troy_person_name_conflict(haystack) and 'troy' in multi_eligible:
@@ -5227,6 +5395,8 @@ def match_post(
                 return MatchResult(False, 'hard_negative:albany_wire_remote')
             if _albany_bandscan_conflict(haystack):
                 return MatchResult(False, 'hard_negative:albany_bandscan')
+            if _albany_street_cny_conflict(haystack):
+                return MatchResult(False, 'hard_negative:albany_street_cny')
             if _NY_CONTEXT.search(place_haystack):
                 return MatchResult(True, 'albany_with_ny_context')
             if _STRONG_POSITIVE.search(haystack):
@@ -5334,6 +5504,9 @@ def match_post(
 
         if term == 'troy' and _troy_sc_conflict(haystack, author_handle):
             return MatchResult(False, 'hard_negative:troy_sc')
+
+        if term == 'troy' and _troy_hills_nj_conflict(haystack):
+            return MatchResult(False, 'hard_negative:troy_hills_nj')
 
         if term == 'troy' and _troy_nyc_animal_conflict(haystack):
             return MatchResult(False, 'hard_negative:troy_nyc_animal')
