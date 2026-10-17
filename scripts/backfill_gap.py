@@ -5,7 +5,7 @@ Use after a live cursor skip, or whenever Jetstream missed a window. Pulls from
 allowlist author timelines and/or ``searchPosts``, maps each hit into a
 Jetstream-shaped event, and runs ``server.indexer.handle_event``.
 
-Does **not** touch ``SubscriptionState``. Safe to re-run (URI ``on_conflict_ignore``).
+Does **not** touch ``SubscriptionState``. Safe to re-run (duplicate URIs are ignored).
 
 Examples:
 
@@ -277,7 +277,7 @@ def iter_search_posts(
 
 def bind_database(path: Path) -> None:
     """Point Peewee at ``path`` after config/dotenv have already loaded."""
-    from server.database import AuthorLocalStats, Post, SubscriptionState, db
+    from server.database import create_tables, db
 
     if not db.is_closed():
         db.close()
@@ -289,7 +289,7 @@ def bind_database(path: Path) -> None:
         },
     )
     db.connect(reuse_if_open=True)
-    db.create_tables([Post, SubscriptionState, AuthorLocalStats], safe=True)
+    create_tables()
 
 
 def set_indexed_at_to_created(uri: str, created_at: datetime) -> None:
@@ -320,14 +320,16 @@ def process_event(
         return 'exists'
 
     if dry_run:
+        from server.author_priors import author_has_soft_prior
         from server.content_filters import author_is_blocked, text_is_muted
 
         record = event.get('record') or {}
         if config.IGNORE_REPLY_POSTS and record.get('reply'):
             return 'dry_run_skip'
         author_did = event.get('author')
+        author = author_did if isinstance(author_did, str) else None
         if author_is_blocked(
-            author_did if isinstance(author_did, str) else None,
+            author,
             blocklist_dids=config.BLOCKLIST_DIDS,
             blocklist_handles=config.BLOCKLIST_HANDLES,
         ):
@@ -339,13 +341,16 @@ def process_event(
         langs = record.get('langs') or []
         if not isinstance(langs, list):
             langs = []
+        soft_prior_dids = {author} if author_has_soft_prior(author) else set()
         result = match_post(
             text,
             alt_text=alt_text,
             langs=langs,
-            author_did=author_did,
+            author_did=author,
             allowlist_dids=config.ALLOWLIST_DIDS,
             allowlist_handles=config.ALLOWLIST_HANDLES,
+            soft_prior_dids=soft_prior_dids,
+            use_default_decider=True,
         )
         return 'dry_run_match' if result.matched else 'dry_run_skip'
 

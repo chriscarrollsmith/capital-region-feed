@@ -2,9 +2,10 @@
 """Rematch live feed / indexed SQLite posts against the current matcher.
 
 Indexed rows store URI metadata only (no text). This tool hydrates records from
-the Bluesky AppView, runs ``match_post`` with production allowlists (and optional
-soft priors from ``AuthorLocalStats``), and reports posts that would no longer
-keep. Use ``--purge`` on a database path to delete those URIs.
+the Bluesky AppView, re-applies the regex floor with ``match_post`` (no content
+decider) and production allowlists, and reports posts that would no longer keep.
+Optional soft priors come from ``authordecision`` (enough keeps, zero rejects).
+Use ``--purge`` on a database path to delete those URIs.
 
 Examples:
 
@@ -67,7 +68,10 @@ def _env_bool(name: str, default: bool) -> bool:
 
 # Mirror server.config defaults without requiring FEEDGEN_HOSTNAME / FEED_URI.
 IGNORE_REPLY_POSTS = _env_bool('IGNORE_REPLY_POSTS', True)
-SOFT_PRIOR_MIN_STRONG = int(os.environ.get('SOFT_PRIOR_MIN_STRONG', '3'))
+_prior_min = os.environ.get('SOFT_PRIOR_MIN_KEEPS')
+if _prior_min is None:
+    _prior_min = os.environ.get('SOFT_PRIOR_MIN_STRONG', '3')
+SOFT_PRIOR_MIN_KEEPS = int(_prior_min)
 SOFT_PRIOR_WINDOW_DAYS = int(os.environ.get('SOFT_PRIOR_WINDOW_DAYS', '30'))
 MUTED_KEYWORDS = tuple(
     part.strip().lower() for part in os.environ.get('MUTED_KEYWORDS', '').split(',') if part.strip()
@@ -119,41 +123,67 @@ def load_uris_from_db(database: Path, *, limit: int | None = None) -> list[tuple
         con.close()
 
 
+def _sqlite_timestamp(value: object) -> datetime | None:
+    """Parse a Peewee/SQLite datetime. Aware values become naive UTC."""
+    if isinstance(value, datetime):
+        ts = value
+    elif isinstance(value, str):
+        try:
+            ts = datetime.fromisoformat(value)
+        except ValueError:
+            return None
+    else:
+        return None
+    if ts.tzinfo is not None:
+        ts = ts.astimezone(UTC).replace(tzinfo=None)
+    return ts
+
+
+def _sqlite_bool(value: object) -> bool:
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, int):
+        return value != 0
+    if isinstance(value, str):
+        return value.strip().lower() in {'1', 'true', 't', 'yes', 'y'}
+    return False
+
+
 def load_soft_prior_dids_from_db(
     database: Path,
     *,
-    min_strong: int = SOFT_PRIOR_MIN_STRONG,
+    min_keeps: int = SOFT_PRIOR_MIN_KEEPS,
     window_days: int = SOFT_PRIOR_WINDOW_DAYS,
     now: datetime | None = None,
 ) -> set[str]:
-    """DIDs currently eligible for soft priors, read from this DB file only."""
+    """DIDs with enough recent decider keeps and zero rejects in this DB file.
+
+    A missing ``authordecision`` table means no priors (older databases).
+    """
     moment = now if now is not None else datetime.now(UTC).replace(tzinfo=None)
     cutoff = moment - timedelta(days=window_days)
     con = sqlite3.connect(str(database))
     try:
-        dids: set[str] = set()
-        for did, count, last_strong_at in con.execute(
-            'SELECT author_did, strong_match_count, last_strong_at FROM authorlocalstats'
+        present = con.execute(
+            "SELECT 1 FROM sqlite_master WHERE type = 'table' AND name = 'authordecision'"
+        ).fetchone()
+        if present is None:
+            return set()
+        keeps: dict[str, int] = {}
+        rejects: set[str] = set()
+        for did, kept, decided_at in con.execute(
+            'SELECT author_did, kept, decided_at FROM authordecision'
         ):
-            if not did or last_strong_at is None:
+            if not did:
                 continue
-            if int(count) < min_strong:
+            ts = _sqlite_timestamp(decided_at)
+            if ts is None or ts < cutoff:
                 continue
-            # SQLite may return str timestamps from Peewee writes.
-            if isinstance(last_strong_at, str):
-                try:
-                    ts = datetime.fromisoformat(last_strong_at)
-                except ValueError:
-                    continue
-            elif isinstance(last_strong_at, datetime):
-                ts = last_strong_at
+            if _sqlite_bool(kept):
+                keeps[str(did)] = keeps.get(str(did), 0) + 1
             else:
-                continue
-            if ts.tzinfo is not None:
-                ts = ts.astimezone(UTC).replace(tzinfo=None)
-            if ts >= cutoff:
-                dids.add(str(did))
-        return dids
+                rejects.add(str(did))
+        return {did for did, count in keeps.items() if count >= min_keeps and did not in rejects}
     finally:
         con.close()
 
@@ -428,7 +458,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         '--apply-soft-priors',
         action='store_true',
-        help='Load eligible soft-prior DIDs from --database AuthorLocalStats',
+        help='Load eligible soft-prior DIDs from --database authordecision',
     )
     parser.add_argument(
         '--jsonl',

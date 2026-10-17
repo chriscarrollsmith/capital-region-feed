@@ -147,31 +147,42 @@ def test_load_soft_prior_dids_respects_threshold(tmp_path: Path) -> None:
     con = sqlite3.connect(str(db_path))
     con.execute(
         """
-        CREATE TABLE authorlocalstats (
-            author_did TEXT PRIMARY KEY,
-            strong_match_count INTEGER,
-            last_strong_at TEXT
+        CREATE TABLE authordecision (
+            id INTEGER PRIMARY KEY,
+            author_did TEXT,
+            kept INTEGER,
+            decided_at TEXT
         )
         """
     )
     now = datetime(2026, 7, 26, 12, 0, 0)
+    stamp = now.isoformat(sep=' ')
+    rows = [('did:plc:enough', 1, stamp) for _ in range(3)]
+    rows.append(('did:plc:low', 1, stamp))
+    rows.extend(('did:plc:rejected', 1, stamp) for _ in range(3))
+    rows.append(('did:plc:rejected', 0, stamp))
     con.executemany(
-        'INSERT INTO authorlocalstats VALUES (?, ?, ?)',
-        [
-            ('did:plc:enough', 3, now.isoformat(sep=' ')),
-            ('did:plc:low', 1, now.isoformat(sep=' ')),
-        ],
+        'INSERT INTO authordecision (author_did, kept, decided_at) VALUES (?, ?, ?)', rows
     )
     con.commit()
     con.close()
 
     dids = load_soft_prior_dids_from_db(
         db_path,
-        min_strong=3,
+        min_keeps=3,
         window_days=30,
         now=now.replace(tzinfo=UTC).replace(tzinfo=None),
     )
     assert dids == {'did:plc:enough'}
+
+
+def test_load_soft_prior_missing_table_is_empty(tmp_path: Path) -> None:
+    db_path = tmp_path / 'feed.db'
+    con = sqlite3.connect(str(db_path))
+    con.execute('CREATE TABLE post (uri TEXT)')
+    con.commit()
+    con.close()
+    assert load_soft_prior_dids_from_db(db_path) == set()
 
 
 def test_audit_row_dataclass_fields() -> None:

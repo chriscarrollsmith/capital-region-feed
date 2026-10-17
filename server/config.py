@@ -8,6 +8,7 @@ from server.allowlists import (
     load_blocklist_dids,
     load_blocklist_handles,
 )
+from server.decider import DEFAULT_KEEP_MIN, DEFAULT_MODEL, decision_enabled
 from server.logger import logger
 
 # Override process env so a shell HOSTNAME cannot beat .env / Fly config.
@@ -40,9 +41,12 @@ FEED_URI: str = _feed_uri
 IGNORE_ARCHIVED_POSTS = _get_bool_env_var(os.environ.get('IGNORE_ARCHIVED_POSTS', 'true'))
 IGNORE_REPLY_POSTS = _get_bool_env_var(os.environ.get('IGNORE_REPLY_POSTS', 'true'))
 POST_RETENTION_DAYS = int(os.environ.get('POST_RETENTION_DAYS', '7'))
-# Soft priors: authors with this many strong text matches in the window may keep
-# bare ambiguous place names (never hard negatives). See server/author_priors.py.
-SOFT_PRIOR_MIN_STRONG = int(os.environ.get('SOFT_PRIOR_MIN_STRONG', '3'))
+# Soft priors: this many recent decider keeps, and zero rejects, let a bare
+# ambiguous place reach the decider. Regex matches do not count.
+_prior_min = os.environ.get('SOFT_PRIOR_MIN_KEEPS')
+if _prior_min is None:
+    _prior_min = os.environ.get('SOFT_PRIOR_MIN_STRONG', '3')
+SOFT_PRIOR_MIN_KEEPS = int(_prior_min)
 SOFT_PRIOR_WINDOW_DAYS = int(os.environ.get('SOFT_PRIOR_WINDOW_DAYS', '30'))
 DATABASE_PATH = os.environ.get('DATABASE_PATH', 'feed_database.db')
 JETSTREAM_URL = os.environ.get(
@@ -66,18 +70,32 @@ ALLOWLIST_HANDLES = load_allowlist_handles()
 BLOCKLIST_DIDS = load_blocklist_dids()
 BLOCKLIST_HANDLES = load_blocklist_handles()
 
+_decision_model = os.environ.get('DECISION_MODEL', DEFAULT_MODEL).strip() or DEFAULT_MODEL
+_decision_keep_raw = os.environ.get('DECISION_KEEP_MIN')
+_decision_keep_min = (
+    DEFAULT_KEEP_MIN
+    if _decision_keep_raw is None or not _decision_keep_raw.strip()
+    else float(_decision_keep_raw)
+)
+_openrouter_key_state = 'set' if os.environ.get('OPENROUTER_API_KEY', '').strip() else 'missing'
+
 logger.info(
     'config loaded hostname=%s service_did=%s allowlist_dids=%d allowlist_handles=%d '
-    'blocklist_dids=%d blocklist_handles=%d soft_prior_min=%d soft_prior_window_days=%d '
-    'ranking_mode=%s muted_keywords=%d',
+    'blocklist_dids=%d blocklist_handles=%d soft_prior_min_keeps=%d soft_prior_window_days=%d '
+    'ranking_mode=%s muted_keywords=%d decision_enabled=%s decision_model=%s '
+    'openrouter_api_key=%s decision_keep_min=%s',
     HOSTNAME,
     SERVICE_DID,
     len(ALLOWLIST_DIDS),
     len(ALLOWLIST_HANDLES),
     len(BLOCKLIST_DIDS),
     len(BLOCKLIST_HANDLES),
-    SOFT_PRIOR_MIN_STRONG,
+    SOFT_PRIOR_MIN_KEEPS,
     SOFT_PRIOR_WINDOW_DAYS,
     RANKING_MODE,
     len(MUTED_KEYWORDS),
+    decision_enabled(),
+    _decision_model,
+    _openrouter_key_state,
+    _decision_keep_min,
 )

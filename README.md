@@ -20,16 +20,21 @@ This service:
 ## Architecture
 
 ```
-Jetstream ──► matcher ──► SQLite ──► getFeedSkeleton
-                              ▲
-                     allowlist handles/DIDs
+Jetstream ──► regex floor (candidates) ──► decider (optional) ──► SQLite ──► getFeedSkeleton
+                                              ▲
+                                     allowlist handles/DIDs
 ```
+
+The regex floor proposes candidates. When `DECISION_ENABLED` is on, the
+Perplexity decider keep/rejects only those candidates (fail closed). When it
+is off, the regex floor — including any offline hard veto — is the whole filter.
 
 Key files:
 
 | Path | Role |
 |------|------|
-| `server/matcher.py` | Pure filtering logic (unit-tested) |
+| `server/matcher.py` | Regex-floor filtering (unit-tested, no network) |
+| `server/decider.py` | OpenRouter Decisions API keep/reject for candidates |
 | `server/jetstream.py` | Websocket consumer + cursor persistence |
 | `server/indexer.py` | Match → DB writes / deletes |
 | `server/app.py` | XRPC + `did:web` endpoints |
@@ -94,6 +99,7 @@ For first-time setup or a manual deploy, use [flyctl](https://fly.io/docs/flyctl
 ```bash
 fly apps create capital-region-feed   # once; or rename app/hostname in fly.toml
 fly volumes create feed_data --region ewr --size 1   # once if mounts aren't auto-created
+fly secrets set OPENROUTER_API_KEY=...   # required while DECISION_ENABLED=true; not in fly.toml
 fly deploy
 ```
 
@@ -150,12 +156,34 @@ The feed optimizes for **both** false positives and false negatives:
 | Recall | Local posts should not need to say “Albany” to appear — especially allowlisted authors and regional events |
 
 Bare / ambiguous place names stay precision-gated (NY or other local context required),
-unless the author has earned a **soft prior** from repeated strong local text matches
+unless the author has earned a **soft prior** from repeated decider keeps
 or the second-stage classifier keeps a neighborhood/micro + event combination.
+A soft prior only lets that bare name reach the decider; it does not skip it.
 Hard allowlists and event/venue cues remain primary recall levers for posts with no
 placenames. Homographs also resolve via the checked-in gazetteer
 (`data/gazetteer/places.json`). Optional feed ranking and muted keywords are
 configured with `RANKING_MODE` / `MUTED_KEYWORDS`.
+
+### Content decider
+
+Candidate flow: blocklist, hard negatives, empty text, and bare ambiguous terms
+with no context and no soft prior return before any HTTP call. Everything the
+regex floor would keep (strong local text, ambiguous-with-context, allowlist,
+event/venue, classifier, and soft-prior bare names) is a candidate.
+
+When `DECISION_ENABLED` is off, that candidate is the result, including the
+existing offline floor. When it is on, `server/decider.py` POSTs the clipped
+haystack to OpenRouter's Decisions API (`perplexity/pplx-decider-v1.1-27b`) and
+keeps the post only when the returned `noul` is at least `DECISION_KEEP_MIN`
+(default `0.5`). The app applies that threshold. A missing `OPENROUTER_API_KEY`,
+timeout, transport error, or unusable payload drops the candidate (fail closed).
+Allowlisted authors and soft-prior authors do not bypass the decider.
+
+Set the key on Fly with `fly secrets set OPENROUTER_API_KEY=...`. Do not put it
+in `fly.toml` `[env]`. With the flag on and the key missing, every regex
+candidate is dropped. `scripts/eval_filter.py` and `scripts/audit_indexed_feed.py`
+call `match_post` with no decider, so they stay offline. The audit script
+re-applies the regex floor only.
 
 ### Current keep / drop rules (v1)
 
@@ -165,7 +193,7 @@ configured with `RANKING_MODE` / `MUTED_KEYWORDS`.
 - Ambiguous towns (`Troy`, `Latham`, `Saratoga Springs`, bare `Albany`, …) appear **with** NY / local context (`NY`, `NYC`, `New York`, …). National newspaper mastheads (`New York Times`, `New York Post`, …) do **not** count as place context.
 - Author is on the local allowlist (`data/allowlist_handles.txt` / `allowlist_dids.txt`), even with no place words in the text. Jetstream supplies DIDs only — keep DIDs in sync with `uv run python scripts/resolve_allowlist_dids.py` after editing handles. Allowlisting targets high signal/noise Cap Region voices (not firehose-volume or business-slop accounts); screen candidates with `scripts/screen_allowlist_candidates.py`.
 - Author is **not** on the blocklist (`data/blocklist_handles.txt` / `blocklist_dids.txt`). Blocklisted authors are dropped before geography matching (refresh DIDs with the resolve script’s `--handles` / `--output` flags).
-- Author has a soft prior (`SOFT_PRIOR_MIN_STRONG` strong text matches within `SOFT_PRIOR_WINDOW_DAYS`, tracked in `AuthorLocalStats`) and the post uses a bare ambiguous place name. Soft priors do **not** override hard negatives and do not keep arbitrary no-placename posts (that remains allowlist-only).
+- Author has a soft prior (`SOFT_PRIOR_MIN_KEEPS` decider keeps and zero decider rejects within `SOFT_PRIOR_WINDOW_DAYS`, tracked in `authordecision`) and the post uses a bare ambiguous place name. Soft priors do **not** override hard negatives and do not keep arbitrary no-placename posts (that remains allowlist-only). Regex-only keeps do not earn a prior. A decider rejection revokes the prior; an unscored timeout does not.
 - Text has upcoming-event phrasing (`tonight`, `tickets`, `this weekend`, …) **and** a high-confidence Capital Region venue (`Proctors`, `MVP Arena`, `SPAC season/lawn`, `Music Haven`, `at The Egg`, …). Event cues alone never keep bare `Albany` or other ambiguous towns; off-region venues stay dropped.
 - After the regex floor, the ambiguous-case classifier (`server/classifier.py`, weights in `data/models/ambiguous_clf_v1.json`) keeps posts with Capital Region neighborhood/landmark micro-signals plus event (or place) cues — reason `classifier:…`. Hard negatives never reach this stage; bare Albany events without micro-signals still drop.
 - Gazetteer local entities (`entity_local:…`) keep distinctive Capital Region places/counties; other-region entities drop earlier as `entity_other:…`.

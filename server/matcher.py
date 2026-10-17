@@ -6,12 +6,14 @@ Rejects the main SkyFeed false positives:
 - Bare town names without NY / local context
 
 Also aims for recall without placenames via author allowlists, soft author
-priors (earned from repeated strong local matches), and event/venue cues
-(local venue + upcoming-event phrasing). A checked-in gazetteer resolves
-known place homographs to Capital Region vs other-region entities. Jetstream
-``langs`` can drop French *colonie* without NY cues. Ambiguous leftovers and
-event near-misses route to a small linear classifier. Precision stays strict
-for ambiguous bare names unless a soft prior or classifier keep applies; see
+priors (earned only from decider keeps, which let a bare ambiguous place reach
+the decider), and event/venue cues (local venue + upcoming-event phrasing). A
+checked-in gazetteer resolves known place homographs to Capital Region vs
+other-region entities. Jetstream ``langs`` can drop French *colonie* without
+NY cues. Ambiguous leftovers and event near-misses route to a small linear
+classifier. The regex floor proposes candidates; an optional content decider
+is authoritative for every positive candidate. Precision stays strict for
+ambiguous bare names unless a soft prior or classifier keep applies; see
 README matching policy and BACKLOG.md.
 """
 
@@ -22,6 +24,12 @@ from collections.abc import Iterable
 from dataclasses import dataclass
 
 from server.classifier import ClassifierModel, classify_candidate
+from server.decider import (
+    DECISION_KEEP_PREFIX,
+    DECISION_REJECT_PREFIX,
+    DECISION_UNSCORED_PREFIX,
+    DecisionBackend,
+)
 from server.gazetteer import Gazetteer, default_gazetteer
 
 
@@ -5203,6 +5211,47 @@ def _classifier_keep(
     return MatchResult(True, decision.reason)
 
 
+def _content_filter(
+    haystack: str,
+    provisional: MatchResult,
+    *,
+    decider: DecisionBackend | None,
+    embed: object | None = None,
+) -> MatchResult:
+    """Score a regex-floor keep. Non-candidates and a disabled decider pass through."""
+    del embed
+    if not provisional.matched:
+        return provisional
+    if decider is None:
+        return provisional
+    decision = decider.decide(haystack)
+    if decision is None:
+        return MatchResult(False, f'{DECISION_UNSCORED_PREFIX}{provisional.reason}')
+    if decision.keep:
+        return MatchResult(
+            True,
+            f'{DECISION_KEEP_PREFIX}{provisional.reason}:{decision.score:.3f}',
+        )
+    return MatchResult(
+        False,
+        f'{DECISION_REJECT_PREFIX}{provisional.reason}:{decision.score:.3f}',
+    )
+
+
+def _resolve_decider(
+    decider: DecisionBackend | None,
+    use_default_decider: bool,
+) -> DecisionBackend | None:
+    """Explicit ``decider`` wins; otherwise the process default when requested."""
+    if decider is not None:
+        return decider
+    if not use_default_decider:
+        return None
+    from server.decider import get_default_decider
+
+    return get_default_decider()
+
+
 def match_post(
     text: str,
     *,
@@ -5215,8 +5264,53 @@ def match_post(
     soft_prior_dids: set[str] | None = None,
     classifier_model: ClassifierModel | None = None,
     gazetteer: Gazetteer | None = None,
+    decider: DecisionBackend | None = None,
+    use_default_decider: bool = False,
 ) -> MatchResult:
     """Return whether a post belongs in the Capital Region feed.
+
+    The regex floor proposes candidates (allowlist, strong local text,
+    ambiguous-with-context, event/venue, soft-prior bare names, classifier).
+    Blocklist handling is outside this function. Hard negatives, empty text,
+    and bare ambiguous terms with no context and no soft prior are not
+    candidates. When ``decider`` is omitted and ``use_default_decider`` is
+    false, the provisional floor result stands. An explicit decider, or the
+    process default when requested, keep/rejects only candidates.
+    """
+    provisional = _propose_candidate(
+        text,
+        alt_text=alt_text,
+        langs=langs,
+        author_did=author_did,
+        author_handle=author_handle,
+        allowlist_dids=allowlist_dids,
+        allowlist_handles=allowlist_handles,
+        soft_prior_dids=soft_prior_dids,
+        classifier_model=classifier_model,
+        gazetteer=gazetteer,
+    )
+    haystack = combine_text(text, alt_text=alt_text, langs=langs)
+    return _content_filter(
+        haystack,
+        provisional,
+        decider=_resolve_decider(decider, use_default_decider),
+    )
+
+
+def _propose_candidate(
+    text: str,
+    *,
+    alt_text: str = '',
+    langs: Iterable[str] | None = None,
+    author_did: str | None = None,
+    author_handle: str | None = None,
+    allowlist_dids: set[str] | None = None,
+    allowlist_handles: set[str] | None = None,
+    soft_prior_dids: set[str] | None = None,
+    classifier_model: ClassifierModel | None = None,
+    gazetteer: Gazetteer | None = None,
+) -> MatchResult:
+    """Regex-floor candidate. Positive results are provisional until the decider.
 
     Decision order: allowlist → language gate → gazetteer other-region → hard
     negative / gazetteer local / strong regex floor → soft prior →

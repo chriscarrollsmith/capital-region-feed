@@ -7,15 +7,16 @@ from typing import Any
 from unittest.mock import patch
 
 import pytest
-from server.database import AuthorLocalStats, Post, SubscriptionState, db
+from server.database import AuthorDecision, AuthorLocalStats, Post, SubscriptionState, db
 
 
 @pytest.fixture()
 def isolated_db() -> Any:
     db.connect(reuse_if_open=True)
-    db.drop_tables([Post, SubscriptionState, AuthorLocalStats], safe=True)
-    db.create_tables([Post, SubscriptionState, AuthorLocalStats])
+    db.drop_tables([Post, SubscriptionState, AuthorLocalStats, AuthorDecision], safe=True)
+    db.create_tables([Post, SubscriptionState, AuthorLocalStats, AuthorDecision])
     yield
+    AuthorDecision.delete().execute()
     AuthorLocalStats.delete().execute()
     Post.delete().execute()
 
