@@ -57,3 +57,11 @@
 {"used_at": "2026-10-15T09:04:18Z", "query": "Guilderland Central School", "family": "civic", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
 {"used_at": "2026-10-15T09:04:18Z", "query": "Frear Park", "family": "neighborhood", "status": "ok", "hits": 1, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
 {"used_at": "2026-10-15T09:04:18Z", "query": "this weekend Albany", "family": "event_phrase", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-10-16T09:06:38Z", "query": "Saratoga Springs", "family": "bare_place", "status": "ok", "hits": 10, "false_negatives": 1, "false_negative_ids": ["at://did:plc:vflgdzzrttnlylm6ltwqhetw/app.bsky.feed.post/3mxwtefnqas2j"], "notes": "Broadway in Saratoga Springs + #NY21; replies ignored by policy not counted"}
+{"used_at": "2026-10-16T09:06:38Z", "query": "WaterfordNY", "family": "hashtag", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-10-16T09:06:38Z", "query": "upstateny", "family": "hashtag", "status": "ok", "hits": 9, "false_negatives": 0, "false_negative_ids": [], "notes": "generic #UpstateNY accounts and Oswego lake-country not Cap Region FNs"}
+{"used_at": "2026-10-16T09:06:38Z", "query": "capitalregionny", "family": "hashtag", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-10-16T09:06:38Z", "query": "AlbanyCounty", "family": "hashtag", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-10-16T09:06:38Z", "query": "Bethlehem Town Board", "family": "civic", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-10-16T09:06:38Z", "query": "Town of Halfmoon", "family": "civic", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-10-16T09:06:38Z", "query": "stakes at Saratoga", "family": "event_phrase", "status": "ok", "hits": 1, "false_negatives": 0, "false_negative_ids": [], "notes": ""}

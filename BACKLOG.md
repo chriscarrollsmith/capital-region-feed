@@ -538,6 +538,25 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-123 — Daily feed audit: fungal Empire Underground / Iceland Capital Region Police / Galway Bay RTÉ; #NY21 FN
+- **Status:** done ([#101](https://github.com/chriscarrollsmith/capital-region-feed/pull/101))
+- **Why:** 2026-10-16 audit of last-24h AppView feed (~88 posts) found active FPs:
+  Mycelium Empire / Capra Solutions card kept via case-insensitive `empire underground`
+  (fungal empire underground); Bytes Europe Reykjavik Capital Region Police VPN warning
+  kept via bare `capital region` without Iceland tokens; RTÉ Galway Bay Murders /
+  Connemara card kept via Galway + New York detective. FN: Broadway in Saratoga Springs
+  + `#NY21` dropped (`#ny\b` does not match `#NY21`; hyphenated `NY-21` already unlocked).
+  Planned `fn_search.py` slate (8) all ran OK; 1 Cap Region FN. Rematch already drops Dutch
+  AD Rotterdam / Malta EU / Waterford Ireland / Troy OH from prior audits (PR #100 still
+  open). Residual: allowlisted News10 / Times Union statewide; Freeman's Farm 1777 board
+  game / WAMC USA Today quote / Revolutionary War victory at Saratoga intentional.
+- **Work:**
+  - Case-sensitive `Empire Underground` + `#empireunderground`; Iceland kennitala /
+    byteseu handle gate; Galway Connemara / Galway Bay / RTÉ cues; `#ny\d{1,2}` in
+    `_NY_CONTEXT`; grow eval + fn_search log (builds on #100 / B-122).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-122 — Daily feed audit: Spanish cdta / 🇨🇦 capital region / Hot Springs Spa City / Troy Hills NJ / Cazenovia Albany Street
 - **Status:** done ([#100](https://github.com/chriscarrollsmith/capital-region-feed/pull/100))
 - **Why:** 2026-10-15 audit of last-24h AppView feed (~153 posts since 2026-10-14T09:00Z)

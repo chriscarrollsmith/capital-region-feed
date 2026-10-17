@@ -378,8 +378,10 @@ _STRONG_POSITIVE = re.compile(
       # Glens Falls (Warren County / Cap Region media market) — climate bots and
       # local sports often omit ", NY" beyond the city+state token order.
       | \bglens\s+falls\b
-      # Albany music venue — tour posters often say "@ Empire Underground" alone.
-      | empire\s+underground\b
+      # Albany music venue — title case only so "fungal empire underground"
+      # (Mycelium Empire game copy) does not keep. Tour posters use Empire Underground.
+      | (?-i:\bEmpire\s+Underground\b)
+      | \#empireunderground\b
       # RPI Experimental Media and Performing Arts Center — listings often omit Troy.
       | \bempac\b
       | experimental\s+media\s+and\s+performing\s+arts\s+center\b
@@ -743,6 +745,9 @@ _NY_CONTEXT = re.compile(
       | upstate(?!\s+(?:south|north)\s+carolina\b)
       | capital\s+(?:region|district)\b
       | \#ny\b
+      # Congressional district hashtags (#NY20 / #NY21) omit the hyphen that
+      # already unlocks via bare NY before a digit boundary.
+      | \#ny\d{1,2}\b
       | \#upstateny\b
       | \#newyork\b
       | upstate\s+ny\b
@@ -1387,7 +1392,11 @@ _IN_ALBANY_SARATOGA = re.compile(
 _IS_GEO_CUE = (
     r'\biceland\b|\bicelandic\b|\breykjav[ií]k\b|'
     r'\#iceland\b|\#reykjav[ií]k\b|mbl\.is|'
-    r'miklabraut|grens[aá]svegur|\bkringlan\b'
+    r'miklabraut|grens[aá]svegur|\bkringlan\b|'
+    # AppView cards for Reykjavik Capital Region Police often omit "Iceland"
+    # but keep kennitala / Ísland.is / Hverfisgata / Island Surge VPN.
+    r'\bkennitala\b|hverfisgata|\bísland\.is\b|island\.is|'
+    r'island\s+surge(?:\s+vpn)?'
 )
 
 _IS_CAPITAL_REGION = re.compile(
@@ -2357,6 +2366,11 @@ _GALWAY_IRELAND = re.compile(
       | wild\s+atlantic\s+way
       | \bdingle\b
       | \bkinsale\b
+      # RTÉ drama / Connemara / Galway Bay — not Town of Galway NY.
+      # Reject "Rte 9" / "rte 7" highway abbreviations (digit after).
+      | \bconnemara\b
+      | galway\s+bay\b
+      | \brt[eé]\b(?!\s*\d)
       # Song / playlist titles — not Town of Galway NY.
       | galway\s+girl\b
       | \bed\s+sheeran\b[\s\S]{0,80}galway
@@ -3658,11 +3672,20 @@ def _colombia_capital_district_conflict(haystack: str) -> bool:
     return not _ny_capital_region_context(haystack)
 
 
-def _iceland_capital_region_conflict(haystack: str) -> bool:
+def _iceland_capital_region_conflict(haystack: str, author_handle: str | None = None) -> bool:
     """True when 'capital region/district' refers to Reykjavik / Iceland, not NY."""
-    if not _IS_CAPITAL_REGION.search(haystack):
+    if _ny_capital_region_context(haystack):
         return False
-    return not _ny_capital_region_context(haystack)
+    if _IS_CAPITAL_REGION.search(haystack):
+        return True
+    # Bytes Europe mirrors often omit Iceland tokens from short Capital Region
+    # Police cards (kennitala / Ísland.is only appear in the full article).
+    handle = (author_handle or '').strip().lower()
+    if re.search(r'\bbyteseu\b', handle) and re.search(
+        r'capital\s+(?:region|district)\b', haystack, flags=re.IGNORECASE
+    ):
+        return True
+    return False
 
 
 def _france_capital_region_conflict(haystack: str) -> bool:
@@ -5178,7 +5201,7 @@ def match_post(
             return MatchResult(False, 'hard_negative:russia_capital_region')
         if _sudan_capital_region_conflict(haystack):
             return MatchResult(False, 'hard_negative:sudan_capital_region')
-        if _iceland_capital_region_conflict(haystack):
+        if _iceland_capital_region_conflict(haystack, author_handle):
             return MatchResult(False, 'hard_negative:iceland_capital_region')
         if _france_capital_region_conflict(haystack):
             return MatchResult(False, 'hard_negative:france_capital_region')

@@ -777,6 +777,17 @@ def test_galway_ireland_not_town_of_galway() -> None:
     )
     assert irish.matched is False
     assert irish.reason == 'hard_negative:galway_ireland'
+    # RTÉ Galway Bay / Connemara drama cards pair "New York detective" without Ireland.
+    rte = match_post(
+        'Wow I cannot wait for this on ITV.',
+        alt_text=(
+            'The Galway Bay Murders | RTÉ Following a family tragedy, a New York detective '
+            'arrives in Connemara and finds herself at the centre of a chilling murder '
+            'investigation.'
+        ),
+    )
+    assert rte.matched is False
+    assert rte.reason == 'hard_negative:galway_ireland'
     assert match_post('Town of Galway, NY board meets Thursday.').matched is True
 
 
@@ -1187,6 +1198,24 @@ def test_iceland_capital_region_is_hard_negative() -> None:
         ),
     )
     assert crash.matched is False
+
+    # Bytes Europe AppView cards often omit Iceland tokens from short copy.
+    byteseu = match_post(
+        'Capital Region Police are warning parents about an iPhone VPN profile.',
+        alt_text=(
+            'Police Warn of Fake-ID VPN Exposing Children’s Data - Bytes Europe '
+            'Capital Region Police are warning parents about an iPhone VPN profile.'
+        ),
+        author_handle='byteseu.bsky.social',
+    )
+    assert byteseu.matched is False
+    assert byteseu.reason == 'hard_negative:iceland_capital_region'
+
+    kennitala = match_post(
+        'Capital Region Police warn about a VPN that can change the kennitala on websites.'
+    )
+    assert kennitala.matched is False
+    assert kennitala.reason == 'hard_negative:iceland_capital_region'
 
     keep = match_post('Capital Region exporters shipped fish to Reykjavik from #AlbanyNY.')
     assert keep.matched is True
@@ -2891,6 +2920,16 @@ def test_glens_falls_and_empire_underground_keep() -> None:
         is True
     )
     assert match_post('Tickets on sale for Saturday at Empire Underground').matched is True
+    assert match_post('Doors at 7 — #empireunderground').matched is True
+    # Mycelium Empire / Capra Solutions card: lowercase "fungal empire underground".
+    fungal = match_post(
+        "It's National Mushroom Day! Play Mycelium Empire.",
+        alt_text=(
+            'Mycelium Empire by Capra Solutions Grow a fungal empire underground — '
+            'spread, mutate, and dominate every ecosystem.'
+        ),
+    )
+    assert fungal.matched is False
 
 
 def test_brussels_municipality_capital_region_is_belgium() -> None:
@@ -5039,3 +5078,18 @@ def test_albany_street_cazenovia_cny_not_city_of_albany() -> None:
         match_post('Road work on Albany Street near Lark Street downtown (#AlbanyNY).').matched
         is True
     )
+
+
+def test_ny_district_hashtag_unlocks_saratoga_springs() -> None:
+    """#NY21 / #NY20 must unlock ambiguous Saratoga Springs (hyphenated NY-21 already did)."""
+    district = match_post(
+        'This argumentative idiot (see his attacks on people walking down Broadway in '
+        'Saratoga Springs) is not qualified to represent #NY21.'
+    )
+    assert district.matched is True
+    assert district.reason == 'ambiguous_with_context:saratoga springs'
+    assert match_post('Town board meets in Saratoga Springs #NY20').matched is True
+    # Bare Saratoga Springs without NY context still drops.
+    bare = match_post('Beautiful afternoon walking Broadway in Saratoga Springs.')
+    assert bare.matched is False
+    assert bare.reason == 'ambiguous_no_context:saratoga springs'
