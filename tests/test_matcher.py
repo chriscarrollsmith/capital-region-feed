@@ -5161,3 +5161,76 @@ def test_albany_governors_mansion_and_leandras_law_recall() -> None:
     )
     assert leandra.matched is True
     assert leandra.reason == 'ambiguous_with_context:rotterdam'
+
+
+def test_victoria_oak_bay_saanich_capital_region_not_ny() -> None:
+    victoria = match_post(
+        'How are people in the Capital region (Victoria, Oak Bay, Saanich, etc.) '
+        'feeling about the election results thus far...'
+    )
+    assert victoria.matched is False
+    assert victoria.reason == 'hard_negative:canadian_capital_region'
+    assert (
+        match_post(
+            'How are people in the Capital Region near Albany feeling about early voting?'
+        ).matched
+        is True
+    )
+
+
+def test_east_brunswick_nj_usps_not_town_of_brunswick() -> None:
+    usps = match_post(
+        'BLUE BOX: 314 DOGWOOD ST, PARK FOREST IL 60466\n'
+        'BLUE BOX: 12 MYRON PL, EAST BRUNSWICK NJ 08816\n'
+        'BLUE BOX: 156 WINCHESTER ST, BROOKLINE MA 02446\n'
+        'BLUE BOX: 5691 STATE ROUTE 52, KENOZA LAKE NY 12750'
+    )
+    assert usps.matched is False
+    assert usps.reason == 'hard_negative'
+    assert match_post('Town of Brunswick, NY planning board meets Thursday.').matched is True
+
+
+def test_bethlehem_nh_usps_not_town_of_bethlehem() -> None:
+    usps = match_post(
+        'BLUE BOX: 2159 MAIN ST, BETHLEHEM NH 03574\n'
+        'PO LOBBY: 152 S 2ND ST, JEFFERSON OR 97352\n'
+        'BLUE BOX: 1178 YONKERS AVE, YONKERS NY 10704\n'
+        'BLUE BOX: 155 WADSWORTH DR, N CHESTERFLD VA 23236'
+    )
+    assert usps.matched is False
+    assert usps.reason == 'hard_negative:bethlehem_pa'
+    assert match_post('Bethlehem Town Board meets Thursday at Town Hall.').matched is True
+
+
+def test_tartarian_city_of_troy_not_municipal() -> None:
+    myth = match_post(
+        'Odin, a survivor of destruction of a Tartarian city of Troy. He brought '
+        'civilization to northern Europe among the Germanic tribes.'
+    )
+    assert myth.matched is False
+    assert myth.reason == 'hard_negative:troy_ancient'
+    assert match_post('City of Troy announces downtown paving for October.').matched is True
+
+
+def test_newtonvillebooks_handle_not_colonie() -> None:
+    books = match_post(
+        'Book launch on Wed, Nov. 18, at @newtonvillebooks.bsky.social - '
+        'hope Boston area friends can join! #booksky'
+    )
+    assert books.matched is False
+    assert books.reason in {'no_match', 'hard_negative:newtonville_ma'}
+    assert match_post('Road work on Newtonville Avenue in Colonie near #AlbanyNY.').matched is True
+
+
+def test_live_in_saratoga_springs_bootleg_recall() -> None:
+    live = match_post(
+        'youtu.be/2rtJsIelMaY',
+        alt_text=(
+            'Genesis - Live in Saratoga Springs - July 31st, 1978 - NEW SOUNDBOARD '
+            'YouTube video by Genesis Live Archive'
+        ),
+    )
+    assert live.matched is True
+    assert live.reason == 'strong_positive'
+    utah = match_post('Serene Moments at Saratoga Springs Utah Temple')
+    assert utah.matched is False
