@@ -19,6 +19,9 @@ primary_region = "ewr"
   JETSTREAM_URL = "wss://jetstream2.us-east.bsky.network/subscribe"
   PORT = "8080"
   LOG_LEVEL = "INFO"
+  DECISION_ENABLED = "true"
+  DECISION_MODEL = "perplexity/pplx-decider-v1.2"
+  DECISION_KEEP_MIN = "0.5"
 
 [http_service]
   internal_port = 8080

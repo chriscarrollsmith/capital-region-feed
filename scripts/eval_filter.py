@@ -20,7 +20,8 @@ Case schema (``data/eval_cases.json``):
 - ``regression``: if false, scored in reports but ignored for exit code / pytest
   (known recall gaps until author/event backlog items land)
 - ``soft_prior``: if true with ``author_did``, treat that DID as soft-prior eligible
-  for this case (earned priors in production come from ``AuthorLocalStats``)
+  for this case (earned priors in production come from ``authordecision``).
+  This script calls ``match_post`` with no decider and does not use the network.
 - ``langs``: optional Bluesky language tags (e.g. ``["fr"]``) for language-aware
   heuristics
 - Bucket ``ambiguous_classifier`` covers second-stage keeps (neighborhood/micro +

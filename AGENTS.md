@@ -12,6 +12,8 @@ reference. Dependencies are managed with [uv](https://docs.astral.sh/uv/)
 - Prefer `uv run …` (or activate `.venv` after `uv sync`).
 - Install/sync: `uv sync`
 - Tests (no network needed): `uv run pytest -q`
+- Live decider check (needs `OPENROUTER_API_KEY`, hits OpenRouter): `uv run pytest -m live`.
+  The default suite stays offline and skips that module.
 - Matcher precision/recall eval (no network needed):
   `uv run python scripts/eval_filter.py`
 - Lint/format: `uv run ruff check .` and `uv run ruff format .`

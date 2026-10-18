@@ -59,11 +59,19 @@ class SubscriptionState(BaseModel):
 
 
 class AuthorLocalStats(BaseModel):
-    """Durable strong-match counts for soft author priors (survives Post prune)."""
+    """Per-author strong-match counts stored with the feed database."""
 
     author_did = peewee.CharField(primary_key=True)
     strong_match_count = peewee.IntegerField(default=0)
     last_strong_at = peewee.DateTimeField(null=True, index=True)
+
+
+class AuthorDecision(BaseModel):
+    """Decider keep/reject rows that earn or revoke a soft author prior."""
+
+    author_did = peewee.CharField(index=True)
+    kept = peewee.BooleanField()
+    decided_at = peewee.DateTimeField(default=utc_now, index=True)
 
 
 def _ensure_columns() -> None:
@@ -76,14 +84,21 @@ def _ensure_columns() -> None:
         db.execute_sql('ALTER TABLE "post" ADD COLUMN repost_count INTEGER DEFAULT 0 NOT NULL')
 
 
+def create_tables() -> None:
+    """Create feed tables, including decider soft-prior rows."""
+    db.create_tables([Post, SubscriptionState, AuthorLocalStats, AuthorDecision])
+    _ensure_columns()
+
+
 if db.is_closed():
     db.connect()
-    db.create_tables([Post, SubscriptionState, AuthorLocalStats])
-    _ensure_columns()
+    create_tables()
 
 
 def prune_old_posts(retention_days: int | None = None) -> int:
     days = config.POST_RETENTION_DAYS if retention_days is None else retention_days
     cutoff = utc_now() - timedelta(days=days)
-    query = Post.delete().where(Post.indexed_at < cutoff)
-    return query.execute()
+    deleted = Post.delete().where(Post.indexed_at < cutoff).execute()
+    decision_cutoff = utc_now() - timedelta(days=config.SOFT_PRIOR_WINDOW_DAYS)
+    AuthorDecision.delete().where(AuthorDecision.decided_at < decision_cutoff).execute()
+    return deleted

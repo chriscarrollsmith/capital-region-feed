@@ -6,16 +6,19 @@ from datetime import UTC, datetime
 from typing import Any
 
 import pytest
-from server.database import AuthorLocalStats, Post, SubscriptionState, db
+from server.database import AuthorDecision, AuthorLocalStats, Post, SubscriptionState, db
+
+_TABLES = [Post, SubscriptionState, AuthorLocalStats, AuthorDecision]
 
 
 @pytest.fixture()
 def isolated_db() -> Any:
     """Rebuild post tables so each test starts empty."""
     db.connect(reuse_if_open=True)
-    db.drop_tables([Post, SubscriptionState, AuthorLocalStats], safe=True)
-    db.create_tables([Post, SubscriptionState, AuthorLocalStats])
+    db.drop_tables(_TABLES, safe=True)
+    db.create_tables(_TABLES)
     yield
+    AuthorDecision.delete().execute()
     AuthorLocalStats.delete().execute()
     Post.delete().execute()
 
@@ -91,29 +94,68 @@ def test_handle_event_skips_acab_assertion_even_with_local_text(isolated_db: Non
     assert Post.select().where(Post.uri == event['uri']).count() == 0
 
 
-def test_handle_event_records_strong_match_and_soft_prior_keeps_bare(isolated_db: None) -> None:
-    from server import config
-    from server.author_priors import author_has_soft_prior
+def test_regex_keep_without_decider_records_no_author_decision(isolated_db: None) -> None:
     from server.indexer import handle_event
 
     author = 'did:plc:indexersoftprior0000000001'
-    assert author not in config.ALLOWLIST_DIDS
+    event = _create_event(author=author, text='Hello from Schenectady.', uri_key='regex')
+    handle_event(event)
+    assert Post.get(Post.uri == event['uri']).match_reason
+    assert not str(Post.get(Post.uri == event['uri']).match_reason).startswith('decision_')
+    assert AuthorDecision.select().count() == 0
 
-    for i in range(config.SOFT_PRIOR_MIN_STRONG):
+
+def test_decider_keeps_earn_prior_and_reject_drops_post(
+    isolated_db: None, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from server import config
+    from server.author_priors import author_has_soft_prior
+    from server.decider import FakeDecider, UnavailableDecider
+    from server.indexer import handle_event
+
+    author = 'did:plc:deciderprior0000000000001'
+    assert author not in config.ALLOWLIST_DIDS
+    holder: dict[str, FakeDecider | UnavailableDecider | None] = {'decider': None}
+    monkeypatch.setattr('server.decider.get_default_decider', lambda: holder['decider'])
+
+    holder['decider'] = FakeDecider(keep=True, score=0.91)
+    for i in range(config.SOFT_PRIOR_MIN_KEEPS):
         handle_event(
             _create_event(
                 author=author,
                 text=f'Hello from Schenectady update {i}.',
-                uri_key=f'strong{i}',
+                uri_key=f'keep{i}',
             )
         )
     assert author_has_soft_prior(author)
-    assert AuthorLocalStats.get_by_id(author).strong_match_count == config.SOFT_PRIOR_MIN_STRONG
 
-    bare = _create_event(author=author, text='Dinner plans in Troy tonight.', uri_key='bare')
+    bare = _create_event(author=author, text='Dinner in Troy tonight.', uri_key='bare')
     handle_event(bare)
     row = Post.get(Post.uri == bare['uri'])
-    assert row.match_reason == 'soft_prior_ambiguous:troy'
+    assert str(row.match_reason).startswith('decision_keep:')
+    assert 'soft_prior_ambiguous' in str(row.match_reason)
+
+    holder['decider'] = FakeDecider(keep=False, score=0.12)
+    rejected = _create_event(
+        author=author,
+        text='Another hello from Schenectady.',
+        uri_key='reject',
+    )
+    handle_event(rejected)
+    assert Post.select().where(Post.uri == rejected['uri']).count() == 0
+    assert not author_has_soft_prior(author)
+
+    holder['decider'] = UnavailableDecider()
+    unscored = _create_event(
+        author=author,
+        text='Hello from Schenectady again.',
+        uri_key='unscored',
+    )
+    handle_event(unscored)
+    assert Post.select().where(Post.uri == unscored['uri']).count() == 0
+    assert AuthorDecision.select().where(AuthorDecision.kept == 1).count() == (
+        config.SOFT_PRIOR_MIN_KEEPS + 1
+    )
 
 
 def test_handle_event_archived_uses_event_time_not_wall_clock(isolated_db: None) -> None:

@@ -5,10 +5,13 @@ from __future__ import annotations
 from datetime import UTC, datetime, timedelta
 from typing import Any
 
+from peewee import IntegrityError
+
 from server import config
-from server.author_priors import author_has_soft_prior, is_strong_match_reason, record_strong_match
+from server.author_priors import author_has_soft_prior, record_decision
 from server.content_filters import author_is_blocked, text_is_muted
 from server.database import Post, db, prune_old_posts, utc_now
+from server.decider import DECISION_KEEP_PREFIX, DECISION_REJECT_PREFIX
 from server.logger import logger
 from server.matcher import extract_alt_text, match_post
 
@@ -121,16 +124,21 @@ def handle_event(event: dict[str, Any]) -> None:
     langs = record.get('langs') or []
     if not isinstance(langs, list):
         langs = []
-    soft_prior_dids = {author_did} if author_has_soft_prior(author_did) else set()
+    author = author_did if isinstance(author_did, str) else None
+    soft_prior_dids = {author} if author_has_soft_prior(author) else set()
     result = match_post(
         text,
         alt_text=alt_text,
         langs=langs,
-        author_did=author_did,
+        author_did=author,
         allowlist_dids=config.ALLOWLIST_DIDS,
         allowlist_handles=config.ALLOWLIST_HANDLES,
         soft_prior_dids=soft_prior_dids,
+        use_default_decider=True,
     )
+    # A rejection revokes a prior. A timeout (decision_unscored) does not.
+    if result.reason.startswith(DECISION_REJECT_PREFIX):
+        record_decision(author, kept=False)
     if not result.matched:
         return
 
@@ -138,21 +146,24 @@ def handle_event(event: dict[str, Any]) -> None:
     parent = (reply.get('parent') or {}).get('uri')
     root = (reply.get('root') or {}).get('uri')
 
-    with db.atomic():
-        Post.insert(
-            uri=uri,
-            cid=event.get('cid') or '',
-            author_did=author_did,
-            reply_parent=parent,
-            reply_root=root,
-            match_reason=result.reason,
-            created_at=created_at,
-            like_count=0,
-            repost_count=0,
-        ).on_conflict_ignore().execute()
+    try:
+        with db.atomic():
+            Post.insert(
+                uri=uri,
+                cid=event.get('cid') or '',
+                author_did=author_did,
+                reply_parent=parent,
+                reply_root=root,
+                match_reason=result.reason,
+                created_at=created_at,
+                like_count=0,
+                repost_count=0,
+            ).execute()
+    except IntegrityError:
+        return
 
-    if is_strong_match_reason(result.reason):
-        record_strong_match(author_did)
+    if result.reason.startswith(DECISION_KEEP_PREFIX):
+        record_decision(author, kept=True)
 
     logger.info('indexed %s reason=%s', uri, result.reason)
     _maybe_prune()

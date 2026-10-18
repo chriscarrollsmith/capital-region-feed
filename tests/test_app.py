@@ -3,7 +3,7 @@ from unittest.mock import patch
 
 import pytest
 from fastapi.testclient import TestClient
-from server.database import AuthorLocalStats, Post, SubscriptionState, db
+from server.database import AuthorDecision, AuthorLocalStats, Post, SubscriptionState, db
 
 
 def _noop_jetstream(*_args: Any, **_kwargs: Any) -> None:
@@ -12,7 +12,7 @@ def _noop_jetstream(*_args: Any, **_kwargs: Any) -> None:
 
 @pytest.fixture(autouse=True)
 def _app_tables() -> None:
-    db.create_tables([Post, SubscriptionState, AuthorLocalStats])
+    db.create_tables([Post, SubscriptionState, AuthorLocalStats, AuthorDecision])
 
 
 @patch('server.app.run_jetstream', _noop_jetstream)
