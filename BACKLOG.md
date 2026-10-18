@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-125 — Daily feed audit: Victoria Oak Bay/Saanich CR / East Brunswick NJ / Bethlehem NH / Tartarian Troy / Newtonville Books; Live in Saratoga Springs FN
-- **Status:** in progress
+- **Status:** done ([#104](https://github.com/chriscarrollsmith/capital-region-feed/pull/104))
 - **Why:** 2026-10-18 audit of last-24h AppView feed (~131 posts) found active FPs:
   Greater Victoria capital-region post listing Oak Bay / Saanich without "BC";
   East Brunswick NJ USPS dump unlocked by an off-region NY ZIP; Bethlehem NH USPS
