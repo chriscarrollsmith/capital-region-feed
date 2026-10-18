@@ -12014,5 +12014,96 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-10-17 audit FN: NY Leandra's Law unlocks Cap Region Rotterdam"
+  },
+  {
+    "id": "fp-victoria-oak-bay-saanich-capital-region",
+    "text": "How are people in the Capital region (Victoria, Oak Bay, Saanich, etc.) feeling about the election results thus far...",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-18 audit: Greater Victoria municipalities without BC next to capital region"
+  },
+  {
+    "id": "tp-capital-region-albany-early-voting",
+    "text": "How are people in the Capital Region near Albany feeling about early voting this weekend?",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-18 audit: Cap Region counterpart to Victoria BC FP"
+  },
+  {
+    "id": "fp-east-brunswick-nj-usps",
+    "text": "BLUE BOX: 314 DOGWOOD ST, PARK FOREST IL 60466\nBLUE BOX: 12 MYRON PL, EAST BRUNSWICK NJ 08816\nBLUE BOX: 156 WINCHESTER ST, BROOKLINE MA 02446\nBLUE BOX: 5691 STATE ROUTE 52, KENOZA LAKE NY 12750",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-18 audit: East Brunswick NJ USPS dump unlocked by off-region NY ZIP"
+  },
+  {
+    "id": "fp-bethlehem-nh-usps",
+    "text": "BLUE BOX: 2159 MAIN ST, BETHLEHEM NH 03574\nPO LOBBY: 152 S 2ND ST, JEFFERSON OR 97352\nBLUE BOX: 1178 YONKERS AVE, YONKERS NY 10704\nBLUE BOX: 155 WADSWORTH DR, N CHESTERFLD VA 23236",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-18 audit: Bethlehem NH USPS dump unlocked by Yonkers NY"
+  },
+  {
+    "id": "fp-tartarian-city-of-troy",
+    "text": "Odin, a survivor of destruction of a Tartarian city of Troy. He brought civilization to northern Europe among the Germanic tribes.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-18 audit: Tartarian myth city of Troy strong positive"
+  },
+  {
+    "id": "tp-city-of-troy-paving",
+    "text": "City of Troy announces downtown paving for October near the Collar City.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-18 audit: municipal City of Troy counterpart to Tartarian myth FP"
+  },
+  {
+    "id": "fp-newtonvillebooks-boston",
+    "text": "Book launch on Wed, Nov. 18, at @newtonvillebooks.bsky.social - hope Boston area friends can join! #booksky",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-18 audit: Newtonville Books MA handle matched newtonville strong prefix"
+  },
+  {
+    "id": "tp-newtonville-colonie-avenue",
+    "text": "Road work on Newtonville Avenue in Colonie near #AlbanyNY.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-18 audit: Colonie Newtonville counterpart to Newton MA bookstore FP"
+  },
+  {
+    "id": "fn-genesis-live-saratoga-springs-1978",
+    "text": "youtu.be/2rtJsIelMaY",
+    "expected": true,
+    "signal": "text",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Genesis - Live in Saratoga Springs - July 31st, 1978 - NEW SOUNDBOARD YouTube video by Genesis Live Archive",
+    "note": "2026-10-18 audit: SPAC bootleg Live in Saratoga Springs without NY; Utah/Disney gates still apply"
   }
 ]
