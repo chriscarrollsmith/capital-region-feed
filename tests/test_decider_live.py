@@ -11,11 +11,18 @@ import os
 import pytest
 from server.decider import OpenRouterDecider
 from server.matcher import match_post
+from server.thumbnails import load_thumbnails
 
 pytestmark = pytest.mark.live
 
 _IN_SCOPE = 'Schenectady City Council meets Tuesday at City Hall to discuss the new CDTA bus route.'
 _HOSTILE = 'I hate everyone in Schenectady. You are all garbage and this city should burn down.'
+_THUMB_DID = 'did:plc:pjzh6ycskkvvi56nzch7tbhb'
+_THUMB_CID = 'bafkreihfldlzs7q3ta5n33gfnhnh7jq5tapfug7uq5tkualwrcgqqskncq'
+_THUMB_EMBED = {
+    '$type': 'app.bsky.embed.images',
+    'images': [{'alt': '', 'image': {'ref': {'$link': _THUMB_CID}, 'mimeType': 'image/jpeg'}}],
+}
 
 
 @pytest.fixture
@@ -44,3 +51,30 @@ def test_live_hostile_post_is_rejected(live_decider: OpenRouterDecider) -> None:
     result = match_post(_HOSTILE, decider=live_decider)
     assert result.matched is False
     assert result.reason.startswith('decision_reject:')
+
+
+def test_live_thumbnail_base64_with_text(
+    live_decider: OpenRouterDecider,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """A real feed_thumbnail JPEG is scored with the post text.
+
+    The photo can move ``noul``, so this asserts a scored decision rather than
+    a particular keep or reject.
+    """
+    images = load_thumbnails(_THUMB_DID, _THUMB_EMBED, timeout_s=20)
+    assert images is not None and len(images) == 1
+    assert images[0].startswith(b'\xff\xd8\xff')
+    decision = live_decider.decide(_IN_SCOPE, images=images)
+    assert decision is not None
+    assert 0.0 <= decision.score <= 1.0
+    monkeypatch.setenv('DECISION_TIMEOUT_S', '20')
+    result = match_post(
+        _IN_SCOPE,
+        author_did=_THUMB_DID,
+        embed=_THUMB_EMBED,
+        decider=live_decider,
+    )
+    assert result.reason.startswith(('decision_keep:', 'decision_reject:'))
+    again = live_decider.decide(_IN_SCOPE, images=images)
+    assert again is decision

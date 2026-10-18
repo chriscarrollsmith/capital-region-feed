@@ -175,9 +175,13 @@ When `DECISION_ENABLED` is off, that candidate is the result, including the
 existing offline floor. When it is on, `server/decider.py` POSTs the clipped
 haystack to OpenRouter's Decisions API (`perplexity/pplx-decider-v1.2`) and
 keeps the post only when the returned `noul` is at least `DECISION_KEEP_MIN`
-(default `0.5`). The app applies that threshold. A missing `OPENROUTER_API_KEY`,
-timeout, transport error, or unusable payload drops the candidate (fail closed).
-Allowlisted authors and soft-prior authors do not bypass the decider.
+(default `0.5`). The app applies that threshold. Image posts also send each
+image's Bluesky `feed_thumbnail` JPEG, base64-encoded, in `state` next to the
+post text. A thumbnail that cannot be fetched drops the candidate. Posts with
+no images stay text-only, and thumbnail fetches do not run when the decider is
+off. A missing `OPENROUTER_API_KEY`, timeout, transport error, or unusable
+payload drops the candidate (fail closed). Allowlisted authors and soft-prior
+authors do not bypass the decider.
 
 Set the key on Fly with `fly secrets set OPENROUTER_API_KEY=...`. Do not put it
 in `fly.toml` `[env]`. With the flag on and the key missing, every regex

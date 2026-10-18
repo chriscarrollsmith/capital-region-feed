@@ -31,6 +31,7 @@ from server.decider import (
     DecisionBackend,
 )
 from server.gazetteer import Gazetteer, default_gazetteer
+from server.thumbnails import load_thumbnails
 
 
 @dataclass(frozen=True)
@@ -5217,14 +5218,22 @@ def _content_filter(
     *,
     decider: DecisionBackend | None,
     embed: object | None = None,
+    author_did: str | None = None,
 ) -> MatchResult:
-    """Score a regex-floor keep. Non-candidates and a disabled decider pass through."""
-    del embed
+    """Score a regex-floor keep. Non-candidates and a disabled decider pass through.
+
+    Image posts also send feed thumbnails. A thumbnail that cannot be fetched
+    declines the candidate. Posts with no images stay text-only, and no
+    thumbnail HTTP call is made when the decider is off.
+    """
     if not provisional.matched:
         return provisional
     if decider is None:
         return provisional
-    decision = decider.decide(haystack)
+    images = load_thumbnails(author_did, embed)
+    if images is None:
+        return MatchResult(False, f'{DECISION_UNSCORED_PREFIX}{provisional.reason}')
+    decision = decider.decide(haystack, images=images)
     if decision is None:
         return MatchResult(False, f'{DECISION_UNSCORED_PREFIX}{provisional.reason}')
     if decision.keep:
@@ -5266,6 +5275,7 @@ def match_post(
     gazetteer: Gazetteer | None = None,
     decider: DecisionBackend | None = None,
     use_default_decider: bool = False,
+    embed: object | None = None,
 ) -> MatchResult:
     """Return whether a post belongs in the Capital Region feed.
 
@@ -5294,6 +5304,8 @@ def match_post(
         haystack,
         provisional,
         decider=_resolve_decider(decider, use_default_decider),
+        embed=embed,
+        author_did=author_did,
     )
 
 

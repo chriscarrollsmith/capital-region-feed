@@ -8,6 +8,7 @@ timeouts, transport errors, and unusable payloads decline. Callers treat
 
 from __future__ import annotations
 
+import base64
 import hashlib
 import json
 import math
@@ -77,8 +78,12 @@ class Decision:
 
 
 class DecisionBackend(Protocol):
-    def decide(self, haystack: str) -> Decision | None:
-        """Return a keep/reject, or None when the post cannot be scored."""
+    def decide(self, haystack: str, *, images: tuple[bytes, ...] = ()) -> Decision | None:
+        """Return a keep/reject, or None when the post cannot be scored.
+
+        ``images`` are raw thumbnail bytes sent with the post text. Text-only
+        callers omit them.
+        """
 
 
 def decision_from_payload(payload: object, *, keep_min: float) -> Decision:
@@ -102,10 +107,42 @@ def decision_from_payload(payload: object, *, keep_min: float) -> Decision:
     return Decision(keep=score >= keep_min, score=score)
 
 
-def _request_body(model: str, text: str) -> dict[str, Any]:
+def _image_mime(data: bytes) -> str:
+    if data.startswith(b'\xff\xd8\xff'):
+        return 'image/jpeg'
+    if data.startswith(b'\x89PNG\r\n\x1a\n'):
+        return 'image/png'
+    if data.startswith((b'GIF87a', b'GIF89a')):
+        return 'image/gif'
+    if len(data) >= 12 and data.startswith(b'RIFF') and data[8:12] == b'WEBP':
+        return 'image/webp'
+    raise ValueError('unsupported image type')
+
+
+def _image_part(data: bytes) -> dict[str, Any]:
+    encoded = base64.b64encode(data).decode('ascii')
+    return {
+        'type': 'image_url',
+        'image_url': {'url': f'data:{_image_mime(data)};base64,{encoded}'},
+    }
+
+
+def _request_body(
+    model: str,
+    text: str,
+    images: tuple[bytes, ...] = (),
+) -> dict[str, Any]:
+    if images:
+        parts: list[Any] = []
+        if text:
+            parts.append(text)
+        parts.extend(_image_part(blob) for blob in images)
+        state: Any = parts
+    else:
+        state = {'post': text}
     return {
         'model': model,
-        'state': {'post': text},
+        'state': state,
         'questions': {
             'keep': {
                 'type': 'noul',
@@ -143,18 +180,23 @@ class OpenRouterDecider:
         self._cache: dict[str, Decision | None] = {}
         self._cache_lock = threading.Lock()
 
-    def decide(self, haystack: str) -> Decision | None:
+    def decide(self, haystack: str, *, images: tuple[bytes, ...] = ()) -> Decision | None:
         clipped = haystack.strip()[: self.max_text_chars]
-        if not clipped:
+        if not clipped and not images:
             return None
+        image_token = ''
+        if images:
+            image_token = '|' + '|'.join(hashlib.sha256(blob).hexdigest() for blob in images)
         key = hashlib.sha256(
-            f'{self.model}|{PROMPT_VERSION}|{self.keep_min:.3f}|{clipped}'.encode()
+            f'{self.model}|{PROMPT_VERSION}|{self.keep_min:.3f}|{clipped}{image_token}'.encode()
         ).hexdigest()
         with self._cache_lock:
             if key in self._cache:
                 return self._cache[key]
         try:
-            payload = self._judge(clipped) if self._judge is not None else self._post(clipped)
+            payload = (
+                self._judge(clipped) if self._judge is not None else self._post(clipped, images)
+            )
             decision: Decision | None = decision_from_payload(payload, keep_min=self.keep_min)
         except _DECLINE_ERRORS:
             decision = None
@@ -162,8 +204,8 @@ class OpenRouterDecider:
             # Another thread may have stored the same key; either result is usable.
             return self._cache.setdefault(key, decision)
 
-    def _post(self, text: str) -> object:
-        body = json.dumps(_request_body(self.model, text)).encode('utf-8')
+    def _post(self, text: str, images: tuple[bytes, ...] = ()) -> object:
+        body = json.dumps(_request_body(self.model, text, images)).encode('utf-8')
         request = urllib.request.Request(
             self.api_url,
             data=body,
@@ -181,8 +223,8 @@ class OpenRouterDecider:
 class UnavailableDecider:
     """Enabled filter with no API key. Every candidate declines."""
 
-    def decide(self, haystack: str) -> Decision | None:
-        del haystack
+    def decide(self, haystack: str, *, images: tuple[bytes, ...] = ()) -> Decision | None:
+        del haystack, images
         return None
 
 
@@ -201,7 +243,8 @@ class FakeDecider:
         self.keep_substrings = keep_substrings
         self.reject_substrings = reject_substrings
 
-    def decide(self, haystack: str) -> Decision | None:
+    def decide(self, haystack: str, *, images: tuple[bytes, ...] = ()) -> Decision | None:
+        del images
         text = haystack.lower()
         if any(needle.lower() in text for needle in self.reject_substrings):
             return Decision(keep=False, score=self.score)

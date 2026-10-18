@@ -134,6 +134,7 @@ def handle_event(event: dict[str, Any]) -> None:
         allowlist_dids=config.ALLOWLIST_DIDS,
         allowlist_handles=config.ALLOWLIST_HANDLES,
         soft_prior_dids=soft_prior_dids,
+        embed=record.get('embed'),
         use_default_decider=True,
     )
     # A rejection revokes a prior. A timeout (decision_unscored) does not.
