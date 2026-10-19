@@ -538,6 +538,25 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-126 — Daily feed audit: I'm in Saratoga Springs / Saratoga Music Hall / Home Made Theater FNs (fold #104 FPs)
+- **Status:** in progress
+- **Why:** 2026-10-19 audit of last-24h AppView feed (~80 posts) found no new active
+  matcher FPs among rematch-keeps (allowlisted News10 / Times Union statewide,
+  NWS Albany, Waterford NY vessel alerts intentional). Rematch already drops
+  prior Malta EU / Troy OH / Waterford Ireland / Newtonville Books noise until
+  purge. Planned `fn_search.py` slate (8) all ran OK; 2 Cap Region FNs from
+  Saratoga Springs plus ad-hoc venue queries: first-person "I'm in Saratoga
+  Springs this weekend" and Home Made Theater at Saratoga Music Hall / "Saratoga
+  Springs theater company" card (`ambiguous_no_context`). Also folds unmerged
+  2026-10-18 FP fixes from #104 onto main.
+- **Work:**
+  - Strong `i'm/i am in saratoga springs`, `saratoga music hall`,
+    `home made theater`, `saratoga springs theater` (Utah/Disney conflicts
+    retained); grow eval + fn_search log/strategies; include #104 matcher
+    gates (builds on #104 / B-125).
+- **Done when:** Audited FNs keep; Utah counterpart drops; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-125 — Daily feed audit: Victoria Oak Bay/Saanich CR / East Brunswick NJ / Bethlehem NH / Tartarian Troy / Newtonville Books; Live in Saratoga Springs FN
 - **Status:** done ([#104](https://github.com/chriscarrollsmith/capital-region-feed/pull/104))
 - **Why:** 2026-10-18 audit of last-24h AppView feed (~131 posts) found active FPs:

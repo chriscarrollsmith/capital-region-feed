@@ -12105,5 +12105,56 @@
     "regression": true,
     "alt_text": "Genesis - Live in Saratoga Springs - July 31st, 1978 - NEW SOUNDBOARD YouTube video by Genesis Live Archive",
     "note": "2026-10-18 audit: SPAC bootleg Live in Saratoga Springs without NY; Utah/Disney gates still apply"
+  },
+  {
+    "id": "fn-im-in-saratoga-springs-weekend",
+    "text": "I'm in Saratoga Springs this weekend and legit no bars are playing any PL games.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-19 audit FN: first-person presence in Saratoga Springs without , NY"
+  },
+  {
+    "id": "tn-im-in-saratoga-springs-utah",
+    "text": "I'm in Saratoga Springs, Utah for the temple open house",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-19 audit: Utah conflict retained for I'm-in strong"
+  },
+  {
+    "id": "fn-saratoga-music-hall-home-made-theater",
+    "text": "Home Made Theater (HMT) opened their 2026-2027 theater season with Clue: On Stage at the Saratoga Music Hall.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-19 audit FN: Saratoga Music Hall / Home Made Theater without , NY"
+  },
+  {
+    "id": "fn-saratoga-springs-theater-company-card",
+    "text": "aroundtownwithamymodesti.substack.com/p/review-hom...",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "REVIEW – Home Made Theater Presents Clue: On Stage Saratoga Springs theater company opened its 2026-2027 season with the 2017 production of Clue: On Stage",
+    "note": "2026-10-19 audit FN: Saratoga Springs theater company card"
+  },
+  {
+    "id": "tp-saratoga-springs-ny-wing-off",
+    "text": "Hundreds lined downtown Saratoga Springs, NY for this year's Wing Off.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-19 audit TP counterpart: Saratoga Springs NY dateline"
   }
 ]
