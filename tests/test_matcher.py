@@ -5234,3 +5234,33 @@ def test_live_in_saratoga_springs_bootleg_recall() -> None:
     assert live.reason == 'strong_positive'
     utah = match_post('Serene Moments at Saratoga Springs Utah Temple')
     assert utah.matched is False
+
+
+def test_im_in_saratoga_springs_recall() -> None:
+    visiting = match_post(
+        "I'm in Saratoga Springs this weekend and legit no bars are playing any PL games."
+    )
+    assert visiting.matched is True
+    assert visiting.reason == 'strong_positive'
+    curly = match_post('I’m in Saratoga Springs this weekend watching the race replay on my phone.')
+    assert curly.matched is True
+    utah = match_post("I'm in Saratoga Springs, Utah for the temple open house")
+    assert utah.matched is False
+    assert utah.reason == 'hard_negative:saratoga_springs_utah'
+
+
+def test_saratoga_music_hall_home_made_theater_recall() -> None:
+    hall = match_post(
+        'Home Made Theater opened their season with Clue: On Stage at the Saratoga Music Hall.'
+    )
+    assert hall.matched is True
+    assert hall.reason == 'strong_positive'
+    card = match_post(
+        'aroundtownwithamymodesti.substack.com/p/review-hom...',
+        alt_text=(
+            'REVIEW – Home Made Theater Presents Clue: On Stage '
+            'Saratoga Springs theater company opened its 2026-2027 season'
+        ),
+    )
+    assert card.matched is True
+    assert card.reason == 'strong_positive'

@@ -87,8 +87,14 @@ _STRONG_POSITIVE = re.compile(
       # Wire datelines often use "N.Y." with periods.
       | saratoga\s+springs\s*,?\s*(?:ny|n\.y\.|new\s+york)
       # Concert/bootleg cards often say "Live in Saratoga Springs" without ", NY".
+      # First-person "I'm in Saratoga Springs this weekend" likewise omits ", NY".
       # Utah / Disney conflicts still gate non-NY resorts.
       | live\s+(?:in|at)\s+saratoga\s+springs\b
+      | i(?:['\u2019]?m|\s+am)\s+in\s+saratoga\s+springs\b
+      # Distinctive Saratoga Springs venues / companies often omit ", NY".
+      | saratoga\s+music\s+hall\b
+      | home\s+made\s+theater\b
+      | saratoga\s+springs\s+theater\b
       # Require a word boundary after "ny" so "Troy Nyhammer" does not match.
       | (?<!\d\s)(?<![\w.])troy(?![\w@.-])\s*,?\s*(?:ny\b|n\.y\.|new\s+york)
       | boght\s+corners
