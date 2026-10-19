@@ -158,6 +158,43 @@ def test_decider_keeps_earn_prior_and_reject_drops_post(
     )
 
 
+def test_handle_event_passes_thumbnail_bytes(
+    isolated_db: None, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from server.decider import Decision
+    from server.indexer import handle_event
+
+    jpeg = b'\xff\xd8\xff' + b'\x11' * 8
+    seen: dict[str, object] = {}
+
+    class _Recorder:
+        def decide(self, haystack: str, *, images: tuple[bytes, ...] = ()) -> Decision:
+            seen['haystack'] = haystack
+            seen['images'] = images
+            return Decision(keep=True, score=0.77)
+
+    monkeypatch.setattr('server.decider.get_default_decider', lambda: _Recorder())
+
+    def _load(author_did: str | None, embed: object | None, *, timeout_s: float | None = None):
+        del author_did, timeout_s
+        if embed is None:
+            return ()
+        return (jpeg,)
+
+    monkeypatch.setattr('server.matcher.load_thumbnails', _load)
+    author = 'did:plc:thumbindex00000000000001'
+    event = _create_event(author=author, text='Hello from Schenectady.', uri_key='img')
+    event['record']['embed'] = {
+        '$type': 'app.bsky.embed.images',
+        'images': [{'image': {'ref': {'$link': 'bafythumb'}}}],
+    }
+    handle_event(event)
+    row = Post.get(Post.uri == event['uri'])
+    assert str(row.match_reason).startswith('decision_keep:')
+    assert seen['images'] == (jpeg,)
+    assert 'Schenectady' in str(seen['haystack'])
+
+
 def test_handle_event_archived_uses_event_time_not_wall_clock(isolated_db: None) -> None:
     """Catch-up must not drop posts that were fresh at firehose time_us."""
     from datetime import timedelta

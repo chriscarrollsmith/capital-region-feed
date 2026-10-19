@@ -350,6 +350,7 @@ def process_event(
             allowlist_dids=config.ALLOWLIST_DIDS,
             allowlist_handles=config.ALLOWLIST_HANDLES,
             soft_prior_dids=soft_prior_dids,
+            embed=record.get('embed'),
             use_default_decider=True,
         )
         return 'dry_run_match' if result.matched else 'dry_run_skip'

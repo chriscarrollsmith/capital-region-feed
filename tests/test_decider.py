@@ -2,8 +2,11 @@
 
 from __future__ import annotations
 
+import base64
+
 import pytest
 from server.decider import (
+    Decision,
     FakeDecider,
     OpenRouterDecider,
     UnavailableDecider,
@@ -15,6 +18,8 @@ from server.matcher import match_post
 _NOUL = {'answers': {'keep': {'type': 'noul', 'noul': 0.62}}}
 _STRONG = 'Schenectady City Council meets Tuesday at City Hall.'
 _BARE = 'Dinner in Troy tonight.'
+_JPEG = b'\xff\xd8\xff' + b'\x00' * 16
+_IMAGE_EMBED = {'images': [{'image': {'ref': {'$link': 'bafythumb'}}}]}
 
 
 def test_noul_threshold_and_choice_payload() -> None:
@@ -40,6 +45,51 @@ def test_request_body_is_a_decision_not_a_chat_prompt() -> None:
     assert keep['type'] == 'noul'
     assert 'Capital Region' in keep['instructions']
     assert 'unclear' in keep['criteria']['false'].lower()
+
+
+def test_request_body_sends_jpeg_as_base64_data_url() -> None:
+    body = _request_body('perplexity/pplx-decider-v1.2', 'Schenectady tonight', (_JPEG,))
+    assert 'messages' not in body
+    state = body['state']
+    assert isinstance(state, list)
+    assert state[0] == 'Schenectady tonight'
+    part = state[1]
+    assert part['type'] == 'image_url'
+    url = part['image_url']['url']
+    prefix = 'data:image/jpeg;base64,'
+    assert url.startswith(prefix)
+    assert base64.b64decode(url.removeprefix(prefix)) == _JPEG
+
+
+def test_request_body_image_only_omits_empty_text() -> None:
+    body = _request_body('perplexity/pplx-decider-v1.2', '', (_JPEG,))
+    assert body['state'] == [
+        {
+            'type': 'image_url',
+            'image_url': {
+                'url': 'data:image/jpeg;base64,' + base64.b64encode(_JPEG).decode('ascii'),
+            },
+        }
+    ]
+    with pytest.raises(ValueError):
+        _request_body('perplexity/pplx-decider-v1.2', 'text', (b'not-an-image',))
+
+
+def test_image_bytes_are_part_of_the_cache_key() -> None:
+    calls = {'n': 0}
+
+    def judge(text: str) -> dict[str, object]:
+        calls['n'] += 1
+        assert text == 'Schenectady tonight'
+        return {'answers': {'keep': {'type': 'noul', 'noul': 0.8}}}
+
+    decider = OpenRouterDecider(api_key='test', _judge=judge)
+    first = decider.decide('Schenectady tonight', images=(_JPEG,))
+    second = decider.decide('Schenectady tonight', images=(_JPEG,))
+    other = decider.decide('Schenectady tonight', images=(_JPEG + b'\x01',))
+    assert first is not None and second == first
+    assert other is not None
+    assert calls['n'] == 2
 
 
 def test_openrouter_low_noul_rejects_and_caches() -> None:
@@ -183,3 +233,60 @@ def test_default_decider_follows_env(monkeypatch: pytest.MonkeyPatch) -> None:
     assert client.model == 'perplexity/pplx-decider-v1.2'
     assert get_default_decider() is client
     clear_decider_cache()
+
+
+class _RecordingDecider:
+    def __init__(self) -> None:
+        self.images: tuple[bytes, ...] | None = None
+
+    def decide(self, haystack: str, *, images: tuple[bytes, ...] = ()) -> Decision:
+        del haystack
+        self.images = images
+        return Decision(keep=True, score=0.88)
+
+
+def test_match_post_passes_thumbnail_bytes(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr('server.matcher.load_thumbnails', lambda *args, **kwargs: (_JPEG,))
+    recorder = _RecordingDecider()
+    result = match_post(
+        _STRONG,
+        author_did='did:plc:thumb',
+        embed=_IMAGE_EMBED,
+        decider=recorder,
+    )
+    assert recorder.images == (_JPEG,)
+    assert result.matched is True
+    assert result.reason.startswith('decision_keep:')
+
+
+def test_thumbnail_fetch_failure_is_unscored(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr('server.matcher.load_thumbnails', lambda *args, **kwargs: None)
+    result = match_post(
+        _STRONG,
+        author_did='did:plc:thumb',
+        embed=_IMAGE_EMBED,
+        decider=FakeDecider(keep=True),
+    )
+    assert result.matched is False
+    baseline = match_post(_STRONG)
+    assert result.reason == f'decision_unscored:{baseline.reason}'
+
+
+def test_decider_off_and_non_candidates_do_not_fetch_thumbnails(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    def boom(*args: object, **kwargs: object) -> tuple[bytes, ...]:
+        raise AssertionError('thumbnail fetch')
+
+    monkeypatch.setattr('server.matcher.load_thumbnails', boom)
+    kept = match_post(_STRONG, author_did='did:plc:thumb', embed=_IMAGE_EMBED)
+    assert kept.matched is True
+    assert not kept.reason.startswith('decision_')
+    dropped = match_post(
+        _BARE,
+        author_did='did:plc:thumb',
+        embed=_IMAGE_EMBED,
+        decider=FakeDecider(keep=True),
+    )
+    assert dropped.matched is False
+    assert dropped.reason == match_post(_BARE).reason
