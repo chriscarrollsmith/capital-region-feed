@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-126 — Daily feed audit: I'm in Saratoga Springs / Saratoga Music Hall / Home Made Theater FNs (fold #104 FPs)
-- **Status:** in progress
+- **Status:** done ([#106](https://github.com/chriscarrollsmith/capital-region-feed/pull/106))
 - **Why:** 2026-10-19 audit of last-24h AppView feed (~80 posts) found no new active
   matcher FPs among rematch-keeps (allowlisted News10 / Times Union statewide,
   NWS Albany, Waterford NY vessel alerts intentional). Rematch already drops
