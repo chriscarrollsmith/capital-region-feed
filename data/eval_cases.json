@@ -12156,5 +12156,56 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-10-19 audit TP counterpart: Saratoga Springs NY dateline"
+  },
+  {
+    "id": "fn-concert-in-saratoga-springs-ranks",
+    "text": "With over 200+ concerts under my belt, this concert in Saratoga Springs easily ranks in the top 3.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-20 audit FN: concert in Saratoga Springs without , NY"
+  },
+  {
+    "id": "tn-concert-in-saratoga-springs-utah",
+    "text": "Temple open house concert in Saratoga Springs, Utah this weekend",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-20 audit: Utah conflict retained for concert-in strong"
+  },
+  {
+    "id": "tn-concert-in-saratoga-springs-disney",
+    "text": "Disney World concert in Saratoga Springs resort tonight",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-20 audit: Disney conflict retained for concert-in strong"
+  },
+  {
+    "id": "fn-albany-common-council-commuter-tax-card",
+    "text": "Pushback mounts against Albany #CommuterTax proposal",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "Work at the Capital? Albany wants a cut of your paycheck Some members of Albany's Common Council are considering a proposal to tax nonresident commuters to address a significant budget deficit",
+    "note": "2026-10-20 audit FN: Albany Common Council / Capital commuter-tax card without , NY"
+  },
+  {
+    "id": "tp-albany-common-council-budget",
+    "text": "Albany Common Council votes on the budget tonight.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-20 audit TP counterpart: bare Albany Common Council without @wamc"
   }
 ]

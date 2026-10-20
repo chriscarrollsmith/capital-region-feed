@@ -538,6 +538,24 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-127 — Daily feed audit: concert in Saratoga Springs / Albany Common Council FNs (fold #106)
+- **Status:** in progress
+- **Why:** 2026-10-20 audit of last-24h AppView feed (~66 posts) found no new active
+  matcher FPs among rematch-keeps (allowlisted News10 / Times Union statewide,
+  NWS Albany, Waterford NY vessel alerts intentional). Rematch already drops
+  prior Malta EU / Troy OH / Victoria Oak Bay / East Brunswick / Newtonville
+  Books noise until purge. Planned `fn_search.py` slate (8) all ran OK; 2 Cap
+  Region FNs: "this concert in Saratoga Springs" (`ambiguous_no_context`) and
+  Albany Common Council / Capital commuter-tax card (`bare_albany`). Ad-hoc
+  `concert Saratoga Springs` confirmed the concert FN. Also folds unmerged
+  2026-10-18/19 fixes from #104 / #106 onto main.
+- **Work:**
+  - Strong `concert in/at saratoga springs` (Utah/Disney retained);
+    `albany('s) common council` + windowed pairing; grow eval + fn_search
+    log/strategies; include #106 matcher gates (builds on #106 / B-126).
+- **Done when:** Audited FNs keep; Utah/Disney counterparts drop; eval P/R stay
+  1.000; unit tests cover the new gates.
+
 ### B-126 — Daily feed audit: I'm in Saratoga Springs / Saratoga Music Hall / Home Made Theater FNs (fold #104 FPs)
 - **Status:** done ([#106](https://github.com/chriscarrollsmith/capital-region-feed/pull/106))
 - **Why:** 2026-10-19 audit of last-24h AppView feed (~80 posts) found no new active
