@@ -88,9 +88,11 @@ _STRONG_POSITIVE = re.compile(
       | saratoga\s+springs\s*,?\s*(?:ny|n\.y\.|new\s+york)
       # Concert/bootleg cards often say "Live in Saratoga Springs" without ", NY".
       # First-person "I'm in Saratoga Springs this weekend" likewise omits ", NY".
+      # "this concert in Saratoga Springs" travel posts similarly omit ", NY".
       # Utah / Disney conflicts still gate non-NY resorts.
       | live\s+(?:in|at)\s+saratoga\s+springs\b
       | i(?:['\u2019]?m|\s+am)\s+in\s+saratoga\s+springs\b
+      | concert\s+(?:in|at)\s+saratoga\s+springs\b
       # Distinctive Saratoga Springs venues / companies often omit ", NY".
       | saratoga\s+music\s+hall\b
       | home\s+made\s+theater\b
@@ -113,6 +115,11 @@ _STRONG_POSITIVE = re.compile(
       | albany['\u2019]?s\s+corporation\s+counsel\b
       | corporation\s+counsel[\s\S]{0,80}\balbany\b
       | \balbany\b[\s\S]{0,80}corporation\s+counsel\b
+      # City of Albany legislature — often in cards without ", NY".
+      | albany['\u2019]?s\s+common\s+council\b
+      | albany\s+common\s+council\b
+      | common\s+council[\s\S]{0,80}\balbany\b
+      | \balbany\b[\s\S]{0,80}common\s+council\b
       | university\s+at\s+albany
       | \bualbany\b
       | \balbany\.edu\b

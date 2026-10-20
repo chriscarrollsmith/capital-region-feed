@@ -5249,6 +5249,44 @@ def test_im_in_saratoga_springs_recall() -> None:
     assert utah.reason == 'hard_negative:saratoga_springs_utah'
 
 
+def test_concert_in_saratoga_springs_recall() -> None:
+    concert = match_post(
+        'With over 200+ concerts under my belt, this concert in Saratoga Springs '
+        'easily ranks in the top 3.'
+    )
+    assert concert.matched is True
+    assert concert.reason == 'strong_positive'
+    at_venue = match_post('Caught an amazing concert at Saratoga Springs last night.')
+    assert at_venue.matched is True
+    utah = match_post('Temple open house concert in Saratoga Springs, Utah this weekend')
+    assert utah.matched is False
+    assert utah.reason == 'hard_negative:saratoga_springs_utah'
+    disney = match_post('Disney World concert in Saratoga Springs resort tonight')
+    assert disney.matched is False
+    assert disney.reason == 'hard_negative:disney_saratoga'
+
+
+def test_albany_common_council_recall() -> None:
+    bare = match_post('Albany Common Council votes on the budget tonight.')
+    assert bare.matched is True
+    assert bare.reason == 'strong_positive'
+    possessive = match_post(
+        "Some members of Albany's Common Council are considering a proposal "
+        'to tax nonresident commuters.'
+    )
+    assert possessive.matched is True
+    card = match_post(
+        'Pushback mounts against Albany #CommuterTax proposal',
+        alt_text=(
+            'Work at the Capital? Albany wants a cut of your paycheck '
+            "Some members of Albany's Common Council are considering a proposal "
+            'to tax nonresident commuters to address a significant budget deficit'
+        ),
+    )
+    assert card.matched is True
+    assert card.reason == 'strong_positive'
+
+
 def test_saratoga_music_hall_home_made_theater_recall() -> None:
     hall = match_post(
         'Home Made Theater opened their season with Clue: On Stage at the Saratoga Music Hall.'
