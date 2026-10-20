@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-127 — Daily feed audit: concert in Saratoga Springs / Albany Common Council FNs (fold #106)
-- **Status:** in progress
+- **Status:** done ([#107](https://github.com/chriscarrollsmith/capital-region-feed/pull/107))
 - **Why:** 2026-10-20 audit of last-24h AppView feed (~66 posts) found no new active
   matcher FPs among rematch-keeps (allowlisted News10 / Times Union statewide,
   NWS Albany, Waterford NY vessel alerts intentional). Rematch already drops
