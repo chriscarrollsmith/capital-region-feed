@@ -5287,6 +5287,61 @@ def test_albany_common_council_recall() -> None:
     assert card.reason == 'strong_positive'
 
 
+def test_ballston_lake_recall() -> None:
+    bare = match_post('Ballston Lake is quiet this morning.')
+    assert bare.matched is True
+    assert bare.reason == 'strong_positive'
+    childhood = match_post(
+        "Wait. There's a Saratoga Springs themed resort? We used to go to that "
+        'city when I was a young kid because my grandparents lived down the '
+        'road in Ballston Lake. Went to some park or something.'
+    )
+    assert childhood.matched is True
+    assert childhood.reason == 'strong_positive'
+    # Disney / Utah Saratoga Springs conflicts still win without Ballston Lake.
+    disney = match_post(
+        'Oh yes! Saratoga Springs Resort and Spa is our home resort for Disney Vacation Club.'
+    )
+    assert disney.matched is False
+    assert disney.reason == 'hard_negative:disney_saratoga'
+
+
+def test_albany_operative_statehouse_hashtag_precision() -> None:
+    operative = match_post(
+        'A longtime Albany operative has joined forces with local lawmakers for '
+        'a statewide push against anti-Jewish hate. New York Dems launch PAC.'
+    )
+    assert operative.matched is False
+    assert operative.reason == 'hard_negative:albany_operative'
+    operative_local = match_post(
+        'A longtime Albany operative spoke at the Capital Region forum downtown.'
+    )
+    assert operative_local.matched is True
+
+    metonym = match_post(
+        'Just an indication of how dysfunctional Albany can be, that the Dems '
+        'took over from the Dems. NY Senate: Dem to Dem.'
+    )
+    assert metonym.matched is False
+    assert metonym.reason == 'hard_negative:albany_statehouse_metonym'
+    metonym_local = match_post(
+        'The dysfunctional Albany Common Council still cannot pass a budget.'
+    )
+    assert metonym_local.matched is True
+
+    geotag = match_post(
+        'Beware of Medicare Enrollment Scams! #USA #Albany #Medicare #scams',
+        alt_text=(
+            'The New York StateWide Senior Action Council warns seniors about '
+            'potential Medicare scams during the open enrollment period.'
+        ),
+    )
+    assert geotag.matched is False
+    assert geotag.reason == 'hard_negative:albany_hashtag_geotag'
+    geotag_local = match_post('Snow advisory tonight for the Capital Region #Albany')
+    assert geotag_local.matched is True
+
+
 def test_saratoga_music_hall_home_made_theater_recall() -> None:
     hall = match_post(
         'Home Made Theater opened their season with Clue: On Stage at the Saratoga Music Hall.'
