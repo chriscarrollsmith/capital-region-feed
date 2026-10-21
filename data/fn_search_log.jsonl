@@ -102,3 +102,12 @@
 {"used_at": "2026-10-20T09:04:59Z", "query": "Bethlehem", "family": "bare_place", "status": "ok", "hits": 25, "false_negatives": 0, "false_negative_ids": [], "notes": "PA/holy-land/NH noise only"}
 {"used_at": "2026-10-20T09:04:59Z", "query": "Oakwood Cemetery Troy", "family": "neighborhood", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
 {"used_at": "2026-10-20T09:04:59Z", "query": "concert Saratoga Springs", "family": "event_phrase", "status": "ok", "hits": 1, "false_negatives": 1, "false_negative_ids": ["at://did:plc:fsqogmt2vxnw5mqnmfjm75nw/app.bsky.feed.post/3myagcqn3cs25"], "notes": "ad-hoc after Saratoga Springs plan hit"}
+{"used_at": "2026-10-21T09:05:09Z", "query": "AlbanyCounty", "family": "hashtag", "status": "ok", "hits": 1, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-10-21T09:05:09Z", "query": "Sons and Daughters of Italy", "family": "event_phrase", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-10-21T09:05:09Z", "query": "Caffè Lena", "family": "venue", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-10-21T09:05:09Z", "query": "Saratoga Springs", "family": "bare_place", "status": "ok", "hits": 9, "false_negatives": 1, "false_negative_ids": ["at://did:plc:aqq5joj3ypz22owfspumw54w/app.bsky.feed.post/3mycugvq53k2q"], "notes": ""}
+{"used_at": "2026-10-21T09:05:09Z", "query": "WaterfordNY", "family": "hashtag", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-10-21T09:05:09Z", "query": "Oakwood Cemetery Troy", "family": "neighborhood", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-10-21T09:05:09Z", "query": "Leandra's Law", "family": "civic", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-10-21T09:05:09Z", "query": "Travers Stakes", "family": "event_phrase", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-10-21T09:05:09Z", "query": "Ballston Lake", "family": "neighborhood", "status": "ok", "hits": 1, "false_negatives": 1, "false_negative_ids": ["at://did:plc:aqq5joj3ypz22owfspumw54w/app.bsky.feed.post/3mycugvq53k2q"], "notes": ""}
