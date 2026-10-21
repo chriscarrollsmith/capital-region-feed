@@ -81,6 +81,9 @@ _STRONG_POSITIVE = re.compile(
       # Word boundary after "hills" so "Burnt hillside" (wildfire terrain) does not match.
       | burnt\s+hills\b
       | ballston\s+spa
+      # Saratoga County hamlet — often paired with Saratoga Springs childhood copy
+      # without ", NY" (distinct from Ballston Spa strong above).
+      | ballston\s+lake\b
       # Cap Region Clifton Park — UK cricket ground gated in conflict helper.
       | clifton\s+park
       | averill\s+park
@@ -5020,6 +5023,87 @@ def _albany_ithaca_contrast_conflict(haystack: str) -> bool:
     return True
 
 
+_ALBANY_LOCAL_RESCUE = re.compile(
+    r"""
+    (?:
+        albany\s*,?\s*(?:ny|n\.y\.)\b
+      | \bualbany\b
+      | \balbany\.edu\b
+      | university\s+at\s+albany
+      | capital\s+(?:region|district)\b
+      | \bschenectady\b
+      | empire\s+state\s+plaza
+      | albany\s+common\s+council\b
+      | albany['\u2019]?s\s+common\s+council\b
+      | albany\s+mayor\b
+      | albany\s+county\b
+      | city\s+of\s+albany\b
+      | \#albanyny\b
+      | \#albany_ny\b
+      | new\s+york\s+state\s+capitol
+      | state\s+capitol\s+in\s+albany
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+
+def _albany_operative_conflict(haystack: str) -> bool:
+    """True when 'Albany operative(s)' is statewide political jargon, not Cap Region news.
+
+    Lobbyist / political-class copy uses the capital as a metonym. Cap Region
+    anchors (#AlbanyNY / Capital Region / Common Council / …) still rescue.
+    """
+    if not re.search(r'\balbany\s+operatives?\b', haystack, flags=re.IGNORECASE):
+        return False
+    if _ALBANY_WIRE_LOCAL_RESCUE.search(haystack) or _ALBANY_LOCAL_RESCUE.search(haystack):
+        return False
+    return True
+
+
+def _albany_statehouse_metonym_conflict(haystack: str) -> bool:
+    """True when 'dysfunctional Albany' is state-government metonym, not the city.
+
+    Statewide chamber / Senate copy uses Albany as shorthand for Albany politics
+    without Cap Region place news. Local civic anchors still rescue.
+    """
+    if not re.search(r'\bdysfunctional\s+albany\b', haystack, flags=re.IGNORECASE):
+        return False
+    if _ALBANY_WIRE_LOCAL_RESCUE.search(haystack) or _ALBANY_LOCAL_RESCUE.search(haystack):
+        return False
+    return True
+
+
+def _albany_hashtag_only(haystack: str) -> bool:
+    """True when Albany appears only as ``#albany``, not as a word or ``#albanyny``."""
+    if not re.search(r'\#albany\b', haystack, flags=re.IGNORECASE):
+        return False
+    # Strip bare ``#albany`` (not ``#albanyny`` / ``#albany_ny``) and see if any
+    # Albany token remains.
+    stripped = re.sub(r'\#albany\b', ' ', haystack, flags=re.IGNORECASE)
+    leftover = re.search(
+        r'\balbany\b|\#albanyny\b|\#albany_ny\b',
+        stripped,
+        flags=re.IGNORECASE,
+    )
+    return leftover is None
+
+
+def _albany_hashtag_geotag_conflict(haystack: str) -> bool:
+    """True when ``#albany`` is SEO/geotag spam unlocked only by bare NY context.
+
+    Cards like New York StateWide Senior Action Council Medicare warnings pair
+    ``#USA #Albany`` without Cap Region substance. Strong / local rescues keep.
+    """
+    if not _albany_hashtag_only(haystack):
+        return False
+    if _STRONG_POSITIVE.search(haystack) or _ALBANY_LOCAL_RESCUE.search(haystack):
+        return False
+    if _ALBANY_WIRE_LOCAL_RESCUE.search(haystack):
+        return False
+    return True
+
+
 def _schaghticoke_ct_conflict(haystack: str) -> bool:
     """True when Schaghticoke is a Kent CT road, not the Town of Schaghticoke NY."""
     if not re.search(r'\bschaghticoke\b', haystack, flags=re.IGNORECASE):
@@ -5678,6 +5762,12 @@ def _propose_candidate(
                 return MatchResult(False, 'hard_negative:albany_bandscan')
             if _albany_street_cny_conflict(haystack):
                 return MatchResult(False, 'hard_negative:albany_street_cny')
+            if _albany_operative_conflict(haystack):
+                return MatchResult(False, 'hard_negative:albany_operative')
+            if _albany_statehouse_metonym_conflict(haystack):
+                return MatchResult(False, 'hard_negative:albany_statehouse_metonym')
+            if _albany_hashtag_geotag_conflict(haystack):
+                return MatchResult(False, 'hard_negative:albany_hashtag_geotag')
             if _NY_CONTEXT.search(place_haystack):
                 return MatchResult(True, 'albany_with_ny_context')
             if _STRONG_POSITIVE.search(haystack):
