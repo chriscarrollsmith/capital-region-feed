@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-128 — Daily feed audit: Albany operative / statehouse / #Albany geotag FPs; Ballston Lake FN (fold #107)
-- **Status:** in progress
+- **Status:** done ([#108](https://github.com/chriscarrollsmith/capital-region-feed/pull/108))
 - **Why:** 2026-10-21 audit of last-24h AppView feed (~67 posts) found active FPs
   among rematch-keeps: statewide "Albany operative" PAC cards, "dysfunctional
   Albany" NY Senate metonym, and `#Albany` Medicare geotag unlocked by New York
