@@ -538,7 +538,25 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
-### B-127 — Daily feed audit: concert in Saratoga Springs / Albany Common Council FNs (fold #106)
+### B-128 — Daily feed audit: Albany operative / statehouse / #Albany geotag FPs; Ballston Lake FN (fold #107)
+- **Status:** in progress
+- **Why:** 2026-10-21 audit of last-24h AppView feed (~67 posts) found active FPs
+  among rematch-keeps: statewide "Albany operative" PAC cards, "dysfunctional
+  Albany" NY Senate metonym, and `#Albany` Medicare geotag unlocked by New York
+  StateWide Senior Action Council cards. Allowlisted News10 / Times Union and
+  NWS Albany / Glens Falls climate remain intentional. Planned `fn_search.py`
+  slate (8) all ran OK; Cap Region FN: Saratoga Springs childhood copy with
+  Ballston Lake (`ambiguous_no_context`). Ad-hoc `Ballston Lake` confirmed the
+  same URI. Also folds unmerged 2026-10-18..20 fixes from #104 / #106 / #107
+  onto main.
+- **Work:**
+  - Strong `ballston lake`; gate `albany operative(s)`, `dysfunctional albany`,
+    and hashtag-only `#albany` geotags (local / Capital Region rescues retained);
+    grow eval + fn_search log/strategies; include #107 matcher gates.
+- **Done when:** Audited FPs drop; Ballston Lake FN keeps; Disney Saratoga
+  counterpart still drops; eval P/R stay 1.000; unit tests cover the new gates.
+
+### B-127 — Daily feed audit: concert in Saratoga Springs / Albany Common Council FNs (fold #107)
 - **Status:** done ([#107](https://github.com/chriscarrollsmith/capital-region-feed/pull/107))
 - **Why:** 2026-10-20 audit of last-24h AppView feed (~66 posts) found no new active
   matcher FPs among rematch-keeps (allowlisted News10 / Times Union statewide,

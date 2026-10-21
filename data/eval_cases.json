@@ -12207,5 +12207,96 @@
     "split": "dev",
     "regression": true,
     "note": "2026-10-20 audit TP counterpart: bare Albany Common Council without @wamc"
+  },
+  {
+    "id": "tp-ballston-lake-bare-1021",
+    "text": "Ballston Lake is quiet this morning.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-21 TP: Saratoga County hamlet Ballston Lake keeps without , NY"
+  },
+  {
+    "id": "tp-ballston-lake-saratoga-childhood-1021",
+    "text": "Wait. There's a Saratoga Springs themed resort? We used to go to that city when I was a young kid because my grandparents lived down the road in Ballston Lake. Went to some park or something.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-21 FN: Saratoga Springs childhood + Ballston Lake was ambiguous_no_context"
+  },
+  {
+    "id": "tn-disney-saratoga-counterpart-1021",
+    "text": "Oh yes! Saratoga Springs Resort and Spa is our home resort for Disney Vacation Club.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-21 TN: Disney Saratoga Springs still drops beside Ballston Lake recall"
+  },
+  {
+    "id": "fp-albany-operative-statewide-pac-1021",
+    "text": "A longtime Albany operative has joined forces with local lawmakers for a statewide push against anti-Jewish hate. New York Dems launch PAC.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-21 FP: Albany operative statewide PAC jargon with NY context"
+  },
+  {
+    "id": "tp-albany-operative-capital-region-1021",
+    "text": "A longtime Albany operative spoke at the Capital Region forum downtown.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-21 TP counterpart: Albany operative + Capital Region keeps"
+  },
+  {
+    "id": "fp-dysfunctional-albany-ny-senate-1021",
+    "text": "Just an indication of how dysfunctional Albany can be, that the Dems took over from the Dems. NY Senate: Dem to Dem.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-21 FP: dysfunctional Albany statehouse metonym with NY Senate"
+  },
+  {
+    "id": "tp-dysfunctional-albany-common-council-1021",
+    "text": "The dysfunctional Albany Common Council still cannot pass a budget.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-21 TP counterpart: dysfunctional Albany Common Council keeps"
+  },
+  {
+    "id": "fp-albany-hashtag-medicare-statewide-1021",
+    "text": "Beware of Medicare Enrollment Scams! #USA #Albany #Medicare #scams",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "The New York StateWide Senior Action Council warns seniors about potential Medicare scams during the open enrollment period.",
+    "note": "2026-10-21 FP: #Albany geotag + New York StateWide Medicare card"
+  },
+  {
+    "id": "tp-albany-hashtag-capital-region-1021",
+    "text": "Snow advisory tonight for the Capital Region #Albany",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-21 TP counterpart: #Albany with Capital Region keeps"
   }
 ]
