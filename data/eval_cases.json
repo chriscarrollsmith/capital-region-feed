@@ -12298,5 +12298,75 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-10-21 TP counterpart: #Albany with Capital Region keeps"
+  },
+  {
+    "id": "fp-albany-sent-ny17-rebate-1022",
+    "text": "Costs are the top issue in NY-17. My guys made sure Albany sent rebate checks, free school lunches, and a property tax cap. Vote for the people who touched your wallet kindly.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-22 FP: Albany-as-legislature 'sent rebate checks' in off-region NY-17 race card"
+  },
+  {
+    "id": "tp-albany-sent-crews-albanyny-1022",
+    "text": "Albany sent crews to clear Central Ave after the storm near #AlbanyNY.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-22 TP counterpart: Albany sent + #AlbanyNY local rescue"
+  },
+  {
+    "id": "tp-live-from-saratoga-springs-1022",
+    "text": "Join us live from Saratoga Springs – details and free livestream at the link.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-22 FN: live from Saratoga Springs livestream/reading cards"
+  },
+  {
+    "id": "tn-disney-saratoga-live-from-counterpart-1022",
+    "text": "Oh yes! Saratoga Springs Resort and Spa is our home resort for Disney Vacation Club.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-22 TN: Disney Saratoga still drops after live-from recall"
+  },
+  {
+    "id": "tp-kalb-albany-outbound-adsb-1022",
+    "text": "Howard Lutnick's Embraer Lineage 1000E just closed a 1h 14m Albany → Ronald Reagan Washington National run.\nKALB → KDCA\n\nAggregated from public ADS-B.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-22 FN: Albany↔KALB ADS-B cards with long destination names between tokens"
+  },
+  {
+    "id": "tn-kalb-tv-alexandria-la-1022",
+    "text": "KALB News at 6: Alexandria city council approved the budget tonight in Louisiana.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-22 TN: KALB-TV Alexandria LA still drops"
+  },
+  {
+    "id": "tp-rensselear-amtrak-typo-1022",
+    "text": "They combine the Adirondack with Maple Leaf trains at Rensselear (Albany) during the loco change.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-22 FN: common Rensselear misspelling for City of Rensselaer Amtrak stop"
   }
 ]

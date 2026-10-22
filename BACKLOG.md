@@ -538,6 +538,25 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-129 — Daily feed audit: Albany-sent statehouse FP; live from Saratoga / KALB window / Rensselear FNs (fold #108)
+- **Status:** in progress
+- **Why:** 2026-10-22 audit of last-24h AppView feed (~69 posts) found one new
+  active matcher FP among rematch-keeps: off-region NY-17 politics using
+  "Albany sent rebate checks" as legislature metonym (`albany_with_ny_context`).
+  Allowlisted News10 / Times Union and NWS Albany / Glens Falls climate remain
+  intentional. Rematch already drops 2026-10-21 Albany operative / dysfunctional
+  / `#Albany` geotag FPs after folding #108. Planned `fn_search.py` slate (8)
+  all ran OK; Cap Region FNs: "live from Saratoga Springs", Albany↔KALB ADS-B
+  window (~42 chars), and "Rensselear" Amtrak typo. Ad-hoc confirmations for
+  those queries. Also folds unmerged 2026-10-18..21 fixes from #104 / #106 /
+  #107 / #108 onto main.
+- **Work:**
+  - Extend statehouse metonym for `albany sent`; `live from saratoga springs`;
+    widen Albany↔KALB window; strong `rensselear`; grow eval + fn_search
+    log/strategies; include #108 matcher gates.
+- **Done when:** Audited FP drops; FNs keep; Disney Saratoga / KALB-TV LA
+  counterparts still drop; eval P/R stay 1.000; unit tests cover the new gates.
+
 ### B-128 — Daily feed audit: Albany operative / statehouse / #Albany geotag FPs; Ballston Lake FN (fold #107)
 - **Status:** done ([#108](https://github.com/chriscarrollsmith/capital-region-feed/pull/108))
 - **Why:** 2026-10-21 audit of last-24h AppView feed (~67 posts) found active FPs
