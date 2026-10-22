@@ -5329,6 +5329,18 @@ def test_albany_operative_statehouse_hashtag_precision() -> None:
     )
     assert metonym_local.matched is True
 
+    albany_sent = match_post(
+        'Costs are the top issue in NY-17. My guys made sure Albany sent rebate '
+        'checks, free school lunches, and a property tax cap. Vote for the people '
+        'who touched your wallet kindly.'
+    )
+    assert albany_sent.matched is False
+    assert albany_sent.reason == 'hard_negative:albany_statehouse_metonym'
+    albany_sent_local = match_post(
+        'Albany sent crews to clear Central Ave after the storm near #AlbanyNY.'
+    )
+    assert albany_sent_local.matched is True
+
     geotag = match_post(
         'Beware of Medicare Enrollment Scams! #USA #Albany #Medicare #scams',
         alt_text=(
@@ -5357,3 +5369,36 @@ def test_saratoga_music_hall_home_made_theater_recall() -> None:
     )
     assert card.matched is True
     assert card.reason == 'strong_positive'
+
+
+def test_live_from_saratoga_kalb_window_rensselear_recall() -> None:
+    live_from = match_post(
+        'Join us live from Saratoga Springs – details and free livestream at the link.'
+    )
+    assert live_from.matched is True
+    assert live_from.reason == 'strong_positive'
+    disney = match_post(
+        'Oh yes! Saratoga Springs Resort and Spa is our home resort for Disney Vacation Club.'
+    )
+    assert disney.matched is False
+    assert disney.reason == 'hard_negative:disney_saratoga'
+
+    kalb_outbound = match_post(
+        "Howard Lutnick's Embraer Lineage 1000E just closed a 1h 14m Albany → "
+        'Ronald Reagan Washington National run.\n'
+        'KALB → KDCA\n\n'
+        'Aggregated from public ADS-B.'
+    )
+    assert kalb_outbound.matched is True
+    assert kalb_outbound.reason == 'strong_positive'
+    kalb_tv = match_post(
+        'KALB News at 6: Alexandria city council approved the budget tonight in Louisiana.'
+    )
+    assert kalb_tv.matched is False
+
+    rensselear = match_post(
+        'They combine the Adirondack with Maple Leaf trains at Rensselear (Albany) '
+        'during the loco change.'
+    )
+    assert rensselear.matched is True
+    assert rensselear.reason == 'strong_positive'
