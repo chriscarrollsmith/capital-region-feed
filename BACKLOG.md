@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-129 — Daily feed audit: Albany-sent statehouse FP; live from Saratoga / KALB window / Rensselear FNs (fold #108)
-- **Status:** in progress
+- **Status:** done ([#109](https://github.com/chriscarrollsmith/capital-region-feed/pull/109))
 - **Why:** 2026-10-22 audit of last-24h AppView feed (~69 posts) found one new
   active matcher FP among rematch-keeps: off-region NY-17 politics using
   "Albany sent rebate checks" as legislature metonym (`albany_with_ny_context`).
