@@ -52,6 +52,8 @@ _STRONG_POSITIVE = re.compile(
       | greater\s+albany
       | albany\s+county
       | rensselaer\s+county
+      # Common misspelling in Amtrak / rail posts ("Rensselear (Albany)").
+      | \brensselear\b
       | schenectady\s+county
       | saratoga\s+county
       # Word-boundary: reject hashtag stuffing like #schenectadyparkcleanup.
@@ -90,10 +92,11 @@ _STRONG_POSITIVE = re.compile(
       # Wire datelines often use "N.Y." with periods.
       | saratoga\s+springs\s*,?\s*(?:ny|n\.y\.|new\s+york)
       # Concert/bootleg cards often say "Live in Saratoga Springs" without ", NY".
+      # Livestream / reading cards say "live from Saratoga Springs" the same way.
       # First-person "I'm in Saratoga Springs this weekend" likewise omits ", NY".
       # "this concert in Saratoga Springs" travel posts similarly omit ", NY".
       # Utah / Disney conflicts still gate non-NY resorts.
-      | live\s+(?:in|at)\s+saratoga\s+springs\b
+      | live\s+(?:in|at|from)\s+saratoga\s+springs\b
       | i(?:['\u2019]?m|\s+am)\s+in\s+saratoga\s+springs\b
       | concert\s+(?:in|at)\s+saratoga\s+springs\b
       # Distinctive Saratoga Springs venues / companies often omit ", NY".
@@ -652,9 +655,10 @@ _STRONG_POSITIVE = re.compile(
       | albany\s+academy\b
       # Albany International / ICAO KALB flight cards often omit ", NY".
       # Bare KALB is also KALB-TV (Alexandria, LA) and the surname Kalb.
+      # ADS-B cards put "Albany → … National run." then "KALB → KDCA" ~42+ chars apart.
       | albany\s+international(?:\s+airport)?\b
-      | \bkalb\b[\s\S]{0,40}\balbany\b
-      | \balbany\b[\s\S]{0,40}\bkalb\b
+      | \bkalb\b[\s\S]{0,80}\balbany\b
+      | \balbany\b[\s\S]{0,80}\bkalb\b
       # I-90 visibility bridges in the City of Rensselaer often omit ", NY".
       | (?:bridge\s+over\s+)?i-?90[\s\S]{0,60}\brensselaer\b
       | \brensselaer\b[\s\S]{0,60}(?:bridge\s+over\s+)?i-?90
@@ -5062,12 +5066,17 @@ def _albany_operative_conflict(haystack: str) -> bool:
 
 
 def _albany_statehouse_metonym_conflict(haystack: str) -> bool:
-    """True when 'dysfunctional Albany' is state-government metonym, not the city.
+    """True when Albany is state-government metonym, not Cap Region city news.
 
-    Statewide chamber / Senate copy uses Albany as shorthand for Albany politics
-    without Cap Region place news. Local civic anchors still rescue.
+    Statewide chamber / Senate copy ("dysfunctional Albany") and legislature-as-actor
+    phrasing ("Albany sent rebate checks") use the capital as shorthand without Cap
+    Region place news. Local civic anchors still rescue.
     """
-    if not re.search(r'\bdysfunctional\s+albany\b', haystack, flags=re.IGNORECASE):
+    if not re.search(
+        r'\bdysfunctional\s+albany\b|\balbany\s+sent\b',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
         return False
     if _ALBANY_WIRE_LOCAL_RESCUE.search(haystack) or _ALBANY_LOCAL_RESCUE.search(haystack):
         return False
