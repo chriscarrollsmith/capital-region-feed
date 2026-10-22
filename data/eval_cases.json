@@ -12014,5 +12014,359 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-10-17 audit FN: NY Leandra's Law unlocks Cap Region Rotterdam"
+  },
+  {
+    "id": "fp-victoria-oak-bay-saanich-capital-region",
+    "text": "How are people in the Capital region (Victoria, Oak Bay, Saanich, etc.) feeling about the election results thus far...",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-18 audit: Greater Victoria municipalities without BC next to capital region"
+  },
+  {
+    "id": "tp-capital-region-albany-early-voting",
+    "text": "How are people in the Capital Region near Albany feeling about early voting this weekend?",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-18 audit: Cap Region counterpart to Victoria BC FP"
+  },
+  {
+    "id": "fp-east-brunswick-nj-usps",
+    "text": "BLUE BOX: 314 DOGWOOD ST, PARK FOREST IL 60466\nBLUE BOX: 12 MYRON PL, EAST BRUNSWICK NJ 08816\nBLUE BOX: 156 WINCHESTER ST, BROOKLINE MA 02446\nBLUE BOX: 5691 STATE ROUTE 52, KENOZA LAKE NY 12750",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-18 audit: East Brunswick NJ USPS dump unlocked by off-region NY ZIP"
+  },
+  {
+    "id": "fp-bethlehem-nh-usps",
+    "text": "BLUE BOX: 2159 MAIN ST, BETHLEHEM NH 03574\nPO LOBBY: 152 S 2ND ST, JEFFERSON OR 97352\nBLUE BOX: 1178 YONKERS AVE, YONKERS NY 10704\nBLUE BOX: 155 WADSWORTH DR, N CHESTERFLD VA 23236",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-18 audit: Bethlehem NH USPS dump unlocked by Yonkers NY"
+  },
+  {
+    "id": "fp-tartarian-city-of-troy",
+    "text": "Odin, a survivor of destruction of a Tartarian city of Troy. He brought civilization to northern Europe among the Germanic tribes.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-18 audit: Tartarian myth city of Troy strong positive"
+  },
+  {
+    "id": "tp-city-of-troy-paving",
+    "text": "City of Troy announces downtown paving for October near the Collar City.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-18 audit: municipal City of Troy counterpart to Tartarian myth FP"
+  },
+  {
+    "id": "fp-newtonvillebooks-boston",
+    "text": "Book launch on Wed, Nov. 18, at @newtonvillebooks.bsky.social - hope Boston area friends can join! #booksky",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-18 audit: Newtonville Books MA handle matched newtonville strong prefix"
+  },
+  {
+    "id": "tp-newtonville-colonie-avenue",
+    "text": "Road work on Newtonville Avenue in Colonie near #AlbanyNY.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-18 audit: Colonie Newtonville counterpart to Newton MA bookstore FP"
+  },
+  {
+    "id": "fn-genesis-live-saratoga-springs-1978",
+    "text": "youtu.be/2rtJsIelMaY",
+    "expected": true,
+    "signal": "text",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Genesis - Live in Saratoga Springs - July 31st, 1978 - NEW SOUNDBOARD YouTube video by Genesis Live Archive",
+    "note": "2026-10-18 audit: SPAC bootleg Live in Saratoga Springs without NY; Utah/Disney gates still apply"
+  },
+  {
+    "id": "fn-im-in-saratoga-springs-weekend",
+    "text": "I'm in Saratoga Springs this weekend and legit no bars are playing any PL games.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-19 audit FN: first-person presence in Saratoga Springs without , NY"
+  },
+  {
+    "id": "tn-im-in-saratoga-springs-utah",
+    "text": "I'm in Saratoga Springs, Utah for the temple open house",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-19 audit: Utah conflict retained for I'm-in strong"
+  },
+  {
+    "id": "fn-saratoga-music-hall-home-made-theater",
+    "text": "Home Made Theater (HMT) opened their 2026-2027 theater season with Clue: On Stage at the Saratoga Music Hall.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-19 audit FN: Saratoga Music Hall / Home Made Theater without , NY"
+  },
+  {
+    "id": "fn-saratoga-springs-theater-company-card",
+    "text": "aroundtownwithamymodesti.substack.com/p/review-hom...",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "REVIEW – Home Made Theater Presents Clue: On Stage Saratoga Springs theater company opened its 2026-2027 season with the 2017 production of Clue: On Stage",
+    "note": "2026-10-19 audit FN: Saratoga Springs theater company card"
+  },
+  {
+    "id": "tp-saratoga-springs-ny-wing-off",
+    "text": "Hundreds lined downtown Saratoga Springs, NY for this year's Wing Off.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-19 audit TP counterpart: Saratoga Springs NY dateline"
+  },
+  {
+    "id": "fn-concert-in-saratoga-springs-ranks",
+    "text": "With over 200+ concerts under my belt, this concert in Saratoga Springs easily ranks in the top 3.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-20 audit FN: concert in Saratoga Springs without , NY"
+  },
+  {
+    "id": "tn-concert-in-saratoga-springs-utah",
+    "text": "Temple open house concert in Saratoga Springs, Utah this weekend",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-20 audit: Utah conflict retained for concert-in strong"
+  },
+  {
+    "id": "tn-concert-in-saratoga-springs-disney",
+    "text": "Disney World concert in Saratoga Springs resort tonight",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-20 audit: Disney conflict retained for concert-in strong"
+  },
+  {
+    "id": "fn-albany-common-council-commuter-tax-card",
+    "text": "Pushback mounts against Albany #CommuterTax proposal",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "Work at the Capital? Albany wants a cut of your paycheck Some members of Albany's Common Council are considering a proposal to tax nonresident commuters to address a significant budget deficit",
+    "note": "2026-10-20 audit FN: Albany Common Council / Capital commuter-tax card without , NY"
+  },
+  {
+    "id": "tp-albany-common-council-budget",
+    "text": "Albany Common Council votes on the budget tonight.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-20 audit TP counterpart: bare Albany Common Council without @wamc"
+  },
+  {
+    "id": "tp-ballston-lake-bare-1021",
+    "text": "Ballston Lake is quiet this morning.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-21 TP: Saratoga County hamlet Ballston Lake keeps without , NY"
+  },
+  {
+    "id": "tp-ballston-lake-saratoga-childhood-1021",
+    "text": "Wait. There's a Saratoga Springs themed resort? We used to go to that city when I was a young kid because my grandparents lived down the road in Ballston Lake. Went to some park or something.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-21 FN: Saratoga Springs childhood + Ballston Lake was ambiguous_no_context"
+  },
+  {
+    "id": "tn-disney-saratoga-counterpart-1021",
+    "text": "Oh yes! Saratoga Springs Resort and Spa is our home resort for Disney Vacation Club.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-21 TN: Disney Saratoga Springs still drops beside Ballston Lake recall"
+  },
+  {
+    "id": "fp-albany-operative-statewide-pac-1021",
+    "text": "A longtime Albany operative has joined forces with local lawmakers for a statewide push against anti-Jewish hate. New York Dems launch PAC.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-21 FP: Albany operative statewide PAC jargon with NY context"
+  },
+  {
+    "id": "tp-albany-operative-capital-region-1021",
+    "text": "A longtime Albany operative spoke at the Capital Region forum downtown.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-21 TP counterpart: Albany operative + Capital Region keeps"
+  },
+  {
+    "id": "fp-dysfunctional-albany-ny-senate-1021",
+    "text": "Just an indication of how dysfunctional Albany can be, that the Dems took over from the Dems. NY Senate: Dem to Dem.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-21 FP: dysfunctional Albany statehouse metonym with NY Senate"
+  },
+  {
+    "id": "tp-dysfunctional-albany-common-council-1021",
+    "text": "The dysfunctional Albany Common Council still cannot pass a budget.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-21 TP counterpart: dysfunctional Albany Common Council keeps"
+  },
+  {
+    "id": "fp-albany-hashtag-medicare-statewide-1021",
+    "text": "Beware of Medicare Enrollment Scams! #USA #Albany #Medicare #scams",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "The New York StateWide Senior Action Council warns seniors about potential Medicare scams during the open enrollment period.",
+    "note": "2026-10-21 FP: #Albany geotag + New York StateWide Medicare card"
+  },
+  {
+    "id": "tp-albany-hashtag-capital-region-1021",
+    "text": "Snow advisory tonight for the Capital Region #Albany",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-21 TP counterpart: #Albany with Capital Region keeps"
+  },
+  {
+    "id": "fp-albany-sent-ny17-rebate-1022",
+    "text": "Costs are the top issue in NY-17. My guys made sure Albany sent rebate checks, free school lunches, and a property tax cap. Vote for the people who touched your wallet kindly.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-22 FP: Albany-as-legislature 'sent rebate checks' in off-region NY-17 race card"
+  },
+  {
+    "id": "tp-albany-sent-crews-albanyny-1022",
+    "text": "Albany sent crews to clear Central Ave after the storm near #AlbanyNY.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-22 TP counterpart: Albany sent + #AlbanyNY local rescue"
+  },
+  {
+    "id": "tp-live-from-saratoga-springs-1022",
+    "text": "Join us live from Saratoga Springs – details and free livestream at the link.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-22 FN: live from Saratoga Springs livestream/reading cards"
+  },
+  {
+    "id": "tn-disney-saratoga-live-from-counterpart-1022",
+    "text": "Oh yes! Saratoga Springs Resort and Spa is our home resort for Disney Vacation Club.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-22 TN: Disney Saratoga still drops after live-from recall"
+  },
+  {
+    "id": "tp-kalb-albany-outbound-adsb-1022",
+    "text": "Howard Lutnick's Embraer Lineage 1000E just closed a 1h 14m Albany → Ronald Reagan Washington National run.\nKALB → KDCA\n\nAggregated from public ADS-B.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-22 FN: Albany↔KALB ADS-B cards with long destination names between tokens"
+  },
+  {
+    "id": "tn-kalb-tv-alexandria-la-1022",
+    "text": "KALB News at 6: Alexandria city council approved the budget tonight in Louisiana.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-22 TN: KALB-TV Alexandria LA still drops"
+  },
+  {
+    "id": "tp-rensselear-amtrak-typo-1022",
+    "text": "They combine the Adirondack with Maple Leaf trains at Rensselear (Albany) during the loco change.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-22 FN: common Rensselear misspelling for City of Rensselaer Amtrak stop"
   }
 ]
