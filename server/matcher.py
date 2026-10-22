@@ -86,10 +86,22 @@ _STRONG_POSITIVE = re.compile(
       | averill\s+park
       # Wire datelines often use "N.Y." with periods.
       | saratoga\s+springs\s*,?\s*(?:ny|n\.y\.|new\s+york)
+      # Concert/bootleg cards often say "Live in Saratoga Springs" without ", NY".
+      # First-person "I'm in Saratoga Springs this weekend" likewise omits ", NY".
+      # "this concert in Saratoga Springs" travel posts similarly omit ", NY".
+      # Utah / Disney conflicts still gate non-NY resorts.
+      | live\s+(?:in|at)\s+saratoga\s+springs\b
+      | i(?:['\u2019]?m|\s+am)\s+in\s+saratoga\s+springs\b
+      | concert\s+(?:in|at)\s+saratoga\s+springs\b
+      # Distinctive Saratoga Springs venues / companies often omit ", NY".
+      | saratoga\s+music\s+hall\b
+      | home\s+made\s+theater\b
+      | saratoga\s+springs\s+theater\b
       # Require a word boundary after "ny" so "Troy Nyhammer" does not match.
       | (?<!\d\s)(?<![\w.])troy(?![\w@.-])\s*,?\s*(?:ny\b|n\.y\.|new\s+york)
       | boght\s+corners
-      | newtonville
+      # Word boundary so @newtonvillebooks.bsky.social (Newton MA) does not match.
+      | \bnewtonville\b
       | \bcoeymans\b
       # Word boundary: Belgian sculptor "van Helderbergh" must not match.
       | \bhelderbergs?\b
@@ -103,6 +115,11 @@ _STRONG_POSITIVE = re.compile(
       | albany['\u2019]?s\s+corporation\s+counsel\b
       | corporation\s+counsel[\s\S]{0,80}\balbany\b
       | \balbany\b[\s\S]{0,80}corporation\s+counsel\b
+      # City of Albany legislature — often in cards without ", NY".
+      | albany['\u2019]?s\s+common\s+council\b
+      | albany\s+common\s+council\b
+      | common\s+council[\s\S]{0,80}\balbany\b
+      | \balbany\b[\s\S]{0,80}common\s+council\b
       | university\s+at\s+albany
       | \bualbany\b
       | \balbany\.edu\b
@@ -461,6 +478,7 @@ _STRONG_POSITIVE = re.compile(
       | \bfrear\s+park\b
       | troy\s+city\s+(?:officials?|council|hall|school)\b
       # Municipal "City of Troy" — not "ancient city of Troy" (Turkey archaeology).
+      # Tartarian myth "city of Troy" is gated in ``_troy_ancient_conflict``.
       | (?<!ancient\s)\bcity\s+of\s+troy\b
       # Crossings of Colonie (town park) often omits ", NY".
       | crossings\s+of\s+colonie\b
@@ -852,6 +870,8 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
       | capital\s+region\b[\s\S]{0,80}berlin[- ]brandenburg
       # NJ street — not Town of Brunswick NY.
       | brunswick\s+pike\b
+      # East Brunswick Township NJ (USPS dumps) — not Town of Brunswick NY.
+      | east\s+brunswick\b
       # NYC / Chicago street names — not City of Albany / City of Troy.
       # Otherwise ``south albany`` strong can override ``Albany Avenue`` / ``Troy Street``.
       | albany\s+(?:ave(?:nue)?|av)\b
@@ -984,6 +1004,8 @@ _CANADIAN_GEO_CUE = (
     r'🇨🇦|'
     r'\#yyj\b|\#bcpoli\b|british\s+columbia|\blangford\b|'
     r'victoria(?:\s*,?\s*bc\b)|greater\s+victoria|victoria\.ca|'
+    # Greater Victoria municipalities often listed without "BC" after bare Victoria.
+    r'\boak\s+bay\b|\bsaanich\b|'
     r'\bgoldstream\b|vancouver\s*island|vancouverisland|peers\s+victoria|'
     r'restoreislandrail|'
     r'\bsooke\b|south\s+island|firesmoke\.ca|'
@@ -1640,6 +1662,7 @@ _NEWTONVILLE_MA = re.compile(
             village\s+day|setti\s+(?:d\.?\s+)?warren|marc\s+laredo|
             austin\s+street|john\s+kerry|newton\s+turned\s+out|
             newtonville\s+books|langley\s+rd|newtonvillebooks\.com|
+            newtonvillebooks(?:\.bsky\.social)?|
             \bmassachusetts\b|\#massachusetts\b
         )
       | (?:
@@ -1649,6 +1672,7 @@ _NEWTONVILLE_MA = re.compile(
             village\s+day|setti\s+(?:d\.?\s+)?warren|marc\s+laredo|
             austin\s+street|john\s+kerry|newton\s+turned\s+out|
             newtonville\s+books|langley\s+rd|newtonvillebooks\.com|
+            newtonvillebooks(?:\.bsky\.social)?|
             \bmassachusetts\b|\#massachusetts\b
         )[\s\S]{0,220}newtonville
       | newtonville\s*,?\s*(?:nj|n\.j\.|new\s+jersey|ma|m\.a\.|massachusetts)\b
@@ -1656,6 +1680,7 @@ _NEWTONVILLE_MA = re.compile(
       | \bma\s*[-–—]\s*newtonville\b
       | \bmassachusetts\s*[-–—]\s*newtonville\b
       | newtonville\s+books\b
+      | newtonvillebooks(?:\.bsky\.social)?\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -2636,15 +2661,19 @@ _CLIFTON_PARK_OH = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
-# Bethlehem, Pennsylvania (SteelStacks / Lehigh Valley) or Bethlehem, Maryland
-# (USPS / Eastern Shore) — not Town of Bethlehem NY.
+# Bethlehem, Pennsylvania (SteelStacks / Lehigh Valley), Bethlehem, Maryland
+# (USPS / Eastern Shore), or Bethlehem, New Hampshire — not Town of Bethlehem NY.
 _BETHLEHEM_PA = re.compile(
     r"""
     (?:
-        bethlehem\s*,?\s*(?:pa|pennsylvania|md|maryland)\b
+        bethlehem\s*,?\s*(?:pa|pennsylvania|md|maryland|nh|n\.h\.|new\s+hampshire)\b
       | bethlehem\s+area\b
-      | bethlehem[\s\S]{0,160}\b(?:pa|pennsylvania|philly|philadelphia|md|maryland)\b
-      | \b(?:pa|pennsylvania|philly|philadelphia|md|maryland)\b[\s\S]{0,160}bethlehem
+      | bethlehem[\s\S]{0,160}\b(?:
+            pa|pennsylvania|philly|philadelphia|md|maryland|nh|n\.h\.|new\s+hampshire
+          )\b
+      | \b(?:
+            pa|pennsylvania|philly|philadelphia|md|maryland|nh|n\.h\.|new\s+hampshire
+          )\b[\s\S]{0,160}bethlehem
       # Travel/heritage cards often omit ", PA" (CNN steel town / UNESCO / SteelStacks).
       # Lehigh Valley Morning Call / Allentown–Easton civic copy likewise omits ", PA".
       | bethlehem[\s\S]{0,220}(?:
@@ -3126,6 +3155,8 @@ _HARD_NEGATIVE = re.compile(
       | capital\s+region\b[\s\S]{0,80}berlin[- ]brandenburg
       # NJ street — not Town of Brunswick NY.
       | brunswick\s+pike\b
+      # East Brunswick Township NJ (USPS dumps) — not Town of Brunswick NY.
+      | east\s+brunswick\b
       | capital\s+region\s+of\s+(?:
             madrid|spain|belgium|brussels|paris|france|berlin|germany|
             tokyo|seoul|beijing|delhi|ottawa|canberra|rome|italy|
@@ -3839,7 +3870,11 @@ def _peru_capital_region_conflict(haystack: str) -> bool:
 
 def _newtonville_ma_conflict(haystack: str) -> bool:
     """True when Newtonville refers to Boston Newton / MBTA / NJ, not Colonie NY."""
-    if not re.search(r'\bnewtonville\b', haystack, flags=re.IGNORECASE):
+    if not re.search(
+        r'\bnewtonville\b|newtonvillebooks(?:\.bsky\.social)?\b',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
         return False
     if not _NEWTONVILLE_MA.search(haystack):
         return False
@@ -4404,7 +4439,7 @@ def _gta_albany_conflict(haystack: str) -> bool:
 
 
 def _bethlehem_pa_conflict(haystack: str) -> bool:
-    """True when Bethlehem refers to PA or MD, not Town of Bethlehem NY."""
+    """True when Bethlehem refers to PA, MD, or NH, not Town of Bethlehem NY."""
     if not re.search(r'\bbethlehem\b', haystack, flags=re.IGNORECASE):
         return False
     if not _BETHLEHEM_PA.search(haystack):
@@ -4791,13 +4826,20 @@ def _troy_person_name_conflict(haystack: str) -> bool:
 
 
 def _troy_ancient_conflict(haystack: str) -> bool:
-    """True when Troy is the Anatolian archaeological site, not City of Troy NY."""
+    """True when Troy is Anatolian archaeology or Tartarian myth, not City of Troy NY."""
     if not re.search(r'\btroy\b', haystack, flags=re.IGNORECASE):
         return False
     if not re.search(
         r"""
         (?:
             ancient\s+city\s+of\s+troy\b
+          | tartarian\s+city\s+of\s+troy\b
+          | \btartarian\b[\s\S]{0,120}\btroy\b
+          | \btroy\b[\s\S]{0,120}\btartarian\b
+          | \bodin\b[\s\S]{0,160}\bcity\s+of\s+troy\b
+          | city\s+of\s+troy\b[\s\S]{0,160}(?:
+                \bodin\b|germanic\s+tribes?|northern\s+europe|distributism
+              )
           | archaeological[\s\S]{0,100}\btroy\b
           | \btroy\b[\s\S]{0,100}archaeological
           | \btroy\b[\s\S]{0,140}(?:
