@@ -538,6 +538,120 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-130 — Daily feed audit: KALB ICAO route-card FNs (fold #109)
+- **Status:** done ([#110](https://github.com/chriscarrollsmith/capital-region-feed/pull/110))
+- **Why:** 2026-10-23 audit of last-24h AppView feed (~64 posts) found no new
+  active matcher FPs among rematch-keeps. Residual served MD/DC Banner
+  "capital region" listicles rematch-drop via existing handle gates after
+  folding #109. Planned `fn_search.py` slate (8) all ran OK with no Cap Region
+  FNs. Ad-hoc `KALB` surfaced CelebPlanes ADS-B hero cards (`KALB → KELM` /
+  `CYUL → KALB`) that omit the Albany token and previously required
+  Albany↔KALB proximity. Not counted: bare `#UpstateNY` photo bots, Lake George
+  / Queensbury tourism (outside core Cap Region / O'Keeffe gate), HVCC clock
+  spam, CBS6 Albany YouTube national clips. Also folds unmerged 2026-10-18..22
+  fixes from #104 / #106 / #107 / #108 / #109 onto main.
+- **Work:**
+  - Strong `KALB →` / `→ KALB` uppercase ICAO route cards (US K*** / Canadian
+    C*** peers); grow eval + fn_search log/strategies; include #109 matcher
+    gates.
+- **Done when:** Audited residual FPs stay dropped; KALB route-card FNs keep;
+  KALB-TV LA / surname Kalb / `NEWS → KALB` still drop; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
+### B-129 — Daily feed audit: Albany-sent statehouse FP; live from Saratoga / KALB window / Rensselear FNs (fold #108)
+- **Status:** done ([#109](https://github.com/chriscarrollsmith/capital-region-feed/pull/109))
+- **Why:** 2026-10-22 audit of last-24h AppView feed (~69 posts) found one new
+  active matcher FP among rematch-keeps: off-region NY-17 politics using
+  "Albany sent rebate checks" as legislature metonym (`albany_with_ny_context`).
+  Allowlisted News10 / Times Union and NWS Albany / Glens Falls climate remain
+  intentional. Rematch already drops 2026-10-21 Albany operative / dysfunctional
+  / `#Albany` geotag FPs after folding #108. Planned `fn_search.py` slate (8)
+  all ran OK; Cap Region FNs: "live from Saratoga Springs", Albany↔KALB ADS-B
+  window (~42 chars), and "Rensselear" Amtrak typo. Ad-hoc confirmations for
+  those queries. Also folds unmerged 2026-10-18..21 fixes from #104 / #106 /
+  #107 / #108 onto main.
+- **Work:**
+  - Extend statehouse metonym for `albany sent`; `live from saratoga springs`;
+    widen Albany↔KALB window; strong `rensselear`; grow eval + fn_search
+    log/strategies; include #108 matcher gates.
+- **Done when:** Audited FP drops; FNs keep; Disney Saratoga / KALB-TV LA
+  counterparts still drop; eval P/R stay 1.000; unit tests cover the new gates.
+
+### B-128 — Daily feed audit: Albany operative / statehouse / #Albany geotag FPs; Ballston Lake FN (fold #107)
+- **Status:** done ([#108](https://github.com/chriscarrollsmith/capital-region-feed/pull/108))
+- **Why:** 2026-10-21 audit of last-24h AppView feed (~67 posts) found active FPs
+  among rematch-keeps: statewide "Albany operative" PAC cards, "dysfunctional
+  Albany" NY Senate metonym, and `#Albany` Medicare geotag unlocked by New York
+  StateWide Senior Action Council cards. Allowlisted News10 / Times Union and
+  NWS Albany / Glens Falls climate remain intentional. Planned `fn_search.py`
+  slate (8) all ran OK; Cap Region FN: Saratoga Springs childhood copy with
+  Ballston Lake (`ambiguous_no_context`). Ad-hoc `Ballston Lake` confirmed the
+  same URI. Also folds unmerged 2026-10-18..20 fixes from #104 / #106 / #107
+  onto main.
+- **Work:**
+  - Strong `ballston lake`; gate `albany operative(s)`, `dysfunctional albany`,
+    and hashtag-only `#albany` geotags (local / Capital Region rescues retained);
+    grow eval + fn_search log/strategies; include #107 matcher gates.
+- **Done when:** Audited FPs drop; Ballston Lake FN keeps; Disney Saratoga
+  counterpart still drops; eval P/R stay 1.000; unit tests cover the new gates.
+
+### B-127 — Daily feed audit: concert in Saratoga Springs / Albany Common Council FNs (fold #107)
+- **Status:** done ([#107](https://github.com/chriscarrollsmith/capital-region-feed/pull/107))
+- **Why:** 2026-10-20 audit of last-24h AppView feed (~66 posts) found no new active
+  matcher FPs among rematch-keeps (allowlisted News10 / Times Union statewide,
+  NWS Albany, Waterford NY vessel alerts intentional). Rematch already drops
+  prior Malta EU / Troy OH / Victoria Oak Bay / East Brunswick / Newtonville
+  Books noise until purge. Planned `fn_search.py` slate (8) all ran OK; 2 Cap
+  Region FNs: "this concert in Saratoga Springs" (`ambiguous_no_context`) and
+  Albany Common Council / Capital commuter-tax card (`bare_albany`). Ad-hoc
+  `concert Saratoga Springs` confirmed the concert FN. Also folds unmerged
+  2026-10-18/19 fixes from #104 / #106 onto main.
+- **Work:**
+  - Strong `concert in/at saratoga springs` (Utah/Disney retained);
+    `albany('s) common council` + windowed pairing; grow eval + fn_search
+    log/strategies; include #106 matcher gates (builds on #106 / B-126).
+- **Done when:** Audited FNs keep; Utah/Disney counterparts drop; eval P/R stay
+  1.000; unit tests cover the new gates.
+
+### B-126 — Daily feed audit: I'm in Saratoga Springs / Saratoga Music Hall / Home Made Theater FNs (fold #104 FPs)
+- **Status:** done ([#106](https://github.com/chriscarrollsmith/capital-region-feed/pull/106))
+- **Why:** 2026-10-19 audit of last-24h AppView feed (~80 posts) found no new active
+  matcher FPs among rematch-keeps (allowlisted News10 / Times Union statewide,
+  NWS Albany, Waterford NY vessel alerts intentional). Rematch already drops
+  prior Malta EU / Troy OH / Waterford Ireland / Newtonville Books noise until
+  purge. Planned `fn_search.py` slate (8) all ran OK; 2 Cap Region FNs from
+  Saratoga Springs plus ad-hoc venue queries: first-person "I'm in Saratoga
+  Springs this weekend" and Home Made Theater at Saratoga Music Hall / "Saratoga
+  Springs theater company" card (`ambiguous_no_context`). Also folds unmerged
+  2026-10-18 FP fixes from #104 onto main.
+- **Work:**
+  - Strong `i'm/i am in saratoga springs`, `saratoga music hall`,
+    `home made theater`, `saratoga springs theater` (Utah/Disney conflicts
+    retained); grow eval + fn_search log/strategies; include #104 matcher
+    gates (builds on #104 / B-125).
+- **Done when:** Audited FNs keep; Utah counterpart drops; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
+### B-125 — Daily feed audit: Victoria Oak Bay/Saanich CR / East Brunswick NJ / Bethlehem NH / Tartarian Troy / Newtonville Books; Live in Saratoga Springs FN
+- **Status:** done ([#104](https://github.com/chriscarrollsmith/capital-region-feed/pull/104))
+- **Why:** 2026-10-18 audit of last-24h AppView feed (~131 posts) found active FPs:
+  Greater Victoria capital-region post listing Oak Bay / Saanich without "BC";
+  East Brunswick NJ USPS dump unlocked by an off-region NY ZIP; Bethlehem NH USPS
+  dump unlocked by Yonkers NY; Tartarian myth "city of Troy" via municipal strong;
+  `@newtonvillebooks` Boston launch matching `newtonville` strong prefix. FN:
+  Genesis "Live in Saratoga Springs" 1978 SPAC bootleg (`ambiguous_no_context`).
+  Planned `fn_search.py` slate (8) all ran OK; 1 Cap Region FN. Residual: allowlisted
+  News10 / Times Union statewide; NWS Albany / Waterford NY vessel alerts intentional;
+  Dutch AD Rotterdam / Malta EU rematch-drops until purge.
+- **Work:**
+  - Add Oak Bay / Saanich to Canadian capital-region cues; `east brunswick` hard
+    negative; Bethlehem NH in Bethlehem other-state gate; Tartarian/Odin Troy
+    ancient conflict; `\bnewtonville\b` strong + newtonvillebooks handle cues;
+    `live in/at saratoga springs` strong (Utah/Disney conflicts retained); grow
+    eval + fn_search log (builds on #102 / B-124).
+- **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-124 — Daily feed audit: Chicago South Albany Ave / Troy MO Rensselaer / Far Rockaway Brunswick / WAMC Springfield; mansion + Leandra FNs
 - **Status:** done ([#102](https://github.com/chriscarrollsmith/capital-region-feed/pull/102))
 - **Why:** 2026-10-17 audit of last-24h AppView feed (~116 posts) found active FPs:
