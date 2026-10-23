@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-130 — Daily feed audit: KALB ICAO route-card FNs (fold #109)
-- **Status:** in progress
+- **Status:** done ([#110](https://github.com/chriscarrollsmith/capital-region-feed/pull/110))
 - **Why:** 2026-10-23 audit of last-24h AppView feed (~64 posts) found no new
   active matcher FPs among rematch-keeps. Residual served MD/DC Banner
   "capital region" listicles rematch-drop via existing handle gates after
