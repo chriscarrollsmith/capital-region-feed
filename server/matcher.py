@@ -659,6 +659,11 @@ _STRONG_POSITIVE = re.compile(
       | albany\s+international(?:\s+airport)?\b
       | \bkalb\b[\s\S]{0,80}\balbany\b
       | \balbany\b[\s\S]{0,80}\bkalb\b
+      # CelebPlanes / ADS-B hero cards: "KALB → KELM" / "CYUL → KALB" with no Albany token.
+      # Uppercase ICAO only — not KALB News / surname Kalb. Peer is US K*** or
+      # Canadian C*** so English shout-tokens like "NEWS → KALB" stay dropped.
+      | (?-i:\bKALB\b)\s*[→\->]+\s*(?-i:\b[KC][A-Z0-9]{3}\b)
+      | (?-i:\b[KC][A-Z0-9]{3}\b)\s*[→\->]+\s*(?-i:\bKALB\b)
       # I-90 visibility bridges in the City of Rensselaer often omit ", NY".
       | (?:bridge\s+over\s+)?i-?90[\s\S]{0,60}\brensselaer\b
       | \brensselaer\b[\s\S]{0,60}(?:bridge\s+over\s+)?i-?90

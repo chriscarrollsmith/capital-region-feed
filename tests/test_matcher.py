@@ -5402,3 +5402,25 @@ def test_live_from_saratoga_kalb_window_rensselear_recall() -> None:
     )
     assert rensselear.matched is True
     assert rensselear.reason == 'strong_positive'
+
+
+def test_kalb_icao_route_card_without_albany() -> None:
+    """ADS-B hero cards keep on KALB↔peer ICAO arrows without an Albany token."""
+    outbound = match_post('Corning · KALB → KELM · 31m. Hero card with photo and route.')
+    assert outbound.matched is True
+    assert outbound.reason == 'strong_positive'
+    inbound = match_post('Lawrence Stroll · CYUL → KALB · 29m. Hero card with photo and route.')
+    assert inbound.matched is True
+    assert inbound.reason == 'strong_positive'
+    ascii_arrow = match_post('KALB -> KCVG night flight from Albany International.')
+    assert ascii_arrow.matched is True
+    assert ascii_arrow.reason == 'strong_positive'
+
+    kalb_tv = match_post(
+        'KALB News at 6: Alexandria city council approved the budget tonight in Louisiana.'
+    )
+    assert kalb_tv.matched is False
+    surname = match_post('Historian Marvin Kalb spoke about the election in Washington.')
+    assert surname.matched is False
+    shout_token = match_post('NEWS → KALB evening broadcast from the capital desk.')
+    assert shout_token.matched is False
