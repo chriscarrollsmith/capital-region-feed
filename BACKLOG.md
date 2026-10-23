@@ -538,6 +538,26 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-130 — Daily feed audit: KALB ICAO route-card FNs (fold #109)
+- **Status:** in progress
+- **Why:** 2026-10-23 audit of last-24h AppView feed (~64 posts) found no new
+  active matcher FPs among rematch-keeps. Residual served MD/DC Banner
+  "capital region" listicles rematch-drop via existing handle gates after
+  folding #109. Planned `fn_search.py` slate (8) all ran OK with no Cap Region
+  FNs. Ad-hoc `KALB` surfaced CelebPlanes ADS-B hero cards (`KALB → KELM` /
+  `CYUL → KALB`) that omit the Albany token and previously required
+  Albany↔KALB proximity. Not counted: bare `#UpstateNY` photo bots, Lake George
+  / Queensbury tourism (outside core Cap Region / O'Keeffe gate), HVCC clock
+  spam, CBS6 Albany YouTube national clips. Also folds unmerged 2026-10-18..22
+  fixes from #104 / #106 / #107 / #108 / #109 onto main.
+- **Work:**
+  - Strong `KALB →` / `→ KALB` uppercase ICAO route cards (US K*** / Canadian
+    C*** peers); grow eval + fn_search log/strategies; include #109 matcher
+    gates.
+- **Done when:** Audited residual FPs stay dropped; KALB route-card FNs keep;
+  KALB-TV LA / surname Kalb / `NEWS → KALB` still drop; eval P/R stay 1.000;
+  unit tests cover the new gates.
+
 ### B-129 — Daily feed audit: Albany-sent statehouse FP; live from Saratoga / KALB window / Rensselear FNs (fold #108)
 - **Status:** done ([#109](https://github.com/chriscarrollsmith/capital-region-feed/pull/109))
 - **Why:** 2026-10-22 audit of last-24h AppView feed (~69 posts) found one new

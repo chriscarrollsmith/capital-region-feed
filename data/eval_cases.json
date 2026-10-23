@@ -12368,5 +12368,80 @@
     "split": "dev",
     "regression": true,
     "note": "2026-10-22 FN: common Rensselear misspelling for City of Rensselaer Amtrak stop"
+  },
+  {
+    "id": "tp-kalb-icao-outbound-kelm-1023",
+    "text": "Wheels down for Corning at KELM. 31m on N28CG, the Bombardier Challenger 850.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Corning · KALB → KELM · 31m. Hero card with photo and route.",
+    "note": "2026-10-23 FN: CelebPlanes KALB→KELM route card without Albany token"
+  },
+  {
+    "id": "tp-kalb-icao-outbound-kcvg-1023",
+    "text": "Wheels down for General Electric at KCVG. 1h 40m on N120GE, the HondaJet HA-420.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "General Electric · KALB → KCVG · 1h 40m. Hero card with photo and route.",
+    "note": "2026-10-23 FN: CelebPlanes KALB→KCVG route card without Albany token"
+  },
+  {
+    "id": "tp-kalb-icao-inbound-cyul-1023",
+    "text": "Wheels down for Lawrence Stroll at KALB. 29m on OE-LSS, the Bombardier Global 7500.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Lawrence Stroll · CYUL → KALB · 29m. Hero card with photo and route.",
+    "note": "2026-10-23 FN: CelebPlanes CYUL→KALB inbound card without Albany token"
+  },
+  {
+    "id": "tn-kalb-tv-alexandria-1023",
+    "text": "KALB News at 6: Alexandria city council approved the budget tonight in Louisiana.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-23 TN: KALB-TV Alexandria LA still drops after ICAO route-card recall"
+  },
+  {
+    "id": "tn-kalb-shout-news-arrow-1023",
+    "text": "NEWS → KALB evening broadcast from the capital desk.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-23 TN: English shout-token arrow must not unlock KALB ICAO route recall"
+  },
+  {
+    "id": "fp-md-dc-banner-battle-bands-1023",
+    "text": "7 things to do in the capital region, including a battle of the bands",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "author_handle": "bannerpgcounty.bsky.social",
+    "note": "2026-10-23 residual feed FP: MD/DC Banner capital region listicle (already gated; fold confirm)"
+  },
+  {
+    "id": "fp-md-dc-bannermoco-battle-bands-1023",
+    "text": "7 things to do in the capital region, including a battle of the bands",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "author_handle": "bannermoco.bsky.social",
+    "note": "2026-10-23 residual feed FP: MoCo Banner capital region listicle (already gated; fold confirm)"
   }
 ]
