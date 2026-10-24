@@ -12443,5 +12443,95 @@
     "regression": true,
     "author_handle": "bannermoco.bsky.social",
     "note": "2026-10-23 residual feed FP: MoCo Banner capital region listicle (already gated; fold confirm)"
+  },
+  {
+    "id": "fp-rest-of-albany-sd27-1024",
+    "text": "Attention voters in the NY State Senate District 27. Early voting begins this Saturday. Important message to send to Grace Lee and the rest of Albany.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-24 FP: rest of Albany as statehouse audience in off-region SD-27 write-in"
+  },
+  {
+    "id": "tp-rest-of-albany-county-1024",
+    "text": "The rest of Albany County is under a wind advisory tonight.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-24 TP counterpart: rest of Albany County stays Cap Region"
+  },
+  {
+    "id": "tp-rest-of-albany-capital-region-1024",
+    "text": "The rest of Albany turned out for the Capital Region festival downtown.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-24 TP counterpart: rest of Albany + Capital Region rescue"
+  },
+  {
+    "id": "fp-cba-monsignor-martin-canisius-1024",
+    "text": "Canisius assistant football coach Paul Woods resigned rather than serve a one-year Monsignor Martin suspension for making contact with a referee after Saturday's game against Christian Brothers Academy.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-24 FP: Buffalo News Monsignor Martin / Canisius vs bare Christian Brothers Academy"
+  },
+  {
+    "id": "tp-cba-section2-saratoga-1024",
+    "text": "Saratoga Springs traveling to Christian Brothers Academy in a rematch of the Class AA sectional championship game.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-24 TP counterpart: Cap Region Section 2 CBA still keeps"
+  },
+  {
+    "id": "tp-cba-albany-hosts-1024",
+    "text": "Christian Brothers Academy Albany hosts the sectional final Saturday.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-24 TP counterpart: CBA Albany still keeps"
+  },
+  {
+    "id": "tp-show-in-saratoga-springs-1024",
+    "text": "Outstanding show in Saratoga Springs tonight",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-24 FN: show in Saratoga Springs without , NY"
+  },
+  {
+    "id": "tp-saratoga-springs-show-ticket-1024",
+    "text": "Sorry I can't use my ticket but Saratoga Springs show was OUT-FREAKING-STANDING",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-24 FN: Saratoga Springs show ticket/review without , NY"
+  },
+  {
+    "id": "tn-disney-saratoga-show-counterpart-1024",
+    "text": "Outstanding show in Saratoga Springs Resort at Disney tonight",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-24 TN: Disney Saratoga still drops after show-in recall"
   }
 ]

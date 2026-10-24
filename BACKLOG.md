@@ -538,6 +538,29 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-131 — Daily feed audit: rest-of-Albany / CBA Monsignor Martin FPs; Saratoga show FNs
+- **Status:** in progress
+- **Why:** 2026-10-24 audit of last-24h AppView feed (~74 posts) found two new
+  active matcher FPs among rematch-keeps: off-region NY Senate District 27
+  write-in using "the rest of Albany" as statehouse audience
+  (`albany_with_ny_context`), and Buffalo News Monsignor Martin / Canisius copy
+  unlocked by bare `Christian Brothers Academy` strong token. Residual served
+  MD/DC Banner "capital region" listicles and prior Albany-sent / Albany
+  operative posts rematch-drop via existing gates. Planned `fn_search.py` slate
+  (8) all ran OK; Cap Region FNs: "show in Saratoga Springs" /
+  "Saratoga Springs show" (ad-hoc `show Saratoga Springs` /
+  `tonight Saratoga Springs` also hit). Not counted: Saratoga Springs housing
+  bots without NY disambiguation; Jon Kalb / De Kalb / goldenes Kalb under
+  `KALB`; allowlisted News10 / Times Union non-local; NWS Albany / Glens Falls
+  climate intentional.
+- **Work:**
+  - Extend `_albany_statehouse_metonym_conflict` for `rest of Albany` (not
+    County); Monsignor Martin CBA WNY gate; strong `show in/at` /
+    `Saratoga Springs show`; grow eval + fn_search log/strategies.
+- **Done when:** Audited FPs drop; Saratoga show FNs keep; Disney/Utah and
+  Section 2 CBA counterparts stay correct; eval P/R stay 1.000; unit tests
+  cover the new gates.
+
 ### B-130 — Daily feed audit: KALB ICAO route-card FNs (fold #109)
 - **Status:** done ([#110](https://github.com/chriscarrollsmith/capital-region-feed/pull/110))
 - **Why:** 2026-10-23 audit of last-24h AppView feed (~64 posts) found no new
