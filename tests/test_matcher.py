@@ -5341,6 +5341,19 @@ def test_albany_operative_statehouse_hashtag_precision() -> None:
     )
     assert albany_sent_local.matched is True
 
+    rest_of = match_post(
+        'Attention voters in the NY State Senate District 27. Early voting begins '
+        'this Saturday. Important message to send to Grace Lee and the rest of Albany.'
+    )
+    assert rest_of.matched is False
+    assert rest_of.reason == 'hard_negative:albany_statehouse_metonym'
+    rest_of_county = match_post('The rest of Albany County is under a wind advisory tonight.')
+    assert rest_of_county.matched is True
+    rest_of_local = match_post(
+        'The rest of Albany turned out for the Capital Region festival downtown.'
+    )
+    assert rest_of_local.matched is True
+
     geotag = match_post(
         'Beware of Medicare Enrollment Scams! #USA #Albany #Medicare #scams',
         alt_text=(
@@ -5352,6 +5365,39 @@ def test_albany_operative_statehouse_hashtag_precision() -> None:
     assert geotag.reason == 'hard_negative:albany_hashtag_geotag'
     geotag_local = match_post('Snow advisory tonight for the Capital Region #Albany')
     assert geotag_local.matched is True
+
+
+def test_christian_brothers_wny_precision() -> None:
+    wny = match_post(
+        'Canisius assistant football coach Paul Woods resigned rather than serve a '
+        'one-year Monsignor Martin suspension for making contact with a referee after '
+        "Saturday's game against Christian Brothers Academy."
+    )
+    assert wny.matched is False
+    assert wny.reason == 'hard_negative:christian_brothers_wny'
+    section2 = match_post(
+        'Saratoga Springs traveling to Christian Brothers Academy in a rematch of '
+        'the Class AA sectional championship game.'
+    )
+    assert section2.matched is True
+    assert section2.reason == 'strong_positive'
+    albany = match_post('Christian Brothers Academy Albany hosts the sectional final Saturday.')
+    assert albany.matched is True
+    assert albany.reason == 'strong_positive'
+
+
+def test_saratoga_springs_show_recall() -> None:
+    show_in = match_post('Outstanding show in Saratoga Springs tonight')
+    assert show_in.matched is True
+    assert show_in.reason == 'strong_positive'
+    springs_show = match_post(
+        "Sorry I can't use my ticket but Saratoga Springs show was OUT-FREAKING-STANDING"
+    )
+    assert springs_show.matched is True
+    assert springs_show.reason == 'strong_positive'
+    disney = match_post('Outstanding show in Saratoga Springs Resort at Disney tonight')
+    assert disney.matched is False
+    assert disney.reason == 'hard_negative:disney_saratoga'
 
 
 def test_saratoga_music_hall_home_made_theater_recall() -> None:
