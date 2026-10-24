@@ -99,6 +99,10 @@ _STRONG_POSITIVE = re.compile(
       | live\s+(?:in|at|from)\s+saratoga\s+springs\b
       | i(?:['\u2019]?m|\s+am)\s+in\s+saratoga\s+springs\b
       | concert\s+(?:in|at)\s+saratoga\s+springs\b
+      # Ticket / review cards say "show in Saratoga Springs" or "Saratoga Springs show"
+      # without ", NY". Utah / Disney conflicts still gate non-NY resorts.
+      | show\s+(?:in|at)\s+saratoga\s+springs\b
+      | saratoga\s+springs\s+show\b
       # Distinctive Saratoga Springs venues / companies often omit ", NY".
       | saratoga\s+music\s+hall\b
       | home\s+made\s+theater\b
@@ -5073,17 +5077,43 @@ def _albany_operative_conflict(haystack: str) -> bool:
 def _albany_statehouse_metonym_conflict(haystack: str) -> bool:
     """True when Albany is state-government metonym, not Cap Region city news.
 
-    Statewide chamber / Senate copy ("dysfunctional Albany") and legislature-as-actor
-    phrasing ("Albany sent rebate checks") use the capital as shorthand without Cap
-    Region place news. Local civic anchors still rescue.
+    Statewide chamber / Senate copy ("dysfunctional Albany"), legislature-as-actor
+    phrasing ("Albany sent rebate checks"), and "the rest of Albany" as the capital
+    audience use the capital as shorthand without Cap Region place news. Local civic
+    anchors still rescue. "Rest of Albany County" is Cap Region and does not match.
     """
     if not re.search(
-        r'\bdysfunctional\s+albany\b|\balbany\s+sent\b',
+        r'\bdysfunctional\s+albany\b|\balbany\s+sent\b|'
+        r'\brest\s+of\s+albany(?!\s+county)\b',
         haystack,
         flags=re.IGNORECASE,
     ):
         return False
     if _ALBANY_WIRE_LOCAL_RESCUE.search(haystack) or _ALBANY_LOCAL_RESCUE.search(haystack):
+        return False
+    return True
+
+
+def _christian_brothers_wny_conflict(haystack: str) -> bool:
+    """True when Christian Brothers Academy is Monsignor Martin / WNY sports.
+
+    Cap Region CBA (Section 2) is a strong local token, but Buffalo Monsignor Martin
+    league copy about Canisius vs CBA is Western NY. Albany / Colonie / Section 2 /
+    Capital Region anchors still rescue.
+    """
+    if not re.search(r'christian\s+brothers\s+academy\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not re.search(r'monsignor\s+martin\b', haystack, flags=re.IGNORECASE):
+        return False
+    if re.search(
+        r'(?:'
+        r'christian\s+brothers\s+academy\s*,?\s*(?:albany|ny|n\.y\.)\b|'
+        r'\balbany\b|\bcolonie\b|\bsection\s+2\b|'
+        r'capital\s+(?:region|district)\b|\#albanyny\b'
+        r')',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
         return False
     return True
 
@@ -5659,6 +5689,8 @@ def _propose_candidate(
             return MatchResult(False, 'hard_negative:disney_saratoga')
         if _saratoga_springs_utah_conflict(haystack, author_handle):
             return MatchResult(False, 'hard_negative:saratoga_springs_utah')
+        if _christian_brothers_wny_conflict(haystack):
+            return MatchResult(False, 'hard_negative:christian_brothers_wny')
         if _egg_kansas_city_conflict(haystack):
             return MatchResult(False, 'hard_negative:egg_off_region')
         if _saratoga_stakes_away_conflict(haystack):
