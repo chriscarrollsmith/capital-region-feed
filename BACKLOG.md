@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-131 — Daily feed audit: rest-of-Albany / CBA Monsignor Martin FPs; Saratoga show FNs
-- **Status:** in progress
+- **Status:** done ([#111](https://github.com/chriscarrollsmith/capital-region-feed/pull/111))
 - **Why:** 2026-10-24 audit of last-24h AppView feed (~74 posts) found two new
   active matcher FPs among rematch-keeps: off-region NY Senate District 27
   write-in using "the rest of Albany" as statehouse audience
