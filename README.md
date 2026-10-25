@@ -1,6 +1,6 @@
 # Capital Region Bluesky Feed
 
-Self-hosted Bluesky custom feed for **Albany, NY / Capital Region**.
+Self-hosted Bluesky custom feed for **Capital Region, NY**.
 
 Replaces the SkyFeed Builder regex feed at:
 
