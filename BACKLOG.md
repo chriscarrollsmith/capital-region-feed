@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-132 — Daily feed audit: out-of-Albany / leadership-to-Albany / N. Albany St FPs; Gideon Putnam / Amtrak SAR / Saratoga vote FNs (fold #111)
-- **Status:** in progress
+- **Status:** done ([#112](https://github.com/chriscarrollsmith/capital-region-feed/pull/112))
 - **Why:** 2026-10-25 audit of last-24h AppView feed (~63 posts) found three new
   active matcher FPs among rematch-keeps: statewide "Keep Blakeman out of
   Albany" unlocked by the Albany↔Hochul strong window; "leadership to Albany"
