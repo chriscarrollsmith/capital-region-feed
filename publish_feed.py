@@ -31,7 +31,7 @@ def main() -> int:
     # Prefer FEEDGEN_HOSTNAME; HOSTNAME collides with the OS/shell variable.
     hostname = os.environ.get('FEEDGEN_HOSTNAME') or os.environ.get('HOSTNAME')
     record_name = os.environ.get('RECORD_NAME', '[REDACTED]')
-    display_name = os.environ.get('DISPLAY_NAME', '[REDACTED]')
+    display_name = os.environ.get('DISPLAY_NAME', 'Capital Region, NY')
     description = os.environ.get(
         'DESCRIPTION',
         "Posts from and about New York's Capital Region.",
