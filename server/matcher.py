@@ -107,6 +107,13 @@ _STRONG_POSITIVE = re.compile(
       | saratoga\s+music\s+hall\b
       | home\s+made\s+theater\b
       | saratoga\s+springs\s+theater\b
+      | gideon\s+putnam\b
+      # Amtrak station code / obstruction copy often omits ", NY".
+      | saratoga\s+springs\s*\(\s*sar\s*\)
+      | south\s+of\s+saratoga\s+springs\b
+      # Early-voting / ballot cards name the city without ", NY".
+      | saratoga\s+springs[\s\S]{0,80}\b(?:vote|voting|ballot|election)\b
+      | \b(?:vote|voting|ballot|election)[\s\S]{0,80}saratoga\s+springs\b
       # Require a word boundary after "ny" so "Troy Nyhammer" does not match.
       | (?<!\d\s)(?<![\w.])troy(?![\w@.-])\s*,?\s*(?:ny\b|n\.y\.|new\s+york)
       | boght\s+corners
@@ -2877,18 +2884,21 @@ _TROY_HILLS_NJ = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
-# "Albany Street" street addresses in CNY / Cazenovia — not City of Albany.
+# "Albany Street" / "N. Albany St." addresses in CNY / Finger Lakes / Groton —
+# not City of Albany. #NY19 often unlocks bare NY context on those street cards.
 _ALBANY_STREET_CNY = re.compile(
     r"""
     (?:
-        albany\s+street\b[\s\S]{0,160}(?:
+        albany\s+st(?:reet|\.)?\b[\s\S]{0,160}(?:
             \bcazenovia\b|\#cazenovia\w*|\bcny\b|\#cny\w*|
-            central\s+new\s+york|finger\s+lakes
+            central\s+new\s+york|finger\s+lakes|
+            \bgroton\b|\btompkins\b|\#ny19\b|\bny-?19\b
           )
       | (?:
             \bcazenovia\b|\#cazenovia\w*|\bcny\b|\#cny\w*|
-            central\s+new\s+york|finger\s+lakes
-          )[\s\S]{0,160}albany\s+street\b
+            central\s+new\s+york|finger\s+lakes|
+            \bgroton\b|\btompkins\b|\#ny19\b|\bny-?19\b
+          )[\s\S]{0,160}albany\s+st(?:reet|\.)?\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -5078,13 +5088,15 @@ def _albany_statehouse_metonym_conflict(haystack: str) -> bool:
     """True when Albany is state-government metonym, not Cap Region city news.
 
     Statewide chamber / Senate copy ("dysfunctional Albany"), legislature-as-actor
-    phrasing ("Albany sent rebate checks"), and "the rest of Albany" as the capital
-    audience use the capital as shorthand without Cap Region place news. Local civic
+    phrasing ("Albany sent rebate checks"), "the rest of Albany" as the capital
+    audience, and statewide campaign shorthand ("out of Albany", "leadership to
+    Albany") use the capital as metonym without Cap Region place news. Local civic
     anchors still rescue. "Rest of Albany County" is Cap Region and does not match.
     """
     if not re.search(
         r'\bdysfunctional\s+albany\b|\balbany\s+sent\b|'
-        r'\brest\s+of\s+albany(?!\s+county)\b',
+        r'\brest\s+of\s+albany(?!\s+county)\b|'
+        r'\bout\s+of\s+albany\b|\bleadership\s+to\s+albany\b',
         haystack,
         flags=re.IGNORECASE,
     ):
@@ -5691,6 +5703,8 @@ def _propose_candidate(
             return MatchResult(False, 'hard_negative:saratoga_springs_utah')
         if _christian_brothers_wny_conflict(haystack):
             return MatchResult(False, 'hard_negative:christian_brothers_wny')
+        if _albany_statehouse_metonym_conflict(haystack):
+            return MatchResult(False, 'hard_negative:albany_statehouse_metonym')
         if _egg_kansas_city_conflict(haystack):
             return MatchResult(False, 'hard_negative:egg_off_region')
         if _saratoga_stakes_away_conflict(haystack):

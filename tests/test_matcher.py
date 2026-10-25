@@ -5074,6 +5074,13 @@ def test_albany_street_cazenovia_cny_not_city_of_albany() -> None:
     )
     assert cazenovia.matched is False
     assert cazenovia.reason == 'hard_negative:albany_street_cny'
+    groton = match_post(
+        '#Voting is your superpower.\n'
+        'In #NY19, our candidate for Congress is #JoshRiley.\n'
+        '#VoteEarly on Brown Road near the airport or on N. Albany St. (Veterans Center).'
+    )
+    assert groton.matched is False
+    assert groton.reason == 'hard_negative:albany_street_cny'
     assert (
         match_post('Road work on Albany Street near Lark Street downtown (#AlbanyNY).').matched
         is True
@@ -5354,6 +5361,23 @@ def test_albany_operative_statehouse_hashtag_precision() -> None:
     )
     assert rest_of_local.matched is True
 
+    out_of = match_post(
+        'First day of early voting in New York State! Keep Blakeman out of Albany. '
+        'REELECT HOCHUL. VOTE GENDEBIEN IN #NY21.'
+    )
+    assert out_of.matched is False
+    assert out_of.reason == 'hard_negative:albany_statehouse_metonym'
+    leadership = match_post(
+        'Bruce Blakeman wants to bring Trump-style leadership to Albany. '
+        'A pro-Blakeman super PAC just raised $2 million to buy control of New York.'
+    )
+    assert leadership.matched is False
+    assert leadership.reason == 'hard_negative:albany_statehouse_metonym'
+    out_of_local = match_post(
+        'Keep the dump trucks out of Albany near the Empire State Plaza this weekend.'
+    )
+    assert out_of_local.matched is True
+
     geotag = match_post(
         'Beware of Medicare Enrollment Scams! #USA #Albany #Medicare #scams',
         alt_text=(
@@ -5396,6 +5420,29 @@ def test_saratoga_springs_show_recall() -> None:
     assert springs_show.matched is True
     assert springs_show.reason == 'strong_positive'
     disney = match_post('Outstanding show in Saratoga Springs Resort at Disney tonight')
+    assert disney.matched is False
+    assert disney.reason == 'hard_negative:disney_saratoga'
+
+
+def test_saratoga_gideon_putnam_amtrak_vote_recall() -> None:
+    gideon = match_post('Old telephone booths at the Gideon Putnam hotel in Saratoga Springs')
+    assert gideon.matched is True
+    assert gideon.reason == 'strong_positive'
+    amtrak = match_post(
+        'AMTRAK Ethan Allen Express (291) NYP->BTN Alert: Train 291 is currently '
+        'stopped south of Saratoga Springs (SAR) due to a freight ahead on the tracks.'
+    )
+    assert amtrak.matched is True
+    assert amtrak.reason == 'strong_positive'
+    vote = match_post(
+        'Saratoga Springs do not vote for Thomas Kenny (working families) they put '
+        'him there to take away votes from Carrie Woerner!'
+    )
+    assert vote.matched is True
+    assert vote.reason == 'strong_positive'
+    disney = match_post(
+        'Vote for the Saratoga Springs Resort and Spa as our home Disney Vacation Club.'
+    )
     assert disney.matched is False
     assert disney.reason == 'hard_negative:disney_saratoga'
 
