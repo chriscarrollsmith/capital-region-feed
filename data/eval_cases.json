@@ -12533,5 +12533,105 @@
     "split": "dev",
     "regression": true,
     "note": "2026-10-24 TN: Disney Saratoga still drops after show-in recall"
+  },
+  {
+    "id": "fp-albany-out-of-blakeman-hochul",
+    "text": "First day of early voting in New York State! Keep Blakeman out of Albany. REELECT HOCHUL. Send Lawler home. VOTE CONLEY in #NY17. Flip Stefanik's seat. VOTE GENDEBIEN IN #NY21.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-25 audit: statewide out-of-Albany metonym near Hochul must not strong-keep"
+  },
+  {
+    "id": "tp-albany-out-of-plaza-trucks",
+    "text": "Keep the dump trucks out of Albany near the Empire State Plaza this weekend.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-25 audit: out-of-Albany with Plaza rescue stays Cap Region"
+  },
+  {
+    "id": "fp-albany-leadership-to-blakeman",
+    "text": "Bruce Blakeman wants to bring Trump-style leadership to Albany. A pro-Blakeman super PAC just raised $2 million to buy control of New York.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-25 audit: leadership-to-Albany statewide campaign metonym"
+  },
+  {
+    "id": "tp-albany-leadership-capital-region-forum",
+    "text": "Bring leadership to Albany's Capital Region small-business forum at the Empire State Plaza.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-25 audit: leadership-to-Albany with Cap Region rescue"
+  },
+  {
+    "id": "fp-albany-st-ny19-groton",
+    "text": "In #NY19, vote early on Brown Road near the airport or on N. Albany St. (Veterans Center).",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-25 audit: N. Albany St in #NY19 Groton/Finger Lakes is not City of Albany"
+  },
+  {
+    "id": "tp-albany-street-lark-downtown",
+    "text": "Road work on Albany Street near Lark Street downtown (#AlbanyNY).",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-25 audit: Cap Region Albany Street counterpart"
+  },
+  {
+    "id": "tp-gideon-putnam-saratoga",
+    "text": "Old telephone booths at the Gideon Putnam hotel in Saratoga Springs",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-25 audit: Gideon Putnam venue FN"
+  },
+  {
+    "id": "tp-amtrak-south-of-saratoga-sar",
+    "text": "AMTRAK Ethan Allen Express (291) NYP->BTN Alert: Train 291 is currently stopped south of Saratoga Springs (SAR) due to a freight ahead on the tracks.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-25 audit: Amtrak SAR obstruction FN"
+  },
+  {
+    "id": "tp-saratoga-springs-vote-woerner",
+    "text": "Saratoga Springs do not vote for Thomas Kenny (working families) they put him there to take away votes from Carrie Woerner!",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-25 audit: Saratoga Springs early-voting FN"
+  },
+  {
+    "id": "tn-disney-vote-saratoga-springs-resort",
+    "text": "Vote for the Saratoga Springs Resort and Spa as our home Disney Vacation Club.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-25 audit: Disney Saratoga still wins over vote cue"
   }
 ]

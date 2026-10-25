@@ -73,7 +73,8 @@
         "Caffe Lena",
         "Caffè Lena",
         "Saratoga Music Hall",
-        "Home Made Theater"
+        "Home Made Theater",
+        "Gideon Putnam"
       ]
     },
     {
@@ -125,6 +126,12 @@
       "id": "nickname",
       "queries": [
         "KALB"
+      ]
+    },
+    {
+      "id": "institution",
+      "queries": [
+        "Ethan Allen Express"
       ]
     }
   ]

@@ -538,6 +538,30 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-132 — Daily feed audit: out-of-Albany / leadership-to-Albany / N. Albany St FPs; Gideon Putnam / Amtrak SAR / Saratoga vote FNs (fold #111)
+- **Status:** in progress
+- **Why:** 2026-10-25 audit of last-24h AppView feed (~63 posts) found three new
+  active matcher FPs among rematch-keeps: statewide "Keep Blakeman out of
+  Albany" unlocked by the Albany↔Hochul strong window; "leadership to Albany"
+  campaign metonym with bare NY context; and Groton / `#NY19` "N. Albany St."
+  street-address cards. Residual MD/DC Banner capital-region listicles
+  rematch-drop via existing gates. Planned `fn_search.py` slate (8) all ran OK;
+  Cap Region FNs: Gideon Putnam hotel, Amtrak south of Saratoga Springs (SAR),
+  Saratoga Springs early-voting copy (ad-hoc `Gideon Putnam` /
+  `Ethan Allen Express` also hit). Not counted: fictionalized Saratoga Springs
+  novel setting; KALB / De Kalb / goldenes Kalb homographs; allowlisted News10 /
+  Times Union non-local; NWS Albany / Glens Falls climate intentional. Also
+  folds unmerged 2026-10-24 fixes from #111 onto main.
+- **Work:**
+  - Extend `_albany_statehouse_metonym_conflict` for `out of Albany` /
+    `leadership to Albany` and apply it on the strong-positive path; expand
+    Albany St. CNY/Finger Lakes/`#NY19` street gate; strong Gideon Putnam /
+    Saratoga Springs (SAR) / south-of / vote cues; grow eval + fn_search
+    log/strategies; include #111 matcher gates.
+- **Done when:** Audited FPs drop; Saratoga venue/rail/vote FNs keep;
+  Disney/Utah and Cap Region street counterparts stay correct; eval P/R stay
+  1.000; unit tests cover the new gates.
+
 ### B-131 — Daily feed audit: rest-of-Albany / CBA Monsignor Martin FPs; Saratoga show FNs
 - **Status:** done ([#111](https://github.com/chriscarrollsmith/capital-region-feed/pull/111))
 - **Why:** 2026-10-24 audit of last-24h AppView feed (~74 posts) found two new
