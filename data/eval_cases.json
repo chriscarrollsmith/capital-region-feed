@@ -12443,5 +12443,285 @@
     "regression": true,
     "author_handle": "bannermoco.bsky.social",
     "note": "2026-10-23 residual feed FP: MoCo Banner capital region listicle (already gated; fold confirm)"
+  },
+  {
+    "id": "fp-rest-of-albany-sd27-1024",
+    "text": "Attention voters in the NY State Senate District 27. Early voting begins this Saturday. Important message to send to Grace Lee and the rest of Albany.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-24 FP: rest of Albany as statehouse audience in off-region SD-27 write-in"
+  },
+  {
+    "id": "tp-rest-of-albany-county-1024",
+    "text": "The rest of Albany County is under a wind advisory tonight.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-24 TP counterpart: rest of Albany County stays Cap Region"
+  },
+  {
+    "id": "tp-rest-of-albany-capital-region-1024",
+    "text": "The rest of Albany turned out for the Capital Region festival downtown.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-24 TP counterpart: rest of Albany + Capital Region rescue"
+  },
+  {
+    "id": "fp-cba-monsignor-martin-canisius-1024",
+    "text": "Canisius assistant football coach Paul Woods resigned rather than serve a one-year Monsignor Martin suspension for making contact with a referee after Saturday's game against Christian Brothers Academy.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-24 FP: Buffalo News Monsignor Martin / Canisius vs bare Christian Brothers Academy"
+  },
+  {
+    "id": "tp-cba-section2-saratoga-1024",
+    "text": "Saratoga Springs traveling to Christian Brothers Academy in a rematch of the Class AA sectional championship game.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-24 TP counterpart: Cap Region Section 2 CBA still keeps"
+  },
+  {
+    "id": "tp-cba-albany-hosts-1024",
+    "text": "Christian Brothers Academy Albany hosts the sectional final Saturday.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-24 TP counterpart: CBA Albany still keeps"
+  },
+  {
+    "id": "tp-show-in-saratoga-springs-1024",
+    "text": "Outstanding show in Saratoga Springs tonight",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-24 FN: show in Saratoga Springs without , NY"
+  },
+  {
+    "id": "tp-saratoga-springs-show-ticket-1024",
+    "text": "Sorry I can't use my ticket but Saratoga Springs show was OUT-FREAKING-STANDING",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-24 FN: Saratoga Springs show ticket/review without , NY"
+  },
+  {
+    "id": "tn-disney-saratoga-show-counterpart-1024",
+    "text": "Outstanding show in Saratoga Springs Resort at Disney tonight",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-24 TN: Disney Saratoga still drops after show-in recall"
+  },
+  {
+    "id": "fp-albany-out-of-blakeman-hochul",
+    "text": "First day of early voting in New York State! Keep Blakeman out of Albany. REELECT HOCHUL. Send Lawler home. VOTE CONLEY in #NY17. Flip Stefanik's seat. VOTE GENDEBIEN IN #NY21.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-25 audit: statewide out-of-Albany metonym near Hochul must not strong-keep"
+  },
+  {
+    "id": "tp-albany-out-of-plaza-trucks",
+    "text": "Keep the dump trucks out of Albany near the Empire State Plaza this weekend.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-25 audit: out-of-Albany with Plaza rescue stays Cap Region"
+  },
+  {
+    "id": "fp-albany-leadership-to-blakeman",
+    "text": "Bruce Blakeman wants to bring Trump-style leadership to Albany. A pro-Blakeman super PAC just raised $2 million to buy control of New York.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-25 audit: leadership-to-Albany statewide campaign metonym"
+  },
+  {
+    "id": "tp-albany-leadership-capital-region-forum",
+    "text": "Bring leadership to Albany's Capital Region small-business forum at the Empire State Plaza.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-25 audit: leadership-to-Albany with Cap Region rescue"
+  },
+  {
+    "id": "fp-albany-st-ny19-groton",
+    "text": "In #NY19, vote early on Brown Road near the airport or on N. Albany St. (Veterans Center).",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-25 audit: N. Albany St in #NY19 Groton/Finger Lakes is not City of Albany"
+  },
+  {
+    "id": "tp-albany-street-lark-downtown",
+    "text": "Road work on Albany Street near Lark Street downtown (#AlbanyNY).",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-25 audit: Cap Region Albany Street counterpart"
+  },
+  {
+    "id": "tp-gideon-putnam-saratoga",
+    "text": "Old telephone booths at the Gideon Putnam hotel in Saratoga Springs",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-25 audit: Gideon Putnam venue FN"
+  },
+  {
+    "id": "tp-amtrak-south-of-saratoga-sar",
+    "text": "AMTRAK Ethan Allen Express (291) NYP->BTN Alert: Train 291 is currently stopped south of Saratoga Springs (SAR) due to a freight ahead on the tracks.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-25 audit: Amtrak SAR obstruction FN"
+  },
+  {
+    "id": "tp-saratoga-springs-vote-woerner",
+    "text": "Saratoga Springs do not vote for Thomas Kenny (working families) they put him there to take away votes from Carrie Woerner!",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-25 audit: Saratoga Springs early-voting FN"
+  },
+  {
+    "id": "tn-disney-vote-saratoga-springs-resort",
+    "text": "Vote for the Saratoga Springs Resort and Spa as our home Disney Vacation Club.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-25 audit: Disney Saratoga still wins over vote cue"
+  },
+  {
+    "id": "fp-wamc-bard-college-botstein",
+    "text": "Here we go with the \"missing email\" defense.\nThis is a lame attempt by Bard College to discredit the Jamie Raskin investigation.\nwww.wamc.org/news/2026-10/bard-college-releases-analysis",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-26 audit: WAMC Mid-Hudson Bard College wire on bare wamc"
+  },
+  {
+    "id": "fp-wamc-bard-botstein-board",
+    "text": "For @wamc.org: Botstein and the Bard College board released a forensic email analysis this week.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-26 audit: WAMC + Botstein/Bard without Cap Region anchors"
+  },
+  {
+    "id": "tp-wamc-bard-ualbany-rescue",
+    "text": "For @wamc.org: Bard College partners with UAlbany on a Capital Region research grant announced at the Empire State Plaza.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-26 audit: WAMC Bard with Cap Region rescue"
+  },
+  {
+    "id": "tp-phish-at-saratoga-springs-concert",
+    "text": "Drove 2 hours to see Phish at Saratoga Springs and drove home after the concert.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-26 audit: Phish at Saratoga Springs concert FN"
+  },
+  {
+    "id": "tn-disney-concert-saratoga-springs-resort",
+    "text": "Disney World concert in Saratoga Springs resort tonight",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-26 audit: Disney Saratoga still wins over concert cue"
+  },
+  {
+    "id": "tp-albany-preshow-phish-dinner",
+    "text": "I was in Albany getting a pre-show dinner when I got the call.\nThankfully a Phish show was the perfect place to be that evening.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-26 audit: Albany pre-show / Phish FN"
+  },
+  {
+    "id": "tp-spac-85-show",
+    "text": "I've held off on the new box set even though SPAC '85 was my 2nd show and 1st altered experience.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-26 audit: SPAC '85 year-card FN"
+  },
+  {
+    "id": "tp-spac-25-phish-run",
+    "text": "spac 25 and savannah 26 are two of my favorite modern phish multi show runs.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-26 audit: spac 25 + phish FN"
+  },
+  {
+    "id": "tn-blank-check-spac-merger",
+    "text": "The blank-check SPAC merger closed this week after the shareholder vote.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-26 audit: corporate SPAC acronym still drops"
   }
 ]

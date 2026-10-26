@@ -538,6 +538,74 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-133 — Daily feed audit: WAMC Bard College FP; Phish/Saratoga/SPAC/Albany FNs (fold #112)
+- **Status:** done ([#114](https://github.com/chriscarrollsmith/capital-region-feed/pull/114))
+- **Why:** 2026-10-26 audit of last-24h AppView feed (~49 posts) found one new
+  active matcher FP among rematch-keeps: Mid-Hudson Bard College / Botstein
+  wires kept solely by a bare `wamc` strong positive. Residual allowlisted
+  News10 / Times Union non-local and NWS Albany / Glens Falls climate remain
+  intentional. Planned `fn_search.py` slate (8) all ran OK; Cap Region FNs:
+  Phish at Saratoga Springs, Albany pre-show / Phish dinner, SPAC '85 / spac 25
+  year cards (ad-hoc `Phish Albany` / `SPAC` also hit). Not counted: KALB /
+  De Kalb / goldenes Kalb; Polish spać / SpaceX / blank-check SPAC noise;
+  corporate SPAC mergers. Also folds unmerged 2026-10-24/25 fixes from #111 /
+  #112 onto main.
+- **Work:**
+  - Add `_wamc_bard_college_conflict` for Bard/Botstein/Annandale without Cap
+    Region rescue; strong Phish↔Saratoga Springs / concert, Albany↔Phish /
+    pre-show, and SPAC year / Phish cues; grow eval + fn_search log/strategies;
+    include #111/#112 matcher gates.
+- **Done when:** Audited Bard/WAMC FP drops; Phish/Saratoga/SPAC/Albany FNs
+  keep; Disney/Utah and corporate SPAC counterparts stay correct; eval P/R stay
+  1.000; unit tests cover the new gates.
+
+### B-132 — Daily feed audit: out-of-Albany / leadership-to-Albany / N. Albany St FPs; Gideon Putnam / Amtrak SAR / Saratoga vote FNs (fold #111)
+- **Status:** done ([#112](https://github.com/chriscarrollsmith/capital-region-feed/pull/112))
+- **Why:** 2026-10-25 audit of last-24h AppView feed (~63 posts) found three new
+  active matcher FPs among rematch-keeps: statewide "Keep Blakeman out of
+  Albany" unlocked by the Albany↔Hochul strong window; "leadership to Albany"
+  campaign metonym with bare NY context; and Groton / `#NY19` "N. Albany St."
+  street-address cards. Residual MD/DC Banner capital-region listicles
+  rematch-drop via existing gates. Planned `fn_search.py` slate (8) all ran OK;
+  Cap Region FNs: Gideon Putnam hotel, Amtrak south of Saratoga Springs (SAR),
+  Saratoga Springs early-voting copy (ad-hoc `Gideon Putnam` /
+  `Ethan Allen Express` also hit). Not counted: fictionalized Saratoga Springs
+  novel setting; KALB / De Kalb / goldenes Kalb homographs; allowlisted News10 /
+  Times Union non-local; NWS Albany / Glens Falls climate intentional. Also
+  folds unmerged 2026-10-24 fixes from #111 onto main.
+- **Work:**
+  - Extend `_albany_statehouse_metonym_conflict` for `out of Albany` /
+    `leadership to Albany` and apply it on the strong-positive path; expand
+    Albany St. CNY/Finger Lakes/`#NY19` street gate; strong Gideon Putnam /
+    Saratoga Springs (SAR) / south-of / vote cues; grow eval + fn_search
+    log/strategies; include #111 matcher gates.
+- **Done when:** Audited FPs drop; Saratoga venue/rail/vote FNs keep;
+  Disney/Utah and Cap Region street counterparts stay correct; eval P/R stay
+  1.000; unit tests cover the new gates.
+
+### B-131 — Daily feed audit: rest-of-Albany / CBA Monsignor Martin FPs; Saratoga show FNs
+- **Status:** done ([#111](https://github.com/chriscarrollsmith/capital-region-feed/pull/111))
+- **Why:** 2026-10-24 audit of last-24h AppView feed (~74 posts) found two new
+  active matcher FPs among rematch-keeps: off-region NY Senate District 27
+  write-in using "the rest of Albany" as statehouse audience
+  (`albany_with_ny_context`), and Buffalo News Monsignor Martin / Canisius copy
+  unlocked by bare `Christian Brothers Academy` strong token. Residual served
+  MD/DC Banner "capital region" listicles and prior Albany-sent / Albany
+  operative posts rematch-drop via existing gates. Planned `fn_search.py` slate
+  (8) all ran OK; Cap Region FNs: "show in Saratoga Springs" /
+  "Saratoga Springs show" (ad-hoc `show Saratoga Springs` /
+  `tonight Saratoga Springs` also hit). Not counted: Saratoga Springs housing
+  bots without NY disambiguation; Jon Kalb / De Kalb / goldenes Kalb under
+  `KALB`; allowlisted News10 / Times Union non-local; NWS Albany / Glens Falls
+  climate intentional.
+- **Work:**
+  - Extend `_albany_statehouse_metonym_conflict` for `rest of Albany` (not
+    County); Monsignor Martin CBA WNY gate; strong `show in/at` /
+    `Saratoga Springs show`; grow eval + fn_search log/strategies.
+- **Done when:** Audited FPs drop; Saratoga show FNs keep; Disney/Utah and
+  Section 2 CBA counterparts stay correct; eval P/R stay 1.000; unit tests
+  cover the new gates.
+
 ### B-130 — Daily feed audit: KALB ICAO route-card FNs (fold #109)
 - **Status:** done ([#110](https://github.com/chriscarrollsmith/capital-region-feed/pull/110))
 - **Why:** 2026-10-23 audit of last-24h AppView feed (~64 posts) found no new

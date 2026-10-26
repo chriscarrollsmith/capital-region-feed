@@ -5074,6 +5074,13 @@ def test_albany_street_cazenovia_cny_not_city_of_albany() -> None:
     )
     assert cazenovia.matched is False
     assert cazenovia.reason == 'hard_negative:albany_street_cny'
+    groton = match_post(
+        '#Voting is your superpower.\n'
+        'In #NY19, our candidate for Congress is #JoshRiley.\n'
+        '#VoteEarly on Brown Road near the airport or on N. Albany St. (Veterans Center).'
+    )
+    assert groton.matched is False
+    assert groton.reason == 'hard_negative:albany_street_cny'
     assert (
         match_post('Road work on Albany Street near Lark Street downtown (#AlbanyNY).').matched
         is True
@@ -5341,6 +5348,36 @@ def test_albany_operative_statehouse_hashtag_precision() -> None:
     )
     assert albany_sent_local.matched is True
 
+    rest_of = match_post(
+        'Attention voters in the NY State Senate District 27. Early voting begins '
+        'this Saturday. Important message to send to Grace Lee and the rest of Albany.'
+    )
+    assert rest_of.matched is False
+    assert rest_of.reason == 'hard_negative:albany_statehouse_metonym'
+    rest_of_county = match_post('The rest of Albany County is under a wind advisory tonight.')
+    assert rest_of_county.matched is True
+    rest_of_local = match_post(
+        'The rest of Albany turned out for the Capital Region festival downtown.'
+    )
+    assert rest_of_local.matched is True
+
+    out_of = match_post(
+        'First day of early voting in New York State! Keep Blakeman out of Albany. '
+        'REELECT HOCHUL. VOTE GENDEBIEN IN #NY21.'
+    )
+    assert out_of.matched is False
+    assert out_of.reason == 'hard_negative:albany_statehouse_metonym'
+    leadership = match_post(
+        'Bruce Blakeman wants to bring Trump-style leadership to Albany. '
+        'A pro-Blakeman super PAC just raised $2 million to buy control of New York.'
+    )
+    assert leadership.matched is False
+    assert leadership.reason == 'hard_negative:albany_statehouse_metonym'
+    out_of_local = match_post(
+        'Keep the dump trucks out of Albany near the Empire State Plaza this weekend.'
+    )
+    assert out_of_local.matched is True
+
     geotag = match_post(
         'Beware of Medicare Enrollment Scams! #USA #Albany #Medicare #scams',
         alt_text=(
@@ -5352,6 +5389,62 @@ def test_albany_operative_statehouse_hashtag_precision() -> None:
     assert geotag.reason == 'hard_negative:albany_hashtag_geotag'
     geotag_local = match_post('Snow advisory tonight for the Capital Region #Albany')
     assert geotag_local.matched is True
+
+
+def test_christian_brothers_wny_precision() -> None:
+    wny = match_post(
+        'Canisius assistant football coach Paul Woods resigned rather than serve a '
+        'one-year Monsignor Martin suspension for making contact with a referee after '
+        "Saturday's game against Christian Brothers Academy."
+    )
+    assert wny.matched is False
+    assert wny.reason == 'hard_negative:christian_brothers_wny'
+    section2 = match_post(
+        'Saratoga Springs traveling to Christian Brothers Academy in a rematch of '
+        'the Class AA sectional championship game.'
+    )
+    assert section2.matched is True
+    assert section2.reason == 'strong_positive'
+    albany = match_post('Christian Brothers Academy Albany hosts the sectional final Saturday.')
+    assert albany.matched is True
+    assert albany.reason == 'strong_positive'
+
+
+def test_saratoga_springs_show_recall() -> None:
+    show_in = match_post('Outstanding show in Saratoga Springs tonight')
+    assert show_in.matched is True
+    assert show_in.reason == 'strong_positive'
+    springs_show = match_post(
+        "Sorry I can't use my ticket but Saratoga Springs show was OUT-FREAKING-STANDING"
+    )
+    assert springs_show.matched is True
+    assert springs_show.reason == 'strong_positive'
+    disney = match_post('Outstanding show in Saratoga Springs Resort at Disney tonight')
+    assert disney.matched is False
+    assert disney.reason == 'hard_negative:disney_saratoga'
+
+
+def test_saratoga_gideon_putnam_amtrak_vote_recall() -> None:
+    gideon = match_post('Old telephone booths at the Gideon Putnam hotel in Saratoga Springs')
+    assert gideon.matched is True
+    assert gideon.reason == 'strong_positive'
+    amtrak = match_post(
+        'AMTRAK Ethan Allen Express (291) NYP->BTN Alert: Train 291 is currently '
+        'stopped south of Saratoga Springs (SAR) due to a freight ahead on the tracks.'
+    )
+    assert amtrak.matched is True
+    assert amtrak.reason == 'strong_positive'
+    vote = match_post(
+        'Saratoga Springs do not vote for Thomas Kenny (working families) they put '
+        'him there to take away votes from Carrie Woerner!'
+    )
+    assert vote.matched is True
+    assert vote.reason == 'strong_positive'
+    disney = match_post(
+        'Vote for the Saratoga Springs Resort and Spa as our home Disney Vacation Club.'
+    )
+    assert disney.matched is False
+    assert disney.reason == 'hard_negative:disney_saratoga'
 
 
 def test_saratoga_music_hall_home_made_theater_recall() -> None:
@@ -5424,3 +5517,67 @@ def test_kalb_icao_route_card_without_albany() -> None:
     assert surname.matched is False
     shout_token = match_post('NEWS → KALB evening broadcast from the capital desk.')
     assert shout_token.matched is False
+
+
+def test_wamc_bard_college_not_capital_region() -> None:
+    """WAMC Mid-Hudson Bard College wires must not keep on bare wamc."""
+    bard = match_post(
+        'Here we go with the "missing email" defense.\n'
+        'This is a lame attempt by Bard College to discredit the Jamie Raskin '
+        'investigation.\n'
+        'www.wamc.org/news/2026-10/bard-college-releases-analysis'
+    )
+    assert bard.matched is False
+    assert bard.reason == 'hard_negative:wamc_bard_college'
+    botstein = match_post(
+        'For @wamc.org: Botstein and the Bard College board released a forensic '
+        'email analysis this week.'
+    )
+    assert botstein.matched is False
+    assert botstein.reason == 'hard_negative:wamc_bard_college'
+    # Cap Region rescue still keeps WAMC + Bard when Albany anchors appear.
+    rescue = match_post(
+        'For @wamc.org: Bard College partners with UAlbany on a Capital Region '
+        'research grant announced at the Empire State Plaza.'
+    )
+    assert rescue.matched is True
+    # Existing Cap Region WAMC civic keep.
+    albany = match_post('For @wamc.org: Albany Common Council votes on the budget tonight.')
+    assert albany.matched is True
+    assert albany.reason == 'strong_positive'
+
+
+def test_phish_saratoga_spac_albany_recall() -> None:
+    """Phish/Saratoga/SPAC year cards and Albany pre-show dinner keep."""
+    phish_ss = match_post(
+        'Drove 2 hours to see Phish at Saratoga Springs and drove home after the concert.'
+    )
+    assert phish_ss.matched is True
+    assert phish_ss.reason == 'strong_positive'
+    disney = match_post('Disney World concert in Saratoga Springs resort tonight')
+    assert disney.matched is False
+    assert disney.reason == 'hard_negative:disney_saratoga'
+
+    albany_phish = match_post(
+        'I was in Albany getting a pre-show dinner when I got the call.\n'
+        'Thankfully a Phish show was the perfect place to be that evening.'
+    )
+    assert albany_phish.matched is True
+    assert albany_phish.reason == 'strong_positive'
+
+    spac85 = match_post(
+        "I've held off on the new box set even though SPAC '85 was my 2nd show "
+        'and 1st "altered experience."'
+    )
+    assert spac85.matched is True
+    assert spac85.reason in {'strong_positive', 'event_local_venue'}
+    spac25 = match_post(
+        'spac 25 and savannah 26 are two of my favorite modern phish multi show runs.'
+    )
+    assert spac25.matched is True
+    assert spac25.reason in {'strong_positive', 'event_local_venue'}
+    # Corporate/blank-check SPAC without venue year or Phish still drops.
+    blank_check = match_post(
+        'The blank-check SPAC merger closed this week after the shareholder vote.'
+    )
+    assert blank_check.matched is False

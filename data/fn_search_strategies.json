@@ -73,7 +73,8 @@
         "Caffe Lena",
         "Caffè Lena",
         "Saratoga Music Hall",
-        "Home Made Theater"
+        "Home Made Theater",
+        "Gideon Putnam"
       ]
     },
     {
@@ -102,7 +103,10 @@
         "tonight Troy",
         "Sons and Daughters of Italy",
         "concert Saratoga Springs",
-        "live from Saratoga Springs"
+        "live from Saratoga Springs",
+        "show Saratoga Springs",
+        "tonight Saratoga Springs",
+        "Phish Albany"
       ]
     },
     {
@@ -123,6 +127,12 @@
       "id": "nickname",
       "queries": [
         "KALB"
+      ]
+    },
+    {
+      "id": "institution",
+      "queries": [
+        "Ethan Allen Express"
       ]
     }
   ]

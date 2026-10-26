@@ -99,10 +99,25 @@ _STRONG_POSITIVE = re.compile(
       | live\s+(?:in|at|from)\s+saratoga\s+springs\b
       | i(?:['\u2019]?m|\s+am)\s+in\s+saratoga\s+springs\b
       | concert\s+(?:in|at)\s+saratoga\s+springs\b
+      # "Phish at Saratoga Springs … after the concert" travel posts omit ", NY".
+      | (?:phish|grateful\s+dead)\s+at\s+saratoga\s+springs\b
+      | \bat\s+saratoga\s+springs\b[\s\S]{0,120}\bconcert\b
+      | \bconcert\b[\s\S]{0,120}\bat\s+saratoga\s+springs\b
+      # Ticket / review cards say "show in Saratoga Springs" or "Saratoga Springs show"
+      # without ", NY". Utah / Disney conflicts still gate non-NY resorts.
+      | show\s+(?:in|at)\s+saratoga\s+springs\b
+      | saratoga\s+springs\s+show\b
       # Distinctive Saratoga Springs venues / companies often omit ", NY".
       | saratoga\s+music\s+hall\b
       | home\s+made\s+theater\b
       | saratoga\s+springs\s+theater\b
+      | gideon\s+putnam\b
+      # Amtrak station code / obstruction copy often omits ", NY".
+      | saratoga\s+springs\s*\(\s*sar\s*\)
+      | south\s+of\s+saratoga\s+springs\b
+      # Early-voting / ballot cards name the city without ", NY".
+      | saratoga\s+springs[\s\S]{0,80}\b(?:vote|voting|ballot|election)\b
+      | \b(?:vote|voting|ballot|election)[\s\S]{0,80}saratoga\s+springs\b
       # Require a word boundary after "ny" so "Troy Nyhammer" does not match.
       | (?<!\d\s)(?<![\w.])troy(?![\w@.-])\s*,?\s*(?:ny\b|n\.y\.|new\s+york)
       | boght\s+corners
@@ -673,6 +688,15 @@ _STRONG_POSITIVE = re.compile(
       | staying\s+near\s+\#?spac\b
       | near\s+\#?spac\b[\s\S]{0,100}(?:hotels?|inns?|concert)
       | (?:hotels?|inns?)[\s\S]{0,100}near\s+\#?spac\b
+      # Dead/Phish tape talk: "SPAC '85" / "spac 25" without Saratoga token.
+      | \bspac\s*['\u2019]?\s*\d{2}\b
+      | \bphish\b[\s\S]{0,100}\bspac\b
+      | \bspac\b[\s\S]{0,100}\bphish\b
+      # Phish / pre-show dinner copy names Albany without ", NY".
+      | \bin\s+albany\b[\s\S]{0,160}\b(?:pre-?show|phish)\b
+      | \b(?:pre-?show|phish)\b[\s\S]{0,160}\bin\s+albany\b
+      | \bphish\b[\s\S]{0,120}\balbany\b
+      | \balbany\b[\s\S]{0,120}\bphish\b
       # Local crime / community wires often say "Albany community" without ", NY".
       | albany\s+community\b
       # Thruway incident wires for Town of Rotterdam often omit ", NY".
@@ -1693,6 +1717,19 @@ _NEWTONVILLE_MA = re.compile(
       | \bmassachusetts\s*[-–—]\s*newtonville\b
       | newtonville\s+books\b
       | newtonvillebooks(?:\.bsky\.social)?\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# WAMC's Mid-Hudson desk covers Bard College (Annandale); bare ``wamc`` + Bard
+# must not keep without Cap Region anchors.
+_WAMC_BARD_HUDSON = re.compile(
+    r"""
+    (?:
+        bard\s+college\b
+      | \bbotstein\b
+      | annandale(?:-|\s+)on(?:-|\s+)hudson\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -2873,18 +2910,21 @@ _TROY_HILLS_NJ = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
-# "Albany Street" street addresses in CNY / Cazenovia — not City of Albany.
+# "Albany Street" / "N. Albany St." addresses in CNY / Finger Lakes / Groton —
+# not City of Albany. #NY19 often unlocks bare NY context on those street cards.
 _ALBANY_STREET_CNY = re.compile(
     r"""
     (?:
-        albany\s+street\b[\s\S]{0,160}(?:
+        albany\s+st(?:reet|\.)?\b[\s\S]{0,160}(?:
             \bcazenovia\b|\#cazenovia\w*|\bcny\b|\#cny\w*|
-            central\s+new\s+york|finger\s+lakes
+            central\s+new\s+york|finger\s+lakes|
+            \bgroton\b|\btompkins\b|\#ny19\b|\bny-?19\b
           )
       | (?:
             \bcazenovia\b|\#cazenovia\w*|\bcny\b|\#cny\w*|
-            central\s+new\s+york|finger\s+lakes
-          )[\s\S]{0,160}albany\s+street\b
+            central\s+new\s+york|finger\s+lakes|
+            \bgroton\b|\btompkins\b|\#ny19\b|\bny-?19\b
+          )[\s\S]{0,160}albany\s+st(?:reet|\.)?\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -3329,6 +3369,7 @@ _LOCAL_EVENT_VENUE = re.compile(
       | saratoga(?:\s+springs)?\s+performing\s+arts\s+center
       | \bat\s+spac\b
       | \bspac\s+(?:season|lawn|amphitheatre|amphitheater|presents)
+      | \bspac\s*['\u2019]?\s*\d{2}\b
       | national\s+museum\s+of\s+racing
       | mvp\s+arena
       | music\s+haven
@@ -3906,6 +3947,34 @@ def _wamc_western_mass_conflict(haystack: str) -> bool:
     if not _WAMC_WESTERN_MASS.search(haystack):
         return False
     return not _ny_capital_region_context(haystack)
+
+
+def _wamc_bard_college_conflict(haystack: str) -> bool:
+    """True when WAMC is covering Bard College / Mid-Hudson, not Cap Region."""
+    if not re.search(r'\bwamc\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not _WAMC_BARD_HUDSON.search(haystack):
+        return False
+    # Do not treat bare "Hudson Valley" as Cap Region rescue — Bard is HV.
+    if re.search(
+        r"""
+        (?:
+            \#albanyny\b
+          | albany\s*,?\s*(?:ny|n\.y\.|new\s+york)
+          | \bualbany\b
+          | university\s+at\s+albany\b
+          | \bschenectady\b
+          | (?<!\d\s)(?<![\w.])troy(?![\w@.-])\s*,?\s*(?:ny\b|n\.y\.|new\s+york)
+          | capital\s+(?:region|district)\b
+          | \bmvp\s+arena\b
+          | empire\s+state\s+plaza\b
+        )
+        """,
+        haystack,
+        flags=re.IGNORECASE | re.VERBOSE,
+    ):
+        return False
+    return True
 
 
 def _ct_capital_district_conflict(haystack: str) -> bool:
@@ -5073,17 +5142,45 @@ def _albany_operative_conflict(haystack: str) -> bool:
 def _albany_statehouse_metonym_conflict(haystack: str) -> bool:
     """True when Albany is state-government metonym, not Cap Region city news.
 
-    Statewide chamber / Senate copy ("dysfunctional Albany") and legislature-as-actor
-    phrasing ("Albany sent rebate checks") use the capital as shorthand without Cap
-    Region place news. Local civic anchors still rescue.
+    Statewide chamber / Senate copy ("dysfunctional Albany"), legislature-as-actor
+    phrasing ("Albany sent rebate checks"), "the rest of Albany" as the capital
+    audience, and statewide campaign shorthand ("out of Albany", "leadership to
+    Albany") use the capital as metonym without Cap Region place news. Local civic
+    anchors still rescue. "Rest of Albany County" is Cap Region and does not match.
     """
     if not re.search(
-        r'\bdysfunctional\s+albany\b|\balbany\s+sent\b',
+        r'\bdysfunctional\s+albany\b|\balbany\s+sent\b|'
+        r'\brest\s+of\s+albany(?!\s+county)\b|'
+        r'\bout\s+of\s+albany\b|\bleadership\s+to\s+albany\b',
         haystack,
         flags=re.IGNORECASE,
     ):
         return False
     if _ALBANY_WIRE_LOCAL_RESCUE.search(haystack) or _ALBANY_LOCAL_RESCUE.search(haystack):
+        return False
+    return True
+
+
+def _christian_brothers_wny_conflict(haystack: str) -> bool:
+    """True when Christian Brothers Academy is Monsignor Martin / WNY sports.
+
+    Cap Region CBA (Section 2) is a strong local token, but Buffalo Monsignor Martin
+    league copy about Canisius vs CBA is Western NY. Albany / Colonie / Section 2 /
+    Capital Region anchors still rescue.
+    """
+    if not re.search(r'christian\s+brothers\s+academy\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not re.search(r'monsignor\s+martin\b', haystack, flags=re.IGNORECASE):
+        return False
+    if re.search(
+        r'(?:'
+        r'christian\s+brothers\s+academy\s*,?\s*(?:albany|ny|n\.y\.)\b|'
+        r'\balbany\b|\bcolonie\b|\bsection\s+2\b|'
+        r'capital\s+(?:region|district)\b|\#albanyny\b'
+        r')',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
         return False
     return True
 
@@ -5627,6 +5724,8 @@ def _propose_candidate(
             return MatchResult(False, 'hard_negative:newtonville_ma')
         if _wamc_western_mass_conflict(haystack):
             return MatchResult(False, 'hard_negative:wamc_western_mass')
+        if _wamc_bard_college_conflict(haystack):
+            return MatchResult(False, 'hard_negative:wamc_bard_college')
         if _ct_capital_district_conflict(haystack):
             return MatchResult(False, 'hard_negative:ct_capital_district')
         if _ct_capital_region_conflict(haystack, author_handle):
@@ -5659,6 +5758,10 @@ def _propose_candidate(
             return MatchResult(False, 'hard_negative:disney_saratoga')
         if _saratoga_springs_utah_conflict(haystack, author_handle):
             return MatchResult(False, 'hard_negative:saratoga_springs_utah')
+        if _christian_brothers_wny_conflict(haystack):
+            return MatchResult(False, 'hard_negative:christian_brothers_wny')
+        if _albany_statehouse_metonym_conflict(haystack):
+            return MatchResult(False, 'hard_negative:albany_statehouse_metonym')
         if _egg_kansas_city_conflict(haystack):
             return MatchResult(False, 'hard_negative:egg_off_region')
         if _saratoga_stakes_away_conflict(haystack):
