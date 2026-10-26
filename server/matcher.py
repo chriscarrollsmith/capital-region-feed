@@ -99,6 +99,10 @@ _STRONG_POSITIVE = re.compile(
       | live\s+(?:in|at|from)\s+saratoga\s+springs\b
       | i(?:['\u2019]?m|\s+am)\s+in\s+saratoga\s+springs\b
       | concert\s+(?:in|at)\s+saratoga\s+springs\b
+      # "Phish at Saratoga Springs … after the concert" travel posts omit ", NY".
+      | (?:phish|grateful\s+dead)\s+at\s+saratoga\s+springs\b
+      | \bat\s+saratoga\s+springs\b[\s\S]{0,120}\bconcert\b
+      | \bconcert\b[\s\S]{0,120}\bat\s+saratoga\s+springs\b
       # Ticket / review cards say "show in Saratoga Springs" or "Saratoga Springs show"
       # without ", NY". Utah / Disney conflicts still gate non-NY resorts.
       | show\s+(?:in|at)\s+saratoga\s+springs\b
@@ -684,6 +688,15 @@ _STRONG_POSITIVE = re.compile(
       | staying\s+near\s+\#?spac\b
       | near\s+\#?spac\b[\s\S]{0,100}(?:hotels?|inns?|concert)
       | (?:hotels?|inns?)[\s\S]{0,100}near\s+\#?spac\b
+      # Dead/Phish tape talk: "SPAC '85" / "spac 25" without Saratoga token.
+      | \bspac\s*['\u2019]?\s*\d{2}\b
+      | \bphish\b[\s\S]{0,100}\bspac\b
+      | \bspac\b[\s\S]{0,100}\bphish\b
+      # Phish / pre-show dinner copy names Albany without ", NY".
+      | \bin\s+albany\b[\s\S]{0,160}\b(?:pre-?show|phish)\b
+      | \b(?:pre-?show|phish)\b[\s\S]{0,160}\bin\s+albany\b
+      | \bphish\b[\s\S]{0,120}\balbany\b
+      | \balbany\b[\s\S]{0,120}\bphish\b
       # Local crime / community wires often say "Albany community" without ", NY".
       | albany\s+community\b
       # Thruway incident wires for Town of Rotterdam often omit ", NY".
@@ -1704,6 +1717,19 @@ _NEWTONVILLE_MA = re.compile(
       | \bmassachusetts\s*[-–—]\s*newtonville\b
       | newtonville\s+books\b
       | newtonvillebooks(?:\.bsky\.social)?\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# WAMC's Mid-Hudson desk covers Bard College (Annandale); bare ``wamc`` + Bard
+# must not keep without Cap Region anchors.
+_WAMC_BARD_HUDSON = re.compile(
+    r"""
+    (?:
+        bard\s+college\b
+      | \bbotstein\b
+      | annandale(?:-|\s+)on(?:-|\s+)hudson\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -3343,6 +3369,7 @@ _LOCAL_EVENT_VENUE = re.compile(
       | saratoga(?:\s+springs)?\s+performing\s+arts\s+center
       | \bat\s+spac\b
       | \bspac\s+(?:season|lawn|amphitheatre|amphitheater|presents)
+      | \bspac\s*['\u2019]?\s*\d{2}\b
       | national\s+museum\s+of\s+racing
       | mvp\s+arena
       | music\s+haven
@@ -3920,6 +3947,34 @@ def _wamc_western_mass_conflict(haystack: str) -> bool:
     if not _WAMC_WESTERN_MASS.search(haystack):
         return False
     return not _ny_capital_region_context(haystack)
+
+
+def _wamc_bard_college_conflict(haystack: str) -> bool:
+    """True when WAMC is covering Bard College / Mid-Hudson, not Cap Region."""
+    if not re.search(r'\bwamc\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not _WAMC_BARD_HUDSON.search(haystack):
+        return False
+    # Do not treat bare "Hudson Valley" as Cap Region rescue — Bard is HV.
+    if re.search(
+        r"""
+        (?:
+            \#albanyny\b
+          | albany\s*,?\s*(?:ny|n\.y\.|new\s+york)
+          | \bualbany\b
+          | university\s+at\s+albany\b
+          | \bschenectady\b
+          | (?<!\d\s)(?<![\w.])troy(?![\w@.-])\s*,?\s*(?:ny\b|n\.y\.|new\s+york)
+          | capital\s+(?:region|district)\b
+          | \bmvp\s+arena\b
+          | empire\s+state\s+plaza\b
+        )
+        """,
+        haystack,
+        flags=re.IGNORECASE | re.VERBOSE,
+    ):
+        return False
+    return True
 
 
 def _ct_capital_district_conflict(haystack: str) -> bool:
@@ -5669,6 +5724,8 @@ def _propose_candidate(
             return MatchResult(False, 'hard_negative:newtonville_ma')
         if _wamc_western_mass_conflict(haystack):
             return MatchResult(False, 'hard_negative:wamc_western_mass')
+        if _wamc_bard_college_conflict(haystack):
+            return MatchResult(False, 'hard_negative:wamc_bard_college')
         if _ct_capital_district_conflict(haystack):
             return MatchResult(False, 'hard_negative:ct_capital_district')
         if _ct_capital_region_conflict(haystack, author_handle):

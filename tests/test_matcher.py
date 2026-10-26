@@ -5517,3 +5517,67 @@ def test_kalb_icao_route_card_without_albany() -> None:
     assert surname.matched is False
     shout_token = match_post('NEWS → KALB evening broadcast from the capital desk.')
     assert shout_token.matched is False
+
+
+def test_wamc_bard_college_not_capital_region() -> None:
+    """WAMC Mid-Hudson Bard College wires must not keep on bare wamc."""
+    bard = match_post(
+        'Here we go with the "missing email" defense.\n'
+        'This is a lame attempt by Bard College to discredit the Jamie Raskin '
+        'investigation.\n'
+        'www.wamc.org/news/2026-10/bard-college-releases-analysis'
+    )
+    assert bard.matched is False
+    assert bard.reason == 'hard_negative:wamc_bard_college'
+    botstein = match_post(
+        'For @wamc.org: Botstein and the Bard College board released a forensic '
+        'email analysis this week.'
+    )
+    assert botstein.matched is False
+    assert botstein.reason == 'hard_negative:wamc_bard_college'
+    # Cap Region rescue still keeps WAMC + Bard when Albany anchors appear.
+    rescue = match_post(
+        'For @wamc.org: Bard College partners with UAlbany on a Capital Region '
+        'research grant announced at the Empire State Plaza.'
+    )
+    assert rescue.matched is True
+    # Existing Cap Region WAMC civic keep.
+    albany = match_post('For @wamc.org: Albany Common Council votes on the budget tonight.')
+    assert albany.matched is True
+    assert albany.reason == 'strong_positive'
+
+
+def test_phish_saratoga_spac_albany_recall() -> None:
+    """Phish/Saratoga/SPAC year cards and Albany pre-show dinner keep."""
+    phish_ss = match_post(
+        'Drove 2 hours to see Phish at Saratoga Springs and drove home after the concert.'
+    )
+    assert phish_ss.matched is True
+    assert phish_ss.reason == 'strong_positive'
+    disney = match_post('Disney World concert in Saratoga Springs resort tonight')
+    assert disney.matched is False
+    assert disney.reason == 'hard_negative:disney_saratoga'
+
+    albany_phish = match_post(
+        'I was in Albany getting a pre-show dinner when I got the call.\n'
+        'Thankfully a Phish show was the perfect place to be that evening.'
+    )
+    assert albany_phish.matched is True
+    assert albany_phish.reason == 'strong_positive'
+
+    spac85 = match_post(
+        "I've held off on the new box set even though SPAC '85 was my 2nd show "
+        'and 1st "altered experience."'
+    )
+    assert spac85.matched is True
+    assert spac85.reason in {'strong_positive', 'event_local_venue'}
+    spac25 = match_post(
+        'spac 25 and savannah 26 are two of my favorite modern phish multi show runs.'
+    )
+    assert spac25.matched is True
+    assert spac25.reason in {'strong_positive', 'event_local_venue'}
+    # Corporate/blank-check SPAC without venue year or Phish still drops.
+    blank_check = match_post(
+        'The blank-check SPAC merger closed this week after the shareholder vote.'
+    )
+    assert blank_check.matched is False
