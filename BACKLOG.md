@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-133 — Daily feed audit: WAMC Bard College FP; Phish/Saratoga/SPAC/Albany FNs (fold #112)
-- **Status:** in progress
+- **Status:** done ([#114](https://github.com/chriscarrollsmith/capital-region-feed/pull/114))
 - **Why:** 2026-10-26 audit of last-24h AppView feed (~49 posts) found one new
   active matcher FP among rematch-keeps: Mid-Hudson Bard College / Botstein
   wires kept solely by a bare `wamc` strong positive. Residual allowlisted
