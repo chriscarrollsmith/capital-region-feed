@@ -538,6 +538,27 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-133 — Daily feed audit: WAMC Bard College FP; Phish/Saratoga/SPAC/Albany FNs (fold #112)
+- **Status:** in progress
+- **Why:** 2026-10-26 audit of last-24h AppView feed (~49 posts) found one new
+  active matcher FP among rematch-keeps: Mid-Hudson Bard College / Botstein
+  wires kept solely by a bare `wamc` strong positive. Residual allowlisted
+  News10 / Times Union non-local and NWS Albany / Glens Falls climate remain
+  intentional. Planned `fn_search.py` slate (8) all ran OK; Cap Region FNs:
+  Phish at Saratoga Springs, Albany pre-show / Phish dinner, SPAC '85 / spac 25
+  year cards (ad-hoc `Phish Albany` / `SPAC` also hit). Not counted: KALB /
+  De Kalb / goldenes Kalb; Polish spać / SpaceX / blank-check SPAC noise;
+  corporate SPAC mergers. Also folds unmerged 2026-10-24/25 fixes from #111 /
+  #112 onto main.
+- **Work:**
+  - Add `_wamc_bard_college_conflict` for Bard/Botstein/Annandale without Cap
+    Region rescue; strong Phish↔Saratoga Springs / concert, Albany↔Phish /
+    pre-show, and SPAC year / Phish cues; grow eval + fn_search log/strategies;
+    include #111/#112 matcher gates.
+- **Done when:** Audited Bard/WAMC FP drops; Phish/Saratoga/SPAC/Albany FNs
+  keep; Disney/Utah and corporate SPAC counterparts stay correct; eval P/R stay
+  1.000; unit tests cover the new gates.
+
 ### B-132 — Daily feed audit: out-of-Albany / leadership-to-Albany / N. Albany St FPs; Gideon Putnam / Amtrak SAR / Saratoga vote FNs (fold #111)
 - **Status:** done ([#112](https://github.com/chriscarrollsmith/capital-region-feed/pull/112))
 - **Why:** 2026-10-25 audit of last-24h AppView feed (~63 posts) found three new

@@ -12633,5 +12633,95 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-10-25 audit: Disney Saratoga still wins over vote cue"
+  },
+  {
+    "id": "fp-wamc-bard-college-botstein",
+    "text": "Here we go with the \"missing email\" defense.\nThis is a lame attempt by Bard College to discredit the Jamie Raskin investigation.\nwww.wamc.org/news/2026-10/bard-college-releases-analysis",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-26 audit: WAMC Mid-Hudson Bard College wire on bare wamc"
+  },
+  {
+    "id": "fp-wamc-bard-botstein-board",
+    "text": "For @wamc.org: Botstein and the Bard College board released a forensic email analysis this week.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-26 audit: WAMC + Botstein/Bard without Cap Region anchors"
+  },
+  {
+    "id": "tp-wamc-bard-ualbany-rescue",
+    "text": "For @wamc.org: Bard College partners with UAlbany on a Capital Region research grant announced at the Empire State Plaza.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-26 audit: WAMC Bard with Cap Region rescue"
+  },
+  {
+    "id": "tp-phish-at-saratoga-springs-concert",
+    "text": "Drove 2 hours to see Phish at Saratoga Springs and drove home after the concert.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-26 audit: Phish at Saratoga Springs concert FN"
+  },
+  {
+    "id": "tn-disney-concert-saratoga-springs-resort",
+    "text": "Disney World concert in Saratoga Springs resort tonight",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-26 audit: Disney Saratoga still wins over concert cue"
+  },
+  {
+    "id": "tp-albany-preshow-phish-dinner",
+    "text": "I was in Albany getting a pre-show dinner when I got the call.\nThankfully a Phish show was the perfect place to be that evening.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-26 audit: Albany pre-show / Phish FN"
+  },
+  {
+    "id": "tp-spac-85-show",
+    "text": "I've held off on the new box set even though SPAC '85 was my 2nd show and 1st altered experience.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-26 audit: SPAC '85 year-card FN"
+  },
+  {
+    "id": "tp-spac-25-phish-run",
+    "text": "spac 25 and savannah 26 are two of my favorite modern phish multi show runs.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-26 audit: spac 25 + phish FN"
+  },
+  {
+    "id": "tn-blank-check-spac-merger",
+    "text": "The blank-check SPAC merger closed this week after the shareholder vote.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-26 audit: corporate SPAC acronym still drops"
   }
 ]
