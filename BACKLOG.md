@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-134 — Daily feed audit: WAMC statewide wildlife / SUNY roster FPs; Queensbury FNs
-- **Status:** in progress
+- **Status:** done ([#115](https://github.com/chriscarrollsmith/capital-region-feed/pull/115))
 - **Why:** 2026-10-27 audit of last-24h AppView feed (~55 posts) found two new
   active matcher FPs among rematch-keeps: bare `wamc` keeping a statewide NYS
   Wildlife Action Plan wire with no Cap Region place news, and Albany named only
