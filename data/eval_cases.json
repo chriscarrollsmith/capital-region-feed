@@ -12723,5 +12723,77 @@
     "split": "dev",
     "regression": true,
     "note": "2026-10-26 audit: corporate SPAC acronym still drops"
+  },
+  {
+    "id": "fp-wamc-statewide-wildlife-action-plan-1027",
+    "text": "New NYS Wildlife Action Plan includes plants, but leaves out apex predators\n->WAMC | More on \"New York wildlife conservation policy changes\"",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "New NYS Wildlife Action Plan includes plants, but leaves out apex predators The updated New York State Wildlife Action Plan (SWAP) has been released",
+    "note": "2026-10-27 audit: bare wamc + statewide Wildlife Action Plan is not Cap Region"
+  },
+  {
+    "id": "tp-wamc-pine-bush-wildlife-action-plan-1027",
+    "text": "WAMC: Albany Pine Bush Preserve habitats featured in the NYS Wildlife Action Plan update",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-27 audit: WAMC wildlife keep when Cap Region Pine Bush anchors"
+  },
+  {
+    "id": "fp-albany-suny-roster-uup-1027",
+    "text": "UUP members from across New York State (Albany, Fredonia, Cobleskill, and University at Buffalo pictured here) are standing with German Machado, a UUP Brockport member who was detained by ICE earlier this month.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-27 audit: Albany as one SUNY campus in a statewide roster"
+  },
+  {
+    "id": "tp-ualbany-uup-chapter-1027",
+    "text": "UUP members at the University at Albany chapter rally with colleagues from Fredonia across New York State.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-27 audit: University at Albany chapter still keeps amid statewide peers"
+  },
+  {
+    "id": "tp-queensbury-aviation-mall-karting-1027",
+    "text": "ADK Karting Experience in Queensbury has indoor go-karting, racing simulators, and an arcade.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "ADK Karting: Indoor Go-Karts in Queensbury, NY ADK Karting offers indoor go-karts at their Aviation Mall location in Queensbury, NY.",
+    "note": "2026-10-27 audit: FN Queensbury NY / Aviation Mall tourism card"
+  },
+  {
+    "id": "tp-queensbury-glensfalls-hashtag-1027",
+    "text": "Early voting turnout in #queensbury #townboard #northcountry #warrencountyny #glensfalls",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-27 audit: FN #glensfalls / #warrencountyny Queensbury civic copy"
+  },
+  {
+    "id": "tn-queensbury-rules-boxing-1027",
+    "text": "They fought under Queensbury rules in the championship bout.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-27 audit: Queensbury rules boxing must not keep"
   }
 ]

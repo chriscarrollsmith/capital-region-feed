@@ -538,6 +538,26 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-134 — Daily feed audit: WAMC statewide wildlife / SUNY roster FPs; Queensbury FNs
+- **Status:** in progress
+- **Why:** 2026-10-27 audit of last-24h AppView feed (~55 posts) found two new
+  active matcher FPs among rematch-keeps: bare `wamc` keeping a statewide NYS
+  Wildlife Action Plan wire with no Cap Region place news, and Albany named only
+  as one SUNY campus in a UUP statewide roster (Fredonia / Cobleskill / Buffalo /
+  Brockport). Residual allowlisted News10 / Times Union non-local and NWS Albany /
+  Glens Falls climate remain intentional. Planned `fn_search.py` slate (8) all
+  ran OK with no Cap Region FNs; ad-hoc `Queensbury` / `Queensbury NY` /
+  `Aviation Mall` surfaced Queensbury NY tourism and `#glensfalls` /
+  `#warrencountyny` civic FNs. Not counted: KALB / De Kalb / German kalb noise;
+  Queensbury Rules boxing; allowlisted non-local; Local 518 AFM keep.
+- **Work:**
+  - Add `_wamc_statewide_wildlife_conflict` and `_albany_suny_roster_conflict`;
+    strong `#glensfalls` / Queensbury NY / Aviation Mall / `#warrencountyny`
+    cues with Queensbury-rules gate; grow eval + fn_search log/strategies.
+- **Done when:** Audited FPs drop; Queensbury / Glens Falls hashtag FNs keep;
+  boxing Queensbury rules and Cap Region WAMC/UAlbany counterparts stay correct;
+  eval P/R stay 1.000; unit tests cover the new gates.
+
 ### B-133 — Daily feed audit: WAMC Bard College FP; Phish/Saratoga/SPAC/Albany FNs (fold #112)
 - **Status:** done ([#114](https://github.com/chriscarrollsmith/capital-region-feed/pull/114))
 - **Why:** 2026-10-26 audit of last-24h AppView feed (~49 posts) found one new
