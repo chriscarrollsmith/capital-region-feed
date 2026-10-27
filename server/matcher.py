@@ -428,7 +428,17 @@ _STRONG_POSITIVE = re.compile(
       | \byaddo\b
       # Glens Falls (Warren County / Cap Region media market) — climate bots and
       # local sports often omit ", NY" beyond the city+state token order.
+      # Hashtag form omits the space (#glensfalls).
       | \bglens\s+falls\b
+      | \#glensfalls\b
+      # Queensbury (Warren County / Glens Falls market). Bare "Queensbury rules"
+      # boxing copy stays out via NY / mall / hashtag gates below.
+      | queensbury\s*,?\s*(?:ny|n\.y\.|new\s+york)\b
+      # Prefer #queensburyny — bare #queensbury also tags the West Yorkshire town.
+      | \#queensbury(?:ny|_ny)\b
+      | \#warrencountyny\b
+      | warren\s+county\s*,?\s*(?:ny|n\.y\.|new\s+york)\b
+      | aviation\s+mall\b
       # Albany music venue — title case only so "fungal empire underground"
       # (Mycelium Empire game copy) does not keep. Tour posters use Empire Underground.
       | (?-i:\bEmpire\s+Underground\b)
@@ -770,6 +780,8 @@ _AMBIGUOUS_PLACE = re.compile(
       | \baltamont\b
       | \bsand\s+lake\b
       | \bgreen\s+island\b
+      # Town of Queensbury (Warren County) — not bare "Queensbury rules" boxing.
+      | \bqueensbury\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -3977,6 +3989,135 @@ def _wamc_bard_college_conflict(haystack: str) -> bool:
     return True
 
 
+_WAMC_STATEWIDE_WILDLIFE = re.compile(
+    r"""
+    (?:
+        wildlife\s+action\s+plan\b
+      | nys\s+wildlife\b
+      | new\s+york\s+state\s+wildlife\b
+      | new\s+york\s+wildlife\s+conservation\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+
+def _wamc_statewide_wildlife_conflict(haystack: str) -> bool:
+    """True when WAMC is covering statewide DEC wildlife policy, not Cap Region.
+
+    Bare ``wamc`` is a strong positive for Cap Region NPR, but statewide Wildlife
+    Action Plan / NYS wildlife wires have no Capital Region place news. Cap Region
+    anchors (not bare ``new york`` / ``nys``) still rescue.
+    """
+    if not re.search(r'\bwamc\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not _WAMC_STATEWIDE_WILDLIFE.search(haystack):
+        return False
+    if re.search(
+        r"""
+        (?:
+            \#albanyny\b
+          | albany\s*,?\s*(?:ny|n\.y\.|new\s+york)
+          | \bualbany\b
+          | university\s+at\s+albany\b
+          | \bschenectady\b
+          | (?<!\d\s)(?<![\w.])troy(?![\w@.-])\s*,?\s*(?:ny\b|n\.y\.|new\s+york)
+          | capital\s+(?:region|district)\b
+          | \bmvp\s+arena\b
+          | empire\s+state\s+plaza\b
+          | albany\s+pine\s+bush\b
+          | pine\s+bush\s+preserve\b
+          | \bglens\s+falls\b
+          | \#glensfalls\b
+        )
+        """,
+        haystack,
+        flags=re.IGNORECASE | re.VERBOSE,
+    ):
+        return False
+    return True
+
+
+_SUNY_ROSTER_PEER = re.compile(
+    r"""
+    (?:
+        \bfredonia\b
+      | \bbrockport\b
+      | university\s+at\s+buffalo\b
+      | \bubuffalo\b
+      | \bcobleskill\b
+      | \boneonta\b
+      | \boswego\b
+      | \bplattsburgh\b
+      | \bgeneseo\b
+      | new\s+paltz\b
+      | stony\s+brook\b
+      | \bbinghampton\b
+      | \bcortland\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+
+def _albany_suny_roster_conflict(haystack: str) -> bool:
+    """True when Albany is one SUNY campus in a statewide roster, not Cap Region news.
+
+    Union / advocacy copy lists Albany beside Fredonia, Buffalo, Brockport, and
+    similar campuses under an across-New-York framing. University at Albany /
+    Cap Region civic anchors still rescue.
+    """
+    if not re.search(r'\balbany\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not _SUNY_ROSTER_PEER.search(haystack):
+        return False
+    if not re.search(
+        r"""
+        (?:
+            across\s+new\s+york
+          | new\s+york\s+state\s*\(
+          | from\s+across\s+new\s+york
+          | statewide
+        )
+        """,
+        haystack,
+        flags=re.IGNORECASE | re.VERBOSE,
+    ):
+        return False
+    if _ALBANY_LOCAL_RESCUE.search(haystack) or _ALBANY_WIRE_LOCAL_RESCUE.search(haystack):
+        return False
+    return True
+
+
+def _queensbury_rules_conflict(haystack: str) -> bool:
+    """True when Queensbury refers to boxing Queensbury/Queensberry rules."""
+    if not re.search(r'\bqueensbury\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not re.search(
+        r'queensbury\s+rules\b|marquess\s+of\s+queensberr',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    if re.search(
+        r"""
+        (?:
+            queensbury\s*,?\s*(?:ny|n\.y\.|new\s+york)\b
+          | \#queensbury(?:ny|_ny)\b
+          | \#warrencountyny\b
+          | aviation\s+mall\b
+          | \bglens\s+falls\b
+          | \#glensfalls\b
+          | warren\s+county\b
+        )
+        """,
+        haystack,
+        flags=re.IGNORECASE | re.VERBOSE,
+    ):
+        return False
+    return True
+
+
 def _ct_capital_district_conflict(haystack: str) -> bool:
     """True when 'capital district' refers to CT bank territory, not NY."""
     if not _CT_CAPITAL_DISTRICT.search(haystack):
@@ -5726,6 +5867,8 @@ def _propose_candidate(
             return MatchResult(False, 'hard_negative:wamc_western_mass')
         if _wamc_bard_college_conflict(haystack):
             return MatchResult(False, 'hard_negative:wamc_bard_college')
+        if _wamc_statewide_wildlife_conflict(haystack):
+            return MatchResult(False, 'hard_negative:wamc_statewide_wildlife')
         if _ct_capital_district_conflict(haystack):
             return MatchResult(False, 'hard_negative:ct_capital_district')
         if _ct_capital_region_conflict(haystack, author_handle):
@@ -5883,6 +6026,8 @@ def _propose_candidate(
                 return MatchResult(False, 'hard_negative:albany_operative')
             if _albany_statehouse_metonym_conflict(haystack):
                 return MatchResult(False, 'hard_negative:albany_statehouse_metonym')
+            if _albany_suny_roster_conflict(haystack):
+                return MatchResult(False, 'hard_negative:albany_suny_roster')
             if _albany_hashtag_geotag_conflict(haystack):
                 return MatchResult(False, 'hard_negative:albany_hashtag_geotag')
             if _NY_CONTEXT.search(place_haystack):
@@ -5907,6 +6052,9 @@ def _propose_candidate(
 
         if term == 'galway' and _galway_ireland_conflict(haystack):
             return MatchResult(False, 'hard_negative:galway_ireland')
+
+        if term == 'queensbury' and _queensbury_rules_conflict(haystack):
+            return MatchResult(False, 'hard_negative:queensbury_rules')
 
         if term == 'scotia' and _scotia_montreal_conflict(haystack):
             return MatchResult(False, 'hard_negative:scotia_montreal')

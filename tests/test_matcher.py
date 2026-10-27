@@ -5547,6 +5547,66 @@ def test_wamc_bard_college_not_capital_region() -> None:
     assert albany.reason == 'strong_positive'
 
 
+def test_wamc_statewide_wildlife_not_capital_region() -> None:
+    """Bare WAMC + statewide Wildlife Action Plan wires must not keep."""
+    wildlife = match_post(
+        'New NYS Wildlife Action Plan includes plants, but leaves out apex predators\n'
+        '->WAMC | More on "New York wildlife conservation policy changes"',
+        alt_text=(
+            'New NYS Wildlife Action Plan includes plants, but leaves out apex predators '
+            'The updated New York State Wildlife Action Plan (SWAP) has been released'
+        ),
+    )
+    assert wildlife.matched is False
+    assert wildlife.reason == 'hard_negative:wamc_statewide_wildlife'
+    rescue = match_post(
+        'WAMC: Albany Pine Bush Preserve habitats featured in the NYS Wildlife Action Plan update'
+    )
+    assert rescue.matched is True
+    albany = match_post('For @wamc.org: Albany Common Council votes on the budget tonight.')
+    assert albany.matched is True
+    assert albany.reason == 'strong_positive'
+
+
+def test_albany_suny_roster_not_capital_region() -> None:
+    """Albany as one campus in a statewide SUNY roster must not keep."""
+    roster = match_post(
+        'UUP members from across New York State (Albany, Fredonia, Cobleskill, and '
+        'University at Buffalo pictured here) are standing with German Machado, a '
+        'UUP Brockport member who was detained by ICE earlier this month.'
+    )
+    assert roster.matched is False
+    assert roster.reason == 'hard_negative:albany_suny_roster'
+    rescue = match_post(
+        'UUP members at the University at Albany chapter rally with colleagues from '
+        'Fredonia across New York State.'
+    )
+    assert rescue.matched is True
+
+
+def test_queensbury_glens_falls_hashtag_recall() -> None:
+    """Queensbury NY / Aviation Mall / #glensfalls keep; Queensbury rules drop."""
+    karting = match_post(
+        'ADK Karting Experience in Queensbury has indoor go-karting',
+        alt_text=(
+            'ADK Karting: Indoor Go-Karts in Queensbury, NY '
+            'Aviation Mall location in Queensbury, NY.'
+        ),
+    )
+    assert karting.matched is True
+    assert karting.reason == 'strong_positive'
+    warren = match_post(
+        'Early voting in #queensbury #townboard #northcountry #warrencountyny #glensfalls'
+    )
+    assert warren.matched is True
+    assert warren.reason == 'strong_positive'
+    bare = match_post('Had a great day in Queensbury')
+    assert bare.matched is False
+    rules = match_post('They fought under Queensbury rules in the championship bout.')
+    assert rules.matched is False
+    assert rules.reason == 'hard_negative:queensbury_rules'
+
+
 def test_phish_saratoga_spac_albany_recall() -> None:
     """Phish/Saratoga/SPAC year cards and Albany pre-show dinner keep."""
     phish_ss = match_post(
