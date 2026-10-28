@@ -179,6 +179,8 @@ _STRONG_POSITIVE = re.compile(
       | saratoga\s+race\s+course
       # Common phrasing inserts "Springs" before Performing Arts Center.
       | saratoga(?:\s+springs)?\s+performing\s+arts\s+center
+      # Fan / guest cards often omit ", NY" for the annual Albany Comic Con.
+      | albany\s+comic\s+con\b
       # Saratoga Race Course training facility (tourism / race-day copy).
       | oklahoma\s+training\s+track
       | national\s+museum\s+of\s+racing
@@ -3380,7 +3382,7 @@ _LOCAL_EVENT_VENUE = re.compile(
         \bproctors\b
       | saratoga(?:\s+springs)?\s+performing\s+arts\s+center
       | \bat\s+spac\b
-      | \bspac\s+(?:season|lawn|amphitheatre|amphitheater|presents)
+      | \bspac\s+(?:season|lawn|amphitheatre|amphitheater|presents|tickets?|pavilion)
       | \bspac\s*['\u2019]?\s*\d{2}\b
       | national\s+museum\s+of\s+racing
       | mvp\s+arena
@@ -3413,7 +3415,27 @@ _LOCAL_EVENT_VENUE = re.compile(
 
 
 def _normalize(text: str) -> str:
-    return re.sub(r'\s+', ' ', text or '').strip()
+    """Collapse whitespace and fold common Cap Region misspellings.
+
+    ``capitol region/district`` is a frequent misspelling of the NY Capital
+    Region; folding it here lets strong positives and off-region conflict
+    gates share one spelling. Connecticut's ``capitol planning region`` is
+    unchanged (``planning`` sits between the words).
+    """
+    collapsed = re.sub(r'\s+', ' ', text or '').strip()
+    collapsed = re.sub(
+        r'\bcapitol\s+(region|district)\b',
+        r'capital \1',
+        collapsed,
+        flags=re.IGNORECASE,
+    )
+    collapsed = re.sub(
+        r'#capitol(region|district)',
+        r'#capital\1',
+        collapsed,
+        flags=re.IGNORECASE,
+    )
+    return collapsed
 
 
 # Link-card / quote bodies can be full articles; matching on the whole blob
@@ -5541,8 +5563,27 @@ def _soft_prior_ambiguous(
     return None
 
 
+# Ticket guides: "Planning SPAC … lawn picnics to pavilion" without Saratoga.
+_SPAC_LAWN_PAVILION = re.compile(
+    r"""
+    (?:
+        \#?spac\b[\s\S]{0,160}\b(?:lawn|pavilion)\b
+      | \b(?:lawn|pavilion)\b[\s\S]{0,160}\#?spac\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+
+def _spac_lawn_pavilion(haystack: str) -> bool:
+    """True when SPAC co-occurs with lawn/pavilion (Saratoga amphitheater copy)."""
+    return _SPAC_LAWN_PAVILION.search(haystack) is not None
+
+
 def _has_local_event_venue(haystack: str) -> bool:
     """True when a Cap Region venue token is present and not an off-region collision."""
+    if _spac_lawn_pavilion(haystack):
+        return True
     match = _LOCAL_EVENT_VENUE.search(haystack)
     if not match:
         return False
@@ -5558,6 +5599,8 @@ def _match_local_event(haystack: str) -> MatchResult | None:
     """Keep regional events when a local venue appears with event phrasing."""
     if not _EVENT_CUE.search(haystack):
         return None
+    if _spac_lawn_pavilion(haystack):
+        return MatchResult(True, 'event_local_venue:spac')
     match = _LOCAL_EVENT_VENUE.search(haystack)
     if not match:
         return None

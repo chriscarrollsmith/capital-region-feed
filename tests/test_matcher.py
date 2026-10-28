@@ -5641,3 +5641,49 @@ def test_phish_saratoga_spac_albany_recall() -> None:
         'The blank-check SPAC merger closed this week after the shareholder vote.'
     )
     assert blank_check.matched is False
+
+
+def test_capitol_region_misspelling_and_albany_comic_con() -> None:
+    """Capitol Region misspelling and Albany Comic Con keep; MD capitol still drops."""
+    comic = match_post(
+        "If you're anywhere near the Capitol Region this weekend, make sure you "
+        'stop by Albany Comic Con on Sunday, one of my favorite shows.'
+    )
+    assert comic.matched is True
+    assert comic.reason == 'strong_positive'
+
+    bare_comic = match_post(
+        "I'll have this sketch with me this weekend at Albany Comic Con, so it'll be for sale."
+    )
+    assert bare_comic.matched is True
+    assert bare_comic.reason == 'strong_positive'
+
+    capitol = match_post('Capitol Region traffic is light this morning ahead of the commute.')
+    assert capitol.matched is True
+    assert capitol.reason == 'strong_positive'
+
+    md = match_post(
+        '7 things to do in the capitol region this weekend.',
+        author_handle='bannermoco.bsky.social',
+    )
+    assert md.matched is False
+    assert md.reason == 'hard_negative:md_dc_capital_region'
+
+    ct = match_post('The Capitol Planning Region council meets in Hartford tomorrow.')
+    assert ct.matched is False
+
+
+def test_spac_lawn_pavilion_ticket_guide() -> None:
+    """SPAC ticket guides that mention lawn/pavilion keep; blank-check SPAC drops."""
+    guide = match_post(
+        'Planning SPAC for 2026? Your ticket choice shapes your entire night. '
+        'From lawn picnics to pavilion ballet, parking to bag rules, knowing '
+        'whether it is a SPAC or Live Nation event can make the difference.'
+    )
+    assert guide.matched is True
+    assert guide.reason == 'event_local_venue:spac'
+
+    blank = match_post(
+        'Forge Nano completes SPAC merger with Archimedes Tech II after the shareholder vote.'
+    )
+    assert blank.matched is False
