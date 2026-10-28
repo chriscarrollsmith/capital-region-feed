@@ -538,6 +538,27 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-135 — Daily feed audit: Capitol Region / Albany Comic Con / SPAC lawn FNs (fold #115)
+- **Status:** in progress
+- **Why:** 2026-10-28 audit of last-24h AppView feed (~69 posts) found no new
+  active matcher FPs among rematch-keeps after folding unmerged #115 (WAMC
+  statewide wildlife / SUNY roster gates + Queensbury cues). Residual
+  allowlisted News10 / Times Union non-local and NWS Albany / Glens Falls
+  climate remain intentional. Planned `fn_search.py` slate (8) all ran OK with
+  no Cap Region FNs in the 24h window. Events/near-miss review surfaced durable
+  recall gaps: `Capitol Region` misspelling (vs `Capital Region`), bare
+  `Albany Comic Con`, and SPAC ticket guides that pair lawn/pavilion without a
+  Saratoga token.
+- **Work:**
+  - Fold `capitol region/district` to `capital …` in `_normalize` so strong
+    positives and off-region conflict gates share one spelling; keep CT
+    `Capitol Planning Region` untouched.
+  - Strong `albany comic con`; SPAC↔lawn/pavilion event-venue co-occurrence;
+    grow eval + fn_search log; supersede #115.
+- **Done when:** Capitol Region / Albany Comic Con / SPAC lawn-pavilion FNs keep;
+  MD/DC capitol misspellings and blank-check SPAC still drop; eval P/R stay
+  1.000; unit tests cover the new cues.
+
 ### B-134 — Daily feed audit: WAMC statewide wildlife / SUNY roster FPs; Queensbury FNs
 - **Status:** done ([#115](https://github.com/chriscarrollsmith/capital-region-feed/pull/115))
 - **Why:** 2026-10-27 audit of last-24h AppView feed (~55 posts) found two new

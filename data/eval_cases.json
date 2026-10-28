@@ -12795,5 +12795,76 @@
     "split": "dev",
     "regression": true,
     "note": "2026-10-27 audit: Queensbury rules boxing must not keep"
+  },
+  {
+    "id": "tp-capitol-region-albany-comic-con-1028",
+    "text": "If you're anywhere near the Capitol Region this weekend, make sure you stop by Albany Comic Con on Sunday, one of my favorite shows.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-28 audit FN: Capitol Region misspelling + Albany Comic Con"
+  },
+  {
+    "id": "tp-albany-comic-con-guest-1028",
+    "text": "I'll have this sketch with me this weekend at Albany Comic Con, so it'll be for sale.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-28 audit FN: Albany Comic Con without , NY"
+  },
+  {
+    "id": "tp-capitol-region-traffic-1028",
+    "text": "Capitol Region traffic is light this morning ahead of the commute.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-28 audit FN: Capitol Region misspelling of Capital Region"
+  },
+  {
+    "id": "tn-capitol-region-md-banner-1028",
+    "text": "7 things to do in the capitol region this weekend.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "author_handle": "bannermoco.bsky.social",
+    "note": "2026-10-28 audit TN: capitol misspelling must still gate MD/DC capital region"
+  },
+  {
+    "id": "tn-capitol-planning-region-ct-1028",
+    "text": "The Capitol Planning Region council meets in Hartford tomorrow.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-28 audit TN: CT Capitol Planning Region must not fold into NY Capital Region"
+  },
+  {
+    "id": "tp-spac-lawn-pavilion-ticket-guide-1028",
+    "text": "Planning SPAC for 2026? Your ticket choice shapes your entire night. From lawn picnics to pavilion ballet, parking to bag rules, knowing whether it is a SPAC or Live Nation event can make the difference.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-28 audit FN: SPAC ticket guide with lawn/pavilion without Saratoga token"
+  },
+  {
+    "id": "tn-spac-blank-check-merger-1028",
+    "text": "Forge Nano completes SPAC merger with Archimedes Tech II after the shareholder vote.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-28 audit TN: corporate blank-check SPAC still drops"
   }
 ]
