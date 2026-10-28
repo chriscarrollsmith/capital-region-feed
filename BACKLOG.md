@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-135 — Daily feed audit: Capitol Region / Albany Comic Con / SPAC lawn FNs (fold #115)
-- **Status:** in progress
+- **Status:** done ([#116](https://github.com/chriscarrollsmith/capital-region-feed/pull/116))
 - **Why:** 2026-10-28 audit of last-24h AppView feed (~69 posts) found no new
   active matcher FPs among rematch-keeps after folding unmerged #115 (WAMC
   statewide wildlife / SUNY roster gates + Queensbury cues). Residual
