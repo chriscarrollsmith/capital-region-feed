@@ -12866,5 +12866,85 @@
     "split": "dev",
     "regression": true,
     "note": "2026-10-28 audit TN: corporate blank-check SPAC still drops"
+  },
+  {
+    "id": "fp-wamc-ny21-deepfake-1029",
+    "text": "Via @wamc #NY21 candidate criticized for creating #AI #deepfake video #AnthonyConstantino\n\nwww.wamc.org/news/2026-08/ny21-candidate",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-29 audit FP: bare wamc + NY-21 / North Country desk must not keep"
+  },
+  {
+    "id": "fp-wamc-north-country-rally-1029",
+    "text": "WAMC: Vance coming to the North Country to rally for a congressional candidate ahead of Election Day.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-29 audit FP counterpart: bare wamc + North Country rally"
+  },
+  {
+    "id": "tp-wamc-capital-region-ny21-ad-1029",
+    "text": "WAMC: Capital Region voters react to a #NY21 ad bought on local cable.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-29 audit TP: Cap Region rescue still keeps WAMC + NY21"
+  },
+  {
+    "id": "tp-wamc-albany-common-council-1029",
+    "text": "For @wamc.org: Albany Common Council votes on the budget tonight.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-29 audit TP: existing Cap Region WAMC civic keep"
+  },
+  {
+    "id": "fn-ethan-allen-express-delay-1029",
+    "text": "AMTRAK Ethan Allen Express (290) BTN->NYP [2026-10-28] Alert:\nDelay Notification: As of 4:23 PM ET Train 290 is currently operating approximately 30 minutes late.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-29 audit FN: Cap Region Amtrak Ethan Allen Express delay without station name"
+  },
+  {
+    "id": "fn-halfmoon-property-purchase-1029",
+    "text": "A company in the waterworks industry that's seeing increased demand for its products and services has purchased property in Halfmoon with an eye toward expansion.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-29 audit FN: Town of Halfmoon biz-journal property wire omitting , NY"
+  },
+  {
+    "id": "fn-saratoga-springs-side-street-1029",
+    "text": "Down a side street in #Saratoga Springs.  Diamond-pattern pants, tufts of an orange mane. First thought: Johnny Rotten.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-29 audit FN: Saratoga Springs street-scene photo omitting , NY"
+  },
+  {
+    "id": "tn-saratoga-springs-utah-crash-1029",
+    "text": "Suspect charged in Saratoga Springs crash on Redwood Road near Utah County.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-29 audit TN: Utah Saratoga Springs crash still gated"
   }
 ]

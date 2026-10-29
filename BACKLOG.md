@@ -538,6 +538,25 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-136 — Daily feed audit: WAMC NY-21 FP; Ethan Allen / Halfmoon / Saratoga street FNs (fold #116)
+- **Status:** in progress
+- **Why:** 2026-10-29 audit of last-24h AppView feed (~99 posts) found one new
+  active matcher FP among rematch-keeps: bare `wamc` keeping a NY-21 / North
+  Country deepfake-candidate wire with no Cap Region place news. Residual
+  allowlisted News10 / Times Union non-local and NWS Albany / Glens Falls
+  climate remain intentional. Planned `fn_search.py` slate (8) all ran OK;
+  Cap Region FNs: Saratoga Springs side-street photo and Amtrak Ethan Allen
+  Express delay without a station name. Exploratory Halfmoon search also
+  surfaced a Town of Halfmoon property-purchase wire omitted `, NY`.
+- **Work:**
+  - Gate bare `wamc` + NY-21 / North Country (Cap Region / NY-20 rescue).
+  - Strong `ethan allen express`; Halfmoon property/purchase cues; Saratoga
+    Springs side-street / downtown cues (Utah crash gate retained).
+  - Grow eval + fn_search log; supersede #116.
+- **Done when:** WAMC NY-21 FP drops; Ethan Allen / Halfmoon / Saratoga street
+  FNs keep; Utah Saratoga Springs still drops; eval P/R stay 1.000; unit tests
+  cover the new cues.
+
 ### B-135 — Daily feed audit: Capitol Region / Albany Comic Con / SPAC lawn FNs (fold #115)
 - **Status:** done ([#116](https://github.com/chriscarrollsmith/capital-region-feed/pull/116))
 - **Why:** 2026-10-28 audit of last-24h AppView feed (~69 posts) found no new
