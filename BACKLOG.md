@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-136 — Daily feed audit: WAMC NY-21 FP; Ethan Allen / Halfmoon / Saratoga street FNs (fold #116)
-- **Status:** in progress
+- **Status:** done ([#117](https://github.com/chriscarrollsmith/capital-region-feed/pull/117))
 - **Why:** 2026-10-29 audit of last-24h AppView feed (~99 posts) found one new
   active matcher FP among rematch-keeps: bare `wamc` keeping a NY-21 / North
   Country deepfake-candidate wire with no Cap Region place news. Residual
