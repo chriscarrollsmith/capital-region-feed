@@ -12723,5 +12723,228 @@
     "split": "dev",
     "regression": true,
     "note": "2026-10-26 audit: corporate SPAC acronym still drops"
+  },
+  {
+    "id": "fp-wamc-statewide-wildlife-action-plan-1027",
+    "text": "New NYS Wildlife Action Plan includes plants, but leaves out apex predators\n->WAMC | More on \"New York wildlife conservation policy changes\"",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "New NYS Wildlife Action Plan includes plants, but leaves out apex predators The updated New York State Wildlife Action Plan (SWAP) has been released",
+    "note": "2026-10-27 audit: bare wamc + statewide Wildlife Action Plan is not Cap Region"
+  },
+  {
+    "id": "tp-wamc-pine-bush-wildlife-action-plan-1027",
+    "text": "WAMC: Albany Pine Bush Preserve habitats featured in the NYS Wildlife Action Plan update",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-27 audit: WAMC wildlife keep when Cap Region Pine Bush anchors"
+  },
+  {
+    "id": "fp-albany-suny-roster-uup-1027",
+    "text": "UUP members from across New York State (Albany, Fredonia, Cobleskill, and University at Buffalo pictured here) are standing with German Machado, a UUP Brockport member who was detained by ICE earlier this month.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-27 audit: Albany as one SUNY campus in a statewide roster"
+  },
+  {
+    "id": "tp-ualbany-uup-chapter-1027",
+    "text": "UUP members at the University at Albany chapter rally with colleagues from Fredonia across New York State.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-27 audit: University at Albany chapter still keeps amid statewide peers"
+  },
+  {
+    "id": "tp-queensbury-aviation-mall-karting-1027",
+    "text": "ADK Karting Experience in Queensbury has indoor go-karting, racing simulators, and an arcade.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "ADK Karting: Indoor Go-Karts in Queensbury, NY ADK Karting offers indoor go-karts at their Aviation Mall location in Queensbury, NY.",
+    "note": "2026-10-27 audit: FN Queensbury NY / Aviation Mall tourism card"
+  },
+  {
+    "id": "tp-queensbury-glensfalls-hashtag-1027",
+    "text": "Early voting turnout in #queensbury #townboard #northcountry #warrencountyny #glensfalls",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-27 audit: FN #glensfalls / #warrencountyny Queensbury civic copy"
+  },
+  {
+    "id": "tn-queensbury-rules-boxing-1027",
+    "text": "They fought under Queensbury rules in the championship bout.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-27 audit: Queensbury rules boxing must not keep"
+  },
+  {
+    "id": "tp-capitol-region-albany-comic-con-1028",
+    "text": "If you're anywhere near the Capitol Region this weekend, make sure you stop by Albany Comic Con on Sunday, one of my favorite shows.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-28 audit FN: Capitol Region misspelling + Albany Comic Con"
+  },
+  {
+    "id": "tp-albany-comic-con-guest-1028",
+    "text": "I'll have this sketch with me this weekend at Albany Comic Con, so it'll be for sale.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-28 audit FN: Albany Comic Con without , NY"
+  },
+  {
+    "id": "tp-capitol-region-traffic-1028",
+    "text": "Capitol Region traffic is light this morning ahead of the commute.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-28 audit FN: Capitol Region misspelling of Capital Region"
+  },
+  {
+    "id": "tn-capitol-region-md-banner-1028",
+    "text": "7 things to do in the capitol region this weekend.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "author_handle": "bannermoco.bsky.social",
+    "note": "2026-10-28 audit TN: capitol misspelling must still gate MD/DC capital region"
+  },
+  {
+    "id": "tn-capitol-planning-region-ct-1028",
+    "text": "The Capitol Planning Region council meets in Hartford tomorrow.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-28 audit TN: CT Capitol Planning Region must not fold into NY Capital Region"
+  },
+  {
+    "id": "tp-spac-lawn-pavilion-ticket-guide-1028",
+    "text": "Planning SPAC for 2026? Your ticket choice shapes your entire night. From lawn picnics to pavilion ballet, parking to bag rules, knowing whether it is a SPAC or Live Nation event can make the difference.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-28 audit FN: SPAC ticket guide with lawn/pavilion without Saratoga token"
+  },
+  {
+    "id": "tn-spac-blank-check-merger-1028",
+    "text": "Forge Nano completes SPAC merger with Archimedes Tech II after the shareholder vote.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-28 audit TN: corporate blank-check SPAC still drops"
+  },
+  {
+    "id": "fp-wamc-ny21-deepfake-1029",
+    "text": "Via @wamc #NY21 candidate criticized for creating #AI #deepfake video #AnthonyConstantino\n\nwww.wamc.org/news/2026-08/ny21-candidate",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-29 audit FP: bare wamc + NY-21 / North Country desk must not keep"
+  },
+  {
+    "id": "fp-wamc-north-country-rally-1029",
+    "text": "WAMC: Vance coming to the North Country to rally for a congressional candidate ahead of Election Day.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-29 audit FP counterpart: bare wamc + North Country rally"
+  },
+  {
+    "id": "tp-wamc-capital-region-ny21-ad-1029",
+    "text": "WAMC: Capital Region voters react to a #NY21 ad bought on local cable.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-29 audit TP: Cap Region rescue still keeps WAMC + NY21"
+  },
+  {
+    "id": "tp-wamc-albany-common-council-1029",
+    "text": "For @wamc.org: Albany Common Council votes on the budget tonight.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-29 audit TP: existing Cap Region WAMC civic keep"
+  },
+  {
+    "id": "fn-ethan-allen-express-delay-1029",
+    "text": "AMTRAK Ethan Allen Express (290) BTN->NYP [2026-10-28] Alert:\nDelay Notification: As of 4:23 PM ET Train 290 is currently operating approximately 30 minutes late.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-29 audit FN: Cap Region Amtrak Ethan Allen Express delay without station name"
+  },
+  {
+    "id": "fn-halfmoon-property-purchase-1029",
+    "text": "A company in the waterworks industry that's seeing increased demand for its products and services has purchased property in Halfmoon with an eye toward expansion.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-29 audit FN: Town of Halfmoon biz-journal property wire omitting , NY"
+  },
+  {
+    "id": "fn-saratoga-springs-side-street-1029",
+    "text": "Down a side street in #Saratoga Springs.  Diamond-pattern pants, tufts of an orange mane. First thought: Johnny Rotten.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-29 audit FN: Saratoga Springs street-scene photo omitting , NY"
+  },
+  {
+    "id": "tn-saratoga-springs-utah-crash-1029",
+    "text": "Suspect charged in Saratoga Springs crash on Redwood Road near Utah County.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-29 audit TN: Utah Saratoga Springs crash still gated"
   }
 ]

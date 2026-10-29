@@ -179,6 +179,8 @@ _STRONG_POSITIVE = re.compile(
       | saratoga\s+race\s+course
       # Common phrasing inserts "Springs" before Performing Arts Center.
       | saratoga(?:\s+springs)?\s+performing\s+arts\s+center
+      # Fan / guest cards often omit ", NY" for the annual Albany Comic Con.
+      | albany\s+comic\s+con\b
       # Saratoga Race Course training facility (tourism / race-day copy).
       | oklahoma\s+training\s+track
       | national\s+museum\s+of\s+racing
@@ -428,7 +430,17 @@ _STRONG_POSITIVE = re.compile(
       | \byaddo\b
       # Glens Falls (Warren County / Cap Region media market) — climate bots and
       # local sports often omit ", NY" beyond the city+state token order.
+      # Hashtag form omits the space (#glensfalls).
       | \bglens\s+falls\b
+      | \#glensfalls\b
+      # Queensbury (Warren County / Glens Falls market). Bare "Queensbury rules"
+      # boxing copy stays out via NY / mall / hashtag gates below.
+      | queensbury\s*,?\s*(?:ny|n\.y\.|new\s+york)\b
+      # Prefer #queensburyny — bare #queensbury also tags the West Yorkshire town.
+      | \#queensbury(?:ny|_ny)\b
+      | \#warrencountyny\b
+      | warren\s+county\s*,?\s*(?:ny|n\.y\.|new\s+york)\b
+      | aviation\s+mall\b
       # Albany music venue — title case only so "fungal empire underground"
       # (Mycelium Empire game copy) does not keep. Tour posters use Empire Underground.
       | (?-i:\bEmpire\s+Underground\b)
@@ -541,6 +553,8 @@ _STRONG_POSITIVE = re.compile(
       | albany\s*\(\s*alb\s*\)[\s\S]{0,160}empire\s+service
       | amtrak[\s\S]{0,80}(?:nyp|nyc)\s*->\s*alb\b
       | amtrak[\s\S]{0,80}alb\s*->\s*(?:nyp|nyc)\b
+      # Cap Region Amtrak corridor — status bots often omit station names.
+      | ethan\s+allen\s+express\b
       # Workout / immortality race-meet copy often omits "Race Course" / ", NY".
       | \bbreeze\b[\s\S]{0,80}\bat\s+saratoga\b
       | \bat\s+saratoga\b[\s\S]{0,80}\bbreeze\b
@@ -559,6 +573,10 @@ _STRONG_POSITIVE = re.compile(
       | halfmoon\s+hq\b
       | (?:office|hq)\s+in\s+halfmoon\b
       | new\s+halfmoon\s+(?:location|hq)\b
+      # Biz-journal expansion wires often omit ", NY" for Town of Halfmoon.
+      | (?:property|properties|parcel|acreage)\s+in\s+halfmoon\b
+      | (?:purchased|buying|acquired)\s+(?:property|properties|parcel|land)\s+in\s+halfmoon\b
+      | halfmoon\s+with\s+an\s+eye\s+toward\b
       # Local PropTech — require Cap Region place (bare #rentredi is SEO spam).
       | \brentredi\b[\s\S]{0,80}(?:\blatham\b|\balbany\b|capital\s+region\b|\#albanyny\b)
       | (?:\blatham\b|\balbany\b|capital\s+region\b|\#albanyny\b)[\s\S]{0,80}\brentredi\b
@@ -633,6 +651,9 @@ _STRONG_POSITIVE = re.compile(
       | \bin\s+saratoga\s+springs\s+to\b
       | (?:was|were)\s+in\s+saratoga\s+springs\b
       | \bin\s+saratoga\s+springs\s+last\b
+      # Street-scene photo cards often omit ", NY" (Utah crash wires lack "side street").
+      # Optional leading ``#`` covers ``#Saratoga Springs`` hashtag splits.
+      | (?:side\s+street|downtown)\s+in\s+#?saratoga\s+springs\b
       | historic\s+saratoga\s+springs\b
       | potato\s+chips?[\s\S]{0,80}saratoga\s+springs\b
       | saratoga\s+springs[\s\S]{0,80}potato\s+chips?\b
@@ -770,6 +791,8 @@ _AMBIGUOUS_PLACE = re.compile(
       | \baltamont\b
       | \bsand\s+lake\b
       | \bgreen\s+island\b
+      # Town of Queensbury (Warren County) — not bare "Queensbury rules" boxing.
+      | \bqueensbury\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -3368,7 +3391,7 @@ _LOCAL_EVENT_VENUE = re.compile(
         \bproctors\b
       | saratoga(?:\s+springs)?\s+performing\s+arts\s+center
       | \bat\s+spac\b
-      | \bspac\s+(?:season|lawn|amphitheatre|amphitheater|presents)
+      | \bspac\s+(?:season|lawn|amphitheatre|amphitheater|presents|tickets?|pavilion)
       | \bspac\s*['\u2019]?\s*\d{2}\b
       | national\s+museum\s+of\s+racing
       | mvp\s+arena
@@ -3401,7 +3424,27 @@ _LOCAL_EVENT_VENUE = re.compile(
 
 
 def _normalize(text: str) -> str:
-    return re.sub(r'\s+', ' ', text or '').strip()
+    """Collapse whitespace and fold common Cap Region misspellings.
+
+    ``capitol region/district`` is a frequent misspelling of the NY Capital
+    Region; folding it here lets strong positives and off-region conflict
+    gates share one spelling. Connecticut's ``capitol planning region`` is
+    unchanged (``planning`` sits between the words).
+    """
+    collapsed = re.sub(r'\s+', ' ', text or '').strip()
+    collapsed = re.sub(
+        r'\bcapitol\s+(region|district)\b',
+        r'capital \1',
+        collapsed,
+        flags=re.IGNORECASE,
+    )
+    collapsed = re.sub(
+        r'#capitol(region|district)',
+        r'#capital\1',
+        collapsed,
+        flags=re.IGNORECASE,
+    )
+    return collapsed
 
 
 # Link-card / quote bodies can be full articles; matching on the whole blob
@@ -3968,6 +4011,173 @@ def _wamc_bard_college_conflict(haystack: str) -> bool:
           | capital\s+(?:region|district)\b
           | \bmvp\s+arena\b
           | empire\s+state\s+plaza\b
+        )
+        """,
+        haystack,
+        flags=re.IGNORECASE | re.VERBOSE,
+    ):
+        return False
+    return True
+
+
+_WAMC_STATEWIDE_WILDLIFE = re.compile(
+    r"""
+    (?:
+        wildlife\s+action\s+plan\b
+      | nys\s+wildlife\b
+      | new\s+york\s+state\s+wildlife\b
+      | new\s+york\s+wildlife\s+conservation\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# WAMC North Country / NY-21 desk covers Stefanik's district; bare ``wamc`` must
+# not keep those wires without Cap Region anchors. NY-20 (Albany area) is local.
+_WAMC_NORTH_COUNTRY = re.compile(
+    r"""
+    (?:
+        \#ny21\b
+      | \bny[\s\-]?21\b
+      | north\s+country\b
+      | \badirondack(?:s)?\b[\s\S]{0,80}(?:
+            \bcandidate\b|\brally\b|\bdeepfake\b|\belection\b|\brace\b
+          )
+      | (?:
+            \bcandidate\b|\brally\b|\bdeepfake\b|\belection\b|\brace\b
+          )[\s\S]{0,80}\badirondack(?:s)?\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+_WAMC_CAP_REGION_RESCUE = re.compile(
+    r"""
+    (?:
+        \#albanyny\b
+      | albany\s*,?\s*(?:ny|n\.y\.|new\s+york)
+      | \bualbany\b
+      | university\s+at\s+albany\b
+      | \bschenectady\b
+      | (?<!\d\s)(?<![\w.])troy(?![\w@.-])\s*,?\s*(?:ny\b|n\.y\.|new\s+york)
+      | capital\s+(?:region|district)\b
+      | \bmvp\s+arena\b
+      | empire\s+state\s+plaza\b
+      | albany\s+pine\s+bush\b
+      | pine\s+bush\s+preserve\b
+      | \bglens\s+falls\b
+      | \#glensfalls\b
+      | \#ny20\b
+      | \bny[\s\-]?20\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+
+def _wamc_statewide_wildlife_conflict(haystack: str) -> bool:
+    """True when WAMC is covering statewide DEC wildlife policy, not Cap Region.
+
+    Bare ``wamc`` is a strong positive for Cap Region NPR, but statewide Wildlife
+    Action Plan / NYS wildlife wires have no Capital Region place news. Cap Region
+    anchors (not bare ``new york`` / ``nys``) still rescue.
+    """
+    if not re.search(r'\bwamc\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not _WAMC_STATEWIDE_WILDLIFE.search(haystack):
+        return False
+    if _WAMC_CAP_REGION_RESCUE.search(haystack):
+        return False
+    return True
+
+
+def _wamc_north_country_conflict(haystack: str) -> bool:
+    """True when WAMC is covering NY-21 / North Country, not Cap Region.
+
+    Bare ``wamc`` is a strong positive for Cap Region NPR, but NY-21 / North
+    Country candidate wires are outside the feed geography. Cap Region anchors
+    (including NY-20) still rescue.
+    """
+    if not re.search(r'\bwamc\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not _WAMC_NORTH_COUNTRY.search(haystack):
+        return False
+    if _WAMC_CAP_REGION_RESCUE.search(haystack):
+        return False
+    return True
+
+
+_SUNY_ROSTER_PEER = re.compile(
+    r"""
+    (?:
+        \bfredonia\b
+      | \bbrockport\b
+      | university\s+at\s+buffalo\b
+      | \bubuffalo\b
+      | \bcobleskill\b
+      | \boneonta\b
+      | \boswego\b
+      | \bplattsburgh\b
+      | \bgeneseo\b
+      | new\s+paltz\b
+      | stony\s+brook\b
+      | \bbinghampton\b
+      | \bcortland\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+
+def _albany_suny_roster_conflict(haystack: str) -> bool:
+    """True when Albany is one SUNY campus in a statewide roster, not Cap Region news.
+
+    Union / advocacy copy lists Albany beside Fredonia, Buffalo, Brockport, and
+    similar campuses under an across-New-York framing. University at Albany /
+    Cap Region civic anchors still rescue.
+    """
+    if not re.search(r'\balbany\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not _SUNY_ROSTER_PEER.search(haystack):
+        return False
+    if not re.search(
+        r"""
+        (?:
+            across\s+new\s+york
+          | new\s+york\s+state\s*\(
+          | from\s+across\s+new\s+york
+          | statewide
+        )
+        """,
+        haystack,
+        flags=re.IGNORECASE | re.VERBOSE,
+    ):
+        return False
+    if _ALBANY_LOCAL_RESCUE.search(haystack) or _ALBANY_WIRE_LOCAL_RESCUE.search(haystack):
+        return False
+    return True
+
+
+def _queensbury_rules_conflict(haystack: str) -> bool:
+    """True when Queensbury refers to boxing Queensbury/Queensberry rules."""
+    if not re.search(r'\bqueensbury\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not re.search(
+        r'queensbury\s+rules\b|marquess\s+of\s+queensberr',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    if re.search(
+        r"""
+        (?:
+            queensbury\s*,?\s*(?:ny|n\.y\.|new\s+york)\b
+          | \#queensbury(?:ny|_ny)\b
+          | \#warrencountyny\b
+          | aviation\s+mall\b
+          | \bglens\s+falls\b
+          | \#glensfalls\b
+          | warren\s+county\b
         )
         """,
         haystack,
@@ -5400,8 +5610,27 @@ def _soft_prior_ambiguous(
     return None
 
 
+# Ticket guides: "Planning SPAC … lawn picnics to pavilion" without Saratoga.
+_SPAC_LAWN_PAVILION = re.compile(
+    r"""
+    (?:
+        \#?spac\b[\s\S]{0,160}\b(?:lawn|pavilion)\b
+      | \b(?:lawn|pavilion)\b[\s\S]{0,160}\#?spac\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+
+def _spac_lawn_pavilion(haystack: str) -> bool:
+    """True when SPAC co-occurs with lawn/pavilion (Saratoga amphitheater copy)."""
+    return _SPAC_LAWN_PAVILION.search(haystack) is not None
+
+
 def _has_local_event_venue(haystack: str) -> bool:
     """True when a Cap Region venue token is present and not an off-region collision."""
+    if _spac_lawn_pavilion(haystack):
+        return True
     match = _LOCAL_EVENT_VENUE.search(haystack)
     if not match:
         return False
@@ -5417,6 +5646,8 @@ def _match_local_event(haystack: str) -> MatchResult | None:
     """Keep regional events when a local venue appears with event phrasing."""
     if not _EVENT_CUE.search(haystack):
         return None
+    if _spac_lawn_pavilion(haystack):
+        return MatchResult(True, 'event_local_venue:spac')
     match = _LOCAL_EVENT_VENUE.search(haystack)
     if not match:
         return None
@@ -5726,6 +5957,10 @@ def _propose_candidate(
             return MatchResult(False, 'hard_negative:wamc_western_mass')
         if _wamc_bard_college_conflict(haystack):
             return MatchResult(False, 'hard_negative:wamc_bard_college')
+        if _wamc_statewide_wildlife_conflict(haystack):
+            return MatchResult(False, 'hard_negative:wamc_statewide_wildlife')
+        if _wamc_north_country_conflict(haystack):
+            return MatchResult(False, 'hard_negative:wamc_north_country')
         if _ct_capital_district_conflict(haystack):
             return MatchResult(False, 'hard_negative:ct_capital_district')
         if _ct_capital_region_conflict(haystack, author_handle):
@@ -5883,6 +6118,8 @@ def _propose_candidate(
                 return MatchResult(False, 'hard_negative:albany_operative')
             if _albany_statehouse_metonym_conflict(haystack):
                 return MatchResult(False, 'hard_negative:albany_statehouse_metonym')
+            if _albany_suny_roster_conflict(haystack):
+                return MatchResult(False, 'hard_negative:albany_suny_roster')
             if _albany_hashtag_geotag_conflict(haystack):
                 return MatchResult(False, 'hard_negative:albany_hashtag_geotag')
             if _NY_CONTEXT.search(place_haystack):
@@ -5907,6 +6144,9 @@ def _propose_candidate(
 
         if term == 'galway' and _galway_ireland_conflict(haystack):
             return MatchResult(False, 'hard_negative:galway_ireland')
+
+        if term == 'queensbury' and _queensbury_rules_conflict(haystack):
+            return MatchResult(False, 'hard_negative:queensbury_rules')
 
         if term == 'scotia' and _scotia_montreal_conflict(haystack):
             return MatchResult(False, 'hard_negative:scotia_montreal')

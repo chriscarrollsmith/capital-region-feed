@@ -5547,6 +5547,114 @@ def test_wamc_bard_college_not_capital_region() -> None:
     assert albany.reason == 'strong_positive'
 
 
+def test_wamc_statewide_wildlife_not_capital_region() -> None:
+    """Bare WAMC + statewide Wildlife Action Plan wires must not keep."""
+    wildlife = match_post(
+        'New NYS Wildlife Action Plan includes plants, but leaves out apex predators\n'
+        '->WAMC | More on "New York wildlife conservation policy changes"',
+        alt_text=(
+            'New NYS Wildlife Action Plan includes plants, but leaves out apex predators '
+            'The updated New York State Wildlife Action Plan (SWAP) has been released'
+        ),
+    )
+    assert wildlife.matched is False
+    assert wildlife.reason == 'hard_negative:wamc_statewide_wildlife'
+    rescue = match_post(
+        'WAMC: Albany Pine Bush Preserve habitats featured in the NYS Wildlife Action Plan update'
+    )
+    assert rescue.matched is True
+    albany = match_post('For @wamc.org: Albany Common Council votes on the budget tonight.')
+    assert albany.matched is True
+    assert albany.reason == 'strong_positive'
+
+
+def test_wamc_north_country_ny21_not_capital_region() -> None:
+    """Bare WAMC + NY-21 / North Country wires must not keep without Cap Region rescue."""
+    ny21 = match_post(
+        'Via @wamc #NY21 candidate criticized for creating #AI #deepfake video #AnthonyConstantino',
+        embed={
+            '$type': 'app.bsky.embed.external#view',
+            'external': {
+                'uri': 'https://www.wamc.org/news/2026-08/ny21-candidate',
+                'title': 'NY-21 candidate criticized for creating AI deepfake video',
+                'description': '',
+            },
+        },
+    )
+    assert ny21.matched is False
+    assert ny21.reason == 'hard_negative:wamc_north_country'
+    north = match_post(
+        'WAMC: Vance coming to the North Country to rally for a congressional candidate.'
+    )
+    assert north.matched is False
+    assert north.reason == 'hard_negative:wamc_north_country'
+    rescue = match_post('WAMC: Capital Region voters react to a #NY21 ad bought on local cable.')
+    assert rescue.matched is True
+    albany = match_post('For @wamc.org: Albany Common Council votes on the budget tonight.')
+    assert albany.matched is True
+    assert albany.reason == 'strong_positive'
+
+
+def test_ethan_allen_halfmoon_saratoga_street_recall() -> None:
+    """Ethan Allen Express, Halfmoon property, and Saratoga street scenes keep."""
+    ethan = match_post(
+        'AMTRAK Ethan Allen Express (290) BTN->NYP Alert: Train 290 is currently '
+        'operating approximately 30 minutes late.'
+    )
+    assert ethan.matched is True
+    halfmoon = match_post(
+        'A company in the waterworks industry has purchased property in Halfmoon '
+        'with an eye toward expansion.'
+    )
+    assert halfmoon.matched is True
+    street = match_post(
+        'Down a side street in #Saratoga Springs.  Diamond-pattern pants, tufts of '
+        'an orange mane. First thought: Johnny Rotten.'
+    )
+    assert street.matched is True
+    utah = match_post('Suspect charged in Saratoga Springs crash on Redwood Road near Utah County.')
+    assert utah.matched is False
+
+
+def test_albany_suny_roster_not_capital_region() -> None:
+    """Albany as one campus in a statewide SUNY roster must not keep."""
+    roster = match_post(
+        'UUP members from across New York State (Albany, Fredonia, Cobleskill, and '
+        'University at Buffalo pictured here) are standing with German Machado, a '
+        'UUP Brockport member who was detained by ICE earlier this month.'
+    )
+    assert roster.matched is False
+    assert roster.reason == 'hard_negative:albany_suny_roster'
+    rescue = match_post(
+        'UUP members at the University at Albany chapter rally with colleagues from '
+        'Fredonia across New York State.'
+    )
+    assert rescue.matched is True
+
+
+def test_queensbury_glens_falls_hashtag_recall() -> None:
+    """Queensbury NY / Aviation Mall / #glensfalls keep; Queensbury rules drop."""
+    karting = match_post(
+        'ADK Karting Experience in Queensbury has indoor go-karting',
+        alt_text=(
+            'ADK Karting: Indoor Go-Karts in Queensbury, NY '
+            'Aviation Mall location in Queensbury, NY.'
+        ),
+    )
+    assert karting.matched is True
+    assert karting.reason == 'strong_positive'
+    warren = match_post(
+        'Early voting in #queensbury #townboard #northcountry #warrencountyny #glensfalls'
+    )
+    assert warren.matched is True
+    assert warren.reason == 'strong_positive'
+    bare = match_post('Had a great day in Queensbury')
+    assert bare.matched is False
+    rules = match_post('They fought under Queensbury rules in the championship bout.')
+    assert rules.matched is False
+    assert rules.reason == 'hard_negative:queensbury_rules'
+
+
 def test_phish_saratoga_spac_albany_recall() -> None:
     """Phish/Saratoga/SPAC year cards and Albany pre-show dinner keep."""
     phish_ss = match_post(
@@ -5581,3 +5689,49 @@ def test_phish_saratoga_spac_albany_recall() -> None:
         'The blank-check SPAC merger closed this week after the shareholder vote.'
     )
     assert blank_check.matched is False
+
+
+def test_capitol_region_misspelling_and_albany_comic_con() -> None:
+    """Capitol Region misspelling and Albany Comic Con keep; MD capitol still drops."""
+    comic = match_post(
+        "If you're anywhere near the Capitol Region this weekend, make sure you "
+        'stop by Albany Comic Con on Sunday, one of my favorite shows.'
+    )
+    assert comic.matched is True
+    assert comic.reason == 'strong_positive'
+
+    bare_comic = match_post(
+        "I'll have this sketch with me this weekend at Albany Comic Con, so it'll be for sale."
+    )
+    assert bare_comic.matched is True
+    assert bare_comic.reason == 'strong_positive'
+
+    capitol = match_post('Capitol Region traffic is light this morning ahead of the commute.')
+    assert capitol.matched is True
+    assert capitol.reason == 'strong_positive'
+
+    md = match_post(
+        '7 things to do in the capitol region this weekend.',
+        author_handle='bannermoco.bsky.social',
+    )
+    assert md.matched is False
+    assert md.reason == 'hard_negative:md_dc_capital_region'
+
+    ct = match_post('The Capitol Planning Region council meets in Hartford tomorrow.')
+    assert ct.matched is False
+
+
+def test_spac_lawn_pavilion_ticket_guide() -> None:
+    """SPAC ticket guides that mention lawn/pavilion keep; blank-check SPAC drops."""
+    guide = match_post(
+        'Planning SPAC for 2026? Your ticket choice shapes your entire night. '
+        'From lawn picnics to pavilion ballet, parking to bag rules, knowing '
+        'whether it is a SPAC or Live Nation event can make the difference.'
+    )
+    assert guide.matched is True
+    assert guide.reason == 'event_local_venue:spac'
+
+    blank = match_post(
+        'Forge Nano completes SPAC merger with Archimedes Tech II after the shareholder vote.'
+    )
+    assert blank.matched is False

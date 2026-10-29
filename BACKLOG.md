@@ -538,6 +538,66 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-136 — Daily feed audit: WAMC NY-21 FP; Ethan Allen / Halfmoon / Saratoga street FNs (fold #116)
+- **Status:** done ([#117](https://github.com/chriscarrollsmith/capital-region-feed/pull/117))
+- **Why:** 2026-10-29 audit of last-24h AppView feed (~99 posts) found one new
+  active matcher FP among rematch-keeps: bare `wamc` keeping a NY-21 / North
+  Country deepfake-candidate wire with no Cap Region place news. Residual
+  allowlisted News10 / Times Union non-local and NWS Albany / Glens Falls
+  climate remain intentional. Planned `fn_search.py` slate (8) all ran OK;
+  Cap Region FNs: Saratoga Springs side-street photo and Amtrak Ethan Allen
+  Express delay without a station name. Exploratory Halfmoon search also
+  surfaced a Town of Halfmoon property-purchase wire omitted `, NY`.
+- **Work:**
+  - Gate bare `wamc` + NY-21 / North Country (Cap Region / NY-20 rescue).
+  - Strong `ethan allen express`; Halfmoon property/purchase cues; Saratoga
+    Springs side-street / downtown cues (Utah crash gate retained).
+  - Grow eval + fn_search log; supersede #116.
+- **Done when:** WAMC NY-21 FP drops; Ethan Allen / Halfmoon / Saratoga street
+  FNs keep; Utah Saratoga Springs still drops; eval P/R stay 1.000; unit tests
+  cover the new cues.
+
+### B-135 — Daily feed audit: Capitol Region / Albany Comic Con / SPAC lawn FNs (fold #115)
+- **Status:** done ([#116](https://github.com/chriscarrollsmith/capital-region-feed/pull/116))
+- **Why:** 2026-10-28 audit of last-24h AppView feed (~69 posts) found no new
+  active matcher FPs among rematch-keeps after folding unmerged #115 (WAMC
+  statewide wildlife / SUNY roster gates + Queensbury cues). Residual
+  allowlisted News10 / Times Union non-local and NWS Albany / Glens Falls
+  climate remain intentional. Planned `fn_search.py` slate (8) all ran OK with
+  no Cap Region FNs in the 24h window. Events/near-miss review surfaced durable
+  recall gaps: `Capitol Region` misspelling (vs `Capital Region`), bare
+  `Albany Comic Con`, and SPAC ticket guides that pair lawn/pavilion without a
+  Saratoga token.
+- **Work:**
+  - Fold `capitol region/district` to `capital …` in `_normalize` so strong
+    positives and off-region conflict gates share one spelling; keep CT
+    `Capitol Planning Region` untouched.
+  - Strong `albany comic con`; SPAC↔lawn/pavilion event-venue co-occurrence;
+    grow eval + fn_search log; supersede #115.
+- **Done when:** Capitol Region / Albany Comic Con / SPAC lawn-pavilion FNs keep;
+  MD/DC capitol misspellings and blank-check SPAC still drop; eval P/R stay
+  1.000; unit tests cover the new cues.
+
+### B-134 — Daily feed audit: WAMC statewide wildlife / SUNY roster FPs; Queensbury FNs
+- **Status:** done ([#115](https://github.com/chriscarrollsmith/capital-region-feed/pull/115))
+- **Why:** 2026-10-27 audit of last-24h AppView feed (~55 posts) found two new
+  active matcher FPs among rematch-keeps: bare `wamc` keeping a statewide NYS
+  Wildlife Action Plan wire with no Cap Region place news, and Albany named only
+  as one SUNY campus in a UUP statewide roster (Fredonia / Cobleskill / Buffalo /
+  Brockport). Residual allowlisted News10 / Times Union non-local and NWS Albany /
+  Glens Falls climate remain intentional. Planned `fn_search.py` slate (8) all
+  ran OK with no Cap Region FNs; ad-hoc `Queensbury` / `Queensbury NY` /
+  `Aviation Mall` surfaced Queensbury NY tourism and `#glensfalls` /
+  `#warrencountyny` civic FNs. Not counted: KALB / De Kalb / German kalb noise;
+  Queensbury Rules boxing; allowlisted non-local; Local 518 AFM keep.
+- **Work:**
+  - Add `_wamc_statewide_wildlife_conflict` and `_albany_suny_roster_conflict`;
+    strong `#glensfalls` / Queensbury NY / Aviation Mall / `#warrencountyny`
+    cues with Queensbury-rules gate; grow eval + fn_search log/strategies.
+- **Done when:** Audited FPs drop; Queensbury / Glens Falls hashtag FNs keep;
+  boxing Queensbury rules and Cap Region WAMC/UAlbany counterparts stay correct;
+  eval P/R stay 1.000; unit tests cover the new gates.
+
 ### B-133 — Daily feed audit: WAMC Bard College FP; Phish/Saratoga/SPAC/Albany FNs (fold #112)
 - **Status:** done ([#114](https://github.com/chriscarrollsmith/capital-region-feed/pull/114))
 - **Why:** 2026-10-26 audit of last-24h AppView feed (~49 posts) found one new
