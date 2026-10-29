@@ -5568,6 +5568,54 @@ def test_wamc_statewide_wildlife_not_capital_region() -> None:
     assert albany.reason == 'strong_positive'
 
 
+def test_wamc_north_country_ny21_not_capital_region() -> None:
+    """Bare WAMC + NY-21 / North Country wires must not keep without Cap Region rescue."""
+    ny21 = match_post(
+        'Via @wamc #NY21 candidate criticized for creating #AI #deepfake video #AnthonyConstantino',
+        embed={
+            '$type': 'app.bsky.embed.external#view',
+            'external': {
+                'uri': 'https://www.wamc.org/news/2026-08/ny21-candidate',
+                'title': 'NY-21 candidate criticized for creating AI deepfake video',
+                'description': '',
+            },
+        },
+    )
+    assert ny21.matched is False
+    assert ny21.reason == 'hard_negative:wamc_north_country'
+    north = match_post(
+        'WAMC: Vance coming to the North Country to rally for a congressional candidate.'
+    )
+    assert north.matched is False
+    assert north.reason == 'hard_negative:wamc_north_country'
+    rescue = match_post('WAMC: Capital Region voters react to a #NY21 ad bought on local cable.')
+    assert rescue.matched is True
+    albany = match_post('For @wamc.org: Albany Common Council votes on the budget tonight.')
+    assert albany.matched is True
+    assert albany.reason == 'strong_positive'
+
+
+def test_ethan_allen_halfmoon_saratoga_street_recall() -> None:
+    """Ethan Allen Express, Halfmoon property, and Saratoga street scenes keep."""
+    ethan = match_post(
+        'AMTRAK Ethan Allen Express (290) BTN->NYP Alert: Train 290 is currently '
+        'operating approximately 30 minutes late.'
+    )
+    assert ethan.matched is True
+    halfmoon = match_post(
+        'A company in the waterworks industry has purchased property in Halfmoon '
+        'with an eye toward expansion.'
+    )
+    assert halfmoon.matched is True
+    street = match_post(
+        'Down a side street in #Saratoga Springs.  Diamond-pattern pants, tufts of '
+        'an orange mane. First thought: Johnny Rotten.'
+    )
+    assert street.matched is True
+    utah = match_post('Suspect charged in Saratoga Springs crash on Redwood Road near Utah County.')
+    assert utah.matched is False
+
+
 def test_albany_suny_roster_not_capital_region() -> None:
     """Albany as one campus in a statewide SUNY roster must not keep."""
     roster = match_post(

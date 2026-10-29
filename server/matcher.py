@@ -553,6 +553,8 @@ _STRONG_POSITIVE = re.compile(
       | albany\s*\(\s*alb\s*\)[\s\S]{0,160}empire\s+service
       | amtrak[\s\S]{0,80}(?:nyp|nyc)\s*->\s*alb\b
       | amtrak[\s\S]{0,80}alb\s*->\s*(?:nyp|nyc)\b
+      # Cap Region Amtrak corridor — status bots often omit station names.
+      | ethan\s+allen\s+express\b
       # Workout / immortality race-meet copy often omits "Race Course" / ", NY".
       | \bbreeze\b[\s\S]{0,80}\bat\s+saratoga\b
       | \bat\s+saratoga\b[\s\S]{0,80}\bbreeze\b
@@ -571,6 +573,10 @@ _STRONG_POSITIVE = re.compile(
       | halfmoon\s+hq\b
       | (?:office|hq)\s+in\s+halfmoon\b
       | new\s+halfmoon\s+(?:location|hq)\b
+      # Biz-journal expansion wires often omit ", NY" for Town of Halfmoon.
+      | (?:property|properties|parcel|acreage)\s+in\s+halfmoon\b
+      | (?:purchased|buying|acquired)\s+(?:property|properties|parcel|land)\s+in\s+halfmoon\b
+      | halfmoon\s+with\s+an\s+eye\s+toward\b
       # Local PropTech — require Cap Region place (bare #rentredi is SEO spam).
       | \brentredi\b[\s\S]{0,80}(?:\blatham\b|\balbany\b|capital\s+region\b|\#albanyny\b)
       | (?:\blatham\b|\balbany\b|capital\s+region\b|\#albanyny\b)[\s\S]{0,80}\brentredi\b
@@ -645,6 +651,9 @@ _STRONG_POSITIVE = re.compile(
       | \bin\s+saratoga\s+springs\s+to\b
       | (?:was|were)\s+in\s+saratoga\s+springs\b
       | \bin\s+saratoga\s+springs\s+last\b
+      # Street-scene photo cards often omit ", NY" (Utah crash wires lack "side street").
+      # Optional leading ``#`` covers ``#Saratoga Springs`` hashtag splits.
+      | (?:side\s+street|downtown)\s+in\s+#?saratoga\s+springs\b
       | historic\s+saratoga\s+springs\b
       | potato\s+chips?[\s\S]{0,80}saratoga\s+springs\b
       | saratoga\s+springs[\s\S]{0,80}potato\s+chips?\b
@@ -4023,6 +4032,48 @@ _WAMC_STATEWIDE_WILDLIFE = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
+# WAMC North Country / NY-21 desk covers Stefanik's district; bare ``wamc`` must
+# not keep those wires without Cap Region anchors. NY-20 (Albany area) is local.
+_WAMC_NORTH_COUNTRY = re.compile(
+    r"""
+    (?:
+        \#ny21\b
+      | \bny[\s\-]?21\b
+      | north\s+country\b
+      | \badirondack(?:s)?\b[\s\S]{0,80}(?:
+            \bcandidate\b|\brally\b|\bdeepfake\b|\belection\b|\brace\b
+          )
+      | (?:
+            \bcandidate\b|\brally\b|\bdeepfake\b|\belection\b|\brace\b
+          )[\s\S]{0,80}\badirondack(?:s)?\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+_WAMC_CAP_REGION_RESCUE = re.compile(
+    r"""
+    (?:
+        \#albanyny\b
+      | albany\s*,?\s*(?:ny|n\.y\.|new\s+york)
+      | \bualbany\b
+      | university\s+at\s+albany\b
+      | \bschenectady\b
+      | (?<!\d\s)(?<![\w.])troy(?![\w@.-])\s*,?\s*(?:ny\b|n\.y\.|new\s+york)
+      | capital\s+(?:region|district)\b
+      | \bmvp\s+arena\b
+      | empire\s+state\s+plaza\b
+      | albany\s+pine\s+bush\b
+      | pine\s+bush\s+preserve\b
+      | \bglens\s+falls\b
+      | \#glensfalls\b
+      | \#ny20\b
+      | \bny[\s\-]?20\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
 
 def _wamc_statewide_wildlife_conflict(haystack: str) -> bool:
     """True when WAMC is covering statewide DEC wildlife policy, not Cap Region.
@@ -4035,27 +4086,23 @@ def _wamc_statewide_wildlife_conflict(haystack: str) -> bool:
         return False
     if not _WAMC_STATEWIDE_WILDLIFE.search(haystack):
         return False
-    if re.search(
-        r"""
-        (?:
-            \#albanyny\b
-          | albany\s*,?\s*(?:ny|n\.y\.|new\s+york)
-          | \bualbany\b
-          | university\s+at\s+albany\b
-          | \bschenectady\b
-          | (?<!\d\s)(?<![\w.])troy(?![\w@.-])\s*,?\s*(?:ny\b|n\.y\.|new\s+york)
-          | capital\s+(?:region|district)\b
-          | \bmvp\s+arena\b
-          | empire\s+state\s+plaza\b
-          | albany\s+pine\s+bush\b
-          | pine\s+bush\s+preserve\b
-          | \bglens\s+falls\b
-          | \#glensfalls\b
-        )
-        """,
-        haystack,
-        flags=re.IGNORECASE | re.VERBOSE,
-    ):
+    if _WAMC_CAP_REGION_RESCUE.search(haystack):
+        return False
+    return True
+
+
+def _wamc_north_country_conflict(haystack: str) -> bool:
+    """True when WAMC is covering NY-21 / North Country, not Cap Region.
+
+    Bare ``wamc`` is a strong positive for Cap Region NPR, but NY-21 / North
+    Country candidate wires are outside the feed geography. Cap Region anchors
+    (including NY-20) still rescue.
+    """
+    if not re.search(r'\bwamc\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not _WAMC_NORTH_COUNTRY.search(haystack):
+        return False
+    if _WAMC_CAP_REGION_RESCUE.search(haystack):
         return False
     return True
 
@@ -5912,6 +5959,8 @@ def _propose_candidate(
             return MatchResult(False, 'hard_negative:wamc_bard_college')
         if _wamc_statewide_wildlife_conflict(haystack):
             return MatchResult(False, 'hard_negative:wamc_statewide_wildlife')
+        if _wamc_north_country_conflict(haystack):
+            return MatchResult(False, 'hard_negative:wamc_north_country')
         if _ct_capital_district_conflict(haystack):
             return MatchResult(False, 'hard_negative:ct_capital_district')
         if _ct_capital_region_conflict(haystack, author_handle):
