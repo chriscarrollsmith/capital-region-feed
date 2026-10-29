@@ -7,6 +7,9 @@ Jetstream-shaped event, and runs ``server.indexer.handle_event``.
 
 Does **not** touch ``SubscriptionState``. Safe to re-run (duplicate URIs are ignored).
 
+Search paging uses ``HANDLE`` and ``PASSWORD`` (app password) on bsky.social.
+The public AppView rejects an unauthenticated search cursor.
+
 Examples:
 
     # Dry-run the recent gap against a local DB copy
@@ -35,6 +38,9 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+from atproto import Client, models
+from atproto_client.exceptions import AtProtocolError, NetworkError, RequestException
+
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
@@ -44,6 +50,9 @@ DEFAULT_API_HOST = 'https://api.bsky.app'
 USER_AGENT = (
     'capital-region-feed-backfill/0.1 (+https://github.com/chriscarrollsmith/capital-region-feed)'
 )
+# Public AppView search rejects an unauthenticated cursor. Paging goes through
+# the account session on bsky.social instead (same HANDLE / PASSWORD as publish).
+_RETRYABLE_STATUS = frozenset({429, 500, 502, 503, 504})
 
 # High-precision place / venue queries for AppView search (latest sort).
 DEFAULT_SEARCH_QUERIES = (
@@ -64,6 +73,10 @@ DEFAULT_SEARCH_QUERIES = (
 
 JsonObject = dict[str, Any]
 Fetcher = Callable[[str], JsonObject]
+
+
+class SearchAuthError(Exception):
+    """searchPosts was requested without a usable bsky.social session."""
 
 
 def parse_iso_datetime(value: str) -> datetime:
@@ -128,6 +141,79 @@ def appview_post_to_event(post: JsonObject) -> dict[str, Any] | None:
 def api_url(host: str, xrpc: str, params: dict[str, Any]) -> str:
     base = host.rstrip('/') + '/xrpc/' + xrpc.lstrip('/')
     return base + '?' + urllib.parse.urlencode(params)
+
+
+def search_credentials() -> tuple[str, str] | None:
+    """App-password session used to page searchPosts. Author feeds stay public."""
+    handle = (os.environ.get('HANDLE') or '').strip()
+    password = (os.environ.get('PASSWORD') or '').strip()
+    if not handle or not password:
+        return None
+    return handle, password
+
+
+def open_search_client() -> Client:
+    """Log in on bsky.social. Raises SearchAuthError instead of falling back."""
+    creds = search_credentials()
+    if creds is None:
+        raise SearchAuthError(
+            'searchPosts requires HANDLE and PASSWORD (Bluesky app password) '
+            'so paging runs on bsky.social'
+        )
+    handle, password = creds
+    client = Client()
+    try:
+        client.login(handle, password)
+    except AtProtocolError as exc:
+        raise SearchAuthError(f'searchPosts login failed: {exc}') from exc
+    return client
+
+
+def _status_code(exc: BaseException) -> int | None:
+    response = getattr(exc, 'response', None)
+    status = getattr(response, 'status_code', None)
+    return status if isinstance(status, int) else None
+
+
+def _search_params_from_url(url: str) -> models.AppBskyFeedSearchPosts.Params:
+    parsed = urllib.parse.parse_qs(urllib.parse.urlparse(url).query)
+    raw: dict[str, Any] = {}
+    for key in ('q', 'cursor', 'sort', 'since', 'until'):
+        values = parsed.get(key)
+        if values:
+            raw[key] = values[0]
+    limit_values = parsed.get('limit')
+    if limit_values:
+        raw['limit'] = int(limit_values[0])
+    return models.AppBskyFeedSearchPosts.Params(**raw)
+
+
+def authenticated_search_fetcher(client: Any) -> Fetcher:
+    """Reissue searchPosts URLs on the logged-in client, including cursor."""
+
+    def fetch(url: str) -> JsonObject:
+        params = _search_params_from_url(url)
+
+        def call() -> Any:
+            return client.app.bsky.feed.search_posts(params)
+
+        try:
+            response = call()
+        except (RequestException, NetworkError) as exc:
+            status = _status_code(exc)
+            retryable = status in _RETRYABLE_STATUS or (
+                status is None and isinstance(exc, NetworkError)
+            )
+            if not retryable:
+                raise
+            time.sleep(1.5)
+            response = call()
+        dumped = response.model_dump(mode='json', by_alias=True)
+        if not isinstance(dumped, dict):
+            raise TypeError('searchPosts response was not an object')
+        return dumped
+
+    return fetch
 
 
 def default_fetcher(url: str, *, timeout: float = 30.0) -> JsonObject:
@@ -376,6 +462,7 @@ def collect_posts(
     fetcher: Fetcher,
     search_queries: tuple[str, ...],
     actors: Iterable[str],
+    search_fetcher: Fetcher | None = None,
 ) -> list[JsonObject]:
     by_uri: dict[str, JsonObject] = {}
 
@@ -396,6 +483,7 @@ def collect_posts(
                 print(f'warn: author fetch failed for {actor}: {exc}', file=sys.stderr)
 
     if source in {'search', 'both'}:
+        page_fetcher = search_fetcher or fetcher
         for query in search_queries:
             try:
                 for post in iter_search_posts(
@@ -403,13 +491,20 @@ def collect_posts(
                     since=since,
                     until=until,
                     api_host=api_host,
-                    fetcher=fetcher,
+                    fetcher=page_fetcher,
                 ):
                     uri = post.get('uri')
                     if isinstance(uri, str) and uri:
                         by_uri.setdefault(uri, post)
-            except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as exc:
-                print(f'warn: search failed for {query!r}: {exc}', file=sys.stderr)
+            except (
+                urllib.error.URLError,
+                TimeoutError,
+                json.JSONDecodeError,
+                AtProtocolError,
+            ) as exc:
+                status = _status_code(exc)
+                detail = f'HTTP {status}' if status is not None else str(exc) or type(exc).__name__
+                print(f'warn: search failed for {query!r}: {detail}', file=sys.stderr)
 
     return list(by_uri.values())
 
@@ -466,7 +561,10 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         '--api-host',
         default=os.environ.get('BSKY_API_HOST', DEFAULT_API_HOST),
-        help=f'AppView host (default: {DEFAULT_API_HOST})',
+        help=(
+            f'Public AppView host for author feeds (default: {DEFAULT_API_HOST}). '
+            'searchPosts uses the logged-in bsky.social session instead.'
+        ),
     )
     parser.add_argument(
         '--dry-run',
@@ -525,6 +623,13 @@ def main(argv: list[str] | None = None) -> int:
 
     queries = tuple(args.query) if args.query else DEFAULT_SEARCH_QUERIES
     actors = sorted(load_allowlist_dids())
+    search_fetcher: Fetcher | None = None
+    if args.from_jsonl is None and args.source in {'search', 'both'}:
+        try:
+            search_fetcher = authenticated_search_fetcher(open_search_client())
+        except SearchAuthError as exc:
+            print(f'error: {exc}', file=sys.stderr)
+            return 2
 
     print(
         f'backfill window {since.isoformat()}Z .. {until.isoformat()}Z '
@@ -546,6 +651,7 @@ def main(argv: list[str] | None = None) -> int:
             fetcher=default_fetcher,
             search_queries=queries,
             actors=actors,
+            search_fetcher=search_fetcher,
         )
         print(f'candidates: {len(posts)}', file=sys.stderr)
         if args.dump_jsonl is not None:

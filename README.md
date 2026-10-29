@@ -328,9 +328,14 @@ uv run python scripts/backfill_gap.py \
 ```
 
 On Fly, point `--database` at `/data/feed_database.db` (e.g. via `fly ssh console`).
-This does not modify `SubscriptionState`. Allowlist author feeds work from Fly;
-`searchPosts` is often **403 from datacenter IPs**, so collect search hits on a
-normal network and index them on the machine:
+This does not modify `SubscriptionState`. Allowlist author feeds use the public
+AppView and work from Fly. `searchPosts` pages through a logged-in session on
+`bsky.social` (`HANDLE` and `PASSWORD`, the same app password as
+`publish_feed.py`). The public AppView rejects an unauthenticated `cursor`, so
+search backfill needs those credentials wherever it runs.
+
+To index search hits on Fly without putting the app password on the server,
+collect the JSONL on a machine that has the credentials, then load it:
 
 ```bash
 uv run python scripts/backfill_gap.py \
