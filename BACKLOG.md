@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-137 — Daily feed audit: Oregon South/West Albany RedHawks; Albany bill; Troy Night Out / Whitney / Queensbury board FNs
-- **Status:** in progress
+- **Status:** done ([#119](https://github.com/chriscarrollsmith/capital-region-feed/pull/119))
 - **Why:** 2026-10-30 audit of last-24h AppView feed (~75 posts) found active
   matcher FPs among rematch-keeps: Oregon `South Albany RedHawks` /
   `West Albany Bulldogs` volleyball cards matching bare `south albany` strong
