@@ -538,6 +538,31 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-137 — Daily feed audit: Oregon South/West Albany RedHawks; Albany bill; Troy Night Out / Whitney / Queensbury board FNs
+- **Status:** in progress
+- **Why:** 2026-10-30 audit of last-24h AppView feed (~75 posts) found active
+  matcher FPs among rematch-keeps: Oregon `South Albany RedHawks` /
+  `West Albany Bulldogs` volleyball cards matching bare `south albany` strong
+  without High School/Oregon tokens; and `Albany bill` + Central Hudson /
+  Hudson Valley / Rochester Beacon public-power wires kept via
+  `albany_with_ny_context`. Stale index still served already-gated Clifton Park
+  UK / MD-DC capital region / WAMC NY-21 posts (rematch drops). Residual
+  allowlisted News10 / Times Union non-local and NWS Albany / Glens Falls
+  climate remain intentional. Planned `fn_search.py` slate (8) all ran OK;
+  Cap Region FNs: Queensbury Town Board / board ethics and Marylou Whitney /
+  Saratoga Springs estate. Exploratory Troy Night Out / Marylou Whitney
+  searches confirmed those FNs.
+- **Work:**
+  - Gate Oregon South/West Albany mascots and dual-school co-occurrence.
+  - Extend Albany statehouse metonym for `Albany bill` (Common Council rescue).
+  - Strong Troy Night Out; Marylou Whitney / Cady Hill+Saratoga; Queensbury
+    Town Board / board (UK tunnel retained).
+  - Grow eval + fn_search log/strategies.
+- **Done when:** Oregon RedHawks/Bulldogs and Albany-bill FPs drop; Troy Night
+  Out / Whitney / Queensbury board FNs keep; UK Queensbury Tunnel and South
+  Albany Airport TPs unchanged; eval P/R stay 1.000; unit tests cover the new
+  cues.
+
 ### B-136 — Daily feed audit: WAMC NY-21 FP; Ethan Allen / Halfmoon / Saratoga street FNs (fold #116)
 - **Status:** done ([#117](https://github.com/chriscarrollsmith/capital-region-feed/pull/117))
 - **Why:** 2026-10-29 audit of last-24h AppView feed (~99 posts) found one new

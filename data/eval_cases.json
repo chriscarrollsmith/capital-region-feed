@@ -12946,5 +12946,115 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-10-29 audit TN: Utah Saratoga Springs crash still gated"
+  },
+  {
+    "id": "fp-oregon-south-west-albany-redhawks-1030",
+    "text": "New Girls Volleyball photo gallery: South Albany RedHawks vs West Albany Bulldogs - Oct 27, 2026 by Jay Johnson featuring schools: South Albany, West Albany",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-30 audit FP: Oregon HS volleyball RedHawks/Bulldogs without High School/Oregon tokens"
+  },
+  {
+    "id": "fp-oregon-south-albany-redhawks-short-1030",
+    "text": "South Albany RedHawks vs West Albany Bulldogs",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-30 audit FP: bare Oregon South/West Albany mascot card"
+  },
+  {
+    "id": "tp-south-albany-airport-counterpart-1030",
+    "text": "Kathy Hochul's Sikorsky just touched down at 4B0 (South Albany).",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-30 audit TP counterpart: South Albany Airport NY"
+  },
+  {
+    "id": "fp-albany-bill-central-hudson-1030",
+    "text": "Albany bill touted as path for public power here - Rochester Beacon. Speakers included a state Assemblywoman who sponsored a bill that would let the state purchase the Central Hudson Gas and Electric Corp., which provides utilities to communities in the Hudson Valley.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-30 audit FP: Albany bill statehouse metonym for Mid-Hudson / Rochester public power"
+  },
+  {
+    "id": "tp-albany-bill-common-council-1030",
+    "text": "The Albany Common Council debated an Albany bill to fund Lark Street cleanup.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-30 audit TP counterpart: Cap Region Albany bill with Common Council rescue"
+  },
+  {
+    "id": "tp-troy-night-out-1030",
+    "text": "Just a reminder we've got a big Halloween weekend coming up, and it all starts with Troy Night Out SCARY-OKE starting at 7pm!",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-30 audit FN: Troy Night Out without #TroyNY"
+  },
+  {
+    "id": "tp-marylou-whitney-cady-hill-1030",
+    "text": "A developer is proposing to subdivide the Saratoga Springs estate of the late Marylou Whitney into residential lots.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-30 audit FN: Marylou Whitney / Saratoga Springs estate without Race Course"
+  },
+  {
+    "id": "tp-cady-hill-saratoga-1030",
+    "text": "New buyer lined up for Cady Hill with development plans near Saratoga Springs.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-30 audit FN: Cady Hill + Saratoga Springs estate wire"
+  },
+  {
+    "id": "tp-queensbury-town-board-1030",
+    "text": "Krystle Sweetster is a breath of fresh air in the Queensbury Town Board Race. Unlike her opponent in Ward 3, she has opinions on how to make the town better and an opinion on the ethics controversy.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-30 audit FN: Queensbury Town Board race without , NY"
+  },
+  {
+    "id": "tp-queensbury-board-ethics-1030",
+    "text": "Sweetser hopes to restore ethics to Queensbury board",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-30 audit FN: Queensbury board ethics wire"
+  },
+  {
+    "id": "tn-queensbury-tunnel-uk-1030",
+    "text": "LONG overdue. Fingers crossed for the Queensbury Tunnel.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-30 audit TN: UK Queensbury Tunnel must stay out"
   }
 ]
