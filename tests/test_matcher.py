@@ -2611,6 +2611,14 @@ def test_oregon_south_west_albany_not_south_albany_ny() -> None:
     )
     assert match_post('Construction starts in South Albany near the airport.').matched is True
 
+    volleyball = match_post(
+        'New Girls Volleyball photo gallery: South Albany RedHawks vs West Albany Bulldogs '
+        '- Oct 27, 2026 by Jay Johnson featuring schools: South Albany, West Albany'
+    )
+    assert volleyball.matched is False
+    assert volleyball.reason == 'hard_negative'
+    assert match_post('South Albany RedHawks vs West Albany Bulldogs').matched is False
+
     greater = match_post(
         "Greater Albany's school board is weighing pension-obligation bonds.\n\n"
         '#OR #MarketReadiness #FinancialTransparency #PublicEducation',
@@ -5378,6 +5386,19 @@ def test_albany_operative_statehouse_hashtag_precision() -> None:
     )
     assert out_of_local.matched is True
 
+    albany_bill = match_post(
+        'Albany bill touted as path for public power here - Rochester Beacon. '
+        'Speakers included a state Assemblywoman who sponsored a bill that would let '
+        'the state purchase the Central Hudson Gas and Electric Corp., which provides '
+        'utilities to communities in the Hudson Valley.'
+    )
+    assert albany_bill.matched is False
+    assert albany_bill.reason == 'hard_negative:albany_statehouse_metonym'
+    albany_bill_local = match_post(
+        'The Albany Common Council debated an Albany bill to fund Lark Street cleanup.'
+    )
+    assert albany_bill_local.matched is True
+
     geotag = match_post(
         'Beware of Medicare Enrollment Scams! #USA #Albany #Medicare #scams',
         alt_text=(
@@ -5735,3 +5756,90 @@ def test_spac_lawn_pavilion_ticket_guide() -> None:
         'Forge Nano completes SPAC merger with Archimedes Tech II after the shareholder vote.'
     )
     assert blank.matched is False
+
+
+def test_troy_night_out_whitney_estate_queensbury_board_recall() -> None:
+    """Troy Night Out, Marylou Whitney estate, and Queensbury Town Board keep."""
+    troy_night = match_post(
+        "Just a reminder we've got a big Halloween weekend coming up, and it all "
+        'starts with Troy Night Out SCARY-OKE starting at 7pm!'
+    )
+    assert troy_night.matched is True
+    assert troy_night.reason == 'strong_positive'
+
+    whitney = match_post(
+        'A developer is proposing to subdivide the Saratoga Springs estate of the '
+        'late Marylou Whitney into residential lots.'
+    )
+    assert whitney.matched is True
+    assert whitney.reason == 'strong_positive'
+
+    cady = match_post(
+        'New buyer lined up for Cady Hill with development plans near Saratoga Springs.'
+    )
+    assert cady.matched is True
+    assert cady.reason == 'strong_positive'
+
+    board = match_post(
+        'Krystle Sweetster is a breath of fresh air in the Queensbury Town Board Race. '
+        'Unlike her opponent in Ward 3, she has opinions on how to make the town better.'
+    )
+    assert board.matched is True
+    assert board.reason == 'strong_positive'
+
+    ethics = match_post('Sweetser hopes to restore ethics to Queensbury board')
+    assert ethics.matched is True
+    assert ethics.reason == 'strong_positive'
+
+    tunnel = match_post('LONG overdue. Fingers crossed for the Queensbury Tunnel.')
+    assert tunnel.matched is False
+    assert tunnel.reason == 'ambiguous_no_context:queensbury'
+
+
+def test_downtown_in_requires_saratoga_springs() -> None:
+    """Verbose-mode escaped optional hash must not leave bare downtown/side-street-in."""
+    costume = match_post(
+        'The college kids are roaming downtown in costume and a pit-crew group '
+        'costume just walked by with clipboards.'
+    )
+    assert costume.matched is False
+
+    brooklyn = match_post('Photo from a side street in brooklyn tonight.')
+    assert brooklyn.matched is False
+
+    tagged = match_post(
+        'Down a side street in #Saratoga Springs. Diamond-pattern pants, tufts of an orange mane.'
+    )
+    assert tagged.matched is True
+    assert tagged.reason == 'strong_positive'
+
+    plain = match_post('Walking downtown in Saratoga Springs this evening.')
+    assert plain.matched is True
+    assert plain.reason == 'strong_positive'
+
+
+def test_gabler_realty_and_latham_glenville_hq_recall() -> None:
+    """Gabler Realty Delmar and Latham→Glenville HQ moves keep; Ohio Glenville drops."""
+    gabler = match_post(
+        'Judi Gabler, who founded Gabler Realty and grew it over the past decade, '
+        'has sold the firm.\nGabler Realty in Delmar acquired'
+    )
+    assert gabler.matched is True
+    assert gabler.reason == 'strong_positive'
+
+    hq = match_post(
+        'ScotlandShop, a retailer of Scottish products, is moving its U.S. '
+        'headquarters from Latham to Glenville.'
+    )
+    assert hq.matched is True
+    assert hq.reason == 'strong_positive'
+
+    town = match_post('Town of Glenville planning board meets Thursday on the solar petition.')
+    assert town.matched is True
+    assert town.reason == 'strong_positive'
+
+    ohio = match_post(
+        'Glenville football removed from 2026 playoffs amid investigation by the '
+        'Ohio High School Athletic Association in Cleveland.'
+    )
+    assert ohio.matched is False

@@ -426,6 +426,8 @@ _STRONG_POSITIVE = re.compile(
       | \btroy['\u2019]?s\s+powers\s+park\b
       | powers\s+park[\s\S]{0,80}\btroy\b
       | \btroy\b[\s\S]{0,80}powers\s+park\b
+      # Monthly downtown arts crawl — omit ", NY" / #TroyNY.
+      | troy\s+night\s+out\b
       # Yaddo artist colony (Saratoga Springs) often pairs with bare Saratoga.
       | \byaddo\b
       # Glens Falls (Warren County / Cap Region media market) — climate bots and
@@ -441,6 +443,9 @@ _STRONG_POSITIVE = re.compile(
       | \#warrencountyny\b
       | warren\s+county\s*,?\s*(?:ny|n\.y\.|new\s+york)\b
       | aviation\s+mall\b
+      # Town Board / board race wires often omit ", NY" (UK Queensbury Tunnel stays out).
+      | queensbury\s+town\s+board\b
+      | queensbury\s+board\b
       # Albany music venue — title case only so "fungal empire underground"
       # (Mycelium Empire game copy) does not keep. Tour posters use Empire Underground.
       | (?-i:\bEmpire\s+Underground\b)
@@ -570,6 +575,12 @@ _STRONG_POSITIVE = re.compile(
       | \blatham\b(?![\s\S]{0,40}watkins)[\s\S]{0,40}regional\s+(?:office|hq)\b
       | \blatham\s+circle\b
       | \blatham\s+farms\b
+      # HQ relocation wires often say "from Latham to Glenville" without ", NY".
+      # Do not bare-match Glenville (Cleveland HS / CT campus homographs).
+      | (?:headquarters|hq|office)\s+from\s+latham\b
+      | from\s+latham\s+to\s+glenville\b
+      | \blatham\b[\s\S]{0,40}\bto\s+glenville\b
+      | town\s+of\s+glenville\b
       | halfmoon\s+hq\b
       | (?:office|hq)\s+in\s+halfmoon\b
       | new\s+halfmoon\s+(?:location|hq)\b
@@ -653,7 +664,9 @@ _STRONG_POSITIVE = re.compile(
       | \bin\s+saratoga\s+springs\s+last\b
       # Street-scene photo cards often omit ", NY" (Utah crash wires lack "side street").
       # Optional leading ``#`` covers ``#Saratoga Springs`` hashtag splits.
-      | (?:side\s+street|downtown)\s+in\s+#?saratoga\s+springs\b
+      # Escape ``#`` as ``\#`` — in (?x) an unescaped ``#`` starts a comment, so
+      # ``#?saratoga…`` would leave only ``downtown/side street in`` as the match.
+      | (?:side\s+street|downtown)\s+in\s+\#?saratoga\s+springs\b
       | historic\s+saratoga\s+springs\b
       | potato\s+chips?[\s\S]{0,80}saratoga\s+springs\b
       | saratoga\s+springs[\s\S]{0,80}potato\s+chips?\b
@@ -730,6 +743,10 @@ _STRONG_POSITIVE = re.compile(
       | \bsaratoga\b[\s\S]{0,60}whitney\s+day\b
       | \bwhitney\b[\s\S]{0,40}\bat\s+saratoga\b
       | at\s+saratoga\b[\s\S]{0,40}\bwhitney\b
+      # Marylou Whitney / Cady Hill estate wires often omit Race Course / ", NY".
+      | marylou\s+whitney\b
+      | cady\s+hill\b[\s\S]{0,80}saratoga\s+springs\b
+      | saratoga\s+springs\b[\s\S]{0,80}cady\s+hill\b
       | christian\s+brothers\s+academy\b
       | section\s+2[\s\S]{0,100}saratoga\s+springs\b
       | saratoga\s+springs[\s\S]{0,100}(?:christian\s+brothers|section\s+2)\b
@@ -738,6 +755,9 @@ _STRONG_POSITIVE = re.compile(
       # Albany / Delmar care-facility wires often omit ", NY".
       | albany\s+center\s+for\s+independent\s+living\b
       | delmar\s+center\s+for\s+rehabilitation\b
+      # Local realty wires name Gabler Realty / Delmar office without ", NY".
+      | gabler\s+realty\b
+      | realty\s+in\s+delmar\b
       # Distinctive Cap Region named events (not bare "Albany this weekend").
       | \beufuria\b
       | black\s+paw-?rade
@@ -989,6 +1009,11 @@ _HARD_NEGATIVE_BLOCKS_STRONG = re.compile(
       | mid[- ]?willamette
       | west\s+albany\s+high(?:\s+school)?
       | south\s+albany\s+high(?:\s+school)?
+      # Oregon HS nicknames / dual-school cards omit "High School" and Oregon.
+      | south\s+albany\s+redhawks\b
+      | west\s+albany\s+bulldogs\b
+      | south\s+albany\b[\s\S]{0,160}west\s+albany\b
+      | west\s+albany\b[\s\S]{0,160}south\s+albany\b
       | (?:south|west)\s+albany\b[\s\S]{0,200}(?:
             \boregon\b|\#oregon\b|\#or\b|corvallis|crescent\s+valley|
             \blebanon\b|silverton|mid[- ]?willamette|\.oregonlive\.
@@ -3277,6 +3302,11 @@ _HARD_NEGATIVE = re.compile(
       | mid[- ]?willamette
       | west\s+albany\s+high(?:\s+school)?
       | south\s+albany\s+high(?:\s+school)?
+      # Oregon HS nicknames / dual-school cards omit "High School" and Oregon.
+      | south\s+albany\s+redhawks\b
+      | west\s+albany\s+bulldogs\b
+      | south\s+albany\b[\s\S]{0,160}west\s+albany\b
+      | west\s+albany\b[\s\S]{0,160}south\s+albany\b
       | (?:south|west)\s+albany\b[\s\S]{0,200}(?:
             \boregon\b|\#oregon\b|\#or\b|corvallis|crescent\s+valley|
             \blebanon\b|silverton|mid[- ]?willamette|\.oregonlive\.
@@ -5354,14 +5384,17 @@ def _albany_statehouse_metonym_conflict(haystack: str) -> bool:
 
     Statewide chamber / Senate copy ("dysfunctional Albany"), legislature-as-actor
     phrasing ("Albany sent rebate checks"), "the rest of Albany" as the capital
-    audience, and statewide campaign shorthand ("out of Albany", "leadership to
-    Albany") use the capital as metonym without Cap Region place news. Local civic
-    anchors still rescue. "Rest of Albany County" is Cap Region and does not match.
+    audience, statewide campaign shorthand ("out of Albany", "leadership to
+    Albany"), and "Albany bill" for legislation-as-capital (often Mid-Hudson /
+    Rochester public-power wires) use the capital as metonym without Cap Region
+    place news. Local civic anchors still rescue. "Rest of Albany County" is Cap
+    Region and does not match.
     """
     if not re.search(
         r'\bdysfunctional\s+albany\b|\balbany\s+sent\b|'
         r'\brest\s+of\s+albany(?!\s+county)\b|'
-        r'\bout\s+of\s+albany\b|\bleadership\s+to\s+albany\b',
+        r'\bout\s+of\s+albany\b|\bleadership\s+to\s+albany\b|'
+        r'\balbany\s+bill\b',
         haystack,
         flags=re.IGNORECASE,
     ):
