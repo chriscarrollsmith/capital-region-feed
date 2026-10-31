@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-138 — Daily feed audit: downtown-in (?x) `#?` FP; Gabler Realty / Latham→Glenville FNs (fold #119)
-- **Status:** in progress
+- **Status:** done ([#120](https://github.com/chriscarrollsmith/capital-region-feed/pull/120))
 - **Why:** 2026-10-31 audit of last-24h AppView feed (~65 posts) found an active
   matcher FP: Halloween downtown costume copy kept via `strong_positive`
   because `(?x)` treated unescaped `#?saratoga` as a comment, leaving
