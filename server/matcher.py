@@ -575,6 +575,12 @@ _STRONG_POSITIVE = re.compile(
       | \blatham\b(?![\s\S]{0,40}watkins)[\s\S]{0,40}regional\s+(?:office|hq)\b
       | \blatham\s+circle\b
       | \blatham\s+farms\b
+      # HQ relocation wires often say "from Latham to Glenville" without ", NY".
+      # Do not bare-match Glenville (Cleveland HS / CT campus homographs).
+      | (?:headquarters|hq|office)\s+from\s+latham\b
+      | from\s+latham\s+to\s+glenville\b
+      | \blatham\b[\s\S]{0,40}\bto\s+glenville\b
+      | town\s+of\s+glenville\b
       | halfmoon\s+hq\b
       | (?:office|hq)\s+in\s+halfmoon\b
       | new\s+halfmoon\s+(?:location|hq)\b
@@ -658,7 +664,9 @@ _STRONG_POSITIVE = re.compile(
       | \bin\s+saratoga\s+springs\s+last\b
       # Street-scene photo cards often omit ", NY" (Utah crash wires lack "side street").
       # Optional leading ``#`` covers ``#Saratoga Springs`` hashtag splits.
-      | (?:side\s+street|downtown)\s+in\s+#?saratoga\s+springs\b
+      # Escape ``#`` as ``\#`` — in (?x) an unescaped ``#`` starts a comment, so
+      # ``#?saratoga…`` would leave only ``downtown/side street in`` as the match.
+      | (?:side\s+street|downtown)\s+in\s+\#?saratoga\s+springs\b
       | historic\s+saratoga\s+springs\b
       | potato\s+chips?[\s\S]{0,80}saratoga\s+springs\b
       | saratoga\s+springs[\s\S]{0,80}potato\s+chips?\b
@@ -747,6 +755,9 @@ _STRONG_POSITIVE = re.compile(
       # Albany / Delmar care-facility wires often omit ", NY".
       | albany\s+center\s+for\s+independent\s+living\b
       | delmar\s+center\s+for\s+rehabilitation\b
+      # Local realty wires name Gabler Realty / Delmar office without ", NY".
+      | gabler\s+realty\b
+      | realty\s+in\s+delmar\b
       # Distinctive Cap Region named events (not bare "Albany this weekend").
       | \beufuria\b
       | black\s+paw-?rade

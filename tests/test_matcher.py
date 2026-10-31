@@ -5794,3 +5794,52 @@ def test_troy_night_out_whitney_estate_queensbury_board_recall() -> None:
     tunnel = match_post('LONG overdue. Fingers crossed for the Queensbury Tunnel.')
     assert tunnel.matched is False
     assert tunnel.reason == 'ambiguous_no_context:queensbury'
+
+
+def test_downtown_in_requires_saratoga_springs() -> None:
+    """Verbose-mode escaped optional hash must not leave bare downtown/side-street-in."""
+    costume = match_post(
+        'The college kids are roaming downtown in costume and a pit-crew group '
+        'costume just walked by with clipboards.'
+    )
+    assert costume.matched is False
+
+    brooklyn = match_post('Photo from a side street in brooklyn tonight.')
+    assert brooklyn.matched is False
+
+    tagged = match_post(
+        'Down a side street in #Saratoga Springs. Diamond-pattern pants, tufts of an orange mane.'
+    )
+    assert tagged.matched is True
+    assert tagged.reason == 'strong_positive'
+
+    plain = match_post('Walking downtown in Saratoga Springs this evening.')
+    assert plain.matched is True
+    assert plain.reason == 'strong_positive'
+
+
+def test_gabler_realty_and_latham_glenville_hq_recall() -> None:
+    """Gabler Realty Delmar and Latham→Glenville HQ moves keep; Ohio Glenville drops."""
+    gabler = match_post(
+        'Judi Gabler, who founded Gabler Realty and grew it over the past decade, '
+        'has sold the firm.\nGabler Realty in Delmar acquired'
+    )
+    assert gabler.matched is True
+    assert gabler.reason == 'strong_positive'
+
+    hq = match_post(
+        'ScotlandShop, a retailer of Scottish products, is moving its U.S. '
+        'headquarters from Latham to Glenville.'
+    )
+    assert hq.matched is True
+    assert hq.reason == 'strong_positive'
+
+    town = match_post('Town of Glenville planning board meets Thursday on the solar petition.')
+    assert town.matched is True
+    assert town.reason == 'strong_positive'
+
+    ohio = match_post(
+        'Glenville football removed from 2026 playoffs amid investigation by the '
+        'Ohio High School Athletic Association in Cleveland.'
+    )
+    assert ohio.matched is False
