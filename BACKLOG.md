@@ -538,6 +538,28 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-138 — Daily feed audit: downtown-in (?x) `#?` FP; Gabler Realty / Latham→Glenville FNs (fold #119)
+- **Status:** in progress
+- **Why:** 2026-10-31 audit of last-24h AppView feed (~65 posts) found an active
+  matcher FP: Halloween downtown costume copy kept via `strong_positive`
+  because `(?x)` treated unescaped `#?saratoga` as a comment, leaving
+  `downtown/side street in` as the whole alternative. Stale index still served
+  already-gated MD-DC capital region (and soft-prior Delmar/Latham biz wires
+  rematch-clean without soft priors until strong cues land). Residual
+  allowlisted News10 / Times Union non-local and NWS Albany / Glens Falls
+  climate remain intentional. Planned `fn_search.py` slate (8) all ran OK with
+  no Cap Region FNs; exploratory Gabler Realty / Glenville / ScotlandShop
+  searches surfaced Delmar realty and Latham→Glenville HQ FNs. Folds unmerged
+  #119 (Oregon South/West Albany / Albany bill / Troy Night Out).
+- **Work:**
+  - Escape `#?saratoga` as `\#?saratoga` in the downtown/side-street strong cue.
+  - Strong Gabler Realty / realty in Delmar; Latham→Glenville HQ / Town of
+    Glenville (bare Ohio Glenville retained as drop).
+  - Grow eval + fn_search log/strategies; supersede #119.
+- **Done when:** bare downtown/side-street-in FPs drop; `#Saratoga Springs` /
+  Saratoga Springs street cards, Gabler Realty, and Latham→Glenville HQ keep;
+  Ohio Glenville stays out; eval P/R stay 1.000; unit tests cover the new cues.
+
 ### B-137 — Daily feed audit: Oregon South/West Albany RedHawks; Albany bill; Troy Night Out / Whitney / Queensbury board FNs
 - **Status:** done ([#119](https://github.com/chriscarrollsmith/capital-region-feed/pull/119))
 - **Why:** 2026-10-30 audit of last-24h AppView feed (~75 posts) found active

@@ -13056,5 +13056,85 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-10-30 audit TN: UK Queensbury Tunnel must stay out"
+  },
+  {
+    "id": "fp-downtown-in-costume-no-saratoga",
+    "text": "The college kids are roaming downtown in costume and a pit-crew group costume just walked by with clipboards.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-31 audit: (?x) unescaped #?saratoga commented out springs requirement"
+  },
+  {
+    "id": "fp-side-street-in-brooklyn",
+    "text": "Photo from a side street in brooklyn tonight.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-31 audit: bare side-street-in must not strong-match without Saratoga Springs"
+  },
+  {
+    "id": "tp-side-street-hashtag-saratoga-springs",
+    "text": "Down a side street in #Saratoga Springs. Diamond-pattern pants, tufts of an orange mane.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-31 audit: escaped \\#? keeps #Saratoga Springs street cards"
+  },
+  {
+    "id": "tp-downtown-in-saratoga-springs",
+    "text": "Walking downtown in Saratoga Springs this evening.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-31 audit: downtown in Saratoga Springs without hashtag still keeps"
+  },
+  {
+    "id": "tp-gabler-realty-delmar",
+    "text": "Judi Gabler, who founded Gabler Realty and grew it over the past decade, has sold the firm.\nGabler Realty in Delmar acquired",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-31 audit FN: Gabler Realty Delmar biz wire without , NY"
+  },
+  {
+    "id": "tp-latham-to-glenville-hq",
+    "text": "ScotlandShop, a retailer of Scottish products, is moving its U.S. headquarters from Latham to Glenville.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-31 audit FN: Latham to Glenville HQ relocation without , NY"
+  },
+  {
+    "id": "tp-town-of-glenville",
+    "text": "Town of Glenville planning board meets Thursday on the solar petition.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-10-31 audit: Town of Glenville civic cue (not bare Glenville)"
+  },
+  {
+    "id": "tn-ohio-glenville-football",
+    "text": "Glenville football removed from 2026 playoffs amid investigation by the Ohio High School Athletic Association in Cleveland.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-10-31 audit: bare Cleveland Glenville HS must stay out"
   }
 ]

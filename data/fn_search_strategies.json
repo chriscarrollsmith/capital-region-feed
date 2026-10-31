@@ -36,7 +36,8 @@
         "Menands",
         "Rensselear",
         "Queensbury",
-        "Queensbury NY"
+        "Queensbury NY",
+        "Glenville"
       ]
     },
     {
@@ -137,7 +138,9 @@
     {
       "id": "institution",
       "queries": [
-        "Ethan Allen Express"
+        "Ethan Allen Express",
+        "Gabler Realty",
+        "ScotlandShop"
       ]
     }
   ]
