@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-139 — Daily feed audit: Times Union Mid-Hudson / Albany politicians FPs; Queensbury Supervisor / Skidmore handle / Proctors Theatre FNs (fold #120)
-- **Status:** in progress
+- **Status:** done ([#121](https://github.com/chriscarrollsmith/capital-region-feed/pull/121))
 - **Why:** 2026-11-01 audit of last-24h AppView feed (~40 posts) found active
   matcher FPs among rematch-keeps: third-party Dutchess County Flock wire kept
   solely via a bare ``Times Union`` source line; and satirical ``Albany
