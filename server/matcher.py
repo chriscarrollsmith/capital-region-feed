@@ -158,6 +158,11 @@ _STRONG_POSITIVE = re.compile(
       | \#?capitalrep\b
       | capital\s+rep(?:ertory)?\b
       | proctors\s+collaborative\b
+      # Schenectady Proctors Theatre — apostrophe / handle forms often omit ", NY".
+      | proctor['\u2019]?s\s+(?:theatre|theater)\b
+      | proctors\s+(?:theatre|theater)\b
+      | \#?atproctorstheatre\b
+      | @atproctorstheatre\b
       # Interstate 787 — require I-/interstate/route prefix. Bare "on 787" matches
       # medical PR ("Study on 787 Brain Tumor Patients"). Maryland "Route 787"
       # (Takoma Park / Flower Ave) is gated by _route_787_md_conflict.
@@ -293,6 +298,9 @@ _STRONG_POSITIVE = re.compile(
       | \bsaratoga\b[\s\S]{0,80}\bskidmore(?:\s+stakes)?\b
       # Skidmore College (Saratoga Springs) — not Skidmore, Owings & Merrill.
       | \bskidmore\s+college\b
+      # Mentions often use the Bluesky handle without a space (@skidmorecollege).
+      | \#?skidmorecollege\b
+      | @skidmorecollege\b
       # Stewart's Shops (Cap Region convenience chain) recalls / store copy.
       | stewart['\u2019]?s\s+shops?\b
       # Saratoga Springs Route 50 corridor job / retail listings often omit ", NY".
@@ -446,6 +454,8 @@ _STRONG_POSITIVE = re.compile(
       # Town Board / board race wires often omit ", NY" (UK Queensbury Tunnel stays out).
       | queensbury\s+town\s+board\b
       | queensbury\s+board\b
+      # Supervisor / Supervisor at Large race cards often omit ", NY".
+      | queensbury\s+supervisor\b
       # Albany music venue — title case only so "fungal empire underground"
       # (Mycelium Empire game copy) does not keep. Tour posters use Empire Underground.
       | (?-i:\bEmpire\s+Underground\b)
@@ -4586,6 +4596,72 @@ def _times_union_photo_credit_conflict(haystack: str) -> bool:
     return True
 
 
+# Mid-Hudson / HV counties and cities — not Cap Region place news.
+# Prefer county forms; bare Kingston collides with Ontario / UK.
+_MID_HUDSON_PLACE = re.compile(
+    r"""
+    (?:
+        dutchess\s+county\b
+      | ulster\s+county\b
+      | orange\s+county\b
+      | putnam\s+county\b
+      | mid-?\s*hudson\b
+      | \bpoughkeepsie\b
+      | \bnewburgh\b
+      | \bbeacon\b
+      | hudson\s+valley\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+# Cap Region anchors that justify a Times Union citation beyond the masthead.
+# Do not treat bare "New York" / "Hudson Valley" as rescue (statewide / Mid-Hudson).
+_TIMES_UNION_CAP_REGION_RESCUE = re.compile(
+    r"""
+    (?:
+        capital\s+(?:region|district)\b
+      | \#capital(?:region|district)(?:ny|_ny)?\b
+      | \#albanyny\b
+      | albany\s*,?\s*(?:ny|n\.y\.)\b
+      | albany\s+common\s+council\b
+      | albany\s+mayor\b
+      | albany\s+county\b
+      | empire\s+state\s+plaza
+      | \blark\s+street\b
+      | \btroy\b
+      | \bschenectady\b
+      | \bsaratoga\b
+      | \bglens\s+falls\b
+      | \#glensfalls\b
+      | \bcolonie\b
+      | \bqueensbury\b
+      | \#queensbury(?:ny|_ny)\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+
+def _times_union_mid_hudson_conflict(haystack: str) -> bool:
+    """True when Times Union is only citing Mid-Hudson news, not Cap Region.
+
+    Third-party cards often append a bare ``Times Union`` source line under a
+    Dutchess / Ulster / Hudson Valley body. Cap Region place / civic anchors
+    still rescue (including capital-region phrasing with a Times Union alt).
+    """
+    if not _TIMES_UNION_TOKEN.search(haystack):
+        return False
+    if not _MID_HUDSON_PLACE.search(haystack):
+        return False
+    scrubbed = _TIMES_UNION_TOKEN.sub(' ', haystack)
+    if _TIMES_UNION_CAP_REGION_RESCUE.search(scrubbed):
+        return False
+    if _ALBANY_LOCAL_RESCUE.search(scrubbed) or _ALBANY_WIRE_LOCAL_RESCUE.search(scrubbed):
+        return False
+    return True
+
+
 # Maryland Route 787 (Takoma Park / Flower Avenue) — not Interstate 787 Albany.
 _ROUTE_787_MD = re.compile(
     r"""
@@ -5385,16 +5461,17 @@ def _albany_statehouse_metonym_conflict(haystack: str) -> bool:
     Statewide chamber / Senate copy ("dysfunctional Albany"), legislature-as-actor
     phrasing ("Albany sent rebate checks"), "the rest of Albany" as the capital
     audience, statewide campaign shorthand ("out of Albany", "leadership to
-    Albany"), and "Albany bill" for legislation-as-capital (often Mid-Hudson /
-    Rochester public-power wires) use the capital as metonym without Cap Region
-    place news. Local civic anchors still rescue. "Rest of Albany County" is Cap
-    Region and does not match.
+    Albany"), "Albany bill" for legislation-as-capital (often Mid-Hudson /
+    Rochester public-power wires), and "Albany politician(s)" as the state
+    political class use the capital as metonym without Cap Region place news.
+    Local civic anchors still rescue. "Rest of Albany County" is Cap Region and
+    does not match.
     """
     if not re.search(
         r'\bdysfunctional\s+albany\b|\balbany\s+sent\b|'
         r'\brest\s+of\s+albany(?!\s+county)\b|'
         r'\bout\s+of\s+albany\b|\bleadership\s+to\s+albany\b|'
-        r'\balbany\s+bill\b',
+        r'\balbany\s+bill\b|\balbany\s+politicians?\b',
         haystack,
         flags=re.IGNORECASE,
     ):
@@ -5976,6 +6053,8 @@ def _propose_candidate(
             return MatchResult(False, 'hard_negative:loudonville_oh')
         if _times_union_photo_credit_conflict(haystack):
             return MatchResult(False, 'hard_negative:times_union_photo_credit')
+        if _times_union_mid_hudson_conflict(haystack):
+            return MatchResult(False, 'hard_negative:times_union_mid_hudson')
         if _route_787_md_conflict(haystack, author_handle):
             return MatchResult(False, 'hard_negative:route_787_md')
         if _clifton_park_uk_conflict(haystack, author_handle):

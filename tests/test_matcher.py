@@ -5843,3 +5843,86 @@ def test_gabler_realty_and_latham_glenville_hq_recall() -> None:
         'Ohio High School Athletic Association in Cleveland.'
     )
     assert ohio.matched is False
+
+
+def test_times_union_mid_hudson_not_local_paper() -> None:
+    """Bare Times Union source lines under Mid-Hudson bodies are not Cap Region."""
+    dutchess = match_post(
+        'Dutchess County ordered Flock to remove its license plate readers by '
+        'Oct. 30 following a Sept. 25 deactivation. However, 22 Flock cameras '
+        'remain up past an Oct. 25 deadline.\n\nTimes Union'
+    )
+    assert dutchess.matched is False
+    assert dutchess.reason == 'hard_negative:times_union_mid_hudson'
+
+    ulster = match_post('Ulster County flooding update — Times Union')
+    assert ulster.matched is False
+    assert ulster.reason == 'hard_negative:times_union_mid_hudson'
+
+    capital = match_post(
+        "There is an epidemic of murder suicides happening in the capital region, it's horrible"
+    )
+    assert capital.matched is True
+    assert capital.reason == 'strong_positive'
+
+    lark = match_post('Times Union coverage of downtown Lark Street #AlbanyNY')
+    assert lark.matched is True
+    assert lark.reason == 'strong_positive'
+
+
+def test_albany_politicians_statehouse_precision() -> None:
+    """Albany politician(s) is statewide metonym unless Cap Region civic rescue."""
+    statewide = match_post(
+        'Albany politicians keep their license to flatter adults\n'
+        'ALBANY, NEW YORK - Governor Kathy Hochul has signed legislation '
+        'restricting how AI companion chatbots interact with minors.'
+    )
+    assert statewide.matched is False
+    assert statewide.reason == 'hard_negative:albany_statehouse_metonym'
+
+    local = match_post('Albany politicians debated the Albany Common Council budget downtown.')
+    assert local.matched is True
+    assert local.reason == 'strong_positive'
+
+    capital = match_post('Albany politicians spoke at the Capital Region forum downtown.')
+    assert capital.matched is True
+    assert capital.reason == 'strong_positive'
+
+
+def test_queensbury_supervisor_skidmore_handle_proctors_theatre_recall() -> None:
+    """Queensbury Supervisor, @skidmorecollege, and Proctors Theatre forms keep."""
+    supervisor = match_post(
+        '“The problem is that we have a lot of elected people whose minds are '
+        'stuck in the past” - Queensbury Supervisor at Large candidate, Mike '
+        'Parwana. NY21, don’t forget to plan your vote for local candidates.'
+    )
+    assert supervisor.matched is True
+    assert supervisor.reason == 'strong_positive'
+
+    rules = match_post('no Marquis of Queensbury Rules!')
+    assert rules.matched is False
+    assert rules.reason == 'hard_negative:queensbury_rules'
+
+    skidmore = match_post(
+        'As one who taught at @skidmorecollege.bsky.social for 23 years, the '
+        'Saratoga Springs reference is touching. I approve of this map.'
+    )
+    assert skidmore.matched is True
+    assert skidmore.reason == 'strong_positive'
+
+    som = match_post('Designed by Skidmore, Owings & Merrill in a Chicago tower.')
+    assert som.matched is False
+
+    proctors = match_post(
+        'Halloween weekend kick-off @atproctorstheatre for the 30th anniversary '
+        'screening with David Arquette live.'
+    )
+    assert proctors.matched is True
+    assert proctors.reason == 'strong_positive'
+
+    apostrophe = match_post("Tickets for Friday at Proctor's Theatre are still available.")
+    assert apostrophe.matched is True
+    assert apostrophe.reason == 'strong_positive'
+
+    exam = match_post('Please email the proctors about the exam tomorrow.')
+    assert exam.matched is False
