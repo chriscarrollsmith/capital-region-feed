@@ -13136,5 +13136,135 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-10-31 audit: bare Cleveland Glenville HS must stay out"
+  },
+  {
+    "id": "fp-times-union-dutchess-flock-1101",
+    "text": "Dutchess County ordered Flock to remove its license plate readers by Oct. 30 following a Sept. 25 deactivation. However, 22 Flock cameras remain up past an Oct. 25 deadline, with 35 of 64 removed or currently being taken down.\n\nTimes Union",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-01 audit FP: bare Times Union source line under Dutchess County Mid-Hudson body"
+  },
+  {
+    "id": "tp-times-union-capital-region-counterpart-1101",
+    "text": "There is an epidemic of murder suicides happening in the capital region, it's horrible",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-01 audit TP counterpart: capital region phrasing keeps with Times Union coverage pattern"
+  },
+  {
+    "id": "tp-times-union-lark-street-albanyny-1101",
+    "text": "Times Union coverage of downtown Lark Street #AlbanyNY redevelopment.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-01 audit TP: Times Union + Cap Region civic keep"
+  },
+  {
+    "id": "fp-albany-politicians-hochul-ai-1101",
+    "text": "Albany politicians keep their license to flatter adults\nALBANY, NEW YORK - Governor Kathy Hochul has signed legislation restricting how AI companion chatbots interact with minors.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-01 audit FP: Albany politicians statewide metonym + Albany dateline AI bill spam"
+  },
+  {
+    "id": "tp-albany-politicians-common-council-1101",
+    "text": "Albany politicians debated the Albany Common Council budget downtown.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-01 audit TP counterpart: Albany politicians + Common Council rescue"
+  },
+  {
+    "id": "tp-albany-politicians-capital-region-1101",
+    "text": "Albany politicians spoke at the Capital Region forum downtown.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-01 audit TP counterpart: Albany politicians + Capital Region rescue"
+  },
+  {
+    "id": "tp-queensbury-supervisor-at-large-1101",
+    "text": "“The problem is that we have a lot of elected people whose minds are stuck in the past” - Queensbury Supervisor at Large candidate, Mike Parwana. NY21, don’t forget to plan your vote for local, down ballot candidates on Tuesday!",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-01 audit FN: Queensbury Supervisor at Large race omitted , NY"
+  },
+  {
+    "id": "tn-queensbury-rules-boxing-1101",
+    "text": "no Marquis of Queensbury Rules!",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-01 audit TN: boxing Queensbury Rules still gated"
+  },
+  {
+    "id": "tp-skidmorecollege-handle-saratoga-1101",
+    "text": "As one who taught at @skidmorecollege.bsky.social for 23 years, the Saratoga Springs reference is touching. I approve of this map.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-01 audit FN: @skidmorecollege handle without spaced Skidmore College"
+  },
+  {
+    "id": "tn-skidmore-owings-merrill-1101",
+    "text": "Designed by Skidmore, Owings & Merrill in a Chicago style Beaux-Arts tower.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-01 audit TN: SOM architecture firm still out"
+  },
+  {
+    "id": "tp-atproctorstheatre-scream-1101",
+    "text": "Halloween weekend kick-off @atproctorstheatre for the 30th anniversary screening with David Arquette live.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-01 audit FN: @atproctorstheatre handle without spaced Proctors"
+  },
+  {
+    "id": "tp-proctors-theatre-apostrophe-1101",
+    "text": "Tickets for Friday at Proctor's Theatre are still available.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-01 audit FN counterpart: Proctor's Theatre apostrophe form"
+  },
+  {
+    "id": "tn-email-exam-proctors-1101",
+    "text": "Please email the proctors about the exam tomorrow.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-01 audit TN: academic exam proctors still out"
   }
 ]

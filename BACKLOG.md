@@ -538,6 +538,30 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-139 — Daily feed audit: Times Union Mid-Hudson / Albany politicians FPs; Queensbury Supervisor / Skidmore handle / Proctors Theatre FNs (fold #120)
+- **Status:** in progress
+- **Why:** 2026-11-01 audit of last-24h AppView feed (~40 posts) found active
+  matcher FPs among rematch-keeps: third-party Dutchess County Flock wire kept
+  solely via a bare ``Times Union`` source line; and satirical ``Albany
+  politicians`` + ``ALBANY, NEW YORK`` Hochul AI-chatbot legislation spam kept
+  via strong ``albany, new york``. Stale index still served already-gated
+  downtown-in / Oregon South Albany / MD-DC / Clifton Park UK / Albany-bill
+  rows (rematch drops after folding #120). Residual allowlisted News10 /
+  Times Union non-local and NWS Albany / Glens Falls climate remain
+  intentional. Planned ``fn_search.py`` slate (8) all ran OK; Cap Region FNs:
+  Queensbury Supervisor at Large, ``@skidmorecollege`` + Saratoga Springs, and
+  exploratory ``@atproctorstheatre`` Scream screening. Folds unmerged #119/#120.
+- **Work:**
+  - Gate Times Union + Mid-Hudson place without Cap Region rescue.
+  - Extend Albany statehouse metonym for ``Albany politician(s)``.
+  - Strong Queensbury Supervisor; ``skidmorecollege`` handle; Proctor's /
+    Proctors Theatre / ``@atproctorstheatre`` (exam proctors retained as drop).
+  - Grow eval + fn_search log/strategies; supersede #120.
+- **Done when:** Mid-Hudson Times Union and Albany-politicians FPs drop;
+  Queensbury Supervisor / Skidmore handle / Proctors Theatre FNs keep; boxing
+  Queensbury Rules and SOM / exam proctors stay out; eval P/R stay 1.000;
+  unit tests cover the new cues.
+
 ### B-138 — Daily feed audit: downtown-in (?x) `#?` FP; Gabler Realty / Latham→Glenville FNs (fold #119)
 - **Status:** done ([#120](https://github.com/chriscarrollsmith/capital-region-feed/pull/120))
 - **Why:** 2026-10-31 audit of last-24h AppView feed (~65 posts) found an active
