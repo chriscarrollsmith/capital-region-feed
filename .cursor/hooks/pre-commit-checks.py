@@ -7,6 +7,7 @@ hook script. This launcher picks Git Bash and forwards the hook payload.
 from __future__ import annotations
 
 import os
+import shutil
 import subprocess
 import sys
 
@@ -29,8 +30,20 @@ def _git_bash() -> str | None:
     return None
 
 
+def _bash() -> str | None:
+    """Prefer Git Bash. On non-Windows, PATH bash can run the hook."""
+    git_bash = _git_bash()
+    if git_bash is not None:
+        return git_bash
+    # An unqualified bash on Windows is often the WSL relay, which cannot
+    # run this hook. Only fall back where bash is the system shell.
+    if os.name == 'nt':
+        return None
+    return shutil.which('bash')
+
+
 def main() -> int:
-    bash = _git_bash()
+    bash = _bash()
     if bash is None:
         sys.stdout.write(_DENY)
         return 0
