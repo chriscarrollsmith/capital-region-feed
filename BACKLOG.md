@@ -538,6 +538,26 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-140 — Daily feed audit: anger-at-Albany / who-run-Albany FPs; Saratoga Polo FN (fold #121)
+- **Status:** in progress
+- **Why:** 2026-11-02 audit of last-24h AppView feed (~53 posts) found active
+  matcher FPs among rematch-keeps: POLITICO ``anger at Albany`` / ``who run
+  Albany`` statewide campaign copy (title-only ``albany_with_ny_context`` and
+  ``ALBANY, New York`` dateline ``strong_positive`` spam mirrors). Stale index
+  still served already-gated downtown-in / Times Union Mid-Hudson rows (rematch
+  drops after folding #121). Residual allowlisted News10 / Times Union
+  non-local and NWS Albany climate remain intentional. Planned ``fn_search.py``
+  slate (8) all ran OK with no Cap Region FNs; exploratory ``Saratoga Polo``
+  surfaced the Polo Club redevelopment FN (was ``ambiguous_no_context:saratoga``).
+  Folds unmerged #119/#120/#121.
+- **Work:**
+  - Extend Albany statehouse metonym for ``anger at Albany`` / ``who run(s) Albany``.
+  - Strong ``Saratoga Polo`` / ``Saratoga Polo Club`` (Utah Saratoga Springs retained).
+  - Grow eval + fn_search log/strategies; supersede #121.
+- **Done when:** Anger-at-Albany / who-run-Albany FPs drop; Saratoga Polo FN
+  keeps; Common Council / Capital Region rescues and Utah Saratoga Springs stay
+  correct; eval P/R stay 1.000; unit tests cover the new cues.
+
 ### B-139 — Daily feed audit: Times Union Mid-Hudson / Albany politicians FPs; Queensbury Supervisor / Skidmore handle / Proctors Theatre FNs (fold #120)
 - **Status:** done ([#121](https://github.com/chriscarrollsmith/capital-region-feed/pull/121))
 - **Why:** 2026-11-01 audit of last-24h AppView feed (~40 posts) found active

@@ -13266,5 +13266,65 @@
     "split": "dev",
     "regression": true,
     "note": "2026-11-01 audit TN: academic exam proctors still out"
+  },
+  {
+    "id": "fp-anger-at-albany-statewide-campaign",
+    "text": "New York Republicans bet anger at Albany can blunt a Trump backlash",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-02 audit: statewide campaign metonym 'anger at Albany' (POLITICO)"
+  },
+  {
+    "id": "fp-who-run-albany-statehouse-dateline",
+    "text": "ALBANY, New York — New York Republicans have a closing argument for voters unhappy with the cost of living: Blame the incumbent Democrats who run Albany.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-02 audit: 'who run Albany' statehouse metonym under Albany dateline"
+  },
+  {
+    "id": "tp-anger-at-albany-common-council",
+    "text": "Voters voiced anger at Albany Common Council over the Lark Street bike lane.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-02 audit: Cap Region civic rescue for anger-at-Albany metonym gate"
+  },
+  {
+    "id": "tp-who-runs-albany-capital-region-plaza",
+    "text": "Residents asked who runs Albany after the Capital Region town hall at Empire State Plaza.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-02 audit: Cap Region rescue for who-runs-Albany metonym gate"
+  },
+  {
+    "id": "tp-saratoga-polo-club-redevelopment",
+    "text": "The owners of the historic Saratoga Polo Club site have a new vision that includes the development of residences, an event space and other amenities.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-02 audit: Saratoga Polo Club redevelopment FN"
+  },
+  {
+    "id": "tp-saratoga-polo-former-site",
+    "text": "New plan at former Saratoga Polo site includes residences and an event space.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-02 audit: Saratoga Polo site card without Club token"
   }
 ]
