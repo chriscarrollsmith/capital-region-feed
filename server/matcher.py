@@ -678,6 +678,8 @@ _STRONG_POSITIVE = re.compile(
       # ``#?saratoga…`` would leave only ``downtown/side street in`` as the match.
       | (?:side\s+street|downtown)\s+in\s+\#?saratoga\s+springs\b
       | historic\s+saratoga\s+springs\b
+      # Saratoga Polo Club (Greenfield / Wilton) redevelopment wires often omit ", NY".
+      | saratoga\s+polo(?:\s+club)?\b
       | potato\s+chips?[\s\S]{0,80}saratoga\s+springs\b
       | saratoga\s+springs[\s\S]{0,80}potato\s+chips?\b
       | \bgeorge\s+crum\b
@@ -5462,16 +5464,18 @@ def _albany_statehouse_metonym_conflict(haystack: str) -> bool:
     phrasing ("Albany sent rebate checks"), "the rest of Albany" as the capital
     audience, statewide campaign shorthand ("out of Albany", "leadership to
     Albany"), "Albany bill" for legislation-as-capital (often Mid-Hudson /
-    Rochester public-power wires), and "Albany politician(s)" as the state
-    political class use the capital as metonym without Cap Region place news.
-    Local civic anchors still rescue. "Rest of Albany County" is Cap Region and
-    does not match.
+    Rochester public-power wires), "Albany politician(s)" as the state
+    political class, and statewide campaign copy that bets "anger at Albany" or
+    blames Democrats "who run Albany" use the capital as metonym without Cap
+    Region place news. Local civic anchors still rescue. "Rest of Albany County"
+    is Cap Region and does not match.
     """
     if not re.search(
         r'\bdysfunctional\s+albany\b|\balbany\s+sent\b|'
         r'\brest\s+of\s+albany(?!\s+county)\b|'
         r'\bout\s+of\s+albany\b|\bleadership\s+to\s+albany\b|'
-        r'\balbany\s+bill\b|\balbany\s+politicians?\b',
+        r'\balbany\s+bill\b|\balbany\s+politicians?\b|'
+        r'\banger\s+at\s+albany\b|\bwho\s+runs?\s+albany\b',
         haystack,
         flags=re.IGNORECASE,
     ):

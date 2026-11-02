@@ -5889,6 +5889,49 @@ def test_albany_politicians_statehouse_precision() -> None:
     assert capital.reason == 'strong_positive'
 
 
+def test_anger_at_albany_who_run_albany_precision() -> None:
+    """Statewide 'anger at Albany' / 'who run Albany' metonym drops unless rescued."""
+    anger = match_post('New York Republicans bet anger at Albany can blunt a Trump backlash')
+    assert anger.matched is False
+    assert anger.reason == 'hard_negative:albany_statehouse_metonym'
+
+    run_albany = match_post('ALBANY, New York — Blame the incumbent Democrats who run Albany.')
+    assert run_albany.matched is False
+    assert run_albany.reason == 'hard_negative:albany_statehouse_metonym'
+
+    anger_local = match_post(
+        'Voters voiced anger at Albany Common Council over the Lark Street bike lane.'
+    )
+    assert anger_local.matched is True
+    assert anger_local.reason == 'strong_positive'
+
+    run_local = match_post(
+        'Residents asked who runs Albany after the Capital Region town hall at Empire State Plaza.'
+    )
+    assert run_local.matched is True
+
+
+def test_saratoga_polo_club_recall() -> None:
+    """Saratoga Polo Club redevelopment copy keeps without requiring ', NY'."""
+    polo = match_post(
+        'The owners of the historic Saratoga Polo Club site have a new vision '
+        'that includes the development of residences, an event space and other amenities.'
+    )
+    assert polo.matched is True
+    assert polo.reason == 'strong_positive'
+
+    site = match_post('New plan at former Saratoga Polo site includes residences.')
+    assert site.matched is True
+    assert site.reason == 'strong_positive'
+
+    utah = match_post(
+        'A domestic violence incident prompted a shelter-in-place in '
+        'Saratoga Springs, Utah on Halloween night.'
+    )
+    assert utah.matched is False
+    assert utah.reason == 'hard_negative:saratoga_springs_utah'
+
+
 def test_queensbury_supervisor_skidmore_handle_proctors_theatre_recall() -> None:
     """Queensbury Supervisor, @skidmorecollege, and Proctors Theatre forms keep."""
     supervisor = match_post(
