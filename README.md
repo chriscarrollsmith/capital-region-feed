@@ -26,8 +26,11 @@ Jetstream ──► regex floor (candidates) ──► decider (optional) ──
 ```
 
 The regex floor proposes candidates. When `DECISION_ENABLED` is on, the
-Perplexity decider keep/rejects only those candidates (fail closed). When it
-is off, the regex floor — including any offline hard veto — is the whole filter.
+Perplexity decider keep/rejects only those candidates (fail closed). Residents
+— authors with enough recent mention-lane decider keeps — may also send posts
+with no place name to a separate local-life prompt. When the decider is off,
+the regex floor — including any offline hard veto — is the whole filter, and
+resident no-placename posts stay dropped.
 
 Key files:
 
@@ -159,7 +162,12 @@ Bare / ambiguous place names stay precision-gated (NY or other local context req
 unless the author has earned a **soft prior** from repeated decider keeps
 or the second-stage classifier keeps a neighborhood/micro + event combination.
 A soft prior only lets that bare name reach the decider; it does not skip it.
-Hard allowlists and event/venue cues remain primary recall levers for posts with no
+The same mention-lane keeps earn a **resident** privilege: posts with no place
+name reach a separate decider prompt that asks whether the post is local life
+(a show, a street, food, weather, personal narration) rather than national
+politics, memes, or general philosophy. That prompt does not skip the decider,
+and it stays closed when the decider is off. Hard negatives still drop.
+Hard allowlists and event/venue cues remain recall levers for posts with no
 placenames. Homographs also resolve via the checked-in gazetteer
 (`data/gazetteer/places.json`). Optional feed ranking and muted keywords are
 configured with `RANKING_MODE` / `MUTED_KEYWORDS`.
@@ -167,9 +175,12 @@ configured with `RANKING_MODE` / `MUTED_KEYWORDS`.
 ### Content decider
 
 Candidate flow: blocklist, hard negatives, empty text, and bare ambiguous terms
-with no context and no soft prior return before any HTTP call. Everything the
-regex floor would keep (strong local text, ambiguous-with-context, allowlist,
-event/venue, classifier, and soft-prior bare names) is a candidate.
+with no context and no soft prior return before any HTTP call, except that a
+qualified resident's no-placename or photo-only post is a candidate when the
+decider is on. Everything the regex floor would keep (strong local text,
+ambiguous-with-context, allowlist, event/venue, classifier, and soft-prior bare
+names) is a candidate on the mention prompt. Resident candidates use the
+resident prompt.
 
 When `DECISION_ENABLED` is off, that candidate is the result, including the
 existing offline floor. When it is on, `server/decider.py` POSTs the clipped
@@ -197,7 +208,8 @@ re-applies the regex floor only.
 - Ambiguous towns (`Troy`, `Latham`, `Saratoga Springs`, bare `Albany`, …) appear **with** NY / local context (`NY`, `NYC`, `New York`, …). National newspaper mastheads (`New York Times`, `New York Post`, …) do **not** count as place context.
 - Author is on the local allowlist (`data/allowlist_handles.txt` / `allowlist_dids.txt`), even with no place words in the text. Jetstream supplies DIDs only — keep DIDs in sync with `uv run python scripts/resolve_allowlist_dids.py` after editing handles. Allowlisting targets high signal/noise Cap Region voices (not firehose-volume or business-slop accounts); screen candidates with `scripts/screen_allowlist_candidates.py`.
 - Author is **not** on the blocklist (`data/blocklist_handles.txt` / `blocklist_dids.txt`). Blocklisted authors are dropped before geography matching (refresh DIDs with the resolve script’s `--handles` / `--output` flags).
-- Author has a soft prior (`SOFT_PRIOR_MIN_KEEPS` decider keeps and zero decider rejects within `SOFT_PRIOR_WINDOW_DAYS`, tracked in `authordecision`) and the post uses a bare ambiguous place name. Soft priors do **not** override hard negatives and do not keep arbitrary no-placename posts (that remains allowlist-only). Regex-only keeps do not earn a prior. A decider rejection revokes the prior; an unscored timeout does not.
+- Author has a soft prior (`SOFT_PRIOR_MIN_KEEPS` mention-lane decider keeps and zero mention-lane rejects within `SOFT_PRIOR_WINDOW_DAYS`, tracked in `authordecision`) and the post uses a bare ambiguous place name. Soft priors do **not** override hard negatives and do not keep arbitrary no-placename posts. Regex-only keeps do not earn a prior. A mention-lane decider rejection revokes the prior; a resident-lane rejection does not. An unscored timeout does not.
+- Author is a resident (`RESIDENT_MIN_KEEPS` mention-lane keeps, zero mention-lane rejects, same window) and the post has no place-name signal (or is photo-only). The resident decider keeps local life and drops national politics, memes, philosophy, off-region fandom, and anything too unclear to call local life. The privilege suspends when resident-lane rejects reach `RESIDENT_DEMOTE_REJECTS` and outnumber resident-lane keeps, or when resident-lane decisions in the last day reach `RESIDENT_MAX_PER_DAY`. With the decider off, these posts stay dropped.
 - Text has upcoming-event phrasing (`tonight`, `tickets`, `this weekend`, …) **and** a high-confidence Capital Region venue (`Proctors`, `MVP Arena`, `SPAC season/lawn`, `Music Haven`, `at The Egg`, …). Event cues alone never keep bare `Albany` or other ambiguous towns; off-region venues stay dropped.
 - After the regex floor, the ambiguous-case classifier (`server/classifier.py`, weights in `data/models/ambiguous_clf_v1.json`) keeps posts with Capital Region neighborhood/landmark micro-signals plus event (or place) cues — reason `classifier:…`. Hard negatives never reach this stage; bare Albany events without micro-signals still drop.
 - Gazetteer local entities (`entity_local:…`) keep distinctive Capital Region places/counties; other-region entities drop earlier as `entity_other:…`.

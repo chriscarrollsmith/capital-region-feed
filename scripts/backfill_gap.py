@@ -406,7 +406,7 @@ def process_event(
         return 'exists'
 
     if dry_run:
-        from server.author_priors import author_has_soft_prior
+        from server.author_priors import author_has_soft_prior, author_is_resident
         from server.content_filters import author_is_blocked, text_is_muted
 
         record = event.get('record') or {}
@@ -428,6 +428,7 @@ def process_event(
         if not isinstance(langs, list):
             langs = []
         soft_prior_dids = {author} if author_has_soft_prior(author) else set()
+        resident_dids = {author} if author_is_resident(author) else set()
         result = match_post(
             text,
             alt_text=alt_text,
@@ -436,6 +437,7 @@ def process_event(
             allowlist_dids=config.ALLOWLIST_DIDS,
             allowlist_handles=config.ALLOWLIST_HANDLES,
             soft_prior_dids=soft_prior_dids,
+            resident_dids=resident_dids,
             embed=record.get('embed'),
             use_default_decider=True,
         )

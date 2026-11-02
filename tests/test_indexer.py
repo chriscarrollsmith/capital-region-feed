@@ -168,7 +168,14 @@ def test_handle_event_passes_thumbnail_bytes(
     seen: dict[str, object] = {}
 
     class _Recorder:
-        def decide(self, haystack: str, *, images: tuple[bytes, ...] = ()) -> Decision:
+        def decide(
+            self,
+            haystack: str,
+            *,
+            images: tuple[bytes, ...] = (),
+            prompt: str = 'mention',
+        ) -> Decision:
+            del prompt
             seen['haystack'] = haystack
             seen['images'] = images
             return Decision(keep=True, score=0.77)
@@ -227,3 +234,73 @@ def test_handle_event_archived_uses_event_time_not_wall_clock(isolated_db: None)
     live['time_us'] = int(datetime.now(UTC).timestamp() * 1_000_000)
     handle_event(live)
     assert Post.select().where(Post.uri == live['uri']).count() == 0
+
+
+def test_resident_no_placename_records_resident_lane(
+    isolated_db: None, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from server import config
+    from server.author_priors import LANE_RESIDENT, author_has_soft_prior, author_is_resident
+    from server.decider import PROMPT_RESIDENT, Decision, FakeDecider
+    from server.indexer import handle_event
+
+    author = 'did:plc:indexerresident0000000001'
+    seen: dict[str, str] = {}
+    holder: dict[str, object] = {'decider': FakeDecider(keep=True, score=0.91)}
+
+    class _LaneDecider:
+        def __init__(self, keep: bool) -> None:
+            self.keep = keep
+
+        def decide(
+            self,
+            haystack: str,
+            *,
+            images: tuple[bytes, ...] = (),
+            prompt: str = 'mention',
+        ) -> Decision:
+            del haystack, images
+            seen['prompt'] = prompt
+            return Decision(keep=self.keep, score=0.84 if self.keep else 0.15)
+
+    monkeypatch.setattr('server.decider.get_default_decider', lambda: holder['decider'])
+    for i in range(config.RESIDENT_MIN_KEEPS):
+        handle_event(
+            _create_event(
+                author=author,
+                text=f'Hello from Schenectady update {i}.',
+                uri_key=f'local{i}',
+            )
+        )
+    assert author_is_resident(author)
+    assert author_has_soft_prior(author)
+
+    holder['decider'] = _LaneDecider(keep=True)
+    photo = _create_event(
+        author=author,
+        text='The light on the way home was unreal.',
+        uri_key='photo',
+    )
+    handle_event(photo)
+    row = Post.get(Post.uri == photo['uri'])
+    assert str(row.match_reason).startswith('decision_keep:resident:')
+    assert seen['prompt'] == PROMPT_RESIDENT
+    assert (
+        AuthorDecision.select()
+        .where((AuthorDecision.author_did == author) & (AuthorDecision.lane == LANE_RESIDENT))
+        .where(AuthorDecision.kept == 1)
+        .count()
+        == 1
+    )
+
+    holder['decider'] = _LaneDecider(keep=False)
+    politics = _create_event(
+        author=author,
+        text='Congress needs to pass the spending bill before the shutdown.',
+        uri_key='politics',
+    )
+    handle_event(politics)
+    assert Post.select().where(Post.uri == politics['uri']).count() == 0
+    assert seen['prompt'] == PROMPT_RESIDENT
+    assert author_has_soft_prior(author)
+    assert author_is_resident(author)

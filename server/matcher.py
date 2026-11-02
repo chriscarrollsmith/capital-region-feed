@@ -7,14 +7,15 @@ Rejects the main SkyFeed false positives:
 
 Also aims for recall without placenames via author allowlists, soft author
 priors (earned only from decider keeps, which let a bare ambiguous place reach
-the decider), and event/venue cues (local venue + upcoming-event phrasing). A
-checked-in gazetteer resolves known place homographs to Capital Region vs
-other-region entities. Jetstream ``langs`` can drop French *colonie* without
-NY cues. Ambiguous leftovers and event near-misses route to a small linear
-classifier. The regex floor proposes candidates; an optional content decider
-is authoritative for every positive candidate. Precision stays strict for
-ambiguous bare names unless a soft prior or classifier keep applies; see
-README matching policy and BACKLOG.md.
+the decider), a resident tier (the same mention-lane keeps let no-placename
+posts reach a separate decider prompt), and event/venue cues (local venue +
+upcoming-event phrasing). A checked-in gazetteer resolves known place
+homographs to Capital Region vs other-region entities. Jetstream ``langs`` can
+drop French *colonie* without NY cues. Ambiguous leftovers and event
+near-misses route to a small linear classifier. The regex floor proposes
+candidates; an optional content decider is authoritative for every positive
+candidate. Precision stays strict for ambiguous bare names unless a soft prior
+or classifier keep applies; see README matching policy and BACKLOG.md.
 """
 
 from __future__ import annotations
@@ -28,6 +29,8 @@ from server.decider import (
     DECISION_KEEP_PREFIX,
     DECISION_REJECT_PREFIX,
     DECISION_UNSCORED_PREFIX,
+    PROMPT_MENTION,
+    PROMPT_RESIDENT,
     DecisionBackend,
 )
 from server.gazetteer import Gazetteer, default_gazetteer
@@ -5680,6 +5683,19 @@ def _classifier_keep(
     return MatchResult(True, decision.reason)
 
 
+_RESIDENT_EXACT_REASONS = frozenset({'empty', 'no_match', 'bare_albany', 'bare_colonie'})
+
+
+def resident_eligible(reason: str) -> bool:
+    """True when a floor drop may be reopened for a resident-tier decider pass.
+
+    Hard negatives, other-region entities, and language gates stay closed.
+    """
+    if reason in _RESIDENT_EXACT_REASONS:
+        return True
+    return reason.startswith('ambiguous_no_context:')
+
+
 def _content_filter(
     haystack: str,
     provisional: MatchResult,
@@ -5687,12 +5703,14 @@ def _content_filter(
     decider: DecisionBackend | None,
     embed: object | None = None,
     author_did: str | None = None,
+    prompt: str = PROMPT_MENTION,
 ) -> MatchResult:
     """Score a regex-floor keep. Non-candidates and a disabled decider pass through.
 
     Image posts also send feed thumbnails. A thumbnail that cannot be fetched
     declines the candidate. Posts with no images stay text-only, and no
-    thumbnail HTTP call is made when the decider is off.
+    thumbnail HTTP call is made when the decider is off. ``prompt`` selects
+    the mention question or the resident local-life question.
     """
     if not provisional.matched:
         return provisional
@@ -5701,7 +5719,7 @@ def _content_filter(
     images = load_thumbnails(author_did, embed)
     if images is None:
         return MatchResult(False, f'{DECISION_UNSCORED_PREFIX}{provisional.reason}')
-    decision = decider.decide(haystack, images=images)
+    decision = decider.decide(haystack, images=images, prompt=prompt)
     if decision is None:
         return MatchResult(False, f'{DECISION_UNSCORED_PREFIX}{provisional.reason}')
     if decision.keep:
@@ -5739,6 +5757,7 @@ def match_post(
     allowlist_dids: set[str] | None = None,
     allowlist_handles: set[str] | None = None,
     soft_prior_dids: set[str] | None = None,
+    resident_dids: set[str] | None = None,
     classifier_model: ClassifierModel | None = None,
     gazetteer: Gazetteer | None = None,
     decider: DecisionBackend | None = None,
@@ -5751,9 +5770,12 @@ def match_post(
     ambiguous-with-context, event/venue, soft-prior bare names, classifier).
     Blocklist handling is outside this function. Hard negatives, empty text,
     and bare ambiguous terms with no context and no soft prior are not
-    candidates. When ``decider`` is omitted and ``use_default_decider`` is
-    false, the provisional floor result stands. An explicit decider, or the
-    process default when requested, keep/rejects only candidates.
+    candidates, unless the author is in ``resident_dids`` and a decider is
+    available: those no-placename drops are reopened for the resident prompt.
+    Hard negatives stay closed. When ``decider`` is omitted and
+    ``use_default_decider`` is false, the provisional floor result stands,
+    including resident drops. An explicit decider, or the process default when
+    requested, keep/rejects only candidates.
     """
     provisional = _propose_candidate(
         text,
@@ -5767,13 +5789,25 @@ def match_post(
         classifier_model=classifier_model,
         gazetteer=gazetteer,
     )
+    resolved = _resolve_decider(decider, use_default_decider)
+    prompt = PROMPT_MENTION
+    if (
+        not provisional.matched
+        and resolved is not None
+        and author_did
+        and author_did in (resident_dids or set())
+        and resident_eligible(provisional.reason)
+    ):
+        provisional = MatchResult(True, 'resident')
+        prompt = PROMPT_RESIDENT
     haystack = combine_text(text, alt_text=alt_text, langs=langs)
     return _content_filter(
         haystack,
         provisional,
-        decider=_resolve_decider(decider, use_default_decider),
+        decider=resolved,
         embed=embed,
         author_did=author_did,
+        prompt=prompt,
     )
 
 
