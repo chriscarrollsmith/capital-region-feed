@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-140 — Daily feed audit: anger-at-Albany / who-run-Albany FPs; Saratoga Polo FN (fold #121)
-- **Status:** in progress
+- **Status:** done ([#121](https://github.com/chriscarrollsmith/capital-region-feed/pull/121))
 - **Why:** 2026-11-02 audit of last-24h AppView feed (~53 posts) found active
   matcher FPs among rematch-keeps: POLITICO ``anger at Albany`` / ``who run
   Albany`` statewide campaign copy (title-only ``albany_with_ny_context`` and
