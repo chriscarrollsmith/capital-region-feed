@@ -36,7 +36,8 @@
         "Menands",
         "Rensselear",
         "Queensbury",
-        "Queensbury NY"
+        "Queensbury NY",
+        "Glenville"
       ]
     },
     {
@@ -91,7 +92,8 @@
         "Town of Colonie",
         "Guilderland Central School",
         "governor's mansion Albany",
-        "Leandra's Law"
+        "Leandra's Law",
+        "Queensbury Supervisor"
       ]
     },
     {
@@ -109,7 +111,9 @@
         "live from Saratoga Springs",
         "show Saratoga Springs",
         "tonight Saratoga Springs",
-        "Phish Albany"
+        "Phish Albany",
+        "Troy Night Out",
+        "Marylou Whitney"
       ]
     },
     {
@@ -135,7 +139,9 @@
     {
       "id": "institution",
       "queries": [
-        "Ethan Allen Express"
+        "Ethan Allen Express",
+        "Gabler Realty",
+        "ScotlandShop"
       ]
     }
   ]

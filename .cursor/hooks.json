@@ -3,7 +3,7 @@
   "hooks": {
     "beforeShellExecution": [
       {
-        "command": "py -3 .cursor/hooks/pre-commit-checks.py",
+        "command": "python3 .cursor/hooks/pre-commit-checks.py",
         "matcher": "git\\s+commit",
         "timeout": 120,
         "failClosed": true
