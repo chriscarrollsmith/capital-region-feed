@@ -48,6 +48,20 @@ if _prior_min is None:
     _prior_min = os.environ.get('SOFT_PRIOR_MIN_STRONG', '3')
 SOFT_PRIOR_MIN_KEEPS = int(_prior_min)
 SOFT_PRIOR_WINDOW_DAYS = int(os.environ.get('SOFT_PRIOR_WINDOW_DAYS', '30'))
+# Resident tier uses mention-lane keeps (same window as soft priors) to send
+# posts with no place name to a separate decider prompt. Resident-lane rejects
+# do not revoke a soft prior. A high resident reject count, or too many
+# resident decisions in a day, suspends the privilege.
+RESIDENT_MIN_KEEPS = int(os.environ.get('RESIDENT_MIN_KEEPS', '3'))
+RESIDENT_DEMOTE_REJECTS = int(os.environ.get('RESIDENT_DEMOTE_REJECTS', '3'))
+RESIDENT_MAX_PER_DAY = int(os.environ.get('RESIDENT_MAX_PER_DAY', '8'))
+for _resident_name, _resident_value in (
+    ('RESIDENT_MIN_KEEPS', RESIDENT_MIN_KEEPS),
+    ('RESIDENT_DEMOTE_REJECTS', RESIDENT_DEMOTE_REJECTS),
+    ('RESIDENT_MAX_PER_DAY', RESIDENT_MAX_PER_DAY),
+):
+    if _resident_value < 1:
+        raise RuntimeError(f'{_resident_name} must be >= 1 (got {_resident_value})')
 DATABASE_PATH = os.environ.get('DATABASE_PATH', 'feed_database.db')
 JETSTREAM_URL = os.environ.get(
     'JETSTREAM_URL',
@@ -82,6 +96,7 @@ _openrouter_key_state = 'set' if os.environ.get('OPENROUTER_API_KEY', '').strip(
 logger.info(
     'config loaded hostname=%s service_did=%s allowlist_dids=%d allowlist_handles=%d '
     'blocklist_dids=%d blocklist_handles=%d soft_prior_min_keeps=%d soft_prior_window_days=%d '
+    'resident_min_keeps=%d resident_demote_rejects=%d resident_max_per_day=%d '
     'ranking_mode=%s muted_keywords=%d decision_enabled=%s decision_model=%s '
     'openrouter_api_key=%s decision_keep_min=%s',
     HOSTNAME,
@@ -92,6 +107,9 @@ logger.info(
     len(BLOCKLIST_HANDLES),
     SOFT_PRIOR_MIN_KEEPS,
     SOFT_PRIOR_WINDOW_DAYS,
+    RESIDENT_MIN_KEEPS,
+    RESIDENT_DEMOTE_REJECTS,
+    RESIDENT_MAX_PER_DAY,
     RANKING_MODE,
     len(MUTED_KEYWORDS),
     decision_enabled(),

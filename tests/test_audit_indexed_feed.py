@@ -9,6 +9,7 @@ from pathlib import Path
 from scripts.audit_indexed_feed import (
     AuditRow,
     evaluate_post,
+    load_resident_dids_from_db,
     load_soft_prior_dids_from_db,
     load_uris_from_db,
     post_alt_text,
@@ -174,6 +175,142 @@ def test_load_soft_prior_dids_respects_threshold(tmp_path: Path) -> None:
         now=now.replace(tzinfo=UTC).replace(tzinfo=None),
     )
     assert dids == {'did:plc:enough'}
+
+
+def test_resident_lane_does_not_revoke_soft_prior(tmp_path: Path) -> None:
+    db_path = tmp_path / 'feed.db'
+    con = sqlite3.connect(str(db_path))
+    con.execute(
+        """
+        CREATE TABLE authordecision (
+            id INTEGER PRIMARY KEY,
+            author_did TEXT,
+            kept INTEGER,
+            decided_at TEXT,
+            lane TEXT
+        )
+        """
+    )
+    now = datetime(2026, 7, 26, 12, 0, 0)
+    stamp = now.isoformat(sep=' ')
+    rows = [('did:plc:local', 1, stamp, 'mention') for _ in range(3)]
+    rows.append(('did:plc:local', 0, stamp, 'resident'))
+    con.executemany(
+        'INSERT INTO authordecision (author_did, kept, decided_at, lane) VALUES (?, ?, ?, ?)',
+        rows,
+    )
+    con.commit()
+    con.close()
+    moment = now.replace(tzinfo=UTC).replace(tzinfo=None)
+    assert load_soft_prior_dids_from_db(db_path, min_keeps=3, window_days=30, now=moment) == {
+        'did:plc:local'
+    }
+    assert load_resident_dids_from_db(
+        db_path,
+        min_keeps=3,
+        demote_rejects=3,
+        max_per_day=8,
+        window_days=30,
+        now=moment,
+    ) == {'did:plc:local'}
+
+
+def test_resident_demote_and_daily_cap(tmp_path: Path) -> None:
+    db_path = tmp_path / 'feed.db'
+    con = sqlite3.connect(str(db_path))
+    con.execute(
+        """
+        CREATE TABLE authordecision (
+            id INTEGER PRIMARY KEY,
+            author_did TEXT,
+            kept INTEGER,
+            decided_at TEXT,
+            lane TEXT
+        )
+        """
+    )
+    now = datetime(2026, 7, 26, 12, 0, 0)
+    stamp = now.isoformat(sep=' ')
+    rows: list[tuple[str, int, str, str]] = [
+        ('did:plc:demoted', 1, stamp, 'mention'),
+        ('did:plc:demoted', 1, stamp, 'mention'),
+        ('did:plc:demoted', 1, stamp, 'mention'),
+        ('did:plc:demoted', 0, stamp, 'resident'),
+        ('did:plc:demoted', 0, stamp, 'resident'),
+        ('did:plc:demoted', 0, stamp, 'resident'),
+        ('did:plc:capped', 1, stamp, 'mention'),
+        ('did:plc:capped', 1, stamp, 'mention'),
+        ('did:plc:capped', 1, stamp, 'mention'),
+    ]
+    rows.extend(('did:plc:capped', 1, stamp, 'resident') for _ in range(8))
+    con.executemany(
+        'INSERT INTO authordecision (author_did, kept, decided_at, lane) VALUES (?, ?, ?, ?)',
+        rows,
+    )
+    con.commit()
+    con.close()
+    moment = now.replace(tzinfo=UTC).replace(tzinfo=None)
+    assert (
+        load_resident_dids_from_db(
+            db_path,
+            min_keeps=3,
+            demote_rejects=3,
+            max_per_day=8,
+            window_days=30,
+            now=moment,
+        )
+        == set()
+    )
+
+
+def test_evaluate_post_keeps_resident_no_placename_and_drops_hard_negative() -> None:
+    did = 'did:plc:residentaudit0000000001'
+    photo = {
+        'uri': 'at://did:plc:residentaudit0000000001/app.bsky.feed.post/1',
+        'author': {'did': did, 'handle': 'neighbor.bsky.social'},
+        'record': {'text': 'The light on the way home was unreal.'},
+    }
+    matched, reason = evaluate_post(
+        photo,
+        allowlist_dids=set(),
+        allowlist_handles=set(),
+        soft_prior_dids=set(),
+        resident_dids={did},
+        ignore_replies=True,
+        blocklist_dids=set(),
+        blocklist_handles=set(),
+    )
+    assert matched is True
+    assert reason == 'resident'
+    closed, closed_reason = evaluate_post(
+        photo,
+        allowlist_dids=set(),
+        allowlist_handles=set(),
+        soft_prior_dids=set(),
+        ignore_replies=True,
+        blocklist_dids=set(),
+        blocklist_handles=set(),
+    )
+    assert closed is False
+    assert closed_reason == 'no_match'
+
+    park = {
+        'uri': 'at://did:plc:residentaudit0000000001/app.bsky.feed.post/2',
+        'author': {'did': did, 'handle': 'neighbor.bsky.social'},
+        'record': {'text': 'Nice afternoon walking around Albany Park.'},
+    }
+    dropped, drop_reason = evaluate_post(
+        park,
+        allowlist_dids=set(),
+        allowlist_handles=set(),
+        soft_prior_dids=set(),
+        resident_dids={did},
+        ignore_replies=True,
+        blocklist_dids=set(),
+        blocklist_handles=set(),
+    )
+    assert dropped is False
+    assert drop_reason in {'hard_negative', 'entity_other:albany_park_chicago'}
 
 
 def test_load_soft_prior_missing_table_is_empty(tmp_path: Path) -> None:

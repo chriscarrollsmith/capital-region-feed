@@ -8,7 +8,12 @@ from typing import Any
 from peewee import IntegrityError
 
 from server import config
-from server.author_priors import author_has_soft_prior, record_decision
+from server.author_priors import (
+    author_has_soft_prior,
+    author_is_resident,
+    lane_for_reason,
+    record_decision,
+)
 from server.content_filters import author_is_blocked, text_is_muted
 from server.database import Post, db, prune_old_posts, utc_now
 from server.decider import DECISION_KEEP_PREFIX, DECISION_REJECT_PREFIX
@@ -126,6 +131,7 @@ def handle_event(event: dict[str, Any]) -> None:
         langs = []
     author = author_did if isinstance(author_did, str) else None
     soft_prior_dids = {author} if author_has_soft_prior(author) else set()
+    resident_dids = {author} if author_is_resident(author) else set()
     result = match_post(
         text,
         alt_text=alt_text,
@@ -134,12 +140,14 @@ def handle_event(event: dict[str, Any]) -> None:
         allowlist_dids=config.ALLOWLIST_DIDS,
         allowlist_handles=config.ALLOWLIST_HANDLES,
         soft_prior_dids=soft_prior_dids,
+        resident_dids=resident_dids,
         embed=record.get('embed'),
         use_default_decider=True,
     )
-    # A rejection revokes a prior. A timeout (decision_unscored) does not.
+    # A rejection revokes a mention-lane prior, or counts against residency.
+    # A timeout (decision_unscored) does not.
     if result.reason.startswith(DECISION_REJECT_PREFIX):
-        record_decision(author, kept=False)
+        record_decision(author, kept=False, lane=lane_for_reason(result.reason))
     if not result.matched:
         return
 
@@ -164,7 +172,7 @@ def handle_event(event: dict[str, Any]) -> None:
         return
 
     if result.reason.startswith(DECISION_KEEP_PREFIX):
-        record_decision(author, kept=True)
+        record_decision(author, kept=True, lane=lane_for_reason(result.reason))
 
     logger.info('indexed %s reason=%s', uri, result.reason)
     _maybe_prune()

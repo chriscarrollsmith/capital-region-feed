@@ -36,6 +36,49 @@ def test_noul_threshold_and_choice_payload() -> None:
         )
 
 
+def test_resident_request_body_states_author_and_local_life() -> None:
+    from server.decider import _RESIDENT_AUTHOR_FACT, PROMPT_RESIDENT
+
+    body = _request_body(
+        'perplexity/pplx-decider-v1.2',
+        'The light on the way home was unreal.',
+        prompt=PROMPT_RESIDENT,
+    )
+    assert body['state'] == {
+        'author': _RESIDENT_AUTHOR_FACT,
+        'post': 'The light on the way home was unreal.',
+    }
+    keep = body['questions']['keep']
+    assert 'street photography' in keep['instructions']
+    assert 'National politics' in keep['instructions']
+    assert 'philosophy' in keep['criteria']['false']
+    assert 'unclear' in keep['criteria']['false']
+    image_body = _request_body('perplexity/pplx-decider-v1.2', '', (_JPEG,), PROMPT_RESIDENT)
+    assert isinstance(image_body['state'], list)
+    assert image_body['state'][0] == _RESIDENT_AUTHOR_FACT
+    assert image_body['state'][1]['type'] == 'image_url'
+
+
+def test_prompt_is_part_of_the_cache_key() -> None:
+    from server.decider import PROMPT_RESIDENT
+
+    calls = {'n': 0}
+
+    def judge(text: str) -> dict[str, object]:
+        del text
+        calls['n'] += 1
+        return {'answers': {'keep': {'type': 'noul', 'noul': 0.8}}}
+
+    decider = OpenRouterDecider(api_key='test', _judge=judge)
+    text = 'The light on the way home was unreal.'
+    mention = decider.decide(text)
+    resident = decider.decide(text, prompt=PROMPT_RESIDENT)
+    again = decider.decide(text, prompt=PROMPT_RESIDENT)
+    assert mention is not None and resident is not None
+    assert again is resident
+    assert calls['n'] == 2
+
+
 def test_request_body_is_a_decision_not_a_chat_prompt() -> None:
     body = _request_body('perplexity/pplx-decider-v1.2', 'Schenectady tonight')
     assert 'messages' not in body
@@ -239,8 +282,14 @@ class _RecordingDecider:
     def __init__(self) -> None:
         self.images: tuple[bytes, ...] | None = None
 
-    def decide(self, haystack: str, *, images: tuple[bytes, ...] = ()) -> Decision:
-        del haystack
+    def decide(
+        self,
+        haystack: str,
+        *,
+        images: tuple[bytes, ...] = (),
+        prompt: str = 'mention',
+    ) -> Decision:
+        del haystack, prompt
         self.images = images
         return Decision(keep=True, score=0.88)
 

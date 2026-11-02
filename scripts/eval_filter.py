@@ -22,6 +22,8 @@ Case schema (``data/eval_cases.json``):
 - ``soft_prior``: if true with ``author_did``, treat that DID as soft-prior eligible
   for this case (earned priors in production come from ``authordecision``).
   This script calls ``match_post`` with no decider and does not use the network.
+  The resident tier is fail-closed here: no-placename posts stay dropped.
+  ``data/resident_cases.json`` covers that path with a decider double.
 - ``langs``: optional Bluesky language tags (e.g. ``["fr"]``) for language-aware
   heuristics
 - Bucket ``ambiguous_classifier`` covers second-stage keeps (neighborhood/micro +

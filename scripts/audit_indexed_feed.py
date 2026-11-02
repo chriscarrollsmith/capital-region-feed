@@ -4,8 +4,13 @@
 Indexed rows store URI metadata only (no text). This tool hydrates records from
 the Bluesky AppView, re-applies the regex floor with ``match_post`` (no content
 decider) and production allowlists, and reports posts that would no longer keep.
-Optional soft priors come from ``authordecision`` (enough keeps, zero rejects).
-Use ``--purge`` on a database path to delete those URIs.
+Optional soft priors and resident-tier authors come from ``authordecision``
+(enough mention-lane keeps, zero mention-lane rejects; residency also suspends
+on a high resident-lane reject rate or a daily decision cap). The audit does
+not call the decider. A current resident's no-placename post stays a candidate
+so ``--purge`` does not delete resident-tier keeps while the author still
+qualifies. Use ``--purge`` on a database path to delete URIs the floor would
+drop.
 
 Examples:
 
@@ -50,7 +55,7 @@ from server.allowlists import (  # noqa: E402
     load_blocklist_handles,
 )
 from server.content_filters import author_is_blocked, text_is_muted  # noqa: E402
-from server.matcher import extract_alt_text, match_post  # noqa: E402
+from server.matcher import extract_alt_text, match_post, resident_eligible  # noqa: E402
 
 DEFAULT_API_HOST = 'https://api.bsky.app'
 USER_AGENT = (
@@ -73,6 +78,9 @@ if _prior_min is None:
     _prior_min = os.environ.get('SOFT_PRIOR_MIN_STRONG', '3')
 SOFT_PRIOR_MIN_KEEPS = int(_prior_min)
 SOFT_PRIOR_WINDOW_DAYS = int(os.environ.get('SOFT_PRIOR_WINDOW_DAYS', '30'))
+RESIDENT_MIN_KEEPS = int(os.environ.get('RESIDENT_MIN_KEEPS', '3'))
+RESIDENT_DEMOTE_REJECTS = int(os.environ.get('RESIDENT_DEMOTE_REJECTS', '3'))
+RESIDENT_MAX_PER_DAY = int(os.environ.get('RESIDENT_MAX_PER_DAY', '8'))
 MUTED_KEYWORDS = tuple(
     part.strip().lower() for part in os.environ.get('MUTED_KEYWORDS', '').split(',') if part.strip()
 )
@@ -149,6 +157,37 @@ def _sqlite_bool(value: object) -> bool:
     return False
 
 
+def _authordecision_rows(con: sqlite3.Connection) -> list[tuple[str, bool, datetime, str | None]]:
+    """Return parsed rows. ``lane`` is None when the column is absent or blank."""
+    columns = {row[1] for row in con.execute('PRAGMA table_info("authordecision")')}
+    if 'lane' in columns:
+        sql = 'SELECT author_did, kept, decided_at, lane FROM authordecision'
+    else:
+        sql = 'SELECT author_did, kept, decided_at, NULL FROM authordecision'
+    rows: list[tuple[str, bool, datetime, str | None]] = []
+    for did, kept, decided_at, lane in con.execute(sql):
+        if not did:
+            continue
+        ts = _sqlite_timestamp(decided_at)
+        if ts is None:
+            continue
+        lane_value = str(lane) if isinstance(lane, str) and lane else None
+        rows.append((str(did), _sqlite_bool(kept), ts, lane_value))
+    return rows
+
+
+def _open_authordecisions(
+    database: Path,
+) -> tuple[sqlite3.Connection, list[tuple[str, bool, datetime, str | None]] | None]:
+    con = sqlite3.connect(str(database))
+    present = con.execute(
+        "SELECT 1 FROM sqlite_master WHERE type = 'table' AND name = 'authordecision'"
+    ).fetchone()
+    if present is None:
+        return con, None
+    return con, _authordecision_rows(con)
+
+
 def load_soft_prior_dids_from_db(
     database: Path,
     *,
@@ -156,34 +195,84 @@ def load_soft_prior_dids_from_db(
     window_days: int = SOFT_PRIOR_WINDOW_DAYS,
     now: datetime | None = None,
 ) -> set[str]:
-    """DIDs with enough recent decider keeps and zero rejects in this DB file.
+    """DIDs with enough recent mention-lane keeps and zero mention-lane rejects.
 
     A missing ``authordecision`` table means no priors (older databases).
+    Resident-lane rows do not earn or revoke a soft prior. Databases from
+    before the ``lane`` column treat every row as mention.
     """
     moment = now if now is not None else datetime.now(UTC).replace(tzinfo=None)
     cutoff = moment - timedelta(days=window_days)
-    con = sqlite3.connect(str(database))
+    con, rows = _open_authordecisions(database)
     try:
-        present = con.execute(
-            "SELECT 1 FROM sqlite_master WHERE type = 'table' AND name = 'authordecision'"
-        ).fetchone()
-        if present is None:
+        if rows is None:
             return set()
         keeps: dict[str, int] = {}
         rejects: set[str] = set()
-        for did, kept, decided_at in con.execute(
-            'SELECT author_did, kept, decided_at FROM authordecision'
-        ):
-            if not did:
+        for did, kept, ts, lane in rows:
+            if ts < cutoff or lane == 'resident':
                 continue
-            ts = _sqlite_timestamp(decided_at)
-            if ts is None or ts < cutoff:
-                continue
-            if _sqlite_bool(kept):
-                keeps[str(did)] = keeps.get(str(did), 0) + 1
+            if kept:
+                keeps[did] = keeps.get(did, 0) + 1
             else:
-                rejects.add(str(did))
+                rejects.add(did)
         return {did for did, count in keeps.items() if count >= min_keeps and did not in rejects}
+    finally:
+        con.close()
+
+
+def load_resident_dids_from_db(
+    database: Path,
+    *,
+    min_keeps: int = RESIDENT_MIN_KEEPS,
+    demote_rejects: int = RESIDENT_DEMOTE_REJECTS,
+    max_per_day: int = RESIDENT_MAX_PER_DAY,
+    window_days: int = SOFT_PRIOR_WINDOW_DAYS,
+    now: datetime | None = None,
+) -> set[str]:
+    """DIDs whose mention-lane evidence still earns a resident decider pass.
+
+    Mirrors ``author_is_resident``. A missing table or ``lane`` column still
+    counts mention evidence; resident rejects and the daily cap need ``lane``.
+    """
+    moment = now if now is not None else datetime.now(UTC).replace(tzinfo=None)
+    cutoff = moment - timedelta(days=window_days)
+    day_ago = moment - timedelta(days=1)
+    con, rows = _open_authordecisions(database)
+    try:
+        if rows is None:
+            return set()
+        mention_keeps: dict[str, int] = {}
+        mention_rejects: set[str] = set()
+        resident_keeps: dict[str, int] = {}
+        resident_rejects: dict[str, int] = {}
+        resident_recent: dict[str, int] = {}
+        for did, kept, ts, lane in rows:
+            if ts < cutoff:
+                continue
+            if lane == 'resident':
+                if kept:
+                    resident_keeps[did] = resident_keeps.get(did, 0) + 1
+                else:
+                    resident_rejects[did] = resident_rejects.get(did, 0) + 1
+                if ts >= day_ago:
+                    resident_recent[did] = resident_recent.get(did, 0) + 1
+                continue
+            if kept:
+                mention_keeps[did] = mention_keeps.get(did, 0) + 1
+            else:
+                mention_rejects.add(did)
+        qualified: set[str] = set()
+        for did, count in mention_keeps.items():
+            if count < min_keeps or did in mention_rejects:
+                continue
+            rejects = resident_rejects.get(did, 0)
+            if rejects >= demote_rejects and rejects > resident_keeps.get(did, 0):
+                continue
+            if resident_recent.get(did, 0) >= max_per_day:
+                continue
+            qualified.add(did)
+        return qualified
     finally:
         con.close()
 
@@ -282,11 +371,16 @@ def evaluate_post(
     allowlist_dids: set[str],
     allowlist_handles: set[str],
     soft_prior_dids: set[str],
+    resident_dids: set[str] | None = None,
     ignore_replies: bool = IGNORE_REPLY_POSTS,
     blocklist_dids: set[str] | None = None,
     blocklist_handles: set[str] | None = None,
 ) -> tuple[bool, str]:
-    """Return (matched, reason) using the same gates as indexer.create."""
+    """Return (matched, reason) using the indexer gates, without calling the decider.
+
+    When ``resident_dids`` contains the author, a no-placename floor drop is
+    reported as a resident candidate. Hard negatives stay dropped.
+    """
     record = post.get('record') if isinstance(post.get('record'), dict) else {}
     author = post.get('author') if isinstance(post.get('author'), dict) else {}
     if ignore_replies and isinstance(record, dict) and record.get('reply'):
@@ -313,16 +407,27 @@ def evaluate_post(
     if not isinstance(langs, list):
         langs = None
 
+    did = author_did if isinstance(author_did, str) else None
     result = match_post(
         text,
         alt_text=alt_text,
         langs=langs,
-        author_did=author_did if isinstance(author_did, str) else None,
+        author_did=did,
         author_handle=author_handle if isinstance(author_handle, str) else None,
         allowlist_dids=allowlist_dids,
         allowlist_handles=allowlist_handles,
         soft_prior_dids=soft_prior_dids,
     )
+    # Offline stand-in for the resident decider: keep the candidate privilege
+    # visible so purge does not drop posts the live decider already accepted
+    # while the author still qualifies. Hard negatives stay dropped.
+    if (
+        not result.matched
+        and did
+        and did in (resident_dids or set())
+        and resident_eligible(result.reason)
+    ):
+        return True, 'resident'
     return result.matched, result.reason
 
 
@@ -334,6 +439,7 @@ def audit_uris(
     allowlist_dids: set[str],
     allowlist_handles: set[str],
     soft_prior_dids: set[str],
+    resident_dids: set[str] | None = None,
 ) -> list[AuditRow]:
     uris = [uri for uri, _ in uri_rows]
     indexed = {uri: reason for uri, reason in uri_rows}
@@ -365,6 +471,7 @@ def audit_uris(
             allowlist_dids=allowlist_dids,
             allowlist_handles=allowlist_handles,
             soft_prior_dids=soft_prior_dids,
+            resident_dids=resident_dids,
         )
         did = author.get('did')
         handle = author.get('handle')
@@ -458,7 +565,10 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         '--apply-soft-priors',
         action='store_true',
-        help='Load eligible soft-prior DIDs from --database authordecision',
+        help=(
+            'Load soft-prior and resident-tier DIDs from --database authordecision. '
+            'Resident no-placename posts stay candidates while the author qualifies.'
+        ),
     )
     parser.add_argument(
         '--jsonl',
@@ -504,11 +614,13 @@ def main(argv: list[str] | None = None) -> int:
         uri_rows = load_uris_from_db(args.database, limit=args.limit)
 
     soft_prior_dids: set[str] = set()
+    resident_dids: set[str] = set()
     if args.apply_soft_priors:
         if not args.database:
             print('error: --apply-soft-priors requires --database', file=sys.stderr)
             return 2
         soft_prior_dids = load_soft_prior_dids_from_db(args.database)
+        resident_dids = load_resident_dids_from_db(args.database)
 
     rows = audit_uris(
         uri_rows,
@@ -517,6 +629,7 @@ def main(argv: list[str] | None = None) -> int:
         allowlist_dids=allowlist_dids,
         allowlist_handles=allowlist_handles,
         soft_prior_dids=soft_prior_dids,
+        resident_dids=resident_dids,
     )
     print_report(rows)
 

@@ -1,0 +1,72 @@
+[
+  {
+    "id": "keep-light-on-the-way-home",
+    "text": "The light on the way home was unreal.",
+    "expected": true,
+    "kind": "resident",
+    "note": "Personal street photography caption with no place name."
+  },
+  {
+    "id": "keep-encore",
+    "text": "Standing room only, and they still came back for two more songs.",
+    "expected": true,
+    "kind": "resident",
+    "note": "Personal narration of a local show, venue unnamed."
+  },
+  {
+    "id": "keep-snow-walk",
+    "text": "Snow finally stuck overnight. Walked the long way this morning.",
+    "expected": true,
+    "kind": "resident",
+    "note": "Everyday weather and a walk, no place name."
+  },
+  {
+    "id": "keep-dinner-special",
+    "text": "Best plate I've had in months. The special, not the menu.",
+    "expected": true,
+    "kind": "resident",
+    "note": "Local food from a resident, restaurant unnamed."
+  },
+  {
+    "id": "drop-congress",
+    "text": "Congress needs to pass the spending bill before the shutdown.",
+    "expected": false,
+    "kind": "resident",
+    "note": "National politics is not local life, even from a resident."
+  },
+  {
+    "id": "drop-philosophy",
+    "text": "We suffer because we cling to permanence. Everything changes.",
+    "expected": false,
+    "kind": "resident",
+    "note": "General philosophy with no local scene."
+  },
+  {
+    "id": "drop-meme",
+    "text": "nobody:\nabsolutely nobody:\nme at 2am:",
+    "expected": false,
+    "kind": "resident",
+    "note": "A meme is not local life."
+  },
+  {
+    "id": "drop-offregion-fandom",
+    "text": "What a finish for the Lakers tonight. I cannot believe that last shot.",
+    "expected": false,
+    "kind": "resident",
+    "note": "Off-region sports fandom."
+  },
+  {
+    "id": "drop-albany-park",
+    "text": "Nice afternoon walking around Albany Park.",
+    "expected": false,
+    "kind": "hard_negative",
+    "note": "Residence does not reopen a hard negative."
+  },
+  {
+    "id": "mention-schenectady-council",
+    "text": "Schenectady City Council meets Tuesday at City Hall.",
+    "expected": true,
+    "kind": "mention",
+    "note": "A place-name post from a resident stays on the mention prompt."
+  }
+]

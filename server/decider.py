@@ -21,6 +21,9 @@ from dataclasses import dataclass
 from typing import Any, Protocol
 
 PROMPT_VERSION = 'capital-region-keep-v1'
+RESIDENT_PROMPT_VERSION = 'capital-region-resident-v1'
+PROMPT_MENTION = 'mention'
+PROMPT_RESIDENT = 'resident'
 
 DEFAULT_MODEL = 'perplexity/pplx-decider-v1.2'
 DEFAULT_API_URL = 'https://openrouter.ai/api/alpha/decisions'
@@ -57,6 +60,30 @@ _CRITERION_FALSE = (
     "that is not New York's Capital Region."
 )
 
+# Resident prompt only. The matcher has already established that the author
+# lives in the Capital Region; this question is topical, not geographic.
+_RESIDENT_AUTHOR_FACT = "Lives in New York's Capital Region."
+_RESIDENT_KEEP_INSTRUCTIONS = (
+    "This author lives in New York's Capital Region "
+    '(Albany, Troy, Schenectady, Saratoga Springs, and nearby). '
+    'Keep the post only when it is local life a neighbor would recognize: '
+    'personal narration, attending a local event, weather, food, street photography, '
+    'or another everyday scene, including when the post names no place. '
+    'National politics, memes, general philosophy, off-region fandom, spam, '
+    'and hostile or abusive posts are out of scope. '
+    'If it is unclear whether the post is local life, reject it.'
+)
+_RESIDENT_CRITERION_TRUE = (
+    'Local life from this Capital Region resident: personal narration, '
+    'being somewhere nearby, a local event, weather, food, street or event photography, '
+    'or another everyday scene a neighbor would recognize, with or without a place name.'
+)
+_RESIDENT_CRITERION_FALSE = (
+    'Not local life: national or off-region politics, memes, general philosophy, '
+    'off-region sports fandom, spam, hostile or abusive posts, '
+    'or too unclear to tell whether it is local life.'
+)
+
 _TRUTHY = frozenset({'1', 'true', 't', 'yes', 'y'})
 _DECLINE_ERRORS = (
     ValueError,
@@ -78,11 +105,17 @@ class Decision:
 
 
 class DecisionBackend(Protocol):
-    def decide(self, haystack: str, *, images: tuple[bytes, ...] = ()) -> Decision | None:
+    def decide(
+        self,
+        haystack: str,
+        *,
+        images: tuple[bytes, ...] = (),
+        prompt: str = PROMPT_MENTION,
+    ) -> Decision | None:
         """Return a keep/reject, or None when the post cannot be scored.
 
         ``images`` are raw thumbnail bytes sent with the post text. Text-only
-        callers omit them.
+        callers omit them. ``prompt`` selects the mention or resident question.
         """
 
 
@@ -127,17 +160,31 @@ def _image_part(data: bytes) -> dict[str, Any]:
     }
 
 
+def _prompt_copy(prompt: str) -> tuple[str, str, str]:
+    if prompt == PROMPT_MENTION:
+        return _KEEP_INSTRUCTIONS, _CRITERION_TRUE, _CRITERION_FALSE
+    if prompt == PROMPT_RESIDENT:
+        return _RESIDENT_KEEP_INSTRUCTIONS, _RESIDENT_CRITERION_TRUE, _RESIDENT_CRITERION_FALSE
+    raise ValueError(f'unknown decision prompt {prompt!r}')
+
+
 def _request_body(
     model: str,
     text: str,
     images: tuple[bytes, ...] = (),
+    prompt: str = PROMPT_MENTION,
 ) -> dict[str, Any]:
+    instructions, criterion_true, criterion_false = _prompt_copy(prompt)
     if images:
         parts: list[Any] = []
+        if prompt == PROMPT_RESIDENT:
+            parts.append(_RESIDENT_AUTHOR_FACT)
         if text:
             parts.append(text)
         parts.extend(_image_part(blob) for blob in images)
         state: Any = parts
+    elif prompt == PROMPT_RESIDENT:
+        state = {'author': _RESIDENT_AUTHOR_FACT, 'post': text}
     else:
         state = {'post': text}
     return {
@@ -146,10 +193,10 @@ def _request_body(
         'questions': {
             'keep': {
                 'type': 'noul',
-                'instructions': _KEEP_INSTRUCTIONS,
+                'instructions': instructions,
                 'criteria': {
-                    'true': _CRITERION_TRUE,
-                    'false': _CRITERION_FALSE,
+                    'true': criterion_true,
+                    'false': criterion_false,
                 },
             }
         },
@@ -180,22 +227,33 @@ class OpenRouterDecider:
         self._cache: dict[str, Decision | None] = {}
         self._cache_lock = threading.Lock()
 
-    def decide(self, haystack: str, *, images: tuple[bytes, ...] = ()) -> Decision | None:
+    def decide(
+        self,
+        haystack: str,
+        *,
+        images: tuple[bytes, ...] = (),
+        prompt: str = PROMPT_MENTION,
+    ) -> Decision | None:
         clipped = haystack.strip()[: self.max_text_chars]
         if not clipped and not images:
             return None
+        version = RESIDENT_PROMPT_VERSION if prompt == PROMPT_RESIDENT else PROMPT_VERSION
+        if prompt not in {PROMPT_MENTION, PROMPT_RESIDENT}:
+            raise ValueError(f'unknown decision prompt {prompt!r}')
         image_token = ''
         if images:
             image_token = '|' + '|'.join(hashlib.sha256(blob).hexdigest() for blob in images)
         key = hashlib.sha256(
-            f'{self.model}|{PROMPT_VERSION}|{self.keep_min:.3f}|{clipped}{image_token}'.encode()
+            f'{self.model}|{version}|{prompt}|{self.keep_min:.3f}|{clipped}{image_token}'.encode()
         ).hexdigest()
         with self._cache_lock:
             if key in self._cache:
                 return self._cache[key]
         try:
             payload = (
-                self._judge(clipped) if self._judge is not None else self._post(clipped, images)
+                self._judge(clipped)
+                if self._judge is not None
+                else self._post(clipped, images, prompt)
             )
             decision: Decision | None = decision_from_payload(payload, keep_min=self.keep_min)
         except _DECLINE_ERRORS:
@@ -204,8 +262,13 @@ class OpenRouterDecider:
             # Another thread may have stored the same key; either result is usable.
             return self._cache.setdefault(key, decision)
 
-    def _post(self, text: str, images: tuple[bytes, ...] = ()) -> object:
-        body = json.dumps(_request_body(self.model, text, images)).encode('utf-8')
+    def _post(
+        self,
+        text: str,
+        images: tuple[bytes, ...] = (),
+        prompt: str = PROMPT_MENTION,
+    ) -> object:
+        body = json.dumps(_request_body(self.model, text, images, prompt)).encode('utf-8')
         request = urllib.request.Request(
             self.api_url,
             data=body,
@@ -223,8 +286,14 @@ class OpenRouterDecider:
 class UnavailableDecider:
     """Enabled filter with no API key. Every candidate declines."""
 
-    def decide(self, haystack: str, *, images: tuple[bytes, ...] = ()) -> Decision | None:
-        del haystack, images
+    def decide(
+        self,
+        haystack: str,
+        *,
+        images: tuple[bytes, ...] = (),
+        prompt: str = PROMPT_MENTION,
+    ) -> Decision | None:
+        del haystack, images, prompt
         return None
 
 
@@ -242,9 +311,17 @@ class FakeDecider:
         self.score = score
         self.keep_substrings = keep_substrings
         self.reject_substrings = reject_substrings
+        self.prompt = PROMPT_MENTION
 
-    def decide(self, haystack: str, *, images: tuple[bytes, ...] = ()) -> Decision | None:
+    def decide(
+        self,
+        haystack: str,
+        *,
+        images: tuple[bytes, ...] = (),
+        prompt: str = PROMPT_MENTION,
+    ) -> Decision | None:
         del images
+        self.prompt = prompt
         text = haystack.lower()
         if any(needle.lower() in text for needle in self.reject_substrings):
             return Decision(keep=False, score=self.score)

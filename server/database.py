@@ -67,11 +67,17 @@ class AuthorLocalStats(BaseModel):
 
 
 class AuthorDecision(BaseModel):
-    """Decider keep/reject rows that earn or revoke a soft author prior."""
+    """Decider keep/reject rows that earn or revoke author privileges.
+
+    ``lane`` is ``mention`` for place, event, and allowlist candidates, and
+    ``resident`` for the no-placename resident pass. Older rows predate the
+    column and are treated as mention.
+    """
 
     author_did = peewee.CharField(index=True)
     kept = peewee.BooleanField()
     decided_at = peewee.DateTimeField(default=utc_now, index=True)
+    lane = peewee.CharField(default='mention', index=True)
 
 
 def _ensure_columns() -> None:
@@ -82,6 +88,12 @@ def _ensure_columns() -> None:
         db.execute_sql('ALTER TABLE "post" ADD COLUMN like_count INTEGER DEFAULT 0 NOT NULL')
     if 'repost_count' not in columns:
         db.execute_sql('ALTER TABLE "post" ADD COLUMN repost_count INTEGER DEFAULT 0 NOT NULL')
+    decision_rows = db.execute_sql('PRAGMA table_info("authordecision")').fetchall()
+    decision_columns = {row[1] for row in decision_rows}
+    if decision_rows and 'lane' not in decision_columns:
+        db.execute_sql(
+            'ALTER TABLE "authordecision" ADD COLUMN lane TEXT NOT NULL DEFAULT \'mention\''
+        )
 
 
 def create_tables() -> None:
