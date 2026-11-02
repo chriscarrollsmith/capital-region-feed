@@ -1,20 +1,20 @@
-"""Start the pre-commit hook with Git Bash.
+"""Start the pre-commit hook with a usable Bash.
 
-On Windows, an unqualified ``bash`` is the WSL relay, which cannot run the
-hook script. This launcher picks Git Bash and forwards the hook payload.
+On Windows, an unqualified ``bash`` is often the WSL relay, which cannot run
+the hook script. Prefer Git Bash there. On Unix, run the shell gate with the
+system Bash so Cloud Agent / Linux commits still get the ruff/ty checks.
 """
 
 from __future__ import annotations
 
 import os
-import shutil
 import subprocess
 import sys
 
 _DENY = (
     '{"permission":"deny","user_message":'
-    '"pre-commit checks: Git Bash was not found.",'
-    '"agent_message":"pre-commit checks: Git Bash was not found."}\n'
+    '"pre-commit checks: Bash was not found.",'
+    '"agent_message":"pre-commit checks: Bash was not found."}\n'
 )
 
 
@@ -31,15 +31,12 @@ def _git_bash() -> str | None:
 
 
 def _bash() -> str | None:
-    """Prefer Git Bash. On non-Windows, PATH bash can run the hook."""
-    git_bash = _git_bash()
-    if git_bash is not None:
-        return git_bash
-    # An unqualified bash on Windows is often the WSL relay, which cannot
-    # run this hook. Only fall back where bash is the system shell.
     if os.name == 'nt':
-        return None
-    return shutil.which('bash')
+        return _git_bash()
+    for path in ('/bin/bash', '/usr/bin/bash'):
+        if os.path.isfile(path) and os.access(path, os.X_OK):
+            return path
+    return None
 
 
 def main() -> int:
