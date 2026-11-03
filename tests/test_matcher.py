@@ -5911,6 +5911,54 @@ def test_anger_at_albany_who_run_albany_precision() -> None:
     assert run_local.matched is True
 
 
+def test_albany_democrats_statehouse_metonym_precision() -> None:
+    """Statewide 'Albany democrats' blame copy drops; local party organs keep."""
+    statewide = match_post(
+        "Albany democrats didn't assess tariffs, or start a war with Iran. "
+        "Albany democrats can't vote in DC to stop Trump."
+    )
+    assert statewide.matched is False
+    assert statewide.reason == 'hard_negative:albany_statehouse_metonym'
+
+    rally = match_post('HOCHUL to join Albany Democrats at Saturday campaign rally.')
+    assert rally.matched is True
+    assert rally.reason == 'strong_positive'
+
+    rescued = match_post("Albany democrats can't ignore the Albany Common Council budget downtown.")
+    assert rescued.matched is True
+    assert rescued.reason == 'strong_positive'
+
+
+def test_troy_listening_room_and_north_broadway_saratoga_recall() -> None:
+    """Troy Listening Room and North Broadway + Saratoga Springs keep; bare Broadway stays gated."""
+    venue = match_post(
+        'Sophia Vastek and Sam Torres transformed a former South Troy church hall '
+        'into their home and Troy Listening Room, a unique venue for intimate live music.'
+    )
+    assert venue.matched is True
+    assert venue.reason == 'strong_positive'
+
+    bare_venue = match_post('Troy Listening Room hosts a show tonight.')
+    assert bare_venue.matched is True
+    assert bare_venue.reason == 'strong_positive'
+
+    north = match_post(
+        'The former Unitarian Universalist church property on North Broadway in '
+        'Saratoga Springs sold for $1.21 million. The buyer plans to demolish the '
+        'building and construct condos there.'
+    )
+    assert north.matched is True
+    assert north.reason == 'strong_positive'
+
+    broadway = match_post('Beautiful afternoon walking Broadway in Saratoga Springs.')
+    assert broadway.matched is False
+    assert broadway.reason == 'ambiguous_no_context:saratoga springs'
+
+    utah = match_post("Crash investigation on North Broadway in Utah's Saratoga Springs.")
+    assert utah.matched is False
+    assert utah.reason == 'hard_negative:saratoga_springs_utah'
+
+
 def test_saratoga_polo_club_recall() -> None:
     """Saratoga Polo Club redevelopment copy keeps without requiring ', NY'."""
     polo = match_post(

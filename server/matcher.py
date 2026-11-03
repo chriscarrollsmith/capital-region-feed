@@ -409,6 +409,8 @@ _STRONG_POSITIVE = re.compile(
       # Distinctive Saratoga Springs venues (often omit ", NY").
       # Accented "Caffè" is common in venue branding.
       | caff[eèé]\s+lena\b
+      # South Troy house-concert venue — name is distinctive without ", NY".
+      | troy\s+listening\s+room\b
       | high\s+rock\s+park\s+pavilions?\b
       # The Egg (Empire State Plaza) — co-occur with Albany; bare "egg" is too noisy.
       | \bthe\s+egg\b[\s\S]{0,80}\balbany\b
@@ -681,6 +683,10 @@ _STRONG_POSITIVE = re.compile(
       # ``#?saratoga…`` would leave only ``downtown/side street in`` as the match.
       | (?:side\s+street|downtown)\s+in\s+\#?saratoga\s+springs\b
       | historic\s+saratoga\s+springs\b
+      # North Broadway is Spa City's main drag — Utah Saratoga Springs wires do not
+      # use this street name, and Utah tokens still hard-negative first.
+      | north\s+broadway[\s\S]{0,80}saratoga\s+springs\b
+      | saratoga\s+springs[\s\S]{0,80}north\s+broadway\b
       # Saratoga Polo Club (Greenfield / Wilton) redevelopment wires often omit ", NY".
       | saratoga\s+polo(?:\s+club)?\b
       | potato\s+chips?[\s\S]{0,80}saratoga\s+springs\b
@@ -5468,17 +5474,24 @@ def _albany_statehouse_metonym_conflict(haystack: str) -> bool:
     audience, statewide campaign shorthand ("out of Albany", "leadership to
     Albany"), "Albany bill" for legislation-as-capital (often Mid-Hudson /
     Rochester public-power wires), "Albany politician(s)" as the state
-    political class, and statewide campaign copy that bets "anger at Albany" or
-    blames Democrats "who run Albany" use the capital as metonym without Cap
-    Region place news. Local civic anchors still rescue. "Rest of Albany County"
-    is Cap Region and does not match.
+    political class, statewide campaign copy that bets "anger at Albany" or
+    blames Democrats "who run Albany", and "Albany democrats" used as the
+    statewide party (can't vote in DC / didn't assess tariffs) use the capital
+    as metonym without Cap Region place news. Local party organs ("join Albany
+    Democrats at … rally") and civic anchors still rescue. "Rest of Albany
+    County" is Cap Region and does not match.
     """
     if not re.search(
         r'\bdysfunctional\s+albany\b|\balbany\s+sent\b|'
         r'\brest\s+of\s+albany(?!\s+county)\b|'
         r'\bout\s+of\s+albany\b|\bleadership\s+to\s+albany\b|'
         r'\balbany\s+bill\b|\balbany\s+politicians?\b|'
-        r'\banger\s+at\s+albany\b|\bwho\s+runs?\s+albany\b',
+        r'\banger\s+at\s+albany\b|\bwho\s+runs?\s+albany\b|'
+        r'\balbany\s+democrats?\s+(?:did(?:n[\u2019\']t|\s+not)|'
+        r'can(?:[\u2019\']t|not)|could(?:n[\u2019\']t|\s+not))\b|'
+        r'\balbany\s+democrats?\b[\s\S]{0,100}\b(?:'
+        r'tariffs?|vote\s+in\s+d\.?c\.?|war\s+with\s+iran|blunt\s+a\s+trump'
+        r')\b',
         haystack,
         flags=re.IGNORECASE,
     ):
