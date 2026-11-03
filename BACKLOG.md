@@ -538,6 +538,27 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-141 — Daily feed audit: Albany democrats metonym FP; Troy Listening Room / North Broadway Saratoga FNs
+- **Status:** in progress
+- **Why:** 2026-11-03 audit of last-24h AppView feed (~80 posts) found an active
+  matcher FP among rematch-keeps: statewide ``Albany democrats didn't assess
+  tariffs`` / ``can't vote in DC`` blame copy kept via strong
+  ``albany democrats``. Stale index still served already-gated anger-at-Albany /
+  Times Union Mid-Hudson / downtown-in rows plus soft-prior / resident /
+  allowlist intentional keeps (Utica Phoenix, Mid-Hudson music, NWS Albany).
+  Planned ``fn_search.py`` slate (8) all ran OK; Cap Region FN via
+  ``Saratoga Springs`` (North Broadway condo) plus exploratory ``Troy Listening
+  Room`` / ``North Broadway``.
+- **Work:**
+  - Extend Albany statehouse metonym for ``Albany democrats`` + didn't/can't /
+    tariffs / DC framing (Hochul rally / Common Council rescue retained).
+  - Strong ``Troy Listening Room``; ``North Broadway`` + Saratoga Springs (bare
+    Broadway and Utah Saratoga Springs retained).
+  - Grow eval + fn_search log/strategies.
+- **Done when:** Albany-democrats metonym FP drops; Troy Listening Room and
+  North Broadway + Saratoga Springs FNs keep; eval P/R stay 1.000; unit tests
+  cover the new cues.
+
 ### B-140 — Daily feed audit: anger-at-Albany / who-run-Albany FPs; Saratoga Polo FN (fold #121)
 - **Status:** done ([#121](https://github.com/chriscarrollsmith/capital-region-feed/pull/121))
 - **Why:** 2026-11-02 audit of last-24h AppView feed (~53 posts) found active

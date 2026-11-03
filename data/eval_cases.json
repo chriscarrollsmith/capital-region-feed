@@ -13326,5 +13326,85 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-11-02 audit: Saratoga Polo site card without Club token"
+  },
+  {
+    "id": "fp-albany-democrats-tariffs-dc-1103",
+    "text": "Albany democrats didn't assess tariffs, or start a war with Iran. Albany democrats can't vote in DC to stop Trump.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-03 audit FP: Albany democrats as statewide party metonym (tariffs / DC)"
+  },
+  {
+    "id": "tp-albany-democrats-hochul-rally-1103",
+    "text": "HOCHUL to join Albany Democrats at Saturday campaign rally.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-03 audit TP counterpart: local Albany Democrats party organ with Hochul"
+  },
+  {
+    "id": "tp-albany-democrats-common-council-rescue-1103",
+    "text": "Albany democrats can't ignore the Albany Common Council budget downtown.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-03 audit TP: Albany democrats metonym phrasing rescued by Common Council"
+  },
+  {
+    "id": "fn-troy-listening-room-1103",
+    "text": "Sophia Vastek and Sam Torres transformed a former South Troy church hall into their home and Troy Listening Room, a unique venue for intimate live music.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-03 audit FN: Troy Listening Room venue without requiring NY context"
+  },
+  {
+    "id": "fn-troy-listening-room-bare-1103",
+    "text": "Troy Listening Room hosts intimate live music tonight.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-03 audit FN: bare Troy Listening Room venue token"
+  },
+  {
+    "id": "fn-north-broadway-saratoga-springs-1103",
+    "text": "The former Unitarian Universalist church property on North Broadway in Saratoga Springs sold for $1.21 million. The buyer plans to demolish the building and construct condos there.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-03 audit FN: North Broadway + Saratoga Springs real estate without , NY"
+  },
+  {
+    "id": "tn-broadway-saratoga-springs-no-north-1103",
+    "text": "Beautiful afternoon walking Broadway in Saratoga Springs.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-03 audit TN: bare Broadway in Saratoga Springs stays ambiguous (Utah risk)"
+  },
+  {
+    "id": "tn-north-broadway-utah-saratoga-springs-1103",
+    "text": "Crash investigation on North Broadway in Utah's Saratoga Springs.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-03 audit TN: Utah Saratoga Springs + North Broadway still hard-negative"
   }
 ]
