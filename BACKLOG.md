@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-141 — Daily feed audit: Albany democrats metonym FP; Troy Listening Room / North Broadway Saratoga FNs
-- **Status:** in progress
+- **Status:** done ([#123](https://github.com/chriscarrollsmith/capital-region-feed/pull/123))
 - **Why:** 2026-11-03 audit of last-24h AppView feed (~80 posts) found an active
   matcher FP among rematch-keeps: statewide ``Albany democrats didn't assess
   tariffs`` / ``can't vote in DC`` blame copy kept via strong
