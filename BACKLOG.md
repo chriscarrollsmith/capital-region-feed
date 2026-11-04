@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-142 — Daily feed audit: WNYT Albany national Source: FP; Albany art institute / NY21 Queensbury FNs
-- **Status:** in progress
+- **Status:** done ([#124](https://github.com/chriscarrollsmith/capital-region-feed/pull/124))
 - **Why:** 2026-11-04 audit of last-24h AppView feed (~57 posts) found an active
   matcher FP among rematch-keeps: NewsBreak ``Source: WNYT NewsChannel 13
   Albany, NY`` under national Senate/House control projection copy kept via
