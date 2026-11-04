@@ -6017,3 +6017,64 @@ def test_queensbury_supervisor_skidmore_handle_proctors_theatre_recall() -> None
 
     exam = match_post('Please email the proctors about the exam tomorrow.')
     assert exam.matched is False
+
+
+def test_local_tv_albany_national_source_not_local() -> None:
+    """Source: WNYT/WRGB Albany under Senate/House control copy must drop."""
+    wnyt = match_post(
+        'Democrats win control of Senate, House, NBC projects \n'
+        'Source: WNYT NewsChannel 13 Albany, NY'
+    )
+    assert wnyt.matched is False
+    assert wnyt.reason == 'hard_negative:local_tv_albany_national_source'
+
+    news10 = match_post(
+        'Republicans win control of the House, AP projects\nSource: News10 Albany, NY'
+    )
+    assert news10.matched is False
+    assert news10.reason == 'hard_negative:local_tv_albany_national_source'
+
+    # Cap Region body after the source line still keeps.
+    lark = match_post('Fire on Lark Street. Source: WNYT NewsChannel 13 Albany, NY')
+    assert lark.matched is True
+    assert lark.reason == 'strong_positive'
+
+    # Wire byline form is not a Source: aggregator card.
+    malta = match_post('MALTA, N.Y. (WNYT) – Deputies tracked a missing person.')
+    assert malta.matched is True
+
+
+def test_albany_art_institute_new_netherland_ny21_queensbury_recall() -> None:
+    """Albany art institute / New Netherland / bare NY21+Queensbury keep."""
+    art = match_post(
+        'I’m legit so excited for this! Also to spend time in NNRC and Albany '
+        'art institute. Anyone have bar and food recs for me (it’s been a few '
+        'years since I’ve hung out at the capital)?'
+    )
+    assert art.matched is True
+    assert art.reason == 'strong_positive'
+
+    formal = match_post('New show at the Albany Institute of History & Art.')
+    assert formal.matched is True
+
+    nni = match_post("Last call to register for the New Netherland Institute's Annual Conference")
+    assert nni.matched is True
+    assert nni.reason == 'strong_positive'
+
+    queensbury = match_post(
+        'All eyes on NY21 as Dems eye upset',
+        alt_text='Roundup of races around Queensbury and state',
+    )
+    assert queensbury.matched is True
+    assert queensbury.reason == 'ambiguous_with_context:queensbury'
+
+    bare = match_post('Had a great day in Queensbury')
+    assert bare.matched is False
+    assert bare.reason == 'ambiguous_no_context:queensbury'
+
+    utah = match_post(
+        'The suspect in a three-and-a-half hour standoff with police in '
+        'Saratoga Springs on Halloween night now faces several felony charges.'
+    )
+    assert utah.matched is False
+    assert utah.reason == 'ambiguous_no_context:saratoga springs'

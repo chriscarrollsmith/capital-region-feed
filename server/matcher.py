@@ -285,6 +285,12 @@ _STRONG_POSITIVE = re.compile(
       | universal\s+preservation\s+hall\b
       | houston\s+field\s+house\b
       | albany\s+institute(?:\s+of\s+history\s*(?:&|and)\s*art)?\b
+      # Colloquial reorder — "Albany art institute" for the same museum.
+      | albany\s+art\s+institute\b
+      # New Netherland Institute / Research Center (Albany State Library campus).
+      | new\s+netherland\s+(?:institute|research\s+center)\b
+      | \bnnrc\b[\s\S]{0,80}\balbany\b
+      | \balbany\b[\s\S]{0,80}\bnnrc\b
       # America250 Revolutionary tourism with Stillwater (as with Saratoga).
       | \bamerica\s*250\b[\s\S]{0,120}\bstillwater\b
       | \bstillwater\b[\s\S]{0,120}\bamerica\s*250\b
@@ -877,8 +883,12 @@ _NY_CONTEXT = re.compile(
       | capital\s+(?:region|district)\b
       | \#ny\b
       # Congressional district hashtags (#NY20 / #NY21) omit the hyphen that
-      # already unlocks via bare NY before a digit boundary.
+      # already unlocks via bare NY before a hyphenated digit (NY-21).
       | \#ny\d{1,2}\b
+      # Compact district forms (NY21 / ny20) omit both the hyphen and the '#'.
+      # Bare ``NY`` before a digit fails ``(?!\w)``; keep this next to the
+      # hashtag form so card titles like "All eyes on NY21" unlock Queensbury.
+      | (?<![\w#])ny\d{1,2}\b
       | \#upstateny\b
       | \#newyork\b
       | upstate\s+ny\b
@@ -4673,6 +4683,62 @@ def _times_union_mid_hudson_conflict(haystack: str) -> bool:
     return True
 
 
+# Aggregator ``Source: WNYT NewsChannel 13 Albany, NY`` (and WRGB / WTEN / …)
+# under national chamber-control copy. Cap Region body anchors still rescue.
+_LOCAL_TV_ALBANY_SOURCE = re.compile(
+    r"""
+    source:\s*
+    (?:
+        wnyt
+      | wrgb
+      | wten
+      | wxxa
+      | news\s*10
+      | newschannel\s*13
+      | cbs\s*6
+    )
+    [^.\n]{0,80}\balbany\b
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+_NATIONAL_CHAMBER_CONTROL = re.compile(
+    r"""
+    (?:
+        (?:win(?:s|ning)?|won|takes?|flips?|control(?:s|led)?)\s+
+        (?:control\s+of\s+)?(?:the\s+)?(?:senate|house)\b
+      | control\s+of\s+(?:the\s+)?(?:senate|house)\b
+      | \bnbc\s+projects?\b
+      | \bap\s+projects?\b
+      | associated\s+press\s+projects?\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+
+def _local_tv_albany_national_source_conflict(haystack: str) -> bool:
+    """True when Cap Region TV is only a Source: line under national politics.
+
+    NewsBreak-style cards append ``Source: WNYT NewsChannel 13 Albany, NY`` (or
+    WRGB / WTEN / News10 / CBS 6) under Senate/House control projection copy.
+    Local crash / Lark Street bodies still rescue after the source line is
+    scrubbed. Wire bylines like ``MALTA, N.Y. (WNYT)`` are not Source: forms.
+    """
+    if not _LOCAL_TV_ALBANY_SOURCE.search(haystack):
+        return False
+    if not _NATIONAL_CHAMBER_CONTROL.search(haystack):
+        return False
+    scrubbed = _LOCAL_TV_ALBANY_SOURCE.sub(' ', haystack)
+    if _TIMES_UNION_CAP_REGION_RESCUE.search(scrubbed):
+        return False
+    if _ALBANY_LOCAL_RESCUE.search(scrubbed) or _ALBANY_WIRE_LOCAL_RESCUE.search(scrubbed):
+        return False
+    if _STRONG_POSITIVE.search(scrubbed):
+        return False
+    return True
+
+
 # Maryland Route 787 (Takoma Park / Flower Avenue) — not Interstate 787 Albany.
 _ROUTE_787_MD = re.compile(
     r"""
@@ -6106,6 +6172,8 @@ def _propose_candidate(
             return MatchResult(False, 'hard_negative:times_union_photo_credit')
         if _times_union_mid_hudson_conflict(haystack):
             return MatchResult(False, 'hard_negative:times_union_mid_hudson')
+        if _local_tv_albany_national_source_conflict(haystack):
+            return MatchResult(False, 'hard_negative:local_tv_albany_national_source')
         if _route_787_md_conflict(haystack, author_handle):
             return MatchResult(False, 'hard_negative:route_787_md')
         if _clifton_park_uk_conflict(haystack, author_handle):
