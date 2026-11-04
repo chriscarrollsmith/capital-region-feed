@@ -538,6 +538,27 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-142 — Daily feed audit: WNYT Albany national Source: FP; Albany art institute / NY21 Queensbury FNs
+- **Status:** in progress
+- **Why:** 2026-11-04 audit of last-24h AppView feed (~57 posts) found an active
+  matcher FP among rematch-keeps: NewsBreak ``Source: WNYT NewsChannel 13
+  Albany, NY`` under national Senate/House control projection copy kept via
+  strong ``Albany, NY``. Folded unmerged #123 (Albany-democrats / Troy Listening
+  Room / North Broadway). Planned ``fn_search.py`` slate (8) all ran OK with no
+  Cap Region FNs; exploratory ``Albany Institute`` / ``Queensbury`` surfaced
+  colloquial Albany art institute + NNRC and compact ``NY21`` + Queensbury race
+  cards. Residual allowlisted News10 / Times Union non-local and NWS Albany /
+  Glens Falls climate remain intentional.
+- **Work:**
+  - Gate local-TV Albany ``Source:`` lines under national chamber-control copy
+    (Lark Street / Malta wire byline rescues retained).
+  - Strong ``Albany art institute`` / New Netherland Institute / NNRC↔Albany;
+    unlock ambiguous Queensbury via compact ``NY21`` (hashtag ``#NY21`` already
+    did; Utah Saratoga Springs / bare Queensbury retained).
+  - Grow eval + fn_search log/strategies.
+- **Done when:** WNYT national Source: FP drops; Albany art institute and
+  NY21+Queensbury FNs keep; eval P/R stay 1.000; unit tests cover the new cues.
+
 ### B-141 — Daily feed audit: Albany democrats metonym FP; Troy Listening Room / North Broadway Saratoga FNs
 - **Status:** done ([#123](https://github.com/chriscarrollsmith/capital-region-feed/pull/123))
 - **Why:** 2026-11-03 audit of last-24h AppView feed (~80 posts) found an active

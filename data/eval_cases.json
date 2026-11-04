@@ -13406,5 +13406,86 @@
     "split": "dev",
     "regression": true,
     "note": "2026-11-03 audit TN: Utah Saratoga Springs + North Broadway still hard-negative"
+  },
+  {
+    "id": "fp-wnyt-source-senate-house-control",
+    "text": "Democrats win control of Senate, House, NBC projects \nSource: WNYT NewsChannel 13 Albany, NY",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-04 audit: NewsBreak Source: WNYT NewsChannel 13 Albany, NY under national chamber-control projection"
+  },
+  {
+    "id": "fp-news10-source-house-control",
+    "text": "Republicans win control of the House, AP projects\nSource: News10 Albany, NY",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-04 audit: Source: News10 Albany counterpart for national chamber-control cards"
+  },
+  {
+    "id": "tp-wnyt-source-lark-street",
+    "text": "Fire on Lark Street. Source: WNYT NewsChannel 13 Albany, NY",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-04 audit: Cap Region body still keeps with WNYT Albany source line"
+  },
+  {
+    "id": "tp-wnyt-malta-wire-byline",
+    "text": "MALTA, N.Y. (WNYT) – Deputies tracked a missing person.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-04 audit: WNYT wire byline form is not Source: aggregator spam"
+  },
+  {
+    "id": "tp-albany-art-institute-nnrc",
+    "text": "I’m legit so excited for this! Also to spend time in NNRC and Albany art institute. Anyone have bar and food recs for me (it’s been a few years since I’ve hung out at the capital)?",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-04 audit: colloquial Albany art institute + NNRC visitor FN"
+  },
+  {
+    "id": "tp-new-netherland-institute",
+    "text": "Last call to register for the New Netherland Institute's Annual Conference",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-04 audit: New Netherland Institute (Albany) conference FN"
+  },
+  {
+    "id": "tp-queensbury-ny21-compact",
+    "text": "All eyes on NY21 as Dems eye upset",
+    "expected": true,
+    "signal": "text",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Roundup of races around Queensbury and state",
+    "note": "2026-11-04 audit: compact NY21 unlocks ambiguous Queensbury card"
+  },
+  {
+    "id": "tn-queensbury-bare",
+    "text": "Had a great day in Queensbury",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-04 audit: bare Queensbury without NY21/Glens Falls still drops"
   }
 ]
