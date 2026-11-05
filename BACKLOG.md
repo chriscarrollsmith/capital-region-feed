@@ -538,6 +538,31 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-143 — Daily feed audit: headed/history-in-Albany + WY sheriff FPs; Saratoga summit / NEWS10 / rensco / Tonko FNs
+- **Status:** in progress
+- **Why:** 2026-11-05 audit of last-24h AppView feed (~66 posts) found active
+  matcher FPs among rematch-keeps: statewide ``History continues/made in Albany``
+  / ``headed to Albany`` (Lt. Governor, lawmakers, Jews headed to Albany) /
+  ``return to Albany`` / ``legislature in Albany`` / ``From DC to Albany`` kept
+  via Hochul↔Albany strong or albany_with_ny_context; Cowboy State Daily
+  ``Albany County Sheriff`` Wyoming card kept as ``albany_county_ny``. Folded
+  unmerged #123/#124. Planned ``fn_search.py`` slate (8) all ran OK; Cap Region
+  FNs via Saratoga Springs Veterans Summit plus exploratory Sarah Rogerson
+  (Source: NEWS10), Chloe Pierce (rensco), Paul Tonko. Residual allowlisted
+  News10 / Times Union non-local, NWS Albany / Glens Falls, and bare
+  ``Source: Times Union`` statewide AG cards remain intentional.
+- **Work:**
+  - Extend Albany statehouse metonym for headed/return/history/legislature/DC
+    patterns (Lark Street / Albany Med / Cap Region rescues retained).
+  - Gate Cowboy State Daily Albany County WY; broaden local-TV Source: scrub so
+    national chamber-control cards still drop when Source: NEWS10 is strong.
+  - Strong summit-in-Saratoga Springs; Source: NEWS10/WNYT…; Rogerson / Tedisco /
+    Tonko / rensco (Utah Saratoga Springs / national Source: chamber retained).
+  - Grow eval + fn_search log/strategies.
+- **Done when:** statewide headed/history Albany and WY sheriff FPs drop; Saratoga
+  summit / NEWS10 Rogerson / rensco / Tonko FNs keep; eval P/R stay 1.000; unit
+  tests cover the new cues.
+
 ### B-142 — Daily feed audit: WNYT Albany national Source: FP; Albany art institute / NY21 Queensbury FNs
 - **Status:** done ([#124](https://github.com/chriscarrollsmith/capital-region-feed/pull/124))
 - **Why:** 2026-11-04 audit of last-24h AppView feed (~57 posts) found an active
