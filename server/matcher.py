@@ -110,6 +110,9 @@ _STRONG_POSITIVE = re.compile(
       # without ", NY". Utah / Disney conflicts still gate non-NY resorts.
       | show\s+(?:in|at)\s+saratoga\s+springs\b
       | saratoga\s+springs\s+show\b
+      # Civic / wellness summits and conferences often omit ", NY".
+      | (?:summit|conference|workshop|meetup|expo)\s+(?:in|at)\s+saratoga\s+springs\b
+      | saratoga\s+springs\s+(?:summit|conference|workshop|meetup|expo)\b
       # Distinctive Saratoga Springs venues / companies often omit ", NY".
       | saratoga\s+music\s+hall\b
       | home\s+made\s+theater\b
@@ -428,6 +431,14 @@ _STRONG_POSITIVE = re.compile(
       # "Seattle Times union", and "New York Times Union" guild phrasing.
       # "current times" + "Union Busting" alt cards must not glue into Times Union.
       | (?<!york\s)(?<!seattle\s)(?<![\w-])times\s+union(?!\s+busting)\b
+      # Aggregator Source: lines for Cap Region TV (national chamber-control
+      # Source: cards stay gated in _local_tv_albany_national_source_conflict).
+      | source:\s*(?:news\s*10|wnyt|wrgb|wten|wxxa|cbs\s*6|newschannel\s*13)\b
+      # Cap Region incumbents / nicknames often appear without a place name.
+      | \bsarah\s+rogerson\b
+      | \b(?:jim(?:my)?\s+)?tedisco\b
+      | \b(?:paul\s+)?tonko\b
+      | \brensco\b
       | albany\s+business\s+review\b
       # Albany Central Warehouse demolition / asbestos wires often omit ", NY".
       | albany['\u2019]?s\s+central\s+warehouse\b
@@ -3607,12 +3618,16 @@ _ALBANY_COUNTY_WY = re.compile(
       | albany\s*,\s*(?:wy|wyoming)\b
       # Laramie public library branding — Cap Region uses Albany Public Library.
       | albany\s+county\s+library\b
+      # Cowboy State Daily (and similar) often omit WY next to Albany County.
+      | cowboystate(?:daily)?
       # NWS bots tag state as [WY] / #WYwx; Laramie Valley is WY-only context.
       | albany\s+county[\s\S]{0,240}(?:
             \bwyoming\b|\#wy\b|\#wywx\b|\[wy\]|\blaramie\b|cheyenne|nws\s+cheyenne
+          | cowboystate(?:daily)?
         )
       | (?:
             \#wy\b|\#wywx\b|\bwyoming\b|\[wy\]|\blaramie\b|cheyenne|nws\s+cheyenne
+          | cowboystate(?:daily)?
         )[\s\S]{0,240}albany\s+county
     )
     """,
@@ -4683,8 +4698,10 @@ def _times_union_mid_hudson_conflict(haystack: str) -> bool:
     return True
 
 
-# Aggregator ``Source: WNYT NewsChannel 13 Albany, NY`` (and WRGB / WTEN / …)
+# Aggregator ``Source: WNYT`` / ``Source: NEWS10 ABC`` (optionally ``… Albany, NY``)
 # under national chamber-control copy. Cap Region body anchors still rescue.
+# Consume the rest of the source line so scrubbing does not leave a bare
+# ``Albany, NY`` strong-positive fragment behind.
 _LOCAL_TV_ALBANY_SOURCE = re.compile(
     r"""
     source:\s*
@@ -4697,7 +4714,7 @@ _LOCAL_TV_ALBANY_SOURCE = re.compile(
       | newschannel\s*13
       | cbs\s*6
     )
-    [^.\n]{0,80}\balbany\b
+    \b[^\n]*
     """,
     re.IGNORECASE | re.VERBOSE,
 )
@@ -5417,7 +5434,7 @@ _ALBANY_WIRE_LOCAL_RESCUE = re.compile(
       | \bschenectady\b
       | \btroy\s*,?\s*(?:ny|n\.y\.)\b
       | city\s+of\s+(?:albany|troy)\b
-      | albany\s+medical
+      | albany\s+med(?:ical)?\b
       | mvp\s+arena
       | \bproctors\b
       | empire\s+underground\b
@@ -5508,6 +5525,7 @@ _ALBANY_LOCAL_RESCUE = re.compile(
       | albany['\u2019]?s\s+common\s+council\b
       | albany\s+mayor\b
       | albany\s+county\b
+      | albany\s+med(?:ical)?\b
       | city\s+of\s+albany\b
       | \#albanyny\b
       | \#albany_ny\b
@@ -5541,11 +5559,14 @@ def _albany_statehouse_metonym_conflict(haystack: str) -> bool:
     Albany"), "Albany bill" for legislation-as-capital (often Mid-Hudson /
     Rochester public-power wires), "Albany politician(s)" as the state
     political class, statewide campaign copy that bets "anger at Albany" or
-    blames Democrats "who run Albany", and "Albany democrats" used as the
-    statewide party (can't vote in DC / didn't assess tariffs) use the capital
-    as metonym without Cap Region place news. Local party organs ("join Albany
-    Democrats at … rally") and civic anchors still rescue. "Rest of Albany
-    County" is Cap Region and does not match.
+    blames Democrats "who run Albany", "Albany democrats" used as the
+    statewide party (can't vote in DC / didn't assess tariffs), election-night
+    "history made/continues in Albany", "headed/return to Albany" for
+    lawmakers / Lt. Governor / governor, "legislature in Albany", and
+    "from DC to Albany" use the capital as metonym without Cap Region place
+    news. Local party organs ("join Albany Democrats at … rally") and civic
+    anchors still rescue. "Rest of Albany County" and bare travel
+    ("headed to Albany this weekend") are Cap Region and do not match.
     """
     if not re.search(
         r'\bdysfunctional\s+albany\b|\balbany\s+sent\b|'
@@ -5553,6 +5574,12 @@ def _albany_statehouse_metonym_conflict(haystack: str) -> bool:
         r'\bout\s+of\s+albany\b|\bleadership\s+to\s+albany\b|'
         r'\balbany\s+bill\b|\balbany\s+politicians?\b|'
         r'\banger\s+at\s+albany\b|\bwho\s+runs?\s+albany\b|'
+        r'\bhistory\s+(?:made|continues)\s+in\s+albany\b|'
+        r'\b(?:state\s+)?legislature\s+in\s+albany\b|'
+        r'\bfrom\s+d\.?c\.?\s+to\s+albany\b|'
+        # Capital-as-destination shorthand for the legislature / statewide slate.
+        # Cap Region civic rescues (Lark Street / Empire State Plaza / …) still keep.
+        r'\b(?:head(?:ed|ing)|returns?|returning|returned)\s+to\s+albany\b|'
         r'\balbany\s+democrats?\s+(?:did(?:n[\u2019\']t|\s+not)|'
         r'can(?:[\u2019\']t|not)|could(?:n[\u2019\']t|\s+not))\b|'
         r'\balbany\s+democrats?\b[\s\S]{0,100}\b(?:'

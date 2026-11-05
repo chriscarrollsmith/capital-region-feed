@@ -6078,3 +6078,110 @@ def test_albany_art_institute_new_netherland_ny21_queensbury_recall() -> None:
     )
     assert utah.matched is False
     assert utah.reason == 'ambiguous_no_context:saratoga springs'
+
+
+def test_headed_return_history_albany_statehouse_precision() -> None:
+    """Statewide headed/return/history-in-Albany metonym drops; local rescues keep."""
+    history = match_post(
+        'History continues in Albany. Gov. Kathy Hochul won reelection and, '
+        'alongside Lt. Gov. Adrienne Adams, will lead New York.'
+    )
+    assert history.matched is False
+    assert history.reason == 'hard_negative:albany_statehouse_metonym'
+
+    lt_gov = match_post(
+        'Gov. Kathy Hochul won re-election, Adrienne Adams is headed to Albany '
+        'as Lt. Governor, and endorsed candidates won competitive races.'
+    )
+    assert lt_gov.matched is False
+    assert lt_gov.reason == 'hard_negative:albany_statehouse_metonym'
+
+    lawmakers = match_post(
+        'Eight returning legislators make up the count of Sabbath-observant '
+        'lawmakers headed to Albany.'
+    )
+    assert lawmakers.matched is False
+    assert lawmakers.reason == 'hard_negative:albany_statehouse_metonym'
+
+    jews = match_post('Pro-Israel Orthodox Jews are among the Jews headed to Albany.')
+    assert jews.matched is False
+    assert jews.reason == 'hard_negative:albany_statehouse_metonym'
+
+    returned = match_post('The Democratic governor will return to Albany after blasting Trump.')
+    assert returned.matched is False
+    assert returned.reason == 'hard_negative:albany_statehouse_metonym'
+
+    legislature = match_post(
+        'Orthodox Jewish lawmakers will serve in the NY state legislature in Albany.'
+    )
+    assert legislature.matched is False
+    assert legislature.reason == 'hard_negative:albany_statehouse_metonym'
+
+    dc = match_post('From DC to Albany, we’re filling the halls of power with more socialists.')
+    assert dc.matched is False
+    assert dc.reason == 'hard_negative:albany_statehouse_metonym'
+
+    lark = match_post("I'm headed to Albany this weekend for pizza on Lark Street.")
+    assert lark.matched is True
+
+    med = match_post('Heading to Albany Med for an appointment today.')
+    assert med.matched is True
+
+    rally = match_post('HOCHUL to join Albany Democrats at Saturday campaign rally.')
+    assert rally.matched is True
+    assert rally.reason == 'strong_positive'
+
+
+def test_cowboystate_albany_county_wy_not_ny() -> None:
+    """Cowboy State Daily Albany County sheriff cards are Wyoming, not NY."""
+    wy = match_post(
+        'cowboystatedaily.com/2026/11/03/a... Albany County Sheriff Aaron '
+        'Appelhans Wins Reelection Against Outspoken Republican. Appelhans '
+        'has won reelection for the second time, defeating Daron Wyatt.'
+    )
+    assert wy.matched is False
+    assert wy.reason == 'entity_other:albany_county_wy'
+
+    ny = match_post('Albany County, NY sheriff deputies responded to a crash on Route 7.')
+    assert ny.matched is True
+
+
+def test_saratoga_summit_news10_source_rogerson_rensco_tonko_recall() -> None:
+    """Summit-in-Saratoga Springs, Source: NEWS10, Rogerson/Tedisco/Tonko/rensco keep."""
+    summit = match_post(
+        "Don't miss the 3rd Annual InUnity Alliance Veterans Summit in "
+        "Saratoga Springs on November 10! This year's theme explores veteran wellness."
+    )
+    assert summit.matched is True
+    assert summit.reason == 'strong_positive'
+
+    utah = match_post('Veterans Summit in Saratoga Springs, Utah this weekend')
+    assert utah.matched is False
+    assert utah.reason == 'hard_negative:saratoga_springs_utah'
+
+    news10 = match_post(
+        'Sarah Rogerson declares victory in New York’s 44th Senate District\nSource: NEWS10 ABC'
+    )
+    assert news10.matched is True
+    assert news10.reason == 'strong_positive'
+
+    # National chamber-control Source: NEWS10 must still drop.
+    national = match_post(
+        'Democrats win control of Senate, House, NBC projects\nSource: NEWS10 ABC'
+    )
+    assert national.matched is False
+    assert national.reason == 'hard_negative:local_tv_albany_national_source'
+
+    rensco = match_post(
+        'I spoke too soon, 100% reporting now and she won, hahahah, fuck you rensco maga!'
+    )
+    assert rensco.matched is True
+    assert rensco.reason == 'strong_positive'
+
+    tonko = match_post('We re-elected our house rep, Tonko, by 30 or so points.')
+    assert tonko.matched is True
+    assert tonko.reason == 'strong_positive'
+
+    tedisco = match_post('Jim Tedisco conceded the 44th Senate District race.')
+    assert tedisco.matched is True
+    assert tedisco.reason == 'strong_positive'
