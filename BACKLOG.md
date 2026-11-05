@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-143 — Daily feed audit: headed/history-in-Albany + WY sheriff FPs; Saratoga summit / NEWS10 / rensco / Tonko FNs
-- **Status:** in progress
+- **Status:** done ([#125](https://github.com/chriscarrollsmith/capital-region-feed/pull/125))
 - **Why:** 2026-11-05 audit of last-24h AppView feed (~66 posts) found active
   matcher FPs among rematch-keeps: statewide ``History continues/made in Albany``
   / ``headed to Albany`` (Lt. Governor, lawmakers, Jews headed to Albany) /
