@@ -704,6 +704,12 @@ _STRONG_POSITIVE = re.compile(
       # use this street name, and Utah tokens still hard-negative first.
       | north\s+broadway[\s\S]{0,80}saratoga\s+springs\b
       | saratoga\s+springs[\s\S]{0,80}north\s+broadway\b
+      # Caroline Street is Spa City nightlife — UK Caroline Street roadworks stay out
+      # without Saratoga Springs; Utah tokens still hard-negative first.
+      | caroline\s+street[\s\S]{0,100}saratoga\s+springs\b
+      | saratoga\s+springs[\s\S]{0,100}caroline\s+street\b
+      # Saratoga Lake (Saratoga County) real-estate / shoreline cards often omit ", NY".
+      | saratoga\s+lake\b
       # Saratoga Polo Club (Greenfield / Wilton) redevelopment wires often omit ", NY".
       | saratoga\s+polo(?:\s+club)?\b
       | potato\s+chips?[\s\S]{0,80}saratoga\s+springs\b
@@ -5562,7 +5568,8 @@ def _albany_statehouse_metonym_conflict(haystack: str) -> bool:
     blames Democrats "who run Albany", "Albany democrats" used as the
     statewide party (can't vote in DC / didn't assess tariffs), election-night
     "history made/continues in Albany", "headed/return to Albany" for
-    lawmakers / Lt. Governor / governor, "legislature in Albany", and
+    lawmakers / Lt. Governor / governor, "legislature in Albany",
+    "representation in Albany" for statewide DSA / chamber seat counts, and
     "from DC to Albany" use the capital as metonym without Cap Region place
     news. Local party organs ("join Albany Democrats at … rally") and civic
     anchors still rescue. "Rest of Albany County" and bare travel
@@ -5576,6 +5583,9 @@ def _albany_statehouse_metonym_conflict(haystack: str) -> bool:
         r'\banger\s+at\s+albany\b|\bwho\s+runs?\s+albany\b|'
         r'\bhistory\s+(?:made|continues)\s+in\s+albany\b|'
         r'\b(?:state\s+)?legislature\s+in\s+albany\b|'
+        # Statewide seat-count / chamber shorthand ("doubled its representation
+        # in Albany") — Cap Region civic rescues still keep.
+        r'\brepresentation\s+in\s+albany\b|'
         r'\bfrom\s+d\.?c\.?\s+to\s+albany\b|'
         # Capital-as-destination shorthand for the legislature / statewide slate.
         # Cap Region civic rescues (Lark Street / Empire State Plaza / …) still keep.

@@ -6185,3 +6185,48 @@ def test_saratoga_summit_news10_source_rogerson_rensco_tonko_recall() -> None:
     tedisco = match_post('Jim Tedisco conceded the 44th Senate District race.')
     assert tedisco.matched is True
     assert tedisco.reason == 'strong_positive'
+
+
+def test_representation_in_albany_statehouse_precision() -> None:
+    """Statewide 'representation in Albany' seat-count metonym drops; civic rescue keeps."""
+    statewide = match_post(
+        'A new crop of state legislators on the left flank of the party — the '
+        'Democratic Socialists of America doubled its representation in Albany — '
+        'is eager to hold the governor’s feet to the fire on signature issues '
+        'like taxing the rich, expanding childcare and raising the minimum wage.\n'
+        '‘We’re in Charge’: What the Blue Wave Means for New York City'
+    )
+    assert statewide.matched is False
+    assert statewide.reason == 'hard_negative:albany_statehouse_metonym'
+
+    rescued = match_post(
+        'DSA doubled its representation in Albany Common Council after the Capital Region election.'
+    )
+    assert rescued.matched is True
+    assert rescued.reason == 'strong_positive'
+
+
+def test_caroline_street_and_saratoga_lake_recall() -> None:
+    """Caroline Street + Saratoga Springs and Saratoga Lake keep; UK Caroline drops."""
+    caroline = match_post(
+        'Not me loling that Elise Stefanik’s replacement looks like the '
+        'amalgamation of every Saratoga Springs asshole who gets into a fight '
+        'on Caroline Street at 2am.'
+    )
+    assert caroline.matched is True
+    assert caroline.reason == 'strong_positive'
+
+    uk = match_post('Roadworks report for #Shipley: CLOSED: Caroline Street, Crosley Wood Road')
+    assert uk.matched is False
+    assert uk.reason == 'no_match'
+
+    lake = match_post(
+        'A Saratoga Lake home with 101 feet of shoreline and a pool just sold '
+        'for $2.38 million. It is the fourth $2M-plus lake home sale this year.'
+    )
+    assert lake.matched is True
+    assert lake.reason == 'strong_positive'
+
+    utah = match_post('Saratoga Lake picnic near Saratoga Springs, Utah this weekend')
+    assert utah.matched is False
+    assert utah.reason == 'hard_negative:saratoga_springs_utah'
