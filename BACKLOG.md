@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-144 — Daily feed audit: representation-in-Albany FP; Caroline Street / Saratoga Lake FNs
-- **Status:** in progress
+- **Status:** done ([#126](https://github.com/chriscarrollsmith/capital-region-feed/pull/126))
 - **Why:** 2026-11-06 audit of last-24h AppView feed (~62 posts) found an active
   matcher FP among rematch-keeps: NYC blue-wave card with statewide DSA
   ``representation in Albany`` seat-count metonym kept via albany_with_ny_context
