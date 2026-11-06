@@ -538,6 +538,26 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-144 — Daily feed audit: representation-in-Albany FP; Caroline Street / Saratoga Lake FNs
+- **Status:** in progress
+- **Why:** 2026-11-06 audit of last-24h AppView feed (~62 posts) found an active
+  matcher FP among rematch-keeps: NYC blue-wave card with statewide DSA
+  ``representation in Albany`` seat-count metonym kept via albany_with_ny_context
+  from the New York City link card. Folded unmerged #123/#124/#125. Planned
+  ``fn_search.py`` slate (8) all ran OK; Cap Region FNs via Saratoga Springs
+  (Caroline Street nightlife) plus exploratory Caroline Street / Saratoga Lake
+  (shoreline home sale). Residual allowlisted News10 / Times Union non-local,
+  NWS Albany / Glens Falls, soft-prior recipe/bar posts, and Jerry Garcia Band
+  Albany 1991 concert-title keeps remain intentional.
+- **Work:**
+  - Extend Albany statehouse metonym for ``representation in Albany`` (Common
+    Council / Capital Region rescues retained).
+  - Strong Caroline Street↔Saratoga Springs and Saratoga Lake (UK Caroline Street
+    / Utah Saratoga Springs retained).
+  - Grow eval + fn_search log/strategies.
+- **Done when:** representation-in-Albany FP drops; Caroline Street / Saratoga
+  Lake FNs keep; eval P/R stay 1.000; unit tests cover the new cues.
+
 ### B-143 — Daily feed audit: headed/history-in-Albany + WY sheriff FPs; Saratoga summit / NEWS10 / rensco / Tonko FNs
 - **Status:** done ([#125](https://github.com/chriscarrollsmith/capital-region-feed/pull/125))
 - **Why:** 2026-11-05 audit of last-24h AppView feed (~66 posts) found active

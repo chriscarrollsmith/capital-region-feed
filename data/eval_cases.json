@@ -13657,5 +13657,65 @@
     "split": "dev",
     "regression": true,
     "note": "2026-11-05 audit: Tedisco Cap Region incumbent cue"
+  },
+  {
+    "id": "fp-representation-in-albany-dsa-nyc",
+    "text": "A new crop of state legislators on the left flank of the party — the Democratic Socialists of America doubled its representation in Albany — is eager to hold the governor’s feet to the fire on signature issues like taxing the rich, expanding childcare and raising the minimum wage.\n‘We’re in Charge’: What the Blue Wave Means for New York City",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-06 audit: statewide DSA representation-in-Albany seat-count metonym + NYC blue-wave card"
+  },
+  {
+    "id": "tp-representation-in-albany-common-council",
+    "text": "DSA doubled its representation in Albany Common Council after the Capital Region election.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-06 audit: Common Council / Capital Region rescue for representation-in-Albany"
+  },
+  {
+    "id": "tp-caroline-street-saratoga-springs",
+    "text": "Not me loling that Elise Stefanik’s replacement looks like the amalgamation of every Saratoga Springs asshole who gets into a fight on Caroline Street at 2am.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-06 audit: Caroline Street nightlife + Saratoga Springs"
+  },
+  {
+    "id": "tn-caroline-street-uk-shipley",
+    "text": "Roadworks report for #Shipley: CLOSED: Caroline Street, Crosley Wood Road",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-06 audit: UK Caroline Street roadworks without Spa City"
+  },
+  {
+    "id": "tp-saratoga-lake-home-sale",
+    "text": "A Saratoga Lake home with 101 feet of shoreline and a pool just sold for $2.38 million. It is the fourth $2M-plus lake home sale this year.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-06 audit: Saratoga Lake shoreline real-estate card"
+  },
+  {
+    "id": "tn-saratoga-lake-utah-picnic",
+    "text": "Saratoga Lake picnic near Saratoga Springs, Utah this weekend",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-06 audit: Utah Saratoga Springs gate retained with Saratoga Lake"
   }
 ]
