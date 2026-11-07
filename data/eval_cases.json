@@ -13326,5 +13326,396 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-11-02 audit: Saratoga Polo site card without Club token"
+  },
+  {
+    "id": "fp-albany-democrats-tariffs-dc-1103",
+    "text": "Albany democrats didn't assess tariffs, or start a war with Iran. Albany democrats can't vote in DC to stop Trump.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-03 audit FP: Albany democrats as statewide party metonym (tariffs / DC)"
+  },
+  {
+    "id": "tp-albany-democrats-hochul-rally-1103",
+    "text": "HOCHUL to join Albany Democrats at Saturday campaign rally.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-03 audit TP counterpart: local Albany Democrats party organ with Hochul"
+  },
+  {
+    "id": "tp-albany-democrats-common-council-rescue-1103",
+    "text": "Albany democrats can't ignore the Albany Common Council budget downtown.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-03 audit TP: Albany democrats metonym phrasing rescued by Common Council"
+  },
+  {
+    "id": "fn-troy-listening-room-1103",
+    "text": "Sophia Vastek and Sam Torres transformed a former South Troy church hall into their home and Troy Listening Room, a unique venue for intimate live music.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-03 audit FN: Troy Listening Room venue without requiring NY context"
+  },
+  {
+    "id": "fn-troy-listening-room-bare-1103",
+    "text": "Troy Listening Room hosts intimate live music tonight.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-03 audit FN: bare Troy Listening Room venue token"
+  },
+  {
+    "id": "fn-north-broadway-saratoga-springs-1103",
+    "text": "The former Unitarian Universalist church property on North Broadway in Saratoga Springs sold for $1.21 million. The buyer plans to demolish the building and construct condos there.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-03 audit FN: North Broadway + Saratoga Springs real estate without , NY"
+  },
+  {
+    "id": "tn-broadway-saratoga-springs-no-north-1103",
+    "text": "Beautiful afternoon walking Broadway in Saratoga Springs.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-03 audit TN: bare Broadway in Saratoga Springs stays ambiguous (Utah risk)"
+  },
+  {
+    "id": "tn-north-broadway-utah-saratoga-springs-1103",
+    "text": "Crash investigation on North Broadway in Utah's Saratoga Springs.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-03 audit TN: Utah Saratoga Springs + North Broadway still hard-negative"
+  },
+  {
+    "id": "fp-wnyt-source-senate-house-control",
+    "text": "Democrats win control of Senate, House, NBC projects \nSource: WNYT NewsChannel 13 Albany, NY",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-04 audit: NewsBreak Source: WNYT NewsChannel 13 Albany, NY under national chamber-control projection"
+  },
+  {
+    "id": "fp-news10-source-house-control",
+    "text": "Republicans win control of the House, AP projects\nSource: News10 Albany, NY",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-04 audit: Source: News10 Albany counterpart for national chamber-control cards"
+  },
+  {
+    "id": "tp-wnyt-source-lark-street",
+    "text": "Fire on Lark Street. Source: WNYT NewsChannel 13 Albany, NY",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-04 audit: Cap Region body still keeps with WNYT Albany source line"
+  },
+  {
+    "id": "tp-wnyt-malta-wire-byline",
+    "text": "MALTA, N.Y. (WNYT) – Deputies tracked a missing person.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-04 audit: WNYT wire byline form is not Source: aggregator spam"
+  },
+  {
+    "id": "tp-albany-art-institute-nnrc",
+    "text": "I’m legit so excited for this! Also to spend time in NNRC and Albany art institute. Anyone have bar and food recs for me (it’s been a few years since I’ve hung out at the capital)?",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-04 audit: colloquial Albany art institute + NNRC visitor FN"
+  },
+  {
+    "id": "tp-new-netherland-institute",
+    "text": "Last call to register for the New Netherland Institute's Annual Conference",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-04 audit: New Netherland Institute (Albany) conference FN"
+  },
+  {
+    "id": "tp-queensbury-ny21-compact",
+    "text": "All eyes on NY21 as Dems eye upset",
+    "expected": true,
+    "signal": "text",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Roundup of races around Queensbury and state",
+    "note": "2026-11-04 audit: compact NY21 unlocks ambiguous Queensbury card"
+  },
+  {
+    "id": "tn-queensbury-bare",
+    "text": "Had a great day in Queensbury",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-04 audit: bare Queensbury without NY21/Glens Falls still drops"
+  },
+  {
+    "id": "fp-history-continues-in-albany-hochul",
+    "text": "History continues in Albany. Gov. Kathy Hochul won reelection and, alongside Lt. Gov. Adrienne Adams, will lead New York as part of the state's first all-female executive team.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-05 audit: statewide History continues in Albany Hochul metonym"
+  },
+  {
+    "id": "fp-headed-to-albany-lt-governor",
+    "text": "Gov. Kathy Hochul won re-election, Adrienne Adams is headed to Albany as Lt. Governor, and endorsed candidates won competitive races.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-05 audit: headed to Albany as Lt. Governor statewide"
+  },
+  {
+    "id": "fp-jews-headed-to-albany",
+    "text": "Pro-Israel Orthodox Jews and an anti-Zionist democratic socialist are among the Jews headed to Albany.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-05 audit: Jews headed to Albany legislature metonym"
+  },
+  {
+    "id": "fp-lawmakers-headed-to-albany",
+    "text": "Eight returning legislators and three newcomers make up the count of Sabbath-observant lawmakers headed to Albany.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-05 audit: lawmakers headed to Albany"
+  },
+  {
+    "id": "fp-governor-return-to-albany",
+    "text": "The Democratic governor will return to Albany after blasting Trump and embracing her party's left flank.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-05 audit: governor return to Albany metonym"
+  },
+  {
+    "id": "fp-legislature-in-albany-statewide",
+    "text": "Orthodox Jewish lawmakers will serve in the NY state legislature in Albany.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-05 audit: legislature in Albany statewide"
+  },
+  {
+    "id": "fp-from-dc-to-albany",
+    "text": "From DC to Albany, we're filling the halls of power with more socialists than ever!",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-05 audit: From DC to Albany statehouse metonym"
+  },
+  {
+    "id": "fp-cowboystate-albany-county-sheriff",
+    "text": "cowboystatedaily.com Albany County Sheriff Aaron Appelhans Wins Reelection Against Outspoken Republican. Appelhans has won reelection for the second time.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-05 audit: Cowboy State Daily Wyoming Albany County sheriff"
+  },
+  {
+    "id": "tp-headed-to-albany-lark-street",
+    "text": "I'm headed to Albany this weekend for pizza on Lark Street.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-05 audit: headed to Albany with Lark Street rescue"
+  },
+  {
+    "id": "tp-heading-to-albany-med",
+    "text": "Heading to Albany Med for an appointment today.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-05 audit: heading to Albany Med rescue"
+  },
+  {
+    "id": "tp-veterans-summit-saratoga-springs",
+    "text": "Don't miss the 3rd Annual InUnity Alliance Veterans Summit in Saratoga Springs on November 10! This year's theme explores veteran wellness.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-05 audit: Veterans Summit in Saratoga Springs FN"
+  },
+  {
+    "id": "tn-utah-summit-saratoga-springs",
+    "text": "Veterans Summit in Saratoga Springs, Utah this weekend",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-05 audit: Utah Saratoga Springs summit retained drop"
+  },
+  {
+    "id": "tp-source-news10-sarah-rogerson",
+    "text": "Sarah Rogerson declares victory in New York's 44th Senate District\nSource: NEWS10 ABC",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-05 audit: Source: NEWS10 Cap Region race FN"
+  },
+  {
+    "id": "fp-source-news10-national-chamber",
+    "text": "Democrats win control of Senate, House, NBC projects\nSource: NEWS10 ABC",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-05 audit: Source: NEWS10 under national chamber-control still drops"
+  },
+  {
+    "id": "tp-rensco-maga",
+    "text": "I spoke too soon, 100% reporting now and she won, hahahah, fuck you rensco maga!",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-05 audit: rensco Rensselaer County nickname FN"
+  },
+  {
+    "id": "tp-tonko-reelected",
+    "text": "We re-elected our house rep, Tonko, by 30 or so points.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-05 audit: Tonko without placename FN"
+  },
+  {
+    "id": "tp-jim-tedisco-conceded",
+    "text": "Jim Tedisco conceded the 44th Senate District race.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-05 audit: Tedisco Cap Region incumbent cue"
+  },
+  {
+    "id": "fp-representation-in-albany-dsa-nyc",
+    "text": "A new crop of state legislators on the left flank of the party — the Democratic Socialists of America doubled its representation in Albany — is eager to hold the governor’s feet to the fire on signature issues like taxing the rich, expanding childcare and raising the minimum wage.\n‘We’re in Charge’: What the Blue Wave Means for New York City",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-06 audit: statewide DSA representation-in-Albany seat-count metonym + NYC blue-wave card"
+  },
+  {
+    "id": "tp-representation-in-albany-common-council",
+    "text": "DSA doubled its representation in Albany Common Council after the Capital Region election.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-06 audit: Common Council / Capital Region rescue for representation-in-Albany"
+  },
+  {
+    "id": "tp-caroline-street-saratoga-springs",
+    "text": "Not me loling that Elise Stefanik’s replacement looks like the amalgamation of every Saratoga Springs asshole who gets into a fight on Caroline Street at 2am.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-06 audit: Caroline Street nightlife + Saratoga Springs"
+  },
+  {
+    "id": "tn-caroline-street-uk-shipley",
+    "text": "Roadworks report for #Shipley: CLOSED: Caroline Street, Crosley Wood Road",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-06 audit: UK Caroline Street roadworks without Spa City"
+  },
+  {
+    "id": "tp-saratoga-lake-home-sale",
+    "text": "A Saratoga Lake home with 101 feet of shoreline and a pool just sold for $2.38 million. It is the fourth $2M-plus lake home sale this year.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-06 audit: Saratoga Lake shoreline real-estate card"
+  },
+  {
+    "id": "tn-saratoga-lake-utah-picnic",
+    "text": "Saratoga Lake picnic near Saratoga Springs, Utah this weekend",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-06 audit: Utah Saratoga Springs gate retained with Saratoga Lake"
   }
 ]

@@ -5911,6 +5911,54 @@ def test_anger_at_albany_who_run_albany_precision() -> None:
     assert run_local.matched is True
 
 
+def test_albany_democrats_statehouse_metonym_precision() -> None:
+    """Statewide 'Albany democrats' blame copy drops; local party organs keep."""
+    statewide = match_post(
+        "Albany democrats didn't assess tariffs, or start a war with Iran. "
+        "Albany democrats can't vote in DC to stop Trump."
+    )
+    assert statewide.matched is False
+    assert statewide.reason == 'hard_negative:albany_statehouse_metonym'
+
+    rally = match_post('HOCHUL to join Albany Democrats at Saturday campaign rally.')
+    assert rally.matched is True
+    assert rally.reason == 'strong_positive'
+
+    rescued = match_post("Albany democrats can't ignore the Albany Common Council budget downtown.")
+    assert rescued.matched is True
+    assert rescued.reason == 'strong_positive'
+
+
+def test_troy_listening_room_and_north_broadway_saratoga_recall() -> None:
+    """Troy Listening Room and North Broadway + Saratoga Springs keep; bare Broadway stays gated."""
+    venue = match_post(
+        'Sophia Vastek and Sam Torres transformed a former South Troy church hall '
+        'into their home and Troy Listening Room, a unique venue for intimate live music.'
+    )
+    assert venue.matched is True
+    assert venue.reason == 'strong_positive'
+
+    bare_venue = match_post('Troy Listening Room hosts a show tonight.')
+    assert bare_venue.matched is True
+    assert bare_venue.reason == 'strong_positive'
+
+    north = match_post(
+        'The former Unitarian Universalist church property on North Broadway in '
+        'Saratoga Springs sold for $1.21 million. The buyer plans to demolish the '
+        'building and construct condos there.'
+    )
+    assert north.matched is True
+    assert north.reason == 'strong_positive'
+
+    broadway = match_post('Beautiful afternoon walking Broadway in Saratoga Springs.')
+    assert broadway.matched is False
+    assert broadway.reason == 'ambiguous_no_context:saratoga springs'
+
+    utah = match_post("Crash investigation on North Broadway in Utah's Saratoga Springs.")
+    assert utah.matched is False
+    assert utah.reason == 'hard_negative:saratoga_springs_utah'
+
+
 def test_saratoga_polo_club_recall() -> None:
     """Saratoga Polo Club redevelopment copy keeps without requiring ', NY'."""
     polo = match_post(
@@ -5969,3 +6017,216 @@ def test_queensbury_supervisor_skidmore_handle_proctors_theatre_recall() -> None
 
     exam = match_post('Please email the proctors about the exam tomorrow.')
     assert exam.matched is False
+
+
+def test_local_tv_albany_national_source_not_local() -> None:
+    """Source: WNYT/WRGB Albany under Senate/House control copy must drop."""
+    wnyt = match_post(
+        'Democrats win control of Senate, House, NBC projects \n'
+        'Source: WNYT NewsChannel 13 Albany, NY'
+    )
+    assert wnyt.matched is False
+    assert wnyt.reason == 'hard_negative:local_tv_albany_national_source'
+
+    news10 = match_post(
+        'Republicans win control of the House, AP projects\nSource: News10 Albany, NY'
+    )
+    assert news10.matched is False
+    assert news10.reason == 'hard_negative:local_tv_albany_national_source'
+
+    # Cap Region body after the source line still keeps.
+    lark = match_post('Fire on Lark Street. Source: WNYT NewsChannel 13 Albany, NY')
+    assert lark.matched is True
+    assert lark.reason == 'strong_positive'
+
+    # Wire byline form is not a Source: aggregator card.
+    malta = match_post('MALTA, N.Y. (WNYT) – Deputies tracked a missing person.')
+    assert malta.matched is True
+
+
+def test_albany_art_institute_new_netherland_ny21_queensbury_recall() -> None:
+    """Albany art institute / New Netherland / bare NY21+Queensbury keep."""
+    art = match_post(
+        'I’m legit so excited for this! Also to spend time in NNRC and Albany '
+        'art institute. Anyone have bar and food recs for me (it’s been a few '
+        'years since I’ve hung out at the capital)?'
+    )
+    assert art.matched is True
+    assert art.reason == 'strong_positive'
+
+    formal = match_post('New show at the Albany Institute of History & Art.')
+    assert formal.matched is True
+
+    nni = match_post("Last call to register for the New Netherland Institute's Annual Conference")
+    assert nni.matched is True
+    assert nni.reason == 'strong_positive'
+
+    queensbury = match_post(
+        'All eyes on NY21 as Dems eye upset',
+        alt_text='Roundup of races around Queensbury and state',
+    )
+    assert queensbury.matched is True
+    assert queensbury.reason == 'ambiguous_with_context:queensbury'
+
+    bare = match_post('Had a great day in Queensbury')
+    assert bare.matched is False
+    assert bare.reason == 'ambiguous_no_context:queensbury'
+
+    utah = match_post(
+        'The suspect in a three-and-a-half hour standoff with police in '
+        'Saratoga Springs on Halloween night now faces several felony charges.'
+    )
+    assert utah.matched is False
+    assert utah.reason == 'ambiguous_no_context:saratoga springs'
+
+
+def test_headed_return_history_albany_statehouse_precision() -> None:
+    """Statewide headed/return/history-in-Albany metonym drops; local rescues keep."""
+    history = match_post(
+        'History continues in Albany. Gov. Kathy Hochul won reelection and, '
+        'alongside Lt. Gov. Adrienne Adams, will lead New York.'
+    )
+    assert history.matched is False
+    assert history.reason == 'hard_negative:albany_statehouse_metonym'
+
+    lt_gov = match_post(
+        'Gov. Kathy Hochul won re-election, Adrienne Adams is headed to Albany '
+        'as Lt. Governor, and endorsed candidates won competitive races.'
+    )
+    assert lt_gov.matched is False
+    assert lt_gov.reason == 'hard_negative:albany_statehouse_metonym'
+
+    lawmakers = match_post(
+        'Eight returning legislators make up the count of Sabbath-observant '
+        'lawmakers headed to Albany.'
+    )
+    assert lawmakers.matched is False
+    assert lawmakers.reason == 'hard_negative:albany_statehouse_metonym'
+
+    jews = match_post('Pro-Israel Orthodox Jews are among the Jews headed to Albany.')
+    assert jews.matched is False
+    assert jews.reason == 'hard_negative:albany_statehouse_metonym'
+
+    returned = match_post('The Democratic governor will return to Albany after blasting Trump.')
+    assert returned.matched is False
+    assert returned.reason == 'hard_negative:albany_statehouse_metonym'
+
+    legislature = match_post(
+        'Orthodox Jewish lawmakers will serve in the NY state legislature in Albany.'
+    )
+    assert legislature.matched is False
+    assert legislature.reason == 'hard_negative:albany_statehouse_metonym'
+
+    dc = match_post('From DC to Albany, we’re filling the halls of power with more socialists.')
+    assert dc.matched is False
+    assert dc.reason == 'hard_negative:albany_statehouse_metonym'
+
+    lark = match_post("I'm headed to Albany this weekend for pizza on Lark Street.")
+    assert lark.matched is True
+
+    med = match_post('Heading to Albany Med for an appointment today.')
+    assert med.matched is True
+
+    rally = match_post('HOCHUL to join Albany Democrats at Saturday campaign rally.')
+    assert rally.matched is True
+    assert rally.reason == 'strong_positive'
+
+
+def test_cowboystate_albany_county_wy_not_ny() -> None:
+    """Cowboy State Daily Albany County sheriff cards are Wyoming, not NY."""
+    wy = match_post(
+        'cowboystatedaily.com/2026/11/03/a... Albany County Sheriff Aaron '
+        'Appelhans Wins Reelection Against Outspoken Republican. Appelhans '
+        'has won reelection for the second time, defeating Daron Wyatt.'
+    )
+    assert wy.matched is False
+    assert wy.reason == 'entity_other:albany_county_wy'
+
+    ny = match_post('Albany County, NY sheriff deputies responded to a crash on Route 7.')
+    assert ny.matched is True
+
+
+def test_saratoga_summit_news10_source_rogerson_rensco_tonko_recall() -> None:
+    """Summit-in-Saratoga Springs, Source: NEWS10, Rogerson/Tedisco/Tonko/rensco keep."""
+    summit = match_post(
+        "Don't miss the 3rd Annual InUnity Alliance Veterans Summit in "
+        "Saratoga Springs on November 10! This year's theme explores veteran wellness."
+    )
+    assert summit.matched is True
+    assert summit.reason == 'strong_positive'
+
+    utah = match_post('Veterans Summit in Saratoga Springs, Utah this weekend')
+    assert utah.matched is False
+    assert utah.reason == 'hard_negative:saratoga_springs_utah'
+
+    news10 = match_post(
+        'Sarah Rogerson declares victory in New York’s 44th Senate District\nSource: NEWS10 ABC'
+    )
+    assert news10.matched is True
+    assert news10.reason == 'strong_positive'
+
+    # National chamber-control Source: NEWS10 must still drop.
+    national = match_post(
+        'Democrats win control of Senate, House, NBC projects\nSource: NEWS10 ABC'
+    )
+    assert national.matched is False
+    assert national.reason == 'hard_negative:local_tv_albany_national_source'
+
+    rensco = match_post(
+        'I spoke too soon, 100% reporting now and she won, hahahah, fuck you rensco maga!'
+    )
+    assert rensco.matched is True
+    assert rensco.reason == 'strong_positive'
+
+    tonko = match_post('We re-elected our house rep, Tonko, by 30 or so points.')
+    assert tonko.matched is True
+    assert tonko.reason == 'strong_positive'
+
+    tedisco = match_post('Jim Tedisco conceded the 44th Senate District race.')
+    assert tedisco.matched is True
+    assert tedisco.reason == 'strong_positive'
+
+
+def test_representation_in_albany_statehouse_precision() -> None:
+    """Statewide 'representation in Albany' seat-count metonym drops; civic rescue keeps."""
+    statewide = match_post(
+        'A new crop of state legislators on the left flank of the party — the '
+        'Democratic Socialists of America doubled its representation in Albany — '
+        'is eager to hold the governor’s feet to the fire on signature issues '
+        'like taxing the rich, expanding childcare and raising the minimum wage.\n'
+        '‘We’re in Charge’: What the Blue Wave Means for New York City'
+    )
+    assert statewide.matched is False
+    assert statewide.reason == 'hard_negative:albany_statehouse_metonym'
+
+    rescued = match_post(
+        'DSA doubled its representation in Albany Common Council after the Capital Region election.'
+    )
+    assert rescued.matched is True
+    assert rescued.reason == 'strong_positive'
+
+
+def test_caroline_street_and_saratoga_lake_recall() -> None:
+    """Caroline Street + Saratoga Springs and Saratoga Lake keep; UK Caroline drops."""
+    caroline = match_post(
+        'Not me loling that Elise Stefanik’s replacement looks like the '
+        'amalgamation of every Saratoga Springs asshole who gets into a fight '
+        'on Caroline Street at 2am.'
+    )
+    assert caroline.matched is True
+    assert caroline.reason == 'strong_positive'
+
+    uk = match_post('Roadworks report for #Shipley: CLOSED: Caroline Street, Crosley Wood Road')
+    assert uk.matched is False
+    assert uk.reason == 'no_match'
+
+    lake = match_post(
+        'A Saratoga Lake home with 101 feet of shoreline and a pool just sold '
+        'for $2.38 million. It is the fourth $2M-plus lake home sale this year.'
+    )
+    assert lake.matched is True
+    assert lake.reason == 'strong_positive'
+
+    utah = match_post('Saratoga Lake picnic near Saratoga Springs, Utah this weekend')
+    assert utah.matched is False
+    assert utah.reason == 'hard_negative:saratoga_springs_utah'

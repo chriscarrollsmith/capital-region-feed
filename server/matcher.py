@@ -110,6 +110,9 @@ _STRONG_POSITIVE = re.compile(
       # without ", NY". Utah / Disney conflicts still gate non-NY resorts.
       | show\s+(?:in|at)\s+saratoga\s+springs\b
       | saratoga\s+springs\s+show\b
+      # Civic / wellness summits and conferences often omit ", NY".
+      | (?:summit|conference|workshop|meetup|expo)\s+(?:in|at)\s+saratoga\s+springs\b
+      | saratoga\s+springs\s+(?:summit|conference|workshop|meetup|expo)\b
       # Distinctive Saratoga Springs venues / companies often omit ", NY".
       | saratoga\s+music\s+hall\b
       | home\s+made\s+theater\b
@@ -285,6 +288,12 @@ _STRONG_POSITIVE = re.compile(
       | universal\s+preservation\s+hall\b
       | houston\s+field\s+house\b
       | albany\s+institute(?:\s+of\s+history\s*(?:&|and)\s*art)?\b
+      # Colloquial reorder — "Albany art institute" for the same museum.
+      | albany\s+art\s+institute\b
+      # New Netherland Institute / Research Center (Albany State Library campus).
+      | new\s+netherland\s+(?:institute|research\s+center)\b
+      | \bnnrc\b[\s\S]{0,80}\balbany\b
+      | \balbany\b[\s\S]{0,80}\bnnrc\b
       # America250 Revolutionary tourism with Stillwater (as with Saratoga).
       | \bamerica\s*250\b[\s\S]{0,120}\bstillwater\b
       | \bstillwater\b[\s\S]{0,120}\bamerica\s*250\b
@@ -409,6 +418,8 @@ _STRONG_POSITIVE = re.compile(
       # Distinctive Saratoga Springs venues (often omit ", NY").
       # Accented "Caffè" is common in venue branding.
       | caff[eèé]\s+lena\b
+      # South Troy house-concert venue — name is distinctive without ", NY".
+      | troy\s+listening\s+room\b
       | high\s+rock\s+park\s+pavilions?\b
       # The Egg (Empire State Plaza) — co-occur with Albany; bare "egg" is too noisy.
       | \bthe\s+egg\b[\s\S]{0,80}\balbany\b
@@ -420,6 +431,14 @@ _STRONG_POSITIVE = re.compile(
       # "Seattle Times union", and "New York Times Union" guild phrasing.
       # "current times" + "Union Busting" alt cards must not glue into Times Union.
       | (?<!york\s)(?<!seattle\s)(?<![\w-])times\s+union(?!\s+busting)\b
+      # Aggregator Source: lines for Cap Region TV (national chamber-control
+      # Source: cards stay gated in _local_tv_albany_national_source_conflict).
+      | source:\s*(?:news\s*10|wnyt|wrgb|wten|wxxa|cbs\s*6|newschannel\s*13)\b
+      # Cap Region incumbents / nicknames often appear without a place name.
+      | \bsarah\s+rogerson\b
+      | \b(?:jim(?:my)?\s+)?tedisco\b
+      | \b(?:paul\s+)?tonko\b
+      | \brensco\b
       | albany\s+business\s+review\b
       # Albany Central Warehouse demolition / asbestos wires often omit ", NY".
       | albany['\u2019]?s\s+central\s+warehouse\b
@@ -681,6 +700,16 @@ _STRONG_POSITIVE = re.compile(
       # ``#?saratoga…`` would leave only ``downtown/side street in`` as the match.
       | (?:side\s+street|downtown)\s+in\s+\#?saratoga\s+springs\b
       | historic\s+saratoga\s+springs\b
+      # North Broadway is Spa City's main drag — Utah Saratoga Springs wires do not
+      # use this street name, and Utah tokens still hard-negative first.
+      | north\s+broadway[\s\S]{0,80}saratoga\s+springs\b
+      | saratoga\s+springs[\s\S]{0,80}north\s+broadway\b
+      # Caroline Street is Spa City nightlife — UK Caroline Street roadworks stay out
+      # without Saratoga Springs; Utah tokens still hard-negative first.
+      | caroline\s+street[\s\S]{0,100}saratoga\s+springs\b
+      | saratoga\s+springs[\s\S]{0,100}caroline\s+street\b
+      # Saratoga Lake (Saratoga County) real-estate / shoreline cards often omit ", NY".
+      | saratoga\s+lake\b
       # Saratoga Polo Club (Greenfield / Wilton) redevelopment wires often omit ", NY".
       | saratoga\s+polo(?:\s+club)?\b
       | potato\s+chips?[\s\S]{0,80}saratoga\s+springs\b
@@ -871,8 +900,12 @@ _NY_CONTEXT = re.compile(
       | capital\s+(?:region|district)\b
       | \#ny\b
       # Congressional district hashtags (#NY20 / #NY21) omit the hyphen that
-      # already unlocks via bare NY before a digit boundary.
+      # already unlocks via bare NY before a hyphenated digit (NY-21).
       | \#ny\d{1,2}\b
+      # Compact district forms (NY21 / ny20) omit both the hyphen and the '#'.
+      # Bare ``NY`` before a digit fails ``(?!\w)``; keep this next to the
+      # hashtag form so card titles like "All eyes on NY21" unlock Queensbury.
+      | (?<![\w#])ny\d{1,2}\b
       | \#upstateny\b
       | \#newyork\b
       | upstate\s+ny\b
@@ -3591,12 +3624,16 @@ _ALBANY_COUNTY_WY = re.compile(
       | albany\s*,\s*(?:wy|wyoming)\b
       # Laramie public library branding — Cap Region uses Albany Public Library.
       | albany\s+county\s+library\b
+      # Cowboy State Daily (and similar) often omit WY next to Albany County.
+      | cowboystate(?:daily)?
       # NWS bots tag state as [WY] / #WYwx; Laramie Valley is WY-only context.
       | albany\s+county[\s\S]{0,240}(?:
             \bwyoming\b|\#wy\b|\#wywx\b|\[wy\]|\blaramie\b|cheyenne|nws\s+cheyenne
+          | cowboystate(?:daily)?
         )
       | (?:
             \#wy\b|\#wywx\b|\bwyoming\b|\[wy\]|\blaramie\b|cheyenne|nws\s+cheyenne
+          | cowboystate(?:daily)?
         )[\s\S]{0,240}albany\s+county
     )
     """,
@@ -4667,6 +4704,64 @@ def _times_union_mid_hudson_conflict(haystack: str) -> bool:
     return True
 
 
+# Aggregator ``Source: WNYT`` / ``Source: NEWS10 ABC`` (optionally ``… Albany, NY``)
+# under national chamber-control copy. Cap Region body anchors still rescue.
+# Consume the rest of the source line so scrubbing does not leave a bare
+# ``Albany, NY`` strong-positive fragment behind.
+_LOCAL_TV_ALBANY_SOURCE = re.compile(
+    r"""
+    source:\s*
+    (?:
+        wnyt
+      | wrgb
+      | wten
+      | wxxa
+      | news\s*10
+      | newschannel\s*13
+      | cbs\s*6
+    )
+    \b[^\n]*
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+_NATIONAL_CHAMBER_CONTROL = re.compile(
+    r"""
+    (?:
+        (?:win(?:s|ning)?|won|takes?|flips?|control(?:s|led)?)\s+
+        (?:control\s+of\s+)?(?:the\s+)?(?:senate|house)\b
+      | control\s+of\s+(?:the\s+)?(?:senate|house)\b
+      | \bnbc\s+projects?\b
+      | \bap\s+projects?\b
+      | associated\s+press\s+projects?\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+
+def _local_tv_albany_national_source_conflict(haystack: str) -> bool:
+    """True when Cap Region TV is only a Source: line under national politics.
+
+    NewsBreak-style cards append ``Source: WNYT NewsChannel 13 Albany, NY`` (or
+    WRGB / WTEN / News10 / CBS 6) under Senate/House control projection copy.
+    Local crash / Lark Street bodies still rescue after the source line is
+    scrubbed. Wire bylines like ``MALTA, N.Y. (WNYT)`` are not Source: forms.
+    """
+    if not _LOCAL_TV_ALBANY_SOURCE.search(haystack):
+        return False
+    if not _NATIONAL_CHAMBER_CONTROL.search(haystack):
+        return False
+    scrubbed = _LOCAL_TV_ALBANY_SOURCE.sub(' ', haystack)
+    if _TIMES_UNION_CAP_REGION_RESCUE.search(scrubbed):
+        return False
+    if _ALBANY_LOCAL_RESCUE.search(scrubbed) or _ALBANY_WIRE_LOCAL_RESCUE.search(scrubbed):
+        return False
+    if _STRONG_POSITIVE.search(scrubbed):
+        return False
+    return True
+
+
 # Maryland Route 787 (Takoma Park / Flower Avenue) — not Interstate 787 Albany.
 _ROUTE_787_MD = re.compile(
     r"""
@@ -5345,7 +5440,7 @@ _ALBANY_WIRE_LOCAL_RESCUE = re.compile(
       | \bschenectady\b
       | \btroy\s*,?\s*(?:ny|n\.y\.)\b
       | city\s+of\s+(?:albany|troy)\b
-      | albany\s+medical
+      | albany\s+med(?:ical)?\b
       | mvp\s+arena
       | \bproctors\b
       | empire\s+underground\b
@@ -5436,6 +5531,7 @@ _ALBANY_LOCAL_RESCUE = re.compile(
       | albany['\u2019]?s\s+common\s+council\b
       | albany\s+mayor\b
       | albany\s+county\b
+      | albany\s+med(?:ical)?\b
       | city\s+of\s+albany\b
       | \#albanyny\b
       | \#albany_ny\b
@@ -5468,17 +5564,37 @@ def _albany_statehouse_metonym_conflict(haystack: str) -> bool:
     audience, statewide campaign shorthand ("out of Albany", "leadership to
     Albany"), "Albany bill" for legislation-as-capital (often Mid-Hudson /
     Rochester public-power wires), "Albany politician(s)" as the state
-    political class, and statewide campaign copy that bets "anger at Albany" or
-    blames Democrats "who run Albany" use the capital as metonym without Cap
-    Region place news. Local civic anchors still rescue. "Rest of Albany County"
-    is Cap Region and does not match.
+    political class, statewide campaign copy that bets "anger at Albany" or
+    blames Democrats "who run Albany", "Albany democrats" used as the
+    statewide party (can't vote in DC / didn't assess tariffs), election-night
+    "history made/continues in Albany", "headed/return to Albany" for
+    lawmakers / Lt. Governor / governor, "legislature in Albany",
+    "representation in Albany" for statewide DSA / chamber seat counts, and
+    "from DC to Albany" use the capital as metonym without Cap Region place
+    news. Local party organs ("join Albany Democrats at … rally") and civic
+    anchors still rescue. "Rest of Albany County" and bare travel
+    ("headed to Albany this weekend") are Cap Region and do not match.
     """
     if not re.search(
         r'\bdysfunctional\s+albany\b|\balbany\s+sent\b|'
         r'\brest\s+of\s+albany(?!\s+county)\b|'
         r'\bout\s+of\s+albany\b|\bleadership\s+to\s+albany\b|'
         r'\balbany\s+bill\b|\balbany\s+politicians?\b|'
-        r'\banger\s+at\s+albany\b|\bwho\s+runs?\s+albany\b',
+        r'\banger\s+at\s+albany\b|\bwho\s+runs?\s+albany\b|'
+        r'\bhistory\s+(?:made|continues)\s+in\s+albany\b|'
+        r'\b(?:state\s+)?legislature\s+in\s+albany\b|'
+        # Statewide seat-count / chamber shorthand ("doubled its representation
+        # in Albany") — Cap Region civic rescues still keep.
+        r'\brepresentation\s+in\s+albany\b|'
+        r'\bfrom\s+d\.?c\.?\s+to\s+albany\b|'
+        # Capital-as-destination shorthand for the legislature / statewide slate.
+        # Cap Region civic rescues (Lark Street / Empire State Plaza / …) still keep.
+        r'\b(?:head(?:ed|ing)|returns?|returning|returned)\s+to\s+albany\b|'
+        r'\balbany\s+democrats?\s+(?:did(?:n[\u2019\']t|\s+not)|'
+        r'can(?:[\u2019\']t|not)|could(?:n[\u2019\']t|\s+not))\b|'
+        r'\balbany\s+democrats?\b[\s\S]{0,100}\b(?:'
+        r'tariffs?|vote\s+in\s+d\.?c\.?|war\s+with\s+iran|blunt\s+a\s+trump'
+        r')\b',
         haystack,
         flags=re.IGNORECASE,
     ):
@@ -6093,6 +6209,8 @@ def _propose_candidate(
             return MatchResult(False, 'hard_negative:times_union_photo_credit')
         if _times_union_mid_hudson_conflict(haystack):
             return MatchResult(False, 'hard_negative:times_union_mid_hudson')
+        if _local_tv_albany_national_source_conflict(haystack):
+            return MatchResult(False, 'hard_negative:local_tv_albany_national_source')
         if _route_787_md_conflict(haystack, author_handle):
             return MatchResult(False, 'hard_negative:route_787_md')
         if _clifton_park_uk_conflict(haystack, author_handle):

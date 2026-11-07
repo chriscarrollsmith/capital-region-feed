@@ -538,6 +538,93 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-144 — Daily feed audit: representation-in-Albany FP; Caroline Street / Saratoga Lake FNs
+- **Status:** done ([#126](https://github.com/chriscarrollsmith/capital-region-feed/pull/126))
+- **Why:** 2026-11-06 audit of last-24h AppView feed (~62 posts) found an active
+  matcher FP among rematch-keeps: NYC blue-wave card with statewide DSA
+  ``representation in Albany`` seat-count metonym kept via albany_with_ny_context
+  from the New York City link card. Folded unmerged #123/#124/#125. Planned
+  ``fn_search.py`` slate (8) all ran OK; Cap Region FNs via Saratoga Springs
+  (Caroline Street nightlife) plus exploratory Caroline Street / Saratoga Lake
+  (shoreline home sale). Residual allowlisted News10 / Times Union non-local,
+  NWS Albany / Glens Falls, soft-prior recipe/bar posts, and Jerry Garcia Band
+  Albany 1991 concert-title keeps remain intentional.
+- **Work:**
+  - Extend Albany statehouse metonym for ``representation in Albany`` (Common
+    Council / Capital Region rescues retained).
+  - Strong Caroline Street↔Saratoga Springs and Saratoga Lake (UK Caroline Street
+    / Utah Saratoga Springs retained).
+  - Grow eval + fn_search log/strategies.
+- **Done when:** representation-in-Albany FP drops; Caroline Street / Saratoga
+  Lake FNs keep; eval P/R stay 1.000; unit tests cover the new cues.
+
+### B-143 — Daily feed audit: headed/history-in-Albany + WY sheriff FPs; Saratoga summit / NEWS10 / rensco / Tonko FNs
+- **Status:** done ([#125](https://github.com/chriscarrollsmith/capital-region-feed/pull/125))
+- **Why:** 2026-11-05 audit of last-24h AppView feed (~66 posts) found active
+  matcher FPs among rematch-keeps: statewide ``History continues/made in Albany``
+  / ``headed to Albany`` (Lt. Governor, lawmakers, Jews headed to Albany) /
+  ``return to Albany`` / ``legislature in Albany`` / ``From DC to Albany`` kept
+  via Hochul↔Albany strong or albany_with_ny_context; Cowboy State Daily
+  ``Albany County Sheriff`` Wyoming card kept as ``albany_county_ny``. Folded
+  unmerged #123/#124. Planned ``fn_search.py`` slate (8) all ran OK; Cap Region
+  FNs via Saratoga Springs Veterans Summit plus exploratory Sarah Rogerson
+  (Source: NEWS10), Chloe Pierce (rensco), Paul Tonko. Residual allowlisted
+  News10 / Times Union non-local, NWS Albany / Glens Falls, and bare
+  ``Source: Times Union`` statewide AG cards remain intentional.
+- **Work:**
+  - Extend Albany statehouse metonym for headed/return/history/legislature/DC
+    patterns (Lark Street / Albany Med / Cap Region rescues retained).
+  - Gate Cowboy State Daily Albany County WY; broaden local-TV Source: scrub so
+    national chamber-control cards still drop when Source: NEWS10 is strong.
+  - Strong summit-in-Saratoga Springs; Source: NEWS10/WNYT…; Rogerson / Tedisco /
+    Tonko / rensco (Utah Saratoga Springs / national Source: chamber retained).
+  - Grow eval + fn_search log/strategies.
+- **Done when:** statewide headed/history Albany and WY sheriff FPs drop; Saratoga
+  summit / NEWS10 Rogerson / rensco / Tonko FNs keep; eval P/R stay 1.000; unit
+  tests cover the new cues.
+
+### B-142 — Daily feed audit: WNYT Albany national Source: FP; Albany art institute / NY21 Queensbury FNs
+- **Status:** done ([#124](https://github.com/chriscarrollsmith/capital-region-feed/pull/124))
+- **Why:** 2026-11-04 audit of last-24h AppView feed (~57 posts) found an active
+  matcher FP among rematch-keeps: NewsBreak ``Source: WNYT NewsChannel 13
+  Albany, NY`` under national Senate/House control projection copy kept via
+  strong ``Albany, NY``. Folded unmerged #123 (Albany-democrats / Troy Listening
+  Room / North Broadway). Planned ``fn_search.py`` slate (8) all ran OK with no
+  Cap Region FNs; exploratory ``Albany Institute`` / ``Queensbury`` surfaced
+  colloquial Albany art institute + NNRC and compact ``NY21`` + Queensbury race
+  cards. Residual allowlisted News10 / Times Union non-local and NWS Albany /
+  Glens Falls climate remain intentional.
+- **Work:**
+  - Gate local-TV Albany ``Source:`` lines under national chamber-control copy
+    (Lark Street / Malta wire byline rescues retained).
+  - Strong ``Albany art institute`` / New Netherland Institute / NNRC↔Albany;
+    unlock ambiguous Queensbury via compact ``NY21`` (hashtag ``#NY21`` already
+    did; Utah Saratoga Springs / bare Queensbury retained).
+  - Grow eval + fn_search log/strategies.
+- **Done when:** WNYT national Source: FP drops; Albany art institute and
+  NY21+Queensbury FNs keep; eval P/R stay 1.000; unit tests cover the new cues.
+
+### B-141 — Daily feed audit: Albany democrats metonym FP; Troy Listening Room / North Broadway Saratoga FNs
+- **Status:** done ([#123](https://github.com/chriscarrollsmith/capital-region-feed/pull/123))
+- **Why:** 2026-11-03 audit of last-24h AppView feed (~80 posts) found an active
+  matcher FP among rematch-keeps: statewide ``Albany democrats didn't assess
+  tariffs`` / ``can't vote in DC`` blame copy kept via strong
+  ``albany democrats``. Stale index still served already-gated anger-at-Albany /
+  Times Union Mid-Hudson / downtown-in rows plus soft-prior / resident /
+  allowlist intentional keeps (Utica Phoenix, Mid-Hudson music, NWS Albany).
+  Planned ``fn_search.py`` slate (8) all ran OK; Cap Region FN via
+  ``Saratoga Springs`` (North Broadway condo) plus exploratory ``Troy Listening
+  Room`` / ``North Broadway``.
+- **Work:**
+  - Extend Albany statehouse metonym for ``Albany democrats`` + didn't/can't /
+    tariffs / DC framing (Hochul rally / Common Council rescue retained).
+  - Strong ``Troy Listening Room``; ``North Broadway`` + Saratoga Springs (bare
+    Broadway and Utah Saratoga Springs retained).
+  - Grow eval + fn_search log/strategies.
+- **Done when:** Albany-democrats metonym FP drops; Troy Listening Room and
+  North Broadway + Saratoga Springs FNs keep; eval P/R stay 1.000; unit tests
+  cover the new cues.
+
 ### B-140 — Daily feed audit: anger-at-Albany / who-run-Albany FPs; Saratoga Polo FN (fold #121)
 - **Status:** done ([#121](https://github.com/chriscarrollsmith/capital-region-feed/pull/121))
 - **Why:** 2026-11-02 audit of last-24h AppView feed (~53 posts) found active
