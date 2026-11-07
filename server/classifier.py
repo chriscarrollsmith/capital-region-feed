@@ -75,6 +75,8 @@ _CAP_REGION_HINT = re.compile(
       | \bniskayuna\b
       | \bwatervliet\b
       | \bcohoes\b
+      | \blansingburgh\b
+      | \#lansingburghny\b
       | \blatham\b
       | \bdelmar\b
       | clifton\s+park
