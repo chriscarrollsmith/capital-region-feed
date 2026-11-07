@@ -538,6 +538,27 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-145 — Daily feed audit: hold-on-Albany / Albany-was-right FPs; Lansingburgh FN
+- **Status:** done ([#127](https://github.com/chriscarrollsmith/capital-region-feed/pull/127))
+- **Why:** 2026-11-07 audit of last-24h AppView feed (~65 posts) found active
+  matcher FPs among rematch-keeps: Mid-Hudson ``party's hold on Albany``
+  statewide chamber card and NYCLU ``Albany was right to`` 287(g) policy
+  metonym kept via albany_with_ny_context. Planned ``fn_search.py`` slate (8)
+  all ran OK with no Cap Region FNs (SPAC aerospace noise, Glenville OH/IE,
+  UK Queensbury, KALB German/DeKalb). Exploratory ``LansingburghNY`` surfaced
+  a Troy-neighborhood photo the floor dropped as ``no_match`` (soft-prior had
+  kept it live). Residual allowlisted News10 / Times Union non-local,
+  NWS Albany climate bots, soft-prior rescue/animal posts, and Pelham AG plea
+  via Albany County Court venue remain intentional / borderline-keep.
+- **Work:**
+  - Extend Albany statehouse metonym for ``hold on Albany`` and
+    ``Albany was right/wrong to`` (Common Council / Lark Street / Capital
+    Region rescues retained).
+  - Strong ``Lansingburgh`` / ``#LansingburghNY``.
+  - Grow eval + fn_search log/strategies.
+- **Done when:** hold-on-Albany / Albany-was-right FPs drop; Lansingburgh FN
+  keeps; eval P/R stay 1.000; unit tests cover the new cues.
+
 ### B-144 — Daily feed audit: representation-in-Albany FP; Caroline Street / Saratoga Lake FNs
 - **Status:** done ([#126](https://github.com/chriscarrollsmith/capital-region-feed/pull/126))
 - **Why:** 2026-11-06 audit of last-24h AppView feed (~62 posts) found an active

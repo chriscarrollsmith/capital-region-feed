@@ -68,6 +68,9 @@ _STRONG_POSITIVE = re.compile(
       | \bwatervliet\b
       | \bcohoes\b
       | \bmenands\b
+      # Troy neighborhood — #LansingburghNY photo cards often omit ", NY".
+      | \blansingburgh\b
+      | \#lansingburghny\b
       | loudonville
       | slingerlands
       | voorheesville
@@ -5569,11 +5572,13 @@ def _albany_statehouse_metonym_conflict(haystack: str) -> bool:
     statewide party (can't vote in DC / didn't assess tariffs), election-night
     "history made/continues in Albany", "headed/return to Albany" for
     lawmakers / Lt. Governor / governor, "legislature in Albany",
-    "representation in Albany" for statewide DSA / chamber seat counts, and
-    "from DC to Albany" use the capital as metonym without Cap Region place
-    news. Local party organs ("join Albany Democrats at … rally") and civic
-    anchors still rescue. "Rest of Albany County" and bare travel
-    ("headed to Albany this weekend") are Cap Region and do not match.
+    "representation in Albany" for statewide DSA / chamber seat counts,
+    "from DC to Albany", election-night "hold on Albany" / "party's hold on
+    Albany", and statewide policy verdicts ("Albany was right/wrong to …")
+    use the capital as metonym without Cap Region place news. Local party
+    organs ("join Albany Democrats at … rally") and civic anchors still
+    rescue. "Rest of Albany County" and bare travel ("headed to Albany this
+    weekend") are Cap Region and do not match.
     """
     if not re.search(
         r'\bdysfunctional\s+albany\b|\balbany\s+sent\b|'
@@ -5587,6 +5592,11 @@ def _albany_statehouse_metonym_conflict(haystack: str) -> bool:
         # in Albany") — Cap Region civic rescues still keep.
         r'\brepresentation\s+in\s+albany\b|'
         r'\bfrom\s+d\.?c\.?\s+to\s+albany\b|'
+        # Election-night chamber control ("party's hold on Albany").
+        r'\bhold\s+on\s+albany\b|'
+        # Statewide policy actor ("Albany was right to bar …"; tolerate typoed
+        # "right right to").
+        r'\balbany\s+was\s+(?:(?:right\s+)+|wrong\s+)to\b|'
         # Capital-as-destination shorthand for the legislature / statewide slate.
         # Cap Region civic rescues (Lark Street / Empire State Plaza / …) still keep.
         r'\b(?:head(?:ed|ing)|returns?|returning|returned)\s+to\s+albany\b|'
