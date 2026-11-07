@@ -272,3 +272,12 @@
 {"used_at": "2026-11-06T09:04:45Z", "query": "ScotlandShop", "family": "institution", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
 {"used_at": "2026-11-06T09:04:45Z", "query": "Caroline Street", "family": "neighborhood", "status": "ok", "hits": 6, "false_negatives": 1, "false_negative_ids": ["at://did:plc:72oh73nzm4e7xf3wbdsbpgfj/app.bsky.feed.post/3mzmbk4zhs22w"], "notes": "Saratoga Springs Caroline Street nightlife; UK Shipley/Wigan noise"}
 {"used_at": "2026-11-06T09:04:45Z", "query": "Saratoga Lake", "family": "neighborhood", "status": "ok", "hits": 2, "false_negatives": 1, "false_negative_ids": ["at://did:plc:777newmi4lyf3edemasdgcl2/app.bsky.feed.post/3mzlryqpki52g"], "notes": "Saratoga Lake home sale FN; multi-city NY list already kept"}
+{"used_at": "2026-11-07T09:05:28Z", "query": "SPAC", "family": "venue", "status": "ok", "hits": 44, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-11-07T09:05:28Z", "query": "Home Made Theater", "family": "venue", "status": "ok", "hits": 2, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-11-07T09:05:28Z", "query": "Glenville", "family": "bare_place", "status": "ok", "hits": 8, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-11-07T09:05:28Z", "query": "Albany Common Council", "family": "civic", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-11-07T09:05:28Z", "query": "Queensbury", "family": "bare_place", "status": "ok", "hits": 3, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-11-07T09:05:29Z", "query": "KALB", "family": "nickname", "status": "ok", "hits": 5, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-11-07T09:05:29Z", "query": "Gabler Realty", "family": "institution", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-11-07T09:05:29Z", "query": "ScotlandShop", "family": "institution", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-11-07T09:05:29Z", "query": "LansingburghNY", "family": "neighborhood", "status": "ok", "hits": 1, "false_negatives": 1, "false_negative_ids": ["at://did:plc:7mpjyz7fvucpzmkeoerg2vbd/app.bsky.feed.post/3mzogdaduas2a"], "notes": ""}

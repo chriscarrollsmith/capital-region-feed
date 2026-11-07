@@ -13717,5 +13717,65 @@
     "split": "dev",
     "regression": true,
     "note": "2026-11-06 audit: Utah Saratoga Springs gate retained with Saratoga Lake"
+  },
+  {
+    "id": "fp-hold-on-albany-1107",
+    "text": "The New York state legislature is about to be bluer than ever. Democrats flipped more than a dozen seats around the state, further cementing the party's hold on Albany.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-07 audit: Highlands Current statewide hold-on-Albany metonym via albany_with_ny_context"
+  },
+  {
+    "id": "tp-hold-on-albany-common-council-1107",
+    "text": "Albany Common Council debated the hold on Albany's parking plan at City Hall.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-07 counterpart: Common Council rescues hold-on-Albany"
+  },
+  {
+    "id": "fp-albany-was-right-to-1107",
+    "text": "Good. Albany was right right to bar state and local cops from entering into 287(g) agreements and acting as instruments of ICE. NY law enforcement agencies have no business propping up Trump's deportation machine. Sheriffs across the state must comply with the law.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-07 audit: NYCLU Albany-was-right-to statewide policy metonym"
+  },
+  {
+    "id": "tp-albany-was-right-lark-street-1107",
+    "text": "Albany was right to fund the Lark Street cleanup; Capital Region neighbors cheered.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-07 counterpart: Lark Street / Capital Region rescue Albany-was-right-to"
+  },
+  {
+    "id": "tp-lansingburghny-sunset-1107",
+    "text": "Another nice sunset from the foot of 123rd Street in #LansingburghNY. #Photography",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-07 audit FN: #LansingburghNY Troy neighborhood photo was soft-prior-only"
+  },
+  {
+    "id": "tp-lansingburgh-block-party-1107",
+    "text": "Lansingburgh block party on 123rd Street this Saturday.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-07 counterpart: bare Lansingburgh keep"
   }
 ]
