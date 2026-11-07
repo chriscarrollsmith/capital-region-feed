@@ -6230,3 +6230,46 @@ def test_caroline_street_and_saratoga_lake_recall() -> None:
     utah = match_post('Saratoga Lake picnic near Saratoga Springs, Utah this weekend')
     assert utah.matched is False
     assert utah.reason == 'hard_negative:saratoga_springs_utah'
+
+
+def test_hold_on_albany_and_albany_was_right_metonym_precision() -> None:
+    """Statewide hold-on-Albany / Albany-was-right-to metonyms drop; civic rescue keeps."""
+    hold = match_post(
+        'The New York state legislature is about to be bluer than ever. Democrats '
+        'flipped more than a dozen seats around the state, further cementing the '
+        "party's hold on Albany."
+    )
+    assert hold.matched is False
+    assert hold.reason == 'hard_negative:albany_statehouse_metonym'
+
+    was_right = match_post(
+        'Good. Albany was right right to bar state and local cops from entering '
+        'into 287(g) agreements. NY law enforcement agencies have no business '
+        "propping up Trump's deportation machine. Sheriffs across the state "
+        'must comply with the law.'
+    )
+    assert was_right.matched is False
+    assert was_right.reason == 'hard_negative:albany_statehouse_metonym'
+
+    hold_rescued = match_post(
+        "Albany Common Council debated the hold on Albany's parking plan at City Hall."
+    )
+    assert hold_rescued.matched is True
+    assert hold_rescued.reason == 'strong_positive'
+
+    right_rescued = match_post(
+        'Albany was right to fund the Lark Street cleanup; Capital Region neighbors cheered.'
+    )
+    assert right_rescued.matched is True
+    assert right_rescued.reason == 'strong_positive'
+
+
+def test_lansingburgh_neighborhood_recall() -> None:
+    """Lansingburgh / #LansingburghNY keep as Cap Region Troy neighborhood cues."""
+    hashtag = match_post('Another nice sunset from the foot of 123rd Street in #LansingburghNY.')
+    assert hashtag.matched is True
+    assert hashtag.reason == 'strong_positive'
+
+    bare = match_post('Lansingburgh block party on 123rd Street this Saturday.')
+    assert bare.matched is True
+    assert bare.reason == 'strong_positive'
