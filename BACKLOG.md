@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-145 — Daily feed audit: hold-on-Albany / Albany-was-right FPs; Lansingburgh FN
-- **Status:** in progress
+- **Status:** done ([#127](https://github.com/chriscarrollsmith/capital-region-feed/pull/127))
 - **Why:** 2026-11-07 audit of last-24h AppView feed (~65 posts) found active
   matcher FPs among rematch-keeps: Mid-Hudson ``party's hold on Albany``
   statewide chamber card and NYCLU ``Albany was right to`` 287(g) policy
