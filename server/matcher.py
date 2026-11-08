@@ -275,6 +275,16 @@ _STRONG_POSITIVE = re.compile(
       | bombers\s+burrito(?:\s+bar)?\b
       | \bwamc\b
       | siena\s+(?:college|saints)\b
+      # Cap Region Siena basketball wire often omits College/Saints ("Siena hosts").
+      # Do not bare-match Italian Siena tourism or Times/Siena national poll shorthand.
+      | \bsiena\s+hosts\b
+      | \bhosts\s+siena\b
+      | \bsiena\s+(?:vs\.?|versus)\b
+      | \bsiena\s+coming\s+off\b
+      # Loudonville Franciscan campus / alumni recall without "Siena College".
+      | franciscan\s+college[\s\S]{0,80}\balbany\b
+      | \balbany\b[\s\S]{0,80}franciscan\s+college
+      | \bfriars?\s+at\s+siena\b
       # State-politics / Albany civic copy often omits ", NY".
       | albany\s+democrats?\b
       | hochul[\s\S]{0,120}\balbany\b

@@ -3531,6 +3531,31 @@ def test_town_of_malta_cdta_and_local_venue_recall() -> None:
     assert match_post('Bombers Burrito Bar downtown special.').matched is True
     assert match_post('WAMC Roundtable tomorrow morning.').matched is True
     assert match_post('Siena Saints tip off tonight.').matched is True
+    assert (
+        match_post(
+            'Siena hosts Binghamton on Nov. 8, 2026 at 4 p.m. ET, with Siena '
+            'coming off a 70-68 loss to Maine.'
+        ).matched
+        is True
+    )
+    assert match_post('Princeton hosts Siena on Nov. 8 at 1 p.m. ET.').matched is True
+    assert (
+        match_post(
+            'The strip club near our Franciscan college in Albany was named Night '
+            'Moves. We had party friars at Siena, so it was only a mildly '
+            'surprised reaction.'
+        ).matched
+        is True
+    )
+    # Italian tourism and Times/Siena poll shorthand stay out without College.
+    assert match_post('Visiting Siena this fall for the Palio.').matched is False
+    assert (
+        match_post(
+            'A New York Times/Siena poll from mid-September found 62% of likely '
+            'voters did not know who Piker was.'
+        ).matched
+        is False
+    )
     assert match_post('Secret Caverns after dark tour.').matched is True
 
 
