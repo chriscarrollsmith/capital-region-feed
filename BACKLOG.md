@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-146 — Daily feed audit: Siena hosts / Franciscan Albany FNs (fold #127)
-- **Status:** in progress
+- **Status:** done ([#128](https://github.com/chriscarrollsmith/capital-region-feed/pull/128))
 - **Why:** 2026-11-08 audit of last-24h AppView feed (~49 posts) found no new
   matcher FPs after folding unmerged #127 (hold-on-Albany / Albany-was-right).
   Planned ``fn_search.py`` slate (8) all ran OK with no Cap Region FNs (Utah
