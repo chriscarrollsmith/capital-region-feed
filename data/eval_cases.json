@@ -13777,5 +13777,65 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-11-07 counterpart: bare Lansingburgh keep"
+  },
+  {
+    "id": "tp-siena-hosts-binghamton-1108",
+    "text": "Siena hosts Binghamton on Nov. 8, 2026 at 4 p.m. ET, with Siena coming off a 70-68 loss to Maine.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-08 FN: bare Siena basketball host wire"
+  },
+  {
+    "id": "tp-hosts-siena-road-1108",
+    "text": "Princeton hosts Siena on Nov. 8 at 1 p.m. ET.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-08 FN: hosts Siena road game without venue"
+  },
+  {
+    "id": "tp-franciscan-college-albany-siena-1108",
+    "text": "The strip club near our Franciscan college in Albany was named Night Moves. We had party friars at Siena, so it was only a mildly surprised reaction.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-08 FN: Siena Franciscan Albany alumni recall"
+  },
+  {
+    "id": "tn-times-siena-poll-shorthand-1108",
+    "text": "A New York Times/Siena poll from mid-September found 62% of likely voters did not know who Piker was.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-08: Times/Siena national poll shorthand must stay out"
+  },
+  {
+    "id": "tn-siena-italy-palio-1108",
+    "text": "Visiting Siena this fall for the Palio.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-08: Italian Siena tourism must stay out"
+  },
+  {
+    "id": "tp-siena-college-volunteer-1108",
+    "text": "Siena College students volunteer downtown this weekend.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-08 TP counterpart: formal Siena College retained"
   }
 ]

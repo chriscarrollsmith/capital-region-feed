@@ -281,3 +281,14 @@
 {"used_at": "2026-11-07T09:05:29Z", "query": "Gabler Realty", "family": "institution", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
 {"used_at": "2026-11-07T09:05:29Z", "query": "ScotlandShop", "family": "institution", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
 {"used_at": "2026-11-07T09:05:29Z", "query": "LansingburghNY", "family": "neighborhood", "status": "ok", "hits": 1, "false_negatives": 1, "false_negative_ids": ["at://did:plc:7mpjyz7fvucpzmkeoerg2vbd/app.bsky.feed.post/3mzogdaduas2a"], "notes": ""}
+{"used_at": "2026-11-08T09:10:28Z", "query": "Saratoga Lake", "family": "neighborhood", "status": "ok", "hits": 2, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-11-08T09:10:28Z", "query": "upstateny", "family": "hashtag", "status": "ok", "hits": 7, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-11-08T09:10:28Z", "query": "Saratoga Springs", "family": "bare_place", "status": "ok", "hits": 10, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-11-08T09:10:28Z", "query": "concert Saratoga Springs", "family": "event_phrase", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-11-08T09:10:28Z", "query": "Phish Albany", "family": "event_phrase", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-11-08T09:10:28Z", "query": "KALB", "family": "nickname", "status": "ok", "hits": 4, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-11-08T09:10:28Z", "query": "ScotlandShop", "family": "institution", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-11-08T09:10:28Z", "query": "Gabler Realty", "family": "institution", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-11-08T09:10:29Z", "query": "Siena hosts", "family": "event_phrase", "status": "ok", "hits": 2, "false_negatives": 1, "false_negative_ids": ["at://did:plc:yjkte4flt5frf3vpia6rqyjp/app.bsky.feed.post/3mzrw57xxyv22"], "notes": ""}
+{"used_at": "2026-11-08T09:10:29Z", "query": "friars Siena", "family": "institution", "status": "ok", "hits": 1, "false_negatives": 1, "false_negative_ids": ["at://did:plc:rfoe76hlpcd6edtk7snpcf3o/app.bsky.feed.post/3mzpl7ujkls2e"], "notes": ""}
+{"used_at": "2026-11-08T09:10:29Z", "query": "Franciscan college Albany", "family": "institution", "status": "ok", "hits": 1, "false_negatives": 1, "false_negative_ids": ["at://did:plc:rfoe76hlpcd6edtk7snpcf3o/app.bsky.feed.post/3mzpl7ujkls2e"], "notes": ""}

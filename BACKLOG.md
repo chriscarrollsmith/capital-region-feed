@@ -538,6 +538,26 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-146 — Daily feed audit: Siena hosts / Franciscan Albany FNs (fold #127)
+- **Status:** in progress
+- **Why:** 2026-11-08 audit of last-24h AppView feed (~49 posts) found no new
+  matcher FPs after folding unmerged #127 (hold-on-Albany / Albany-was-right).
+  Planned ``fn_search.py`` slate (8) all ran OK with no Cap Region FNs (Utah
+  Saratoga Springs noise, KALB German/food, empties). Exploratory ``Siena hosts``
+  / ``friars Siena`` / ``Franciscan college Albany`` surfaced Cap Region Siena
+  basketball and Loudonville Franciscan alumni posts the floor dropped as
+  ``no_match`` / ``bare_albany``. Residual allowlisted News10 / Times Union
+  non-local, NWS Albany / Glens Falls climate bots, and soft-prior noise remain
+  intentional.
+- **Work:**
+  - Strong Siena sports host/vs/coming-off cues; Franciscan college↔Albany and
+    friars-at-Siena alumni recall (Italian Siena / Times/Siena poll shorthand
+    stay out).
+  - Fold #127 statehouse metonym + Lansingburgh changes.
+  - Grow eval + fn_search log/strategies.
+- **Done when:** Siena hosts / Franciscan Albany FNs keep; folded #127 FPs drop;
+  eval P/R stay 1.000; unit tests cover the new cues.
+
 ### B-145 — Daily feed audit: hold-on-Albany / Albany-was-right FPs; Lansingburgh FN
 - **Status:** done ([#127](https://github.com/chriscarrollsmith/capital-region-feed/pull/127))
 - **Why:** 2026-11-07 audit of last-24h AppView feed (~65 posts) found active
