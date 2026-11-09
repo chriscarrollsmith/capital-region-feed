@@ -285,6 +285,14 @@ _STRONG_POSITIVE = re.compile(
       | franciscan\s+college[\s\S]{0,80}\balbany\b
       | \balbany\b[\s\S]{0,80}franciscan\s+college
       | \bfriars?\s+at\s+siena\b
+      # RCA Nipper statue / 991 Broadway landmark cards often omit ", NY".
+      | \bnipper\s+(?:statue|building|landmark)\b
+      | \bnipper\b[\s\S]{0,100}991\s+broadway\b
+      | 991\s+broadway\b[\s\S]{0,100}\bnipper\b
+      # Citizen-portal compound geotag for Albany city/county NY copy.
+      | \#albanycityalbanycounty\b
+      # Cap Region downtown corridor — word-boundary so Clark Street stays out.
+      | \blark\s+street\b
       # State-politics / Albany civic copy often omits ", NY".
       | albany\s+democrats?\b
       | hochul[\s\S]{0,120}\balbany\b
@@ -5542,6 +5550,8 @@ _ALBANY_LOCAL_RESCUE = re.compile(
       | empire\s+state\s+plaza
       | albany\s+common\s+council\b
       | albany['\u2019]?s\s+common\s+council\b
+      | \balbany\b[\s\S]{0,80}common\s+council\b
+      | common\s+council[\s\S]{0,80}\balbany\b
       | albany\s+mayor\b
       | albany\s+county\b
       | albany\s+med(?:ical)?\b
@@ -5550,7 +5560,7 @@ _ALBANY_LOCAL_RESCUE = re.compile(
       | \#albany_ny\b
       | new\s+york\s+state\s+capitol
       | state\s+capitol\s+in\s+albany
-    )
+      )
     """,
     re.IGNORECASE | re.VERBOSE,
 )
@@ -5584,11 +5594,13 @@ def _albany_statehouse_metonym_conflict(haystack: str) -> bool:
     lawmakers / Lt. Governor / governor, "legislature in Albany",
     "representation in Albany" for statewide DSA / chamber seat counts,
     "from DC to Albany", election-night "hold on Albany" / "party's hold on
-    Albany", and statewide policy verdicts ("Albany was right/wrong to …")
-    use the capital as metonym without Cap Region place news. Local party
-    organs ("join Albany Democrats at … rally") and civic anchors still
-    rescue. "Rest of Albany County" and bare travel ("headed to Albany this
-    weekend") are Cap Region and do not match.
+    Albany", statewide policy verdicts ("Albany was right/wrong to …"),
+    legislature-as-actor ("Albany passed A.1755"), career-in-capital
+    shorthand ("Albany years"), and "in the New York capital" statehouse
+    locale copy use the capital as metonym without Cap Region place news.
+    Local party organs ("join Albany Democrats at … rally") and civic
+    anchors still rescue. "Rest of Albany County" and bare travel
+    ("headed to Albany this weekend") are Cap Region and do not match.
     """
     if not re.search(
         r'\bdysfunctional\s+albany\b|\balbany\s+sent\b|'
@@ -5607,6 +5619,12 @@ def _albany_statehouse_metonym_conflict(haystack: str) -> bool:
         # Statewide policy actor ("Albany was right to bar …"; tolerate typoed
         # "right right to").
         r'\balbany\s+was\s+(?:(?:right\s+)+|wrong\s+)to\b|'
+        # Legislature-as-actor ("In June, Albany passed A.1755 / S.8026").
+        r'\balbany\s+passed\b|'
+        # Career-in-capital shorthand ("Jeffries' Albany years" / House leadership).
+        r'\balbany\s+years\b|'
+        # Statehouse locale metonym ("style in the New York capital").
+        r'\bin\s+the\s+new\s+york\s+capital\b|'
         # Capital-as-destination shorthand for the legislature / statewide slate.
         # Cap Region civic rescues (Lark Street / Empire State Plaza / …) still keep.
         r'\b(?:head(?:ed|ing)|returns?|returning|returned)\s+to\s+albany\b|'

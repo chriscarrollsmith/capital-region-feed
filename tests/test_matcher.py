@@ -6298,3 +6298,58 @@ def test_lansingburgh_neighborhood_recall() -> None:
     bare = match_post('Lansingburgh block party on 123rd Street this Saturday.')
     assert bare.matched is True
     assert bare.reason == 'strong_positive'
+
+
+def test_albany_passed_and_albany_years_metonym_precision() -> None:
+    """Albany-passed / Albany-years / New York capital metonyms drop; civic rescues keep."""
+    passed = match_post(
+        'The City Bar joins 40+ organizations urging the Governor to sign the '
+        'WiFi for Homeless Act. In June, Albany passed A. 1755 / S. 8026 '
+        'requiring every shelter in New York State to have Wi-Fi.'
+    )
+    assert passed.matched is False
+    assert passed.reason == 'hard_negative:albany_statehouse_metonym'
+
+    years = match_post(
+        "What Hakeem Jeffries' Albany years reveal about how he'd lead the House. "
+        'The moderate Democrat developed a signature style in the New York capital.'
+    )
+    assert years.matched is False
+    assert years.reason == 'hard_negative:albany_statehouse_metonym'
+
+    passed_rescued = match_post(
+        'Albany passed a local WiFi ordinance for shelters on Lark Street downtown.'
+    )
+    assert passed_rescued.matched is True
+    assert passed_rescued.reason == 'strong_positive'
+
+    years_rescued = match_post(
+        'During his Albany years on the Common Council he fought for downtown housing.'
+    )
+    assert years_rescued.matched is True
+    assert years_rescued.reason == 'strong_positive'
+
+
+def test_nipper_991_broadway_and_lark_street_recall() -> None:
+    """Nipper/991 Broadway landmark and Lark Street corridor keep; Clark Street stays out."""
+    nipper = match_post(
+        'As discussions heat up over the future of Nipper at 991 Broadway, the fate '
+        'of this beloved statue hangs in the balance amid redevelopment proposals.'
+    )
+    assert nipper.matched is True
+    assert nipper.reason == 'strong_positive'
+
+    hashtag = match_post('#AlbanyCityAlbanyCounty commissioners advance the Nipper nomination.')
+    assert hashtag.matched is True
+    assert hashtag.reason == 'strong_positive'
+
+    lark = match_post(
+        "Herbie's Burgers, the local chain that started on Lark Street in Albany, "
+        'is expanding with new franchise locations.'
+    )
+    assert lark.matched is True
+    assert lark.reason == 'strong_positive'
+
+    clark = match_post('Road work on Clark Street downtown Chicago this weekend.')
+    assert clark.matched is False
+    assert clark.reason == 'no_match'
