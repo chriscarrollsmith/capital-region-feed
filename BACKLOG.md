@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-147 — Daily feed audit: Albany-passed / Albany-years FPs; Nipper / Lark Street FNs
-- **Status:** in progress
+- **Status:** done ([#129](https://github.com/chriscarrollsmith/capital-region-feed/pull/129))
 - **Why:** 2026-11-09 audit of last-24h AppView feed (~44 posts) found active
   matcher FPs among rematch-keeps: NYC Bar ``Albany passed`` statewide WiFi
   shelter bill and Politico ``Albany years`` / ``in the New York capital``
