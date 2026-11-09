@@ -13837,5 +13837,85 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-11-08 TP counterpart: formal Siena College retained"
+  },
+  {
+    "id": "fp-albany-passed-wifi-homeless-act-1109",
+    "text": "The City Bar joins 40+ organizations urging the Governor to sign the WiFi for Homeless Act. In June, Albany passed A. 1755 / S. 8026 requiring every shelter in New York State to have Wi-Fi.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-09 audit: legislature-as-actor Albany passed statewide shelter WiFi bill"
+  },
+  {
+    "id": "fp-albany-years-new-york-capital-1109",
+    "text": "What Hakeem Jeffries' Albany years reveal about how he'd lead the House. The moderate Democrat developed a signature style in the New York capital.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-09 audit: Albany years / New York capital statehouse career metonym"
+  },
+  {
+    "id": "tp-albany-passed-lark-street-wifi-1109",
+    "text": "Albany passed a local WiFi ordinance for shelters on Lark Street downtown.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-09 TP counterpart: Albany passed with Lark Street civic rescue"
+  },
+  {
+    "id": "tp-albany-years-common-council-1109",
+    "text": "During his Albany years on the Common Council he fought for downtown housing.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-09 TP counterpart: Albany years with Common Council rescue"
+  },
+  {
+    "id": "tp-nipper-991-broadway-1109",
+    "text": "As discussions heat up over the future of Nipper at 991 Broadway, the fate of this beloved statue hangs in the balance amid redevelopment proposals.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-09 FN: Nipper / 991 Broadway landmark without spelled Albany"
+  },
+  {
+    "id": "tp-albanycityalbanycounty-hashtag-1109",
+    "text": "#AlbanyCityAlbanyCounty commissioners advance the Nipper nomination.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-09 FN support: citizen-portal Albany city/county compound geotag"
+  },
+  {
+    "id": "tp-lark-street-herbies-albany-1109",
+    "text": "Herbie's Burgers, the local chain that started on Lark Street in Albany, is expanding with new franchise locations.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-09 recall: Lark Street corridor strong cue"
+  },
+  {
+    "id": "tn-clark-street-not-lark-1109",
+    "text": "Road work on Clark Street downtown Chicago this weekend.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-09 precision: Clark Street must not match Lark Street"
   }
 ]

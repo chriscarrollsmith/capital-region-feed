@@ -538,6 +538,31 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-147 — Daily feed audit: Albany-passed / Albany-years FPs; Nipper / Lark Street FNs
+- **Status:** in progress
+- **Why:** 2026-11-09 audit of last-24h AppView feed (~44 posts) found active
+  matcher FPs among rematch-keeps: NYC Bar ``Albany passed`` statewide WiFi
+  shelter bill and Politico ``Albany years`` / ``in the New York capital``
+  Jeffries House-leadership card. Folded unmerged #128 already drops
+  hold-on-Albany (nysfocus). Planned ``fn_search.py`` slate (8) all ran OK
+  with no Cap Region FNs (Queensbury Rules, KALB noise, empties). Exploratory
+  ``Nipper statue`` surfaced a 991 Broadway landmark card the floor dropped
+  as ``no_match`` (compound ``#AlbanyCityAlbanyCounty`` alone did not unlock
+  Albany). Lark Street corridor copy also needed a strong cue. Residual
+  allowlisted News10 / Times Union non-local, NWS Albany / Glens Falls
+  climate bots, and soft-prior noise remain intentional.
+- **Work:**
+  - Extend Albany statehouse metonym for ``Albany passed``, ``Albany years``,
+    and ``in the New York capital`` (Common Council / Lark Street / Capital
+    Region rescues retained).
+  - Strong Nipper / 991 Broadway, ``#AlbanyCityAlbanyCounty``, and Lark Street
+    cues (Clark Street stays out).
+  - Fold #128 Siena hosts / Franciscan Albany + #127 metonym/Lansingburgh.
+  - Grow eval + fn_search log/strategies.
+- **Done when:** Albany-passed / Albany-years FPs drop; Nipper / Lark Street
+  FNs keep; folded #128 FPs/FNs hold; eval P/R stay 1.000; unit tests cover
+  the new cues.
+
 ### B-146 — Daily feed audit: Siena hosts / Franciscan Albany FNs (fold #127)
 - **Status:** done ([#128](https://github.com/chriscarrollsmith/capital-region-feed/pull/128))
 - **Why:** 2026-11-08 audit of last-24h AppView feed (~49 posts) found no new
