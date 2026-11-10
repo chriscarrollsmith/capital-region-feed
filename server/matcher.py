@@ -228,14 +228,18 @@ _STRONG_POSITIVE = re.compile(
       | halfmoon\s+(?:town\s+)?(?:board|council|ceremony|ceremonies)\b
       # Town of Malta / GlobalFoundries campus copy often omits ", NY".
       # Require campus/in-Malta/NY cues so trending-word clouds pairing both
-      # tokens without locality do not keep.
+      # tokens without locality do not keep. NY fab-operator wires also keep.
       | town\s+of\s+malta\b
       | malta\s+(?:town\s+)?(?:board|council|planning)\b
       | globalfoundries[\s\S]{0,120}(?:
             \bin\s+malta\b|\bat\s+malta\b|malta\s+campus\b|malta\s*,?\s*ny\b
+          | fabs?\s+in\s+new\s+york\b
+          | semiconductor\s+fabs?\s+in\s+new\s+york\b
           )
       | (?:
             \bin\s+malta\b|\bat\s+malta\b|malta\s+campus\b|malta\s*,?\s*ny\b
+          | fabs?\s+in\s+new\s+york\b
+          | semiconductor\s+fabs?\s+in\s+new\s+york\b
           )[\s\S]{0,120}globalfoundries
       # Town of Bethlehem NY civic / library copy often omits ", NY".
       # Exclude Christmas carol "little town of Bethlehem".
@@ -459,8 +463,12 @@ _STRONG_POSITIVE = re.compile(
       | \bsarah\s+rogerson\b
       | \b(?:jim(?:my)?\s+)?tedisco\b
       | \b(?:paul\s+)?tonko\b
+      | \b(?:ron(?:ald)?\s+)?canestrari\b
       | \brensco\b
       | albany\s+business\s+review\b
+      # Albany College of Pharmacy (and Health Sciences) — not bare Albany.
+      | albany\s+college\s+of\s+pharmacy\b
+      | albany\s+pharmacy\b
       # Albany Central Warehouse demolition / asbestos wires often omit ", NY".
       | albany['\u2019]?s\s+central\s+warehouse\b
       | central\s+warehouse[\s\S]{0,100}\balbany\b
@@ -5444,6 +5452,14 @@ _ALBANY_WIRE_REMOTE = re.compile(
       | \batlanta\b
       | \bminneapolis\b
       | \bdetroit\b
+      # NYC borough / hospital wires under an Albany HQ dateline (not Cap Region).
+      # ``\bqueens\b`` does not match Queensbury (Warren County).
+      | \bqueens\b
+      | \bbrooklyn\b
+      | \bbronx\b
+      | \bmanhattan\b
+      | staten\s+island\b
+      | elmhurst\s+hospital\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -5475,8 +5491,8 @@ def _albany_wire_remote_conflict(haystack: str) -> bool:
     """True when an Albany, N.Y. wire dateline fronts a remote-city story.
 
     Press wires often open with the HQ dateline (ALBANY, N.Y.) while the body
-    is about an Albuquerque / Phoenix / etc. facility. Keep Cap Region body
-    cues as rescue so local Albany copy is not dropped.
+    is about an Albuquerque / Phoenix / Queens / etc. facility. Keep Cap Region
+    body cues as rescue so local Albany copy is not dropped.
     """
     if not re.search(
         r'\balbany,?\s*(?:n\.?\s*y\.?|new\s+york)\b',
@@ -5485,6 +5501,40 @@ def _albany_wire_remote_conflict(haystack: str) -> bool:
     ):
         return False
     if not _ALBANY_WIRE_REMOTE.search(haystack):
+        return False
+    if _ALBANY_WIRE_LOCAL_RESCUE.search(haystack):
+        return False
+    return True
+
+
+_ALBANY_WIRE_STATEWIDE_HOSPITALS = re.compile(
+    r"""
+    (?:
+        (?:eight\s+)?new\s+york\s+hospitals?\b
+      | hospitals?\s+across\s+(?:new\s+york|nys|the\s+state)\b
+      | empire\s+building\s+challenge\b
+      | \bnyserda\b[\s\S]{0,100}hospitals?\b
+      | hospitals?\b[\s\S]{0,100}\bnyserda\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+
+def _albany_wire_statewide_hospitals_conflict(haystack: str) -> bool:
+    """True when an Albany dateline fronts statewide hospital-award copy.
+
+    NYSERDA / Empire Building Challenge hospital wires stamp ALBANY, N.Y. even
+    when the awards are statewide (or the card photo is a NYC hospital). Cap
+    Region hospital / plaza rescues still keep.
+    """
+    if not re.search(
+        r'\balbany,?\s*(?:n\.?\s*y\.?|new\s+york)\b',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    if not _ALBANY_WIRE_STATEWIDE_HOSPITALS.search(haystack):
         return False
     if _ALBANY_WIRE_LOCAL_RESCUE.search(haystack):
         return False
@@ -6275,6 +6325,8 @@ def _propose_candidate(
             return MatchResult(False, 'hard_negative:schaghticoke_ct')
         if _albany_wire_remote_conflict(haystack):
             return MatchResult(False, 'hard_negative:albany_wire_remote')
+        if _albany_wire_statewide_hospitals_conflict(haystack):
+            return MatchResult(False, 'hard_negative:albany_wire_statewide_hospitals')
         if _delveinsight_albany_conflict(haystack):
             return MatchResult(False, 'hard_negative:delveinsight_albany')
         if _bethlehem_holy_land_conflict(haystack):
@@ -6416,6 +6468,8 @@ def _propose_candidate(
                 return MatchResult(False, 'hard_negative:albany_ithaca_contrast')
             if _albany_wire_remote_conflict(haystack):
                 return MatchResult(False, 'hard_negative:albany_wire_remote')
+            if _albany_wire_statewide_hospitals_conflict(haystack):
+                return MatchResult(False, 'hard_negative:albany_wire_statewide_hospitals')
             if _albany_bandscan_conflict(haystack):
                 return MatchResult(False, 'hard_negative:albany_bandscan')
             if _albany_street_cny_conflict(haystack):

@@ -2902,6 +2902,38 @@ def test_albany_wire_remote_albuquerque_not_local() -> None:
     assert match_post('ALBANY, N.Y. — A new brewery opens on Lark Street downtown.').matched is True
 
 
+def test_albany_wire_remote_queens_hospital_not_local() -> None:
+    """Albany dateline + Queens/statewide hospital awards drop; local rescues keep."""
+    queens = match_post(
+        'ALBANY, N.Y. - Gov. Kathy Hochul announced Monday that eight New York '
+        'hospitals will receive energy-efficiency awards. The photograph shows '
+        'Elmhurst Hospital Center in Queens, one of the hospitals receiving funds.'
+    )
+    assert queens.matched is False
+    assert queens.reason in {
+        'hard_negative:albany_wire_remote',
+        'hard_negative:albany_wire_statewide_hospitals',
+    }
+
+    # Truncated link-card copy (no Queens token) still drops via statewide hospitals.
+    truncated = match_post(
+        'ALBANY, N.Y. - Gov. Kathy Hochul announced Monday that eight New York '
+        'hospitals will receive a combined nearly $28 million for energy projects.'
+    )
+    assert truncated.matched is False
+    assert truncated.reason == 'hard_negative:albany_wire_statewide_hospitals'
+
+    rescued = match_post(
+        'ALBANY, N.Y. — Albany Med and a Queens hospital both received NYSERDA '
+        'energy grants announced at Empire State Plaza.'
+    )
+    assert rescued.matched is True
+
+    queensbury = match_post('ALBANY, N.Y. — Early voting opens in Queensbury near Glens Falls.')
+    assert queensbury.matched is True
+    assert queensbury.reason == 'strong_positive'
+
+
 def test_albany_ithaca_contrast_not_cap_region() -> None:
     poem = match_post(
         'I decided to become The Poet Laureate Of Tompkins County, New York. '
@@ -6353,3 +6385,38 @@ def test_nipper_991_broadway_and_lark_street_recall() -> None:
     clark = match_post('Road work on Clark Street downtown Chicago this weekend.')
     assert clark.matched is False
     assert clark.reason == 'no_match'
+
+
+def test_canestrari_acphs_globalfoundries_ny_fabs_recall() -> None:
+    """Canestrari / Albany College of Pharmacy / GF NY fabs keep; bare GF stock stays out."""
+    canestrari = match_post(
+        "I'm deeply saddened by the loss of my dear friend and colleague, former "
+        'NYS Assembly Majority Leader Ron Canestrari.'
+    )
+    assert canestrari.matched is True
+    assert canestrari.reason == 'strong_positive'
+
+    ronald = match_post('Former Assembly Majority Leader Ronald Canestrari has died.')
+    assert ronald.matched is True
+    assert ronald.reason == 'strong_positive'
+
+    acphs = match_post(
+        'Albany College of Pharmacy breach: opt-out closed Oct. 16, so claiming '
+        'is the only move left.'
+    )
+    assert acphs.matched is True
+    assert acphs.reason == 'strong_positive'
+
+    health = match_post('Albany College of Pharmacy and Health Sciences hosts a campus open house.')
+    assert health.matched is True
+    assert health.reason == 'strong_positive'
+
+    gf = match_post('GlobalFoundries selected to operate two new semiconductor fabs in New York.')
+    assert gf.matched is True
+    assert gf.reason == 'strong_positive'
+
+    stock = match_post(
+        'GLOBALFOUNDRIES ($GFS) – Insider Purchase • Insider: Jack R Lazar, Director'
+    )
+    assert stock.matched is False
+    assert stock.reason == 'no_match'
