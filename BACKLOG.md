@@ -538,6 +538,35 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-148 — Daily feed audit: Albany→Queens hospital wire FP; Canestrari / ACPHS / GF NY fabs FNs
+- **Status:** in progress
+- **Why:** 2026-11-10 audit of last-24h AppView feed (~56 posts) found one new
+  matcher FP among rematch-keeps: ``ALBANY, N.Y.`` dateline on statewide
+  NYSERDA hospital energy awards featuring Elmhurst Hospital in Queens
+  (``strong_positive`` via the wire dateline). Folded unmerged #129 already
+  drops Albany-passed / Albany-years metonyms still visible in the live feed.
+  Planned ``fn_search.py`` slate (8) all ran OK with no Cap Region FNs (Utah
+  Saratoga Springs, KALB noise, empties). Exploratory ``Canestrari``,
+  ``Albany College of Pharmacy``, and ``GlobalFoundries`` surfaced tributes
+  and institution wires the floor dropped (``no_match`` / ``bare_albany``).
+  Residual allowlisted News10 / Times Union non-local, NWS Albany / Glens
+  Falls climate bots, Saratoga Race Course career copy, and soft-prior noise
+  remain intentional.
+- **Work:**
+  - Extend ``_albany_wire_remote_conflict`` for Queens / Brooklyn / Bronx /
+    Manhattan / Staten Island / Elmhurst Hospital (Queensbury stays local;
+    Albany Med / Empire State Plaza rescues retained).
+  - Gate Albany dateline + statewide New York hospitals / NYSERDA /
+    Empire Building Challenge award copy (survives embed-description clip).
+  - Strong ``(Ron|Ronald) Canestrari``, Albany College of Pharmacy /
+    Albany Pharmacy, and GlobalFoundries↔fabs in New York cues (bare GF
+    stock tickers stay out).
+  - Fold #129 Albany-passed / Nipper / Lark Street (+ #128 / #127).
+  - Grow eval + fn_search log/strategies.
+- **Done when:** Albany→Queens hospital wire FP drops; Canestrari / ACPHS /
+  GF NY fab FNs keep; folded #129 FPs/FNs hold; eval P/R stay 1.000; unit
+  tests cover the new cues.
+
 ### B-147 — Daily feed audit: Albany-passed / Albany-years FPs; Nipper / Lark Street FNs
 - **Status:** done ([#129](https://github.com/chriscarrollsmith/capital-region-feed/pull/129))
 - **Why:** 2026-11-09 audit of last-24h AppView feed (~44 posts) found active

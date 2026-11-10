@@ -13917,5 +13917,105 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-11-09 precision: Clark Street must not match Lark Street"
+  },
+  {
+    "id": "fp-albany-wire-queens-elmhurst-1110",
+    "text": "ALBANY, N.Y. - Gov. Kathy Hochul announced Monday that eight New York hospitals will receive energy-efficiency awards. The photograph shows Elmhurst Hospital Center in Queens, one of the hospitals receiving funds.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-10 audit FP: Albany dateline + Queens/Elmhurst hospital statewide NYSERDA awards"
+  },
+  {
+    "id": "tp-albany-wire-queens-with-albany-med-1110",
+    "text": "ALBANY, N.Y. — Albany Med and a Queens hospital both received NYSERDA energy grants announced at Empire State Plaza.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-10 audit TP counterpart: Albany Med / Empire State Plaza rescue Albany+Queens wire"
+  },
+  {
+    "id": "tn-albany-wire-queensbury-still-local-1110",
+    "text": "ALBANY, N.Y. — Early voting opens in Queensbury near Glens Falls.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-10 audit: Queensbury must not trip Albany+Queens wire remote gate"
+  },
+  {
+    "id": "fn-ron-canestrari-1110",
+    "text": "I'm deeply saddened by the loss of my dear friend and colleague, former NYS Assembly Majority Leader Ron Canestrari.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-10 audit FN: Ron Canestrari Cohoes/Assembly civic without placename"
+  },
+  {
+    "id": "fn-ronald-canestrari-1110",
+    "text": "Former Assembly Majority Leader Ronald Canestrari has died.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-10 audit FN: Ronald Canestrari form"
+  },
+  {
+    "id": "fn-albany-college-of-pharmacy-1110",
+    "text": "Albany College of Pharmacy breach: opt-out closed Oct. 16, so claiming is the only move left.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-10 audit FN: Albany College of Pharmacy was bare_albany"
+  },
+  {
+    "id": "fn-albany-college-of-pharmacy-health-sciences-1110",
+    "text": "Albany College of Pharmacy and Health Sciences hosts a campus open house.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-10 audit FN: ACPHS full name"
+  },
+  {
+    "id": "fn-globalfoundries-fabs-new-york-1110",
+    "text": "GlobalFoundries selected to operate two new semiconductor fabs in New York.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-10 audit FN: GF NY fab-operator wires without Malta token"
+  },
+  {
+    "id": "tn-globalfoundries-insider-stock-1110",
+    "text": "GLOBALFOUNDRIES ($GFS) – Insider Purchase • Insider: Jack R Lazar, Director",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-10 audit TN: bare GlobalFoundries stock ticker without NY fab/Malta cues"
+  },
+  {
+    "id": "fp-albany-wire-statewide-hospitals-truncated-1110",
+    "text": "ALBANY, N.Y. - Gov. Kathy Hochul announced Monday that eight New York hospitals will receive a combined nearly $28 million for energy projects.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-10 audit FP: Albany dateline + eight New York hospitals without Cap Region rescue (truncated card)"
   }
 ]
