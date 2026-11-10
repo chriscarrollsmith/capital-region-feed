@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-148 — Daily feed audit: Albany→Queens hospital wire FP; Canestrari / ACPHS / GF NY fabs FNs
-- **Status:** in progress
+- **Status:** done ([#130](https://github.com/chriscarrollsmith/capital-region-feed/pull/130))
 - **Why:** 2026-11-10 audit of last-24h AppView feed (~56 posts) found one new
   matcher FP among rematch-keeps: ``ALBANY, N.Y.`` dateline on statewide
   NYSERDA hospital energy awards featuring Elmhurst Hospital in Queens
