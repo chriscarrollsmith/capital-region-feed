@@ -6420,3 +6420,102 @@ def test_canestrari_acphs_globalfoundries_ny_fabs_recall() -> None:
     )
     assert stock.matched is False
     assert stock.reason == 'no_match'
+
+
+def test_albany_surplus_voice_represent_moved_metonym_precision() -> None:
+    """Albany surplus / voice / represent / moved-up metonyms drop; civic rescues keep."""
+    surplus = match_post(
+        "Hochul budget chief swats down tax hike push from Mamdani's DSA allies. "
+        "Gov. Kathy Hochul's budget director said Albany has a substantial "
+        '$8 billion revenue surplus more than anticipated when the budget was approved.'
+    )
+    assert surplus.matched is False
+    assert surplus.reason == 'hard_negative:albany_statehouse_metonym'
+
+    voice = match_post(
+        'Ryan won by 570 votes and makes for one more voice in Albany for '
+        'universal health and childcare in NYS.'
+    )
+    assert voice.matched is False
+    assert voice.reason == 'hard_negative:albany_statehouse_metonym'
+
+    represent = match_post(
+        'Chris Murray is preparing to represent the East End in Albany with '
+        "priorities ranging from community colleges to tax reform. New York's "
+        '1st Senate District.'
+    )
+    assert represent.matched is False
+    assert represent.reason == 'hard_negative:albany_statehouse_metonym'
+
+    moved = match_post(
+        'This goes back to Tammany Hall which I assumed moved up to Albany, '
+        'it did and Hochul is acting.'
+    )
+    assert moved.matched is False
+    assert moved.reason == 'hard_negative:albany_statehouse_metonym'
+
+    voice_rescued = match_post(
+        'One more voice in Albany Common Council backed the Lark Street cleanup.'
+    )
+    assert voice_rescued.matched is True
+    assert voice_rescued.reason == 'strong_positive'
+
+    surplus_rescued = match_post(
+        'Albany has a substantial budget surplus for Capital Region road repairs '
+        'near Empire State Plaza.'
+    )
+    assert surplus_rescued.matched is True
+
+
+def test_albany_hochul_binghamton_wire_precision() -> None:
+    """Albany/Hochul Binghamton campus wires drop; Cap Region rescue and Siena keep."""
+    bare_dash = match_post(
+        'ALBANY - Governor Kathy Hochul launched the New York Center for AI '
+        'Responsibility and Research at SUNY Binghamton Tuesday.'
+    )
+    assert bare_dash.matched is False
+    assert bare_dash.reason == 'hard_negative:albany_hochul_binghamton'
+
+    dateline = match_post(
+        'ALBANY, N.Y. - Governor Kathy Hochul launched the AI center at Binghamton University.'
+    )
+    assert dateline.matched is False
+    assert dateline.reason == 'hard_negative:albany_wire_remote'
+
+    rescued = match_post(
+        'ALBANY - Governor Kathy Hochul visited SUNY Binghamton after touring Empire State Plaza.'
+    )
+    assert rescued.matched is True
+
+    siena = match_post('Siena hosts Binghamton on Nov. 8, 2026 at 4 p.m. ET')
+    assert siena.matched is True
+    assert siena.reason == 'strong_positive'
+
+
+def test_albany_law_colonie_based_price_chopper_recall() -> None:
+    """Albany Law School / Colonie-based / Price Chopper keep; French colonie stays out."""
+    law = match_post(
+        'The inaugural Veterans Justice & Advocacy Program cohort has graduated '
+        'from Albany Law School!'
+    )
+    assert law.matched is True
+    assert law.reason == 'strong_positive'
+
+    colonie = match_post('Sunmark is moving to add a small Colonie-based credit union.')
+    assert colonie.matched is True
+    assert colonie.reason == 'colonie_local'
+
+    chopper = match_post(
+        'Price Chopper has a ThanksVegan section on its website and three of the '
+        'first ten items listed are various gravies.'
+    )
+    assert chopper.matched is True
+    assert chopper.reason == 'strong_positive'
+
+    market = match_post('Market 32 weekly circular is out with turkey deals.')
+    assert market.matched is True
+    assert market.reason == 'strong_positive'
+
+    french = match_post("L'ancienne colonie britannique rejoint la liste des membres.")
+    assert french.matched is False
+    assert french.reason == 'bare_colonie'

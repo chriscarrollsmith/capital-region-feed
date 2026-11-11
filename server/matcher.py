@@ -469,6 +469,12 @@ _STRONG_POSITIVE = re.compile(
       # Albany College of Pharmacy (and Health Sciences) — not bare Albany.
       | albany\s+college\s+of\s+pharmacy\b
       | albany\s+pharmacy\b
+      # Albany Law School graduation / campus copy often omits ", NY".
+      # Do not bare-match "Albany lawmakers" / "Albany law enforcement".
+      | albany\s+law\s+school\b
+      # Price Chopper / Market 32 (Golub Cap Region grocery) product wires.
+      | price\s+chopper\b
+      | \bmarket\s*32\b
       # Albany Central Warehouse demolition / asbestos wires often omit ", NY".
       | albany['\u2019]?s\s+central\s+warehouse\b
       | central\s+warehouse[\s\S]{0,100}\balbany\b
@@ -3456,6 +3462,9 @@ _COLONIE_LOCAL = re.compile(
       | towers\s+of\s+colonie
       | south\s+colonie\b
       | north\s+colonie\b
+      # Cap Region business copy ("Colonie-based credit union") often omits ", NY".
+      # French "colonie" / lunar-colony wires do not use this hyphenated form.
+      | \bcolonie[\s\-]+based\b
       # Cap Region Junior's / BMT Hospitality often omit ", NY".
       | junior['\u2019]?s[\s\S]{0,100}\bcolonie\b
       | \bcolonie\b[\s\S]{0,100}junior['\u2019]?s
@@ -5460,6 +5469,10 @@ _ALBANY_WIRE_REMOTE = re.compile(
       | \bmanhattan\b
       | staten\s+island\b
       | elmhurst\s+hospital\b
+      # Southern-Tier campus wires under an Albany HQ / Hochul dateline.
+      | \bbinghamton\b
+      | suny\s+binghamton\b
+      | binghamton\s+university\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -5537,6 +5550,28 @@ def _albany_wire_statewide_hospitals_conflict(haystack: str) -> bool:
     if not _ALBANY_WIRE_STATEWIDE_HOSPITALS.search(haystack):
         return False
     if _ALBANY_WIRE_LOCAL_RESCUE.search(haystack):
+        return False
+    return True
+
+
+def _albany_hochul_binghamton_conflict(haystack: str) -> bool:
+    """True when Hochul+Albany press copy is about a Binghamton campus launch.
+
+    Governor wires often open ``ALBANY -`` (no ``N.Y.``) while the body is a
+    SUNY Binghamton / Binghamton University announcement. Cap Region civic /
+    plaza rescues still keep.
+    """
+    if not re.search(r'\balbany\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not re.search(r'\bhochul\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not re.search(
+        r'\b(?:suny\s+)?binghamton\b|\bbinghamton\s+university\b',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    if _ALBANY_WIRE_LOCAL_RESCUE.search(haystack) or _ALBANY_LOCAL_RESCUE.search(haystack):
         return False
     return True
 
@@ -5646,10 +5681,13 @@ def _albany_statehouse_metonym_conflict(haystack: str) -> bool:
     "from DC to Albany", election-night "hold on Albany" / "party's hold on
     Albany", statewide policy verdicts ("Albany was right/wrong to …"),
     legislature-as-actor ("Albany passed A.1755"), career-in-capital
-    shorthand ("Albany years"), and "in the New York capital" statehouse
-    locale copy use the capital as metonym without Cap Region place news.
-    Local party organs ("join Albany Democrats at … rally") and civic
-    anchors still rescue. "Rest of Albany County" and bare travel
+    shorthand ("Albany years"), "in the New York capital" statehouse locale
+    copy, "voice(s) in Albany" for statewide seats, "represent … in Albany"
+    for Long Island / East End legislators, "moved up to Albany" Tammany /
+    capital-machine copy, and "Albany has a … revenue/budget surplus"
+    statehouse-coffers copy use the capital as metonym without Cap Region
+    place news. Local party organs ("join Albany Democrats at … rally") and
+    civic anchors still rescue. "Rest of Albany County" and bare travel
     ("headed to Albany this weekend") are Cap Region and do not match.
     """
     if not re.search(
@@ -5678,6 +5716,15 @@ def _albany_statehouse_metonym_conflict(haystack: str) -> bool:
         # Capital-as-destination shorthand for the legislature / statewide slate.
         # Cap Region civic rescues (Lark Street / Empire State Plaza / …) still keep.
         r'\b(?:head(?:ed|ing)|returns?|returning|returned)\s+to\s+albany\b|'
+        # Statewide seat / chamber voice ("one more voice in Albany for …").
+        r'\bvoices?\s+in\s+albany\b|'
+        # Legislator destination ("represent the East End in Albany").
+        r'\brepresent(?:s|ed|ing)?\b[\s\S]{0,100}\bin\s+albany\b|'
+        # Capital-machine shorthand ("Tammany Hall … moved up to Albany").
+        r'\bmoved\s+up\s+to\s+albany\b|'
+        # Statehouse coffers ("Albany has a substantial revenue surplus").
+        r'\balbany\s+has\b[\s\S]{0,100}\b(?:revenue|budget)\s+surplus\b|'
+        r'\b(?:revenue|budget)\s+surplus\b[\s\S]{0,100}\balbany\b|'
         r'\balbany\s+democrats?\s+(?:did(?:n[\u2019\']t|\s+not)|'
         r'can(?:[\u2019\']t|not)|could(?:n[\u2019\']t|\s+not))\b|'
         r'\balbany\s+democrats?\b[\s\S]{0,100}\b(?:'
@@ -6327,6 +6374,8 @@ def _propose_candidate(
             return MatchResult(False, 'hard_negative:albany_wire_remote')
         if _albany_wire_statewide_hospitals_conflict(haystack):
             return MatchResult(False, 'hard_negative:albany_wire_statewide_hospitals')
+        if _albany_hochul_binghamton_conflict(haystack):
+            return MatchResult(False, 'hard_negative:albany_hochul_binghamton')
         if _delveinsight_albany_conflict(haystack):
             return MatchResult(False, 'hard_negative:delveinsight_albany')
         if _bethlehem_holy_land_conflict(haystack):
@@ -6470,6 +6519,8 @@ def _propose_candidate(
                 return MatchResult(False, 'hard_negative:albany_wire_remote')
             if _albany_wire_statewide_hospitals_conflict(haystack):
                 return MatchResult(False, 'hard_negative:albany_wire_statewide_hospitals')
+            if _albany_hochul_binghamton_conflict(haystack):
+                return MatchResult(False, 'hard_negative:albany_hochul_binghamton')
             if _albany_bandscan_conflict(haystack):
                 return MatchResult(False, 'hard_negative:albany_bandscan')
             if _albany_street_cny_conflict(haystack):
