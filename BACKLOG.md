@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-149 — Daily feed audit: Albany surplus/voice/represent/moved FPs; Law/Colonie-based/Price Chopper FNs
-- **Status:** in progress
+- **Status:** done ([#131](https://github.com/chriscarrollsmith/capital-region-feed/pull/131))
 - **Why:** 2026-11-11 audit of last-24h AppView feed (~61 posts) found active
   matcher FPs among rematch-keeps: NYPost/earhart ``Albany has a … revenue
   surplus`` Hochul budget card, ``voice in Albany`` statewide seat copy,
