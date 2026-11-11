@@ -14017,5 +14017,145 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-11-10 audit FP: Albany dateline + eight New York hospitals without Cap Region rescue (truncated card)"
+  },
+  {
+    "id": "fp-albany-revenue-surplus-1111",
+    "text": "Hochul budget chief swats down tax hike push from Mamdani's DSA allies. Gov. Kathy Hochul's budget director said Albany has a substantial $8 billion revenue surplus more than anticipated when the budget was approved.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-11 audit FP: Albany revenue surplus statehouse coffers metonym"
+  },
+  {
+    "id": "fp-voice-in-albany-1111",
+    "text": "Ryan won by 570 votes and makes for one more voice in Albany for universal health and childcare in NYS.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-11 audit FP: voice in Albany statewide seat metonym"
+  },
+  {
+    "id": "fp-represent-east-end-in-albany-1111",
+    "text": "Chris Murray is preparing to represent the East End in Albany with priorities ranging from community colleges to tax reform. New York's 1st Senate District.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-11 audit FP: Long Island legislator represent … in Albany"
+  },
+  {
+    "id": "fp-moved-up-to-albany-1111",
+    "text": "This goes back to Tammany Hall which I assumed moved up to Albany, it did and Hochul is acting.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-11 audit FP: Tammany moved up to Albany capital-machine metonym"
+  },
+  {
+    "id": "fp-albany-hochul-suny-binghamton-1111",
+    "text": "ALBANY - Governor Kathy Hochul launched the New York Center for AI Responsibility and Research at SUNY Binghamton Tuesday.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-11 audit FP: Albany dash dateline + Hochul Binghamton campus wire"
+  },
+  {
+    "id": "fp-albany-ny-binghamton-university-1111",
+    "text": "ALBANY, N.Y. - Governor Kathy Hochul launched the AI center at Binghamton University.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-11 audit FP: Albany N.Y. dateline + Binghamton University remote wire"
+  },
+  {
+    "id": "tp-voice-in-albany-common-council-1111",
+    "text": "One more voice in Albany Common Council backed the Lark Street cleanup.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-11 audit TP: voice-in-Albany civic rescue via Common Council / Lark Street"
+  },
+  {
+    "id": "tp-albany-surplus-empire-state-plaza-1111",
+    "text": "Albany has a substantial budget surplus for Capital Region road repairs near Empire State Plaza.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-11 audit TP: surplus phrasing with Cap Region / Plaza rescue"
+  },
+  {
+    "id": "fn-albany-law-school-1111",
+    "text": "The inaugural Veterans Justice & Advocacy Program cohort has graduated from Albany Law School!",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-11 audit FN: Albany Law School was bare_albany"
+  },
+  {
+    "id": "fn-colonie-based-credit-union-1111",
+    "text": "Sunmark is moving to add a small Colonie-based credit union.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-11 audit FN: Colonie-based business copy was bare_colonie"
+  },
+  {
+    "id": "fn-price-chopper-1111",
+    "text": "Price Chopper has a ThanksVegan section on its website and three of the first ten items listed are various gravies.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-11 audit FN: Price Chopper Cap Region grocery chain"
+  },
+  {
+    "id": "fn-market-32-1111",
+    "text": "Market 32 weekly circular is out with turkey deals.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-11 audit FN: Market 32 Golub banner"
+  },
+  {
+    "id": "tp-siena-hosts-binghamton-still-1111",
+    "text": "Siena hosts Binghamton on Nov. 8, 2026 at 4 p.m. ET",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-11 audit TP: Siena hosts Binghamton must not trip Hochul Binghamton gate"
+  },
+  {
+    "id": "tn-french-colonie-still-1111",
+    "text": "L'ancienne colonie britannique rejoint la liste des membres.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-11 audit TN: French colonie must not keep via Colonie-based cue"
   }
 ]

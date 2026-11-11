@@ -538,6 +538,33 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-149 — Daily feed audit: Albany surplus/voice/represent/moved FPs; Law/Colonie-based/Price Chopper FNs
+- **Status:** in progress
+- **Why:** 2026-11-11 audit of last-24h AppView feed (~61 posts) found active
+  matcher FPs among rematch-keeps: NYPost/earhart ``Albany has a … revenue
+  surplus`` Hochul budget card, ``voice in Albany`` statewide seat copy,
+  Long Island ``represent … in Albany``, Tammany ``moved up to Albany`` +
+  Hochul, and ``ALBANY -`` / ``ALBANY, N.Y.`` Hochul wires launching SUNY
+  Binghamton AI research. Planned ``fn_search.py`` slate (8) all ran OK with
+  no Cap Region FNs (KALB noise, Halfmoon homographs, empties). Exploratory
+  ``Albany Law School``, ``Colonie``, and ``Price Chopper`` surfaced
+  institution / Colonie-based business FNs the floor dropped
+  (``bare_albany`` / ``bare_colonie`` / ``no_match``). Residual allowlisted
+  News10 / Times Union non-local, NWS Albany / Glens Falls climate bots,
+  WAMC bare strong, and soft-prior / resident noise remain intentional.
+- **Work:**
+  - Extend ``_albany_statehouse_metonym_conflict`` for surplus / voice /
+    represent-in-Albany / moved-up-to-Albany (Common Council / Lark Street /
+    Cap Region / Plaza rescues retained).
+  - Gate Hochul+Albany+Binghamton campus wires; add Binghamton to
+    ``_ALBANY_WIRE_REMOTE`` (Siena hosts Binghamton / Plaza rescue keep).
+  - Strong ``Albany Law School``, ``Colonie-based``, Price Chopper / Market 32.
+  - Fold unmerged #130/#129/#128/#127 onto tip.
+  - Grow eval + fn_search log/strategies.
+- **Done when:** Audited FPs drop; Law / Colonie-based / Price Chopper FNs
+  keep; folded prior audit FPs/FNs hold; eval P/R stay 1.000; unit tests
+  cover the new cues.
+
 ### B-148 — Daily feed audit: Albany→Queens hospital wire FP; Canestrari / ACPHS / GF NY fabs FNs
 - **Status:** done ([#130](https://github.com/chriscarrollsmith/capital-region-feed/pull/130))
 - **Why:** 2026-11-10 audit of last-24h AppView feed (~56 posts) found one new
