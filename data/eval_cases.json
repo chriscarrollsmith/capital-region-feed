@@ -14157,5 +14157,105 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-11-11 audit TN: French colonie must not keep via Colonie-based cue"
+  },
+  {
+    "id": "fp-albany-dems-supermajority-hochul",
+    "text": "NYTIMES: Albany Dems' New Supermajority Sets Stage for Showdown With HOCHUL Over Taxes.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-12 audit: chamber Albany Dems supermajority + Hochul is statehouse metonym, not Cap Region city news"
+  },
+  {
+    "id": "tp-albany-ny-dems-common-council-supermajority",
+    "text": "Albany, NY Dems celebrate local Common Council supermajority downtown.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-12 audit: local Common Council rescue for Albany Dems supermajority phrasing"
+  },
+  {
+    "id": "fp-green-wave-to-albany-lawmakers",
+    "text": "Across NY, candidates rode a tide of anger over data centers. My look at what that might mean for Albany climate politics.\nData Centers, Energy Costs Fuel 'Green Wave' to Albany. At least 15 incoming New York lawmakers campaigned on climate.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-12 audit: Green Wave to Albany statewide lawmaker destination metonym"
+  },
+  {
+    "id": "tp-green-wave-to-albany-empire-state-plaza",
+    "text": "Green Wave to Albany: Capital Region climate activists march on Empire State Plaza.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-12 audit: Cap Region / Plaza rescue for Green Wave to Albany phrasing"
+  },
+  {
+    "id": "fp-followers-of-albany-ny-state-politics",
+    "text": "3 men in a room: long time followers of Albany and NY state politics recognize that phrase as an accurate description of how the state operated under Cuomo.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-12 audit: followers of Albany / NY state politics is statehouse-watcher metonym"
+  },
+  {
+    "id": "tp-followers-of-albany-state-capitol",
+    "text": "Followers of Albany and NY state politics gather at the New York State Capitol for the budget hearing.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-12 audit: New York State Capitol rescue for Albany state-politics phrasing"
+  },
+  {
+    "id": "fn-albany-law-review-ssrn",
+    "text": "Zachary Kimmel (Stanford Law School) has posted Establishment Clause Pluralism (Albany Law Review, forthcoming) on SSRN.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-12 audit: Albany Law Review is Cap Region journal (with Albany Law School)"
+  },
+  {
+    "id": "fn-albany-stratton-va-holland-ave",
+    "text": "Nurses from Albany Stratton VA are rallying outside the VA on Holland Ave this Friday.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-12 audit: Albany Stratton VA / Holland Ave is Cap Region landmark"
+  },
+  {
+    "id": "fn-albany-rowing-center-veterans",
+    "text": "Albany Rowing Center veterans talk of friendship as they prepare to compete.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-12 audit: Albany Rowing Center is Cap Region club cue"
+  },
+  {
+    "id": "tn-albany-lawmakers-washington",
+    "text": "Albany lawmakers head to Washington for the hearing.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-12 audit: do not bare-match Albany lawmakers when adding Albany Law Review"
   }
 ]

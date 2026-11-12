@@ -538,6 +538,30 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-150 — Daily feed audit: Albany Dems supermajority / Green Wave / state-politics FPs; Law Review / Stratton / Rowing FNs
+- **Status:** in progress
+- **Why:** 2026-11-12 audit of last-24h AppView feed (~67 posts) found matcher
+  FPs among rematch-keeps: Empire Report ``Albany Dems' New Supermajority`` +
+  Hochul chamber wire, ColinReports ``Green Wave' to Albany`` statewide
+  lawmaker card, and ``followers of Albany and NY state politics`` three-men-
+  in-a-room copy. Folded unmerged #131 already drops the live-feed surplus
+  revenue card. Planned ``fn_search.py`` slate (8) all ran OK with no Cap
+  Region FNs (KALB noise / empties). Exploratory ``Albany Law School``
+  surfaced an ``Albany Law Review`` SSRN FN; Stratton VA / Albany Rowing
+  Center cues were grown so non-allowlisted authors keep. Residual
+  allowlisted News10 / Times Union non-local, NWS Albany / Glens Falls, and
+  soft-prior / ``#capitalregion`` magazine keeps remain intentional.
+- **Work:**
+  - Extend ``_albany_statehouse_metonym_conflict`` for Dems+supermajority,
+    Green Wave to Albany (curly-quote tolerant), and Albany / NY state
+    politics / followers-of-Albany (civic / Plaza / Capitol rescues retained).
+  - Strong ``Albany Law Review``, ``Albany Stratton`` / ``Stratton VA``,
+    ``Albany Rowing Center`` (do not bare-match Albany lawmakers).
+  - Fold unmerged #131 onto tip; grow eval + fn_search log.
+- **Done when:** Audited FPs drop; Law Review / Stratton / Rowing FNs keep;
+  folded prior audit FPs/FNs hold; eval P/R stay 1.000; unit tests cover the
+  new cues.
+
 ### B-149 — Daily feed audit: Albany surplus/voice/represent/moved FPs; Law/Colonie-based/Price Chopper FNs
 - **Status:** done ([#131](https://github.com/chriscarrollsmith/capital-region-feed/pull/131))
 - **Why:** 2026-11-11 audit of last-24h AppView feed (~61 posts) found active
