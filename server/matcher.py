@@ -469,9 +469,14 @@ _STRONG_POSITIVE = re.compile(
       # Albany College of Pharmacy (and Health Sciences) — not bare Albany.
       | albany\s+college\s+of\s+pharmacy\b
       | albany\s+pharmacy\b
-      # Albany Law School graduation / campus copy often omits ", NY".
+      # Albany Law School / Albany Law Review campus copy often omits ", NY".
       # Do not bare-match "Albany lawmakers" / "Albany law enforcement".
-      | albany\s+law\s+school\b
+      | albany\s+law\s+(?:school|review)\b
+      # Samuel S. Stratton VA Medical Center (Albany) — do not bare-match other Strattons.
+      | albany\s+stratton\b
+      | \bstratton\s+va\b
+      # Albany Rowing Center Hudson river club copy often omits ", NY".
+      | albany\s+rowing\s+center\b
       # Price Chopper / Market 32 (Golub Cap Region grocery) product wires.
       | price\s+chopper\b
       | \bmarket\s*32\b
@@ -5684,11 +5689,14 @@ def _albany_statehouse_metonym_conflict(haystack: str) -> bool:
     shorthand ("Albany years"), "in the New York capital" statehouse locale
     copy, "voice(s) in Albany" for statewide seats, "represent … in Albany"
     for Long Island / East End legislators, "moved up to Albany" Tammany /
-    capital-machine copy, and "Albany has a … revenue/budget surplus"
-    statehouse-coffers copy use the capital as metonym without Cap Region
-    place news. Local party organs ("join Albany Democrats at … rally") and
-    civic anchors still rescue. "Rest of Albany County" and bare travel
-    ("headed to Albany this weekend") are Cap Region and do not match.
+    capital-machine copy, "Albany has a … revenue/budget surplus"
+    statehouse-coffers copy, chamber "Albany Dems' … supermajority" wires,
+    statewide "Green Wave to Albany" lawmaker copy, and "Albany … (NY) state
+    politics" / "followers of Albany" statehouse-watcher copy use the capital
+    as metonym without Cap Region place news. Local party organs ("join Albany
+    Democrats at … rally") and civic anchors still rescue. "Rest of Albany
+    County" and bare travel ("headed to Albany this weekend") are Cap Region
+    and do not match.
     """
     if not re.search(
         r'\bdysfunctional\s+albany\b|\balbany\s+sent\b|'
@@ -5725,6 +5733,15 @@ def _albany_statehouse_metonym_conflict(haystack: str) -> bool:
         # Statehouse coffers ("Albany has a substantial revenue surplus").
         r'\balbany\s+has\b[\s\S]{0,100}\b(?:revenue|budget)\s+surplus\b|'
         r'\b(?:revenue|budget)\s+surplus\b[\s\S]{0,100}\balbany\b|'
+        # Chamber control shorthand ("Albany Dems' New Supermajority").
+        r'\balbany\s+dem(?:ocrat)?s?\b[\s\S]{0,80}\bsupermajority\b|'
+        r'\bsupermajority\b[\s\S]{0,80}\balbany\s+dem(?:ocrat)?s?\b|'
+        # Statewide lawmaker destination ("Green Wave to Albany" / "‘Green Wave’ to Albany").
+        r'\b(?:green\s+)?wave[\'\u2019\"]?\s+to\s+albany\b|'
+        # Statehouse-watcher metonym ("followers of Albany and NY state politics").
+        r'\bfollowers?\s+of\s+albany\b|'
+        r'\balbany\s+and\s+(?:ny|n\.y\.|new\s+york)\s+state\s+politics\b|'
+        r'\balbany\b[\s\S]{0,40}\b(?:ny|n\.y\.|new\s+york)\s+state\s+politics\b|'
         r'\balbany\s+democrats?\s+(?:did(?:n[\u2019\']t|\s+not)|'
         r'can(?:[\u2019\']t|not)|could(?:n[\u2019\']t|\s+not))\b|'
         r'\balbany\s+democrats?\b[\s\S]{0,100}\b(?:'

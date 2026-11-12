@@ -6519,3 +6519,82 @@ def test_albany_law_colonie_based_price_chopper_recall() -> None:
     french = match_post("L'ancienne colonie britannique rejoint la liste des membres.")
     assert french.matched is False
     assert french.reason == 'bare_colonie'
+
+
+def test_albany_dems_supermajority_green_wave_state_politics_precision() -> None:
+    """Albany Dems supermajority / Green Wave / state-politics metonyms drop."""
+    dems = match_post(
+        "NYTIMES: Albany Dems' New Supermajority Sets Stage for Showdown With HOCHUL Over Taxes."
+    )
+    assert dems.matched is False
+    assert dems.reason == 'hard_negative:albany_statehouse_metonym'
+
+    green = match_post(
+        'Across NY, candidates rode a tide of anger over data centers. '
+        'My look at what that might mean for Albany climate politics.',
+        alt_text=(
+            "Data Centers, Energy Costs Fuel 'Green Wave' to Albany. "
+            'At least 15 incoming New York lawmakers campaigned on climate.'
+        ),
+    )
+    assert green.matched is False
+    assert green.reason == 'hard_negative:albany_statehouse_metonym'
+
+    curly = match_post(
+        'Statewide climate slate.',
+        alt_text='Data Centers Fuel \u2018Green Wave\u2019\xa0to Albany for New York lawmakers.',
+    )
+    assert curly.matched is False
+    assert curly.reason == 'hard_negative:albany_statehouse_metonym'
+
+    politics = match_post(
+        '3 men in a room: long time followers of Albany and NY state politics '
+        'recognize that phrase as an accurate description of how the state '
+        'operated under Cuomo.'
+    )
+    assert politics.matched is False
+    assert politics.reason == 'hard_negative:albany_statehouse_metonym'
+
+    dems_rescued = match_post(
+        'Albany, NY Dems celebrate local Common Council supermajority downtown.'
+    )
+    assert dems_rescued.matched is True
+
+    green_rescued = match_post(
+        'Green Wave to Albany: Capital Region climate activists march on Empire State Plaza.'
+    )
+    assert green_rescued.matched is True
+
+    rally = match_post('HOCHUL to join Albany Democrats at Saturday campaign rally.')
+    assert rally.matched is True
+    assert rally.reason == 'strong_positive'
+
+
+def test_albany_law_review_stratton_va_rowing_center_recall() -> None:
+    """Albany Law Review / Stratton VA / Albany Rowing Center keep; lawmakers stay out."""
+    review = match_post(
+        'Zachary Kimmel (Stanford Law School) has posted Establishment Clause '
+        'Pluralism (Albany Law Review, forthcoming) on SSRN.'
+    )
+    assert review.matched is True
+    assert review.reason == 'strong_positive'
+
+    stratton = match_post(
+        'Nurses from Albany Stratton VA are rallying outside the VA on Holland Ave.'
+    )
+    assert stratton.matched is True
+    assert stratton.reason == 'strong_positive'
+
+    stratton_va = match_post('Stratton VA Medical Center nurses rally Friday.')
+    assert stratton_va.matched is True
+    assert stratton_va.reason == 'strong_positive'
+
+    rowing = match_post(
+        'Albany Rowing Center veterans talk of friendship as they prepare to compete.'
+    )
+    assert rowing.matched is True
+    assert rowing.reason == 'strong_positive'
+
+    lawmakers = match_post('Albany lawmakers head to Washington for the hearing.')
+    assert lawmakers.matched is False
+    assert lawmakers.reason == 'bare_albany'
