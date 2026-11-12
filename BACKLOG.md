@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-150 — Daily feed audit: Albany Dems supermajority / Green Wave / state-politics FPs; Law Review / Stratton / Rowing FNs
-- **Status:** in progress
+- **Status:** done ([#132](https://github.com/chriscarrollsmith/capital-region-feed/pull/132))
 - **Why:** 2026-11-12 audit of last-24h AppView feed (~67 posts) found matcher
   FPs among rematch-keeps: Empire Report ``Albany Dems' New Supermajority`` +
   Hochul chamber wire, ColinReports ``Green Wave' to Albany`` statewide
