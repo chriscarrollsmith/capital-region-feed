@@ -438,9 +438,10 @@ def test_classify_drops_venue_without_event() -> None:
 
 
 def test_match_post_classifier_reason_for_lark_street() -> None:
+    """Lark Street is a Cap Region strong cue (no longer classifier-only)."""
     result = match_post('Show on Lark Street in Albany tonight. Doors at 8.')
     assert result.matched is True
-    assert result.reason == 'classifier:ambiguous:albany'
+    assert result.reason == 'strong_positive'
 
 
 def test_clark_street_does_not_match_lark_street_micro() -> None:
