@@ -538,6 +538,156 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-151 — Daily feed audit: YIMBY Comes-to-Albany / Heastie bribe / Mid-Hudson station FPs; Palace Theatre / TAB FNs
+- **Status:** done ([#133](https://github.com/chriscarrollsmith/capital-region-feed/pull/133))
+- **Why:** 2026-11-13 audit of last-24h AppView feed (~77 posts) found matcher
+  FPs among rematch-keeps: Manhattan Institute ``Bargain Comes to Albany`` /
+  YIMBY housing statehouse card, ``ALBANY BRIBE`` / Speaker Heastie Assembly
+  suites wire, and Mid-Hudson Rhinecliff/Poughkeepsie station-pickup copy
+  listing bare Albany. Planned ``fn_search.py`` slate (8) all ran OK with no
+  Cap Region FNs (KALB / Caroline Street / North Broadway noise, empties).
+  Exploratory ``Palace Theatre Albany`` / ``TAB Albany`` surfaced Palace
+  Theatre + Albany jamband and ``#TAB`` / ``@trey.com`` setlist FNs.
+  Residual allowlisted News10 / Times Union non-local, NWS Albany / Glens
+  Falls, and soft-prior / ``#capitaldistrictny`` keeps remain intentional.
+- **Work:**
+  - Extend ``_albany_statehouse_metonym_conflict`` for YIMBY / Bargain Comes
+    to Albany (+ state legislature) and Albany bribe / Heastie (civic / Plaza
+    rescues retained; do not bare-match ``comes to Albany``).
+  - Gate ``_albany_mid_hudson_conflict`` for Rhinecliff / Poughkeepsie /
+    Mid-Hudson county + bare Albany (``Albany, NY`` / Cap Region rescue keep;
+    bare Albany + Hudson Valley tourism without those cities still keeps).
+  - Strong Palace Theatre↔Albany co-occurrence; ``#TAB`` / ``@trey.com`` /
+    Trey Anastasio ↔ Albany (LA Palace Theatre stays out).
+  - Fold unmerged #132 onto tip; grow eval + fn_search log/strategies.
+- **Done when:** Audited FPs drop; Palace / TAB FNs keep; folded prior audit
+  FPs/FNs hold; eval P/R stay 1.000; unit tests cover the new cues.
+
+### B-150 — Daily feed audit: Albany Dems supermajority / Green Wave / state-politics FPs; Law Review / Stratton / Rowing FNs
+- **Status:** done ([#132](https://github.com/chriscarrollsmith/capital-region-feed/pull/132))
+- **Why:** 2026-11-12 audit of last-24h AppView feed (~67 posts) found matcher
+  FPs among rematch-keeps: Empire Report ``Albany Dems' New Supermajority`` +
+  Hochul chamber wire, ColinReports ``Green Wave' to Albany`` statewide
+  lawmaker card, and ``followers of Albany and NY state politics`` three-men-
+  in-a-room copy. Folded unmerged #131 already drops the live-feed surplus
+  revenue card. Planned ``fn_search.py`` slate (8) all ran OK with no Cap
+  Region FNs (KALB noise / empties). Exploratory ``Albany Law School``
+  surfaced an ``Albany Law Review`` SSRN FN; Stratton VA / Albany Rowing
+  Center cues were grown so non-allowlisted authors keep. Residual
+  allowlisted News10 / Times Union non-local, NWS Albany / Glens Falls, and
+  soft-prior / ``#capitalregion`` magazine keeps remain intentional.
+- **Work:**
+  - Extend ``_albany_statehouse_metonym_conflict`` for Dems+supermajority,
+    Green Wave to Albany (curly-quote tolerant), and Albany / NY state
+    politics / followers-of-Albany (civic / Plaza / Capitol rescues retained).
+  - Strong ``Albany Law Review``, ``Albany Stratton`` / ``Stratton VA``,
+    ``Albany Rowing Center`` (do not bare-match Albany lawmakers).
+  - Fold unmerged #131 onto tip; grow eval + fn_search log.
+- **Done when:** Audited FPs drop; Law Review / Stratton / Rowing FNs keep;
+  folded prior audit FPs/FNs hold; eval P/R stay 1.000; unit tests cover the
+  new cues.
+
+### B-149 — Daily feed audit: Albany surplus/voice/represent/moved FPs; Law/Colonie-based/Price Chopper FNs
+- **Status:** done ([#131](https://github.com/chriscarrollsmith/capital-region-feed/pull/131))
+- **Why:** 2026-11-11 audit of last-24h AppView feed (~61 posts) found active
+  matcher FPs among rematch-keeps: NYPost/earhart ``Albany has a … revenue
+  surplus`` Hochul budget card, ``voice in Albany`` statewide seat copy,
+  Long Island ``represent … in Albany``, Tammany ``moved up to Albany`` +
+  Hochul, and ``ALBANY -`` / ``ALBANY, N.Y.`` Hochul wires launching SUNY
+  Binghamton AI research. Planned ``fn_search.py`` slate (8) all ran OK with
+  no Cap Region FNs (KALB noise, Halfmoon homographs, empties). Exploratory
+  ``Albany Law School``, ``Colonie``, and ``Price Chopper`` surfaced
+  institution / Colonie-based business FNs the floor dropped
+  (``bare_albany`` / ``bare_colonie`` / ``no_match``). Residual allowlisted
+  News10 / Times Union non-local, NWS Albany / Glens Falls climate bots,
+  WAMC bare strong, and soft-prior / resident noise remain intentional.
+- **Work:**
+  - Extend ``_albany_statehouse_metonym_conflict`` for surplus / voice /
+    represent-in-Albany / moved-up-to-Albany (Common Council / Lark Street /
+    Cap Region / Plaza rescues retained).
+  - Gate Hochul+Albany+Binghamton campus wires; add Binghamton to
+    ``_ALBANY_WIRE_REMOTE`` (Siena hosts Binghamton / Plaza rescue keep).
+  - Strong ``Albany Law School``, ``Colonie-based``, Price Chopper / Market 32.
+  - Fold unmerged #130/#129/#128/#127 onto tip.
+  - Grow eval + fn_search log/strategies.
+- **Done when:** Audited FPs drop; Law / Colonie-based / Price Chopper FNs
+  keep; folded prior audit FPs/FNs hold; eval P/R stay 1.000; unit tests
+  cover the new cues.
+
+### B-148 — Daily feed audit: Albany→Queens hospital wire FP; Canestrari / ACPHS / GF NY fabs FNs
+- **Status:** done ([#130](https://github.com/chriscarrollsmith/capital-region-feed/pull/130))
+- **Why:** 2026-11-10 audit of last-24h AppView feed (~56 posts) found one new
+  matcher FP among rematch-keeps: ``ALBANY, N.Y.`` dateline on statewide
+  NYSERDA hospital energy awards featuring Elmhurst Hospital in Queens
+  (``strong_positive`` via the wire dateline). Folded unmerged #129 already
+  drops Albany-passed / Albany-years metonyms still visible in the live feed.
+  Planned ``fn_search.py`` slate (8) all ran OK with no Cap Region FNs (Utah
+  Saratoga Springs, KALB noise, empties). Exploratory ``Canestrari``,
+  ``Albany College of Pharmacy``, and ``GlobalFoundries`` surfaced tributes
+  and institution wires the floor dropped (``no_match`` / ``bare_albany``).
+  Residual allowlisted News10 / Times Union non-local, NWS Albany / Glens
+  Falls climate bots, Saratoga Race Course career copy, and soft-prior noise
+  remain intentional.
+- **Work:**
+  - Extend ``_albany_wire_remote_conflict`` for Queens / Brooklyn / Bronx /
+    Manhattan / Staten Island / Elmhurst Hospital (Queensbury stays local;
+    Albany Med / Empire State Plaza rescues retained).
+  - Gate Albany dateline + statewide New York hospitals / NYSERDA /
+    Empire Building Challenge award copy (survives embed-description clip).
+  - Strong ``(Ron|Ronald) Canestrari``, Albany College of Pharmacy /
+    Albany Pharmacy, and GlobalFoundries↔fabs in New York cues (bare GF
+    stock tickers stay out).
+  - Fold #129 Albany-passed / Nipper / Lark Street (+ #128 / #127).
+  - Grow eval + fn_search log/strategies.
+- **Done when:** Albany→Queens hospital wire FP drops; Canestrari / ACPHS /
+  GF NY fab FNs keep; folded #129 FPs/FNs hold; eval P/R stay 1.000; unit
+  tests cover the new cues.
+
+### B-147 — Daily feed audit: Albany-passed / Albany-years FPs; Nipper / Lark Street FNs
+- **Status:** done ([#129](https://github.com/chriscarrollsmith/capital-region-feed/pull/129))
+- **Why:** 2026-11-09 audit of last-24h AppView feed (~44 posts) found active
+  matcher FPs among rematch-keeps: NYC Bar ``Albany passed`` statewide WiFi
+  shelter bill and Politico ``Albany years`` / ``in the New York capital``
+  Jeffries House-leadership card. Folded unmerged #128 already drops
+  hold-on-Albany (nysfocus). Planned ``fn_search.py`` slate (8) all ran OK
+  with no Cap Region FNs (Queensbury Rules, KALB noise, empties). Exploratory
+  ``Nipper statue`` surfaced a 991 Broadway landmark card the floor dropped
+  as ``no_match`` (compound ``#AlbanyCityAlbanyCounty`` alone did not unlock
+  Albany). Lark Street corridor copy also needed a strong cue. Residual
+  allowlisted News10 / Times Union non-local, NWS Albany / Glens Falls
+  climate bots, and soft-prior noise remain intentional.
+- **Work:**
+  - Extend Albany statehouse metonym for ``Albany passed``, ``Albany years``,
+    and ``in the New York capital`` (Common Council / Lark Street / Capital
+    Region rescues retained).
+  - Strong Nipper / 991 Broadway, ``#AlbanyCityAlbanyCounty``, and Lark Street
+    cues (Clark Street stays out).
+  - Fold #128 Siena hosts / Franciscan Albany + #127 metonym/Lansingburgh.
+  - Grow eval + fn_search log/strategies.
+- **Done when:** Albany-passed / Albany-years FPs drop; Nipper / Lark Street
+  FNs keep; folded #128 FPs/FNs hold; eval P/R stay 1.000; unit tests cover
+  the new cues.
+
+### B-146 — Daily feed audit: Siena hosts / Franciscan Albany FNs (fold #127)
+- **Status:** done ([#128](https://github.com/chriscarrollsmith/capital-region-feed/pull/128))
+- **Why:** 2026-11-08 audit of last-24h AppView feed (~49 posts) found no new
+  matcher FPs after folding unmerged #127 (hold-on-Albany / Albany-was-right).
+  Planned ``fn_search.py`` slate (8) all ran OK with no Cap Region FNs (Utah
+  Saratoga Springs noise, KALB German/food, empties). Exploratory ``Siena hosts``
+  / ``friars Siena`` / ``Franciscan college Albany`` surfaced Cap Region Siena
+  basketball and Loudonville Franciscan alumni posts the floor dropped as
+  ``no_match`` / ``bare_albany``. Residual allowlisted News10 / Times Union
+  non-local, NWS Albany / Glens Falls climate bots, and soft-prior noise remain
+  intentional.
+- **Work:**
+  - Strong Siena sports host/vs/coming-off cues; Franciscan college↔Albany and
+    friars-at-Siena alumni recall (Italian Siena / Times/Siena poll shorthand
+    stay out).
+  - Fold #127 statehouse metonym + Lansingburgh changes.
+  - Grow eval + fn_search log/strategies.
+- **Done when:** Siena hosts / Franciscan Albany FNs keep; folded #127 FPs drop;
+  eval P/R stay 1.000; unit tests cover the new cues.
+
 ### B-145 — Daily feed audit: hold-on-Albany / Albany-was-right FPs; Lansingburgh FN
 - **Status:** done ([#127](https://github.com/chriscarrollsmith/capital-region-feed/pull/127))
 - **Why:** 2026-11-07 audit of last-24h AppView feed (~65 posts) found active

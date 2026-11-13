@@ -13777,5 +13777,575 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-11-07 counterpart: bare Lansingburgh keep"
+  },
+  {
+    "id": "tp-siena-hosts-binghamton-1108",
+    "text": "Siena hosts Binghamton on Nov. 8, 2026 at 4 p.m. ET, with Siena coming off a 70-68 loss to Maine.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-08 FN: bare Siena basketball host wire"
+  },
+  {
+    "id": "tp-hosts-siena-road-1108",
+    "text": "Princeton hosts Siena on Nov. 8 at 1 p.m. ET.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-08 FN: hosts Siena road game without venue"
+  },
+  {
+    "id": "tp-franciscan-college-albany-siena-1108",
+    "text": "The strip club near our Franciscan college in Albany was named Night Moves. We had party friars at Siena, so it was only a mildly surprised reaction.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-08 FN: Siena Franciscan Albany alumni recall"
+  },
+  {
+    "id": "tn-times-siena-poll-shorthand-1108",
+    "text": "A New York Times/Siena poll from mid-September found 62% of likely voters did not know who Piker was.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-08: Times/Siena national poll shorthand must stay out"
+  },
+  {
+    "id": "tn-siena-italy-palio-1108",
+    "text": "Visiting Siena this fall for the Palio.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-08: Italian Siena tourism must stay out"
+  },
+  {
+    "id": "tp-siena-college-volunteer-1108",
+    "text": "Siena College students volunteer downtown this weekend.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-08 TP counterpart: formal Siena College retained"
+  },
+  {
+    "id": "fp-albany-passed-wifi-homeless-act-1109",
+    "text": "The City Bar joins 40+ organizations urging the Governor to sign the WiFi for Homeless Act. In June, Albany passed A. 1755 / S. 8026 requiring every shelter in New York State to have Wi-Fi.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-09 audit: legislature-as-actor Albany passed statewide shelter WiFi bill"
+  },
+  {
+    "id": "fp-albany-years-new-york-capital-1109",
+    "text": "What Hakeem Jeffries' Albany years reveal about how he'd lead the House. The moderate Democrat developed a signature style in the New York capital.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-09 audit: Albany years / New York capital statehouse career metonym"
+  },
+  {
+    "id": "tp-albany-passed-lark-street-wifi-1109",
+    "text": "Albany passed a local WiFi ordinance for shelters on Lark Street downtown.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-09 TP counterpart: Albany passed with Lark Street civic rescue"
+  },
+  {
+    "id": "tp-albany-years-common-council-1109",
+    "text": "During his Albany years on the Common Council he fought for downtown housing.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-09 TP counterpart: Albany years with Common Council rescue"
+  },
+  {
+    "id": "tp-nipper-991-broadway-1109",
+    "text": "As discussions heat up over the future of Nipper at 991 Broadway, the fate of this beloved statue hangs in the balance amid redevelopment proposals.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-09 FN: Nipper / 991 Broadway landmark without spelled Albany"
+  },
+  {
+    "id": "tp-albanycityalbanycounty-hashtag-1109",
+    "text": "#AlbanyCityAlbanyCounty commissioners advance the Nipper nomination.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-09 FN support: citizen-portal Albany city/county compound geotag"
+  },
+  {
+    "id": "tp-lark-street-herbies-albany-1109",
+    "text": "Herbie's Burgers, the local chain that started on Lark Street in Albany, is expanding with new franchise locations.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-09 recall: Lark Street corridor strong cue"
+  },
+  {
+    "id": "tn-clark-street-not-lark-1109",
+    "text": "Road work on Clark Street downtown Chicago this weekend.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-09 precision: Clark Street must not match Lark Street"
+  },
+  {
+    "id": "fp-albany-wire-queens-elmhurst-1110",
+    "text": "ALBANY, N.Y. - Gov. Kathy Hochul announced Monday that eight New York hospitals will receive energy-efficiency awards. The photograph shows Elmhurst Hospital Center in Queens, one of the hospitals receiving funds.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-10 audit FP: Albany dateline + Queens/Elmhurst hospital statewide NYSERDA awards"
+  },
+  {
+    "id": "tp-albany-wire-queens-with-albany-med-1110",
+    "text": "ALBANY, N.Y. — Albany Med and a Queens hospital both received NYSERDA energy grants announced at Empire State Plaza.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-10 audit TP counterpart: Albany Med / Empire State Plaza rescue Albany+Queens wire"
+  },
+  {
+    "id": "tn-albany-wire-queensbury-still-local-1110",
+    "text": "ALBANY, N.Y. — Early voting opens in Queensbury near Glens Falls.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-10 audit: Queensbury must not trip Albany+Queens wire remote gate"
+  },
+  {
+    "id": "fn-ron-canestrari-1110",
+    "text": "I'm deeply saddened by the loss of my dear friend and colleague, former NYS Assembly Majority Leader Ron Canestrari.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-10 audit FN: Ron Canestrari Cohoes/Assembly civic without placename"
+  },
+  {
+    "id": "fn-ronald-canestrari-1110",
+    "text": "Former Assembly Majority Leader Ronald Canestrari has died.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-10 audit FN: Ronald Canestrari form"
+  },
+  {
+    "id": "fn-albany-college-of-pharmacy-1110",
+    "text": "Albany College of Pharmacy breach: opt-out closed Oct. 16, so claiming is the only move left.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-10 audit FN: Albany College of Pharmacy was bare_albany"
+  },
+  {
+    "id": "fn-albany-college-of-pharmacy-health-sciences-1110",
+    "text": "Albany College of Pharmacy and Health Sciences hosts a campus open house.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-10 audit FN: ACPHS full name"
+  },
+  {
+    "id": "fn-globalfoundries-fabs-new-york-1110",
+    "text": "GlobalFoundries selected to operate two new semiconductor fabs in New York.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-10 audit FN: GF NY fab-operator wires without Malta token"
+  },
+  {
+    "id": "tn-globalfoundries-insider-stock-1110",
+    "text": "GLOBALFOUNDRIES ($GFS) – Insider Purchase • Insider: Jack R Lazar, Director",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-10 audit TN: bare GlobalFoundries stock ticker without NY fab/Malta cues"
+  },
+  {
+    "id": "fp-albany-wire-statewide-hospitals-truncated-1110",
+    "text": "ALBANY, N.Y. - Gov. Kathy Hochul announced Monday that eight New York hospitals will receive a combined nearly $28 million for energy projects.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-10 audit FP: Albany dateline + eight New York hospitals without Cap Region rescue (truncated card)"
+  },
+  {
+    "id": "fp-albany-revenue-surplus-1111",
+    "text": "Hochul budget chief swats down tax hike push from Mamdani's DSA allies. Gov. Kathy Hochul's budget director said Albany has a substantial $8 billion revenue surplus more than anticipated when the budget was approved.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-11 audit FP: Albany revenue surplus statehouse coffers metonym"
+  },
+  {
+    "id": "fp-voice-in-albany-1111",
+    "text": "Ryan won by 570 votes and makes for one more voice in Albany for universal health and childcare in NYS.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-11 audit FP: voice in Albany statewide seat metonym"
+  },
+  {
+    "id": "fp-represent-east-end-in-albany-1111",
+    "text": "Chris Murray is preparing to represent the East End in Albany with priorities ranging from community colleges to tax reform. New York's 1st Senate District.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-11 audit FP: Long Island legislator represent … in Albany"
+  },
+  {
+    "id": "fp-moved-up-to-albany-1111",
+    "text": "This goes back to Tammany Hall which I assumed moved up to Albany, it did and Hochul is acting.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-11 audit FP: Tammany moved up to Albany capital-machine metonym"
+  },
+  {
+    "id": "fp-albany-hochul-suny-binghamton-1111",
+    "text": "ALBANY - Governor Kathy Hochul launched the New York Center for AI Responsibility and Research at SUNY Binghamton Tuesday.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-11 audit FP: Albany dash dateline + Hochul Binghamton campus wire"
+  },
+  {
+    "id": "fp-albany-ny-binghamton-university-1111",
+    "text": "ALBANY, N.Y. - Governor Kathy Hochul launched the AI center at Binghamton University.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-11 audit FP: Albany N.Y. dateline + Binghamton University remote wire"
+  },
+  {
+    "id": "tp-voice-in-albany-common-council-1111",
+    "text": "One more voice in Albany Common Council backed the Lark Street cleanup.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-11 audit TP: voice-in-Albany civic rescue via Common Council / Lark Street"
+  },
+  {
+    "id": "tp-albany-surplus-empire-state-plaza-1111",
+    "text": "Albany has a substantial budget surplus for Capital Region road repairs near Empire State Plaza.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-11 audit TP: surplus phrasing with Cap Region / Plaza rescue"
+  },
+  {
+    "id": "fn-albany-law-school-1111",
+    "text": "The inaugural Veterans Justice & Advocacy Program cohort has graduated from Albany Law School!",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-11 audit FN: Albany Law School was bare_albany"
+  },
+  {
+    "id": "fn-colonie-based-credit-union-1111",
+    "text": "Sunmark is moving to add a small Colonie-based credit union.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-11 audit FN: Colonie-based business copy was bare_colonie"
+  },
+  {
+    "id": "fn-price-chopper-1111",
+    "text": "Price Chopper has a ThanksVegan section on its website and three of the first ten items listed are various gravies.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-11 audit FN: Price Chopper Cap Region grocery chain"
+  },
+  {
+    "id": "fn-market-32-1111",
+    "text": "Market 32 weekly circular is out with turkey deals.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-11 audit FN: Market 32 Golub banner"
+  },
+  {
+    "id": "tp-siena-hosts-binghamton-still-1111",
+    "text": "Siena hosts Binghamton on Nov. 8, 2026 at 4 p.m. ET",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-11 audit TP: Siena hosts Binghamton must not trip Hochul Binghamton gate"
+  },
+  {
+    "id": "tn-french-colonie-still-1111",
+    "text": "L'ancienne colonie britannique rejoint la liste des membres.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-11 audit TN: French colonie must not keep via Colonie-based cue"
+  },
+  {
+    "id": "fp-albany-dems-supermajority-hochul",
+    "text": "NYTIMES: Albany Dems' New Supermajority Sets Stage for Showdown With HOCHUL Over Taxes.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-12 audit: chamber Albany Dems supermajority + Hochul is statehouse metonym, not Cap Region city news"
+  },
+  {
+    "id": "tp-albany-ny-dems-common-council-supermajority",
+    "text": "Albany, NY Dems celebrate local Common Council supermajority downtown.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-12 audit: local Common Council rescue for Albany Dems supermajority phrasing"
+  },
+  {
+    "id": "fp-green-wave-to-albany-lawmakers",
+    "text": "Across NY, candidates rode a tide of anger over data centers. My look at what that might mean for Albany climate politics.\nData Centers, Energy Costs Fuel 'Green Wave' to Albany. At least 15 incoming New York lawmakers campaigned on climate.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-12 audit: Green Wave to Albany statewide lawmaker destination metonym"
+  },
+  {
+    "id": "tp-green-wave-to-albany-empire-state-plaza",
+    "text": "Green Wave to Albany: Capital Region climate activists march on Empire State Plaza.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-12 audit: Cap Region / Plaza rescue for Green Wave to Albany phrasing"
+  },
+  {
+    "id": "fp-followers-of-albany-ny-state-politics",
+    "text": "3 men in a room: long time followers of Albany and NY state politics recognize that phrase as an accurate description of how the state operated under Cuomo.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-12 audit: followers of Albany / NY state politics is statehouse-watcher metonym"
+  },
+  {
+    "id": "tp-followers-of-albany-state-capitol",
+    "text": "Followers of Albany and NY state politics gather at the New York State Capitol for the budget hearing.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-12 audit: New York State Capitol rescue for Albany state-politics phrasing"
+  },
+  {
+    "id": "fn-albany-law-review-ssrn",
+    "text": "Zachary Kimmel (Stanford Law School) has posted Establishment Clause Pluralism (Albany Law Review, forthcoming) on SSRN.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-12 audit: Albany Law Review is Cap Region journal (with Albany Law School)"
+  },
+  {
+    "id": "fn-albany-stratton-va-holland-ave",
+    "text": "Nurses from Albany Stratton VA are rallying outside the VA on Holland Ave this Friday.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-12 audit: Albany Stratton VA / Holland Ave is Cap Region landmark"
+  },
+  {
+    "id": "fn-albany-rowing-center-veterans",
+    "text": "Albany Rowing Center veterans talk of friendship as they prepare to compete.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-12 audit: Albany Rowing Center is Cap Region club cue"
+  },
+  {
+    "id": "tn-albany-lawmakers-washington",
+    "text": "Albany lawmakers head to Washington for the hearing.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-12 audit: do not bare-match Albany lawmakers when adding Albany Law Review"
+  },
+  {
+    "id": "fp-yimby-bargain-comes-to-albany",
+    "text": "My latest brief for the Manhattan Institute: A new report from progressive Democratic state legislators contains the seeds of useful pro-housing reforms.\nThe Left-YIMBY Bargain Comes to Albany. Faced with housing supply shortages, many states have moved vigorously to preempt exclusionary local land-use policies. But the New York State Legislature still lags.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-13 audit FP: YIMBY Bargain Comes to Albany statehouse metonym"
+  },
+  {
+    "id": "tp-yimby-comes-to-albany-plaza",
+    "text": "Bargain Comes to Albany: Capital Region housing activists meet at Empire State Plaza.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-13 audit TP counterpart: Comes to Albany with Plaza rescue"
+  },
+  {
+    "id": "fp-albany-bribe-heastie",
+    "text": "ALBANY BRIBE UPDATE: $1 MILLION Funds NYS Speaker Carl Heastie's Sports Outings. It looks corrupt, said a lawyer who served as New York's top lobbying regulator. New York Assembly Democrats have spent over $1 million on sports since Carl Heastie became speaker.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-13 audit FP: Albany bribe / Heastie Assembly suites statehouse wire"
+  },
+  {
+    "id": "tp-heastie-albany-common-council",
+    "text": "Speaker Heastie visits Albany Common Council to discuss Capital Region transit funding.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-13 audit TP counterpart: Heastie with Common Council rescue"
+  },
+  {
+    "id": "fp-albany-rhinecliff-poughkeepsie-transport",
+    "text": "Train gets in. Then what? Hudson, Rhinecliff, Poughkeepsie, Albany - Titan Bow Transport coordinates pre-arranged station pickups across the Catskills and Hudson Valley.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-13 audit FP: Mid-Hudson station list with bare Albany"
+  },
+  {
+    "id": "tp-albany-ny-poughkeepsie-weekend",
+    "text": "Visit Albany, NY and Poughkeepsie this weekend for a Capital Region rail day trip.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-13 audit TP counterpart: Albany, NY rescues Mid-Hudson pairing"
+  },
+  {
+    "id": "fn-palace-theatre-albany-jamband",
+    "text": "Palace Theatre is hosting TAB tonight and DSO tomorrow, another common Albany jamband W goes up on the big board.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-13 audit FN: Palace Theatre + Albany same-card without possessive"
+  },
+  {
+    "id": "fn-tab-pick5-albany",
+    "text": "#TAB #pick5 @trey.com  Albany   Magilla Curlews Call Sand Mozambique Drifting",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-13 audit FN: #TAB / @trey.com Albany setlist pick"
+  },
+  {
+    "id": "tn-palace-theatre-dtla",
+    "text": "Secret Movie Club Film Festival 2026 at Palace Theatre, dtla. GET TIX.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-13 audit TN: LA Palace Theatre without Albany must stay out"
   }
 ]

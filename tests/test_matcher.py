@@ -2902,6 +2902,38 @@ def test_albany_wire_remote_albuquerque_not_local() -> None:
     assert match_post('ALBANY, N.Y. — A new brewery opens on Lark Street downtown.').matched is True
 
 
+def test_albany_wire_remote_queens_hospital_not_local() -> None:
+    """Albany dateline + Queens/statewide hospital awards drop; local rescues keep."""
+    queens = match_post(
+        'ALBANY, N.Y. - Gov. Kathy Hochul announced Monday that eight New York '
+        'hospitals will receive energy-efficiency awards. The photograph shows '
+        'Elmhurst Hospital Center in Queens, one of the hospitals receiving funds.'
+    )
+    assert queens.matched is False
+    assert queens.reason in {
+        'hard_negative:albany_wire_remote',
+        'hard_negative:albany_wire_statewide_hospitals',
+    }
+
+    # Truncated link-card copy (no Queens token) still drops via statewide hospitals.
+    truncated = match_post(
+        'ALBANY, N.Y. - Gov. Kathy Hochul announced Monday that eight New York '
+        'hospitals will receive a combined nearly $28 million for energy projects.'
+    )
+    assert truncated.matched is False
+    assert truncated.reason == 'hard_negative:albany_wire_statewide_hospitals'
+
+    rescued = match_post(
+        'ALBANY, N.Y. — Albany Med and a Queens hospital both received NYSERDA '
+        'energy grants announced at Empire State Plaza.'
+    )
+    assert rescued.matched is True
+
+    queensbury = match_post('ALBANY, N.Y. — Early voting opens in Queensbury near Glens Falls.')
+    assert queensbury.matched is True
+    assert queensbury.reason == 'strong_positive'
+
+
 def test_albany_ithaca_contrast_not_cap_region() -> None:
     poem = match_post(
         'I decided to become The Poet Laureate Of Tompkins County, New York. '
@@ -3531,6 +3563,31 @@ def test_town_of_malta_cdta_and_local_venue_recall() -> None:
     assert match_post('Bombers Burrito Bar downtown special.').matched is True
     assert match_post('WAMC Roundtable tomorrow morning.').matched is True
     assert match_post('Siena Saints tip off tonight.').matched is True
+    assert (
+        match_post(
+            'Siena hosts Binghamton on Nov. 8, 2026 at 4 p.m. ET, with Siena '
+            'coming off a 70-68 loss to Maine.'
+        ).matched
+        is True
+    )
+    assert match_post('Princeton hosts Siena on Nov. 8 at 1 p.m. ET.').matched is True
+    assert (
+        match_post(
+            'The strip club near our Franciscan college in Albany was named Night '
+            'Moves. We had party friars at Siena, so it was only a mildly '
+            'surprised reaction.'
+        ).matched
+        is True
+    )
+    # Italian tourism and Times/Siena poll shorthand stay out without College.
+    assert match_post('Visiting Siena this fall for the Palio.').matched is False
+    assert (
+        match_post(
+            'A New York Times/Siena poll from mid-September found 62% of likely '
+            'voters did not know who Piker was.'
+        ).matched
+        is False
+    )
     assert match_post('Secret Caverns after dark tour.').matched is True
 
 
@@ -6273,3 +6330,345 @@ def test_lansingburgh_neighborhood_recall() -> None:
     bare = match_post('Lansingburgh block party on 123rd Street this Saturday.')
     assert bare.matched is True
     assert bare.reason == 'strong_positive'
+
+
+def test_albany_passed_and_albany_years_metonym_precision() -> None:
+    """Albany-passed / Albany-years / New York capital metonyms drop; civic rescues keep."""
+    passed = match_post(
+        'The City Bar joins 40+ organizations urging the Governor to sign the '
+        'WiFi for Homeless Act. In June, Albany passed A. 1755 / S. 8026 '
+        'requiring every shelter in New York State to have Wi-Fi.'
+    )
+    assert passed.matched is False
+    assert passed.reason == 'hard_negative:albany_statehouse_metonym'
+
+    years = match_post(
+        "What Hakeem Jeffries' Albany years reveal about how he'd lead the House. "
+        'The moderate Democrat developed a signature style in the New York capital.'
+    )
+    assert years.matched is False
+    assert years.reason == 'hard_negative:albany_statehouse_metonym'
+
+    passed_rescued = match_post(
+        'Albany passed a local WiFi ordinance for shelters on Lark Street downtown.'
+    )
+    assert passed_rescued.matched is True
+    assert passed_rescued.reason == 'strong_positive'
+
+    years_rescued = match_post(
+        'During his Albany years on the Common Council he fought for downtown housing.'
+    )
+    assert years_rescued.matched is True
+    assert years_rescued.reason == 'strong_positive'
+
+
+def test_nipper_991_broadway_and_lark_street_recall() -> None:
+    """Nipper/991 Broadway landmark and Lark Street corridor keep; Clark Street stays out."""
+    nipper = match_post(
+        'As discussions heat up over the future of Nipper at 991 Broadway, the fate '
+        'of this beloved statue hangs in the balance amid redevelopment proposals.'
+    )
+    assert nipper.matched is True
+    assert nipper.reason == 'strong_positive'
+
+    hashtag = match_post('#AlbanyCityAlbanyCounty commissioners advance the Nipper nomination.')
+    assert hashtag.matched is True
+    assert hashtag.reason == 'strong_positive'
+
+    lark = match_post(
+        "Herbie's Burgers, the local chain that started on Lark Street in Albany, "
+        'is expanding with new franchise locations.'
+    )
+    assert lark.matched is True
+    assert lark.reason == 'strong_positive'
+
+    clark = match_post('Road work on Clark Street downtown Chicago this weekend.')
+    assert clark.matched is False
+    assert clark.reason == 'no_match'
+
+
+def test_canestrari_acphs_globalfoundries_ny_fabs_recall() -> None:
+    """Canestrari / Albany College of Pharmacy / GF NY fabs keep; bare GF stock stays out."""
+    canestrari = match_post(
+        "I'm deeply saddened by the loss of my dear friend and colleague, former "
+        'NYS Assembly Majority Leader Ron Canestrari.'
+    )
+    assert canestrari.matched is True
+    assert canestrari.reason == 'strong_positive'
+
+    ronald = match_post('Former Assembly Majority Leader Ronald Canestrari has died.')
+    assert ronald.matched is True
+    assert ronald.reason == 'strong_positive'
+
+    acphs = match_post(
+        'Albany College of Pharmacy breach: opt-out closed Oct. 16, so claiming '
+        'is the only move left.'
+    )
+    assert acphs.matched is True
+    assert acphs.reason == 'strong_positive'
+
+    health = match_post('Albany College of Pharmacy and Health Sciences hosts a campus open house.')
+    assert health.matched is True
+    assert health.reason == 'strong_positive'
+
+    gf = match_post('GlobalFoundries selected to operate two new semiconductor fabs in New York.')
+    assert gf.matched is True
+    assert gf.reason == 'strong_positive'
+
+    stock = match_post(
+        'GLOBALFOUNDRIES ($GFS) – Insider Purchase • Insider: Jack R Lazar, Director'
+    )
+    assert stock.matched is False
+    assert stock.reason == 'no_match'
+
+
+def test_albany_surplus_voice_represent_moved_metonym_precision() -> None:
+    """Albany surplus / voice / represent / moved-up metonyms drop; civic rescues keep."""
+    surplus = match_post(
+        "Hochul budget chief swats down tax hike push from Mamdani's DSA allies. "
+        "Gov. Kathy Hochul's budget director said Albany has a substantial "
+        '$8 billion revenue surplus more than anticipated when the budget was approved.'
+    )
+    assert surplus.matched is False
+    assert surplus.reason == 'hard_negative:albany_statehouse_metonym'
+
+    voice = match_post(
+        'Ryan won by 570 votes and makes for one more voice in Albany for '
+        'universal health and childcare in NYS.'
+    )
+    assert voice.matched is False
+    assert voice.reason == 'hard_negative:albany_statehouse_metonym'
+
+    represent = match_post(
+        'Chris Murray is preparing to represent the East End in Albany with '
+        "priorities ranging from community colleges to tax reform. New York's "
+        '1st Senate District.'
+    )
+    assert represent.matched is False
+    assert represent.reason == 'hard_negative:albany_statehouse_metonym'
+
+    moved = match_post(
+        'This goes back to Tammany Hall which I assumed moved up to Albany, '
+        'it did and Hochul is acting.'
+    )
+    assert moved.matched is False
+    assert moved.reason == 'hard_negative:albany_statehouse_metonym'
+
+    voice_rescued = match_post(
+        'One more voice in Albany Common Council backed the Lark Street cleanup.'
+    )
+    assert voice_rescued.matched is True
+    assert voice_rescued.reason == 'strong_positive'
+
+    surplus_rescued = match_post(
+        'Albany has a substantial budget surplus for Capital Region road repairs '
+        'near Empire State Plaza.'
+    )
+    assert surplus_rescued.matched is True
+
+
+def test_albany_hochul_binghamton_wire_precision() -> None:
+    """Albany/Hochul Binghamton campus wires drop; Cap Region rescue and Siena keep."""
+    bare_dash = match_post(
+        'ALBANY - Governor Kathy Hochul launched the New York Center for AI '
+        'Responsibility and Research at SUNY Binghamton Tuesday.'
+    )
+    assert bare_dash.matched is False
+    assert bare_dash.reason == 'hard_negative:albany_hochul_binghamton'
+
+    dateline = match_post(
+        'ALBANY, N.Y. - Governor Kathy Hochul launched the AI center at Binghamton University.'
+    )
+    assert dateline.matched is False
+    assert dateline.reason == 'hard_negative:albany_wire_remote'
+
+    rescued = match_post(
+        'ALBANY - Governor Kathy Hochul visited SUNY Binghamton after touring Empire State Plaza.'
+    )
+    assert rescued.matched is True
+
+    siena = match_post('Siena hosts Binghamton on Nov. 8, 2026 at 4 p.m. ET')
+    assert siena.matched is True
+    assert siena.reason == 'strong_positive'
+
+
+def test_albany_law_colonie_based_price_chopper_recall() -> None:
+    """Albany Law School / Colonie-based / Price Chopper keep; French colonie stays out."""
+    law = match_post(
+        'The inaugural Veterans Justice & Advocacy Program cohort has graduated '
+        'from Albany Law School!'
+    )
+    assert law.matched is True
+    assert law.reason == 'strong_positive'
+
+    colonie = match_post('Sunmark is moving to add a small Colonie-based credit union.')
+    assert colonie.matched is True
+    assert colonie.reason == 'colonie_local'
+
+    chopper = match_post(
+        'Price Chopper has a ThanksVegan section on its website and three of the '
+        'first ten items listed are various gravies.'
+    )
+    assert chopper.matched is True
+    assert chopper.reason == 'strong_positive'
+
+    market = match_post('Market 32 weekly circular is out with turkey deals.')
+    assert market.matched is True
+    assert market.reason == 'strong_positive'
+
+    french = match_post("L'ancienne colonie britannique rejoint la liste des membres.")
+    assert french.matched is False
+    assert french.reason == 'bare_colonie'
+
+
+def test_albany_dems_supermajority_green_wave_state_politics_precision() -> None:
+    """Albany Dems supermajority / Green Wave / state-politics metonyms drop."""
+    dems = match_post(
+        "NYTIMES: Albany Dems' New Supermajority Sets Stage for Showdown With HOCHUL Over Taxes."
+    )
+    assert dems.matched is False
+    assert dems.reason == 'hard_negative:albany_statehouse_metonym'
+
+    green = match_post(
+        'Across NY, candidates rode a tide of anger over data centers. '
+        'My look at what that might mean for Albany climate politics.',
+        alt_text=(
+            "Data Centers, Energy Costs Fuel 'Green Wave' to Albany. "
+            'At least 15 incoming New York lawmakers campaigned on climate.'
+        ),
+    )
+    assert green.matched is False
+    assert green.reason == 'hard_negative:albany_statehouse_metonym'
+
+    curly = match_post(
+        'Statewide climate slate.',
+        alt_text='Data Centers Fuel \u2018Green Wave\u2019\xa0to Albany for New York lawmakers.',
+    )
+    assert curly.matched is False
+    assert curly.reason == 'hard_negative:albany_statehouse_metonym'
+
+    politics = match_post(
+        '3 men in a room: long time followers of Albany and NY state politics '
+        'recognize that phrase as an accurate description of how the state '
+        'operated under Cuomo.'
+    )
+    assert politics.matched is False
+    assert politics.reason == 'hard_negative:albany_statehouse_metonym'
+
+    dems_rescued = match_post(
+        'Albany, NY Dems celebrate local Common Council supermajority downtown.'
+    )
+    assert dems_rescued.matched is True
+
+    green_rescued = match_post(
+        'Green Wave to Albany: Capital Region climate activists march on Empire State Plaza.'
+    )
+    assert green_rescued.matched is True
+
+    rally = match_post('HOCHUL to join Albany Democrats at Saturday campaign rally.')
+    assert rally.matched is True
+    assert rally.reason == 'strong_positive'
+
+
+def test_albany_law_review_stratton_va_rowing_center_recall() -> None:
+    """Albany Law Review / Stratton VA / Albany Rowing Center keep; lawmakers stay out."""
+    review = match_post(
+        'Zachary Kimmel (Stanford Law School) has posted Establishment Clause '
+        'Pluralism (Albany Law Review, forthcoming) on SSRN.'
+    )
+    assert review.matched is True
+    assert review.reason == 'strong_positive'
+
+    stratton = match_post(
+        'Nurses from Albany Stratton VA are rallying outside the VA on Holland Ave.'
+    )
+    assert stratton.matched is True
+    assert stratton.reason == 'strong_positive'
+
+    stratton_va = match_post('Stratton VA Medical Center nurses rally Friday.')
+    assert stratton_va.matched is True
+    assert stratton_va.reason == 'strong_positive'
+
+    rowing = match_post(
+        'Albany Rowing Center veterans talk of friendship as they prepare to compete.'
+    )
+    assert rowing.matched is True
+    assert rowing.reason == 'strong_positive'
+
+    lawmakers = match_post('Albany lawmakers head to Washington for the hearing.')
+    assert lawmakers.matched is False
+    assert lawmakers.reason == 'bare_albany'
+
+
+def test_yimby_heastie_mid_hudson_precision() -> None:
+    """YIMBY Comes-to-Albany / Heastie bribe / Mid-Hudson station FPs drop; rescues keep."""
+    yimby = match_post(
+        'My latest brief for the Manhattan Institute: progressive Democratic state '
+        'legislators and housing supply.\n'
+        'The Left-YIMBY Bargain Comes to Albany. Faced with housing shortages, '
+        'many states preempt exclusionary land-use policies. But the New York '
+        'State Legislature still lags.'
+    )
+    assert yimby.matched is False
+    assert yimby.reason == 'hard_negative:albany_statehouse_metonym'
+
+    heastie = match_post(
+        "ALBANY BRIBE UPDATE: Funds NYS Speaker Carl Heastie's Sports Outings. "
+        'New York Assembly Democrats have spent over $1 million on sports since '
+        'Carl Heastie became speaker.'
+    )
+    assert heastie.matched is False
+    assert heastie.reason == 'hard_negative:albany_statehouse_metonym'
+
+    mid_hudson = match_post(
+        'Train gets in. Then what? Hudson, Rhinecliff, Poughkeepsie, Albany - '
+        'Titan Bow Transport coordinates pre-arranged station pickups across '
+        'the Catskills and Hudson Valley.'
+    )
+    assert mid_hudson.matched is False
+    assert mid_hudson.reason == 'hard_negative:albany_mid_hudson'
+
+    yimby_rescued = match_post(
+        'Bargain Comes to Albany: Capital Region housing activists meet at Empire State Plaza.'
+    )
+    assert yimby_rescued.matched is True
+
+    heastie_rescued = match_post(
+        'Speaker Heastie visits Albany Common Council to discuss Capital Region transit funding.'
+    )
+    assert heastie_rescued.matched is True
+
+    albany_ny = match_post(
+        'Visit Albany, NY and Poughkeepsie this weekend for a Capital Region rail day trip.'
+    )
+    assert albany_ny.matched is True
+
+    # Bare Albany + Hudson Valley tourism without Mid-Hudson cities still keeps.
+    hv = match_post('Explore Albany and the Hudson Valley this fall for leaf peeping.')
+    assert hv.matched is True
+
+
+def test_palace_theatre_tab_albany_recall() -> None:
+    """Palace Theatre + Albany / #TAB Albany keep; LA Palace Theatre stays out."""
+    palace = match_post(
+        'Palace Theatre is hosting TAB tonight and DSO tomorrow, another common '
+        'Albany jamband W goes up on the big board.'
+    )
+    assert palace.matched is True
+    assert palace.reason == 'strong_positive'
+
+    tab = match_post(
+        '#TAB #pick5 @trey.com  Albany   Magilla Curlews Call Sand Mozambique Drifting'
+    )
+    assert tab.matched is True
+    assert tab.reason == 'strong_positive'
+
+    possessive = match_post(
+        "Trey Anastasio Band will perform at Albany's Palace Theatre on Nov. 12."
+    )
+    assert possessive.matched is True
+    assert possessive.reason == 'strong_positive'
+
+    la = match_post('Secret Movie Club Film Festival 2026 at Palace Theatre, dtla. GET TIX.')
+    assert la.matched is False
+    assert la.reason == 'no_match'

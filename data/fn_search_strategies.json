@@ -85,7 +85,8 @@
         "Aviation Mall",
         "Saratoga Polo",
         "Troy Listening Room",
-        "Albany Institute"
+        "Albany Institute",
+        "Palace Theatre"
       ]
     },
     {
@@ -103,7 +104,9 @@
         "Queensbury Supervisor",
         "Sarah Rogerson",
         "Chloe Pierce",
-        "Paul Tonko"
+        "Paul Tonko",
+        "Nipper statue",
+        "Canestrari"
       ]
     },
     {
@@ -123,7 +126,9 @@
         "tonight Saratoga Springs",
         "Phish Albany",
         "Troy Night Out",
-        "Marylou Whitney"
+        "Marylou Whitney",
+        "Siena hosts",
+        "TAB Albany"
       ]
     },
     {
@@ -151,7 +156,13 @@
       "queries": [
         "Ethan Allen Express",
         "Gabler Realty",
-        "ScotlandShop"
+        "ScotlandShop",
+        "friars Siena",
+        "Franciscan college Albany",
+        "Albany College of Pharmacy",
+        "GlobalFoundries",
+        "Albany Law School",
+        "Price Chopper"
       ]
     }
   ]
