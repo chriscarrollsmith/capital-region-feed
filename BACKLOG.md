@@ -538,6 +538,31 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-151 — Daily feed audit: YIMBY Comes-to-Albany / Heastie bribe / Mid-Hudson station FPs; Palace Theatre / TAB FNs
+- **Status:** in progress
+- **Why:** 2026-11-13 audit of last-24h AppView feed (~77 posts) found matcher
+  FPs among rematch-keeps: Manhattan Institute ``Bargain Comes to Albany`` /
+  YIMBY housing statehouse card, ``ALBANY BRIBE`` / Speaker Heastie Assembly
+  suites wire, and Mid-Hudson Rhinecliff/Poughkeepsie station-pickup copy
+  listing bare Albany. Planned ``fn_search.py`` slate (8) all ran OK with no
+  Cap Region FNs (KALB / Caroline Street / North Broadway noise, empties).
+  Exploratory ``Palace Theatre Albany`` / ``TAB Albany`` surfaced Palace
+  Theatre + Albany jamband and ``#TAB`` / ``@trey.com`` setlist FNs.
+  Residual allowlisted News10 / Times Union non-local, NWS Albany / Glens
+  Falls, and soft-prior / ``#capitaldistrictny`` keeps remain intentional.
+- **Work:**
+  - Extend ``_albany_statehouse_metonym_conflict`` for YIMBY / Bargain Comes
+    to Albany (+ state legislature) and Albany bribe / Heastie (civic / Plaza
+    rescues retained; do not bare-match ``comes to Albany``).
+  - Gate ``_albany_mid_hudson_conflict`` for Rhinecliff / Poughkeepsie /
+    Mid-Hudson county + bare Albany (``Albany, NY`` / Cap Region rescue keep;
+    bare Albany + Hudson Valley tourism without those cities still keeps).
+  - Strong Palace Theatre↔Albany co-occurrence; ``#TAB`` / ``@trey.com`` /
+    Trey Anastasio ↔ Albany (LA Palace Theatre stays out).
+  - Fold unmerged #132 onto tip; grow eval + fn_search log/strategies.
+- **Done when:** Audited FPs drop; Palace / TAB FNs keep; folded prior audit
+  FPs/FNs hold; eval P/R stay 1.000; unit tests cover the new cues.
+
 ### B-150 — Daily feed audit: Albany Dems supermajority / Green Wave / state-politics FPs; Law Review / Stratton / Rowing FNs
 - **Status:** done ([#132](https://github.com/chriscarrollsmith/capital-region-feed/pull/132))
 - **Why:** 2026-11-12 audit of last-24h AppView feed (~67 posts) found matcher

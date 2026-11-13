@@ -14257,5 +14257,95 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-11-12 audit: do not bare-match Albany lawmakers when adding Albany Law Review"
+  },
+  {
+    "id": "fp-yimby-bargain-comes-to-albany",
+    "text": "My latest brief for the Manhattan Institute: A new report from progressive Democratic state legislators contains the seeds of useful pro-housing reforms.\nThe Left-YIMBY Bargain Comes to Albany. Faced with housing supply shortages, many states have moved vigorously to preempt exclusionary local land-use policies. But the New York State Legislature still lags.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-13 audit FP: YIMBY Bargain Comes to Albany statehouse metonym"
+  },
+  {
+    "id": "tp-yimby-comes-to-albany-plaza",
+    "text": "Bargain Comes to Albany: Capital Region housing activists meet at Empire State Plaza.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-13 audit TP counterpart: Comes to Albany with Plaza rescue"
+  },
+  {
+    "id": "fp-albany-bribe-heastie",
+    "text": "ALBANY BRIBE UPDATE: $1 MILLION Funds NYS Speaker Carl Heastie's Sports Outings. It looks corrupt, said a lawyer who served as New York's top lobbying regulator. New York Assembly Democrats have spent over $1 million on sports since Carl Heastie became speaker.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-13 audit FP: Albany bribe / Heastie Assembly suites statehouse wire"
+  },
+  {
+    "id": "tp-heastie-albany-common-council",
+    "text": "Speaker Heastie visits Albany Common Council to discuss Capital Region transit funding.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-13 audit TP counterpart: Heastie with Common Council rescue"
+  },
+  {
+    "id": "fp-albany-rhinecliff-poughkeepsie-transport",
+    "text": "Train gets in. Then what? Hudson, Rhinecliff, Poughkeepsie, Albany - Titan Bow Transport coordinates pre-arranged station pickups across the Catskills and Hudson Valley.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-13 audit FP: Mid-Hudson station list with bare Albany"
+  },
+  {
+    "id": "tp-albany-ny-poughkeepsie-weekend",
+    "text": "Visit Albany, NY and Poughkeepsie this weekend for a Capital Region rail day trip.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-13 audit TP counterpart: Albany, NY rescues Mid-Hudson pairing"
+  },
+  {
+    "id": "fn-palace-theatre-albany-jamband",
+    "text": "Palace Theatre is hosting TAB tonight and DSO tomorrow, another common Albany jamband W goes up on the big board.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-13 audit FN: Palace Theatre + Albany same-card without possessive"
+  },
+  {
+    "id": "fn-tab-pick5-albany",
+    "text": "#TAB #pick5 @trey.com  Albany   Magilla Curlews Call Sand Mozambique Drifting",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-13 audit FN: #TAB / @trey.com Albany setlist pick"
+  },
+  {
+    "id": "tn-palace-theatre-dtla",
+    "text": "Secret Movie Club Film Festival 2026 at Palace Theatre, dtla. GET TIX.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-13 audit TN: LA Palace Theatre without Albany must stay out"
   }
 ]
