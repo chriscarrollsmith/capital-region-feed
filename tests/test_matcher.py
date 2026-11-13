@@ -6598,3 +6598,77 @@ def test_albany_law_review_stratton_va_rowing_center_recall() -> None:
     lawmakers = match_post('Albany lawmakers head to Washington for the hearing.')
     assert lawmakers.matched is False
     assert lawmakers.reason == 'bare_albany'
+
+
+def test_yimby_heastie_mid_hudson_precision() -> None:
+    """YIMBY Comes-to-Albany / Heastie bribe / Mid-Hudson station FPs drop; rescues keep."""
+    yimby = match_post(
+        'My latest brief for the Manhattan Institute: progressive Democratic state '
+        'legislators and housing supply.\n'
+        'The Left-YIMBY Bargain Comes to Albany. Faced with housing shortages, '
+        'many states preempt exclusionary land-use policies. But the New York '
+        'State Legislature still lags.'
+    )
+    assert yimby.matched is False
+    assert yimby.reason == 'hard_negative:albany_statehouse_metonym'
+
+    heastie = match_post(
+        "ALBANY BRIBE UPDATE: Funds NYS Speaker Carl Heastie's Sports Outings. "
+        'New York Assembly Democrats have spent over $1 million on sports since '
+        'Carl Heastie became speaker.'
+    )
+    assert heastie.matched is False
+    assert heastie.reason == 'hard_negative:albany_statehouse_metonym'
+
+    mid_hudson = match_post(
+        'Train gets in. Then what? Hudson, Rhinecliff, Poughkeepsie, Albany - '
+        'Titan Bow Transport coordinates pre-arranged station pickups across '
+        'the Catskills and Hudson Valley.'
+    )
+    assert mid_hudson.matched is False
+    assert mid_hudson.reason == 'hard_negative:albany_mid_hudson'
+
+    yimby_rescued = match_post(
+        'Bargain Comes to Albany: Capital Region housing activists meet at Empire State Plaza.'
+    )
+    assert yimby_rescued.matched is True
+
+    heastie_rescued = match_post(
+        'Speaker Heastie visits Albany Common Council to discuss Capital Region transit funding.'
+    )
+    assert heastie_rescued.matched is True
+
+    albany_ny = match_post(
+        'Visit Albany, NY and Poughkeepsie this weekend for a Capital Region rail day trip.'
+    )
+    assert albany_ny.matched is True
+
+    # Bare Albany + Hudson Valley tourism without Mid-Hudson cities still keeps.
+    hv = match_post('Explore Albany and the Hudson Valley this fall for leaf peeping.')
+    assert hv.matched is True
+
+
+def test_palace_theatre_tab_albany_recall() -> None:
+    """Palace Theatre + Albany / #TAB Albany keep; LA Palace Theatre stays out."""
+    palace = match_post(
+        'Palace Theatre is hosting TAB tonight and DSO tomorrow, another common '
+        'Albany jamband W goes up on the big board.'
+    )
+    assert palace.matched is True
+    assert palace.reason == 'strong_positive'
+
+    tab = match_post(
+        '#TAB #pick5 @trey.com  Albany   Magilla Curlews Call Sand Mozambique Drifting'
+    )
+    assert tab.matched is True
+    assert tab.reason == 'strong_positive'
+
+    possessive = match_post(
+        "Trey Anastasio Band will perform at Albany's Palace Theatre on Nov. 12."
+    )
+    assert possessive.matched is True
+    assert possessive.reason == 'strong_positive'
+
+    la = match_post('Secret Movie Club Film Festival 2026 at Palace Theatre, dtla. GET TIX.')
+    assert la.matched is False
+    assert la.reason == 'no_match'

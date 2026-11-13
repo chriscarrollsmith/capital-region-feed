@@ -157,10 +157,12 @@ _STRONG_POSITIVE = re.compile(
       # Albany music venue — often listed as "Albany: … @ Lark Hall" without ", NY".
       # Leading word boundary: "Peter Clark Hall" (Guelph) must not match "lark Hall".
       | \blark\s+hall\b
-      # Palace Theatre (Albany) — "Albany's Palace Theatre" concert wires.
+      # Palace Theatre (Albany) — possessive / adjacent forms, or same-card Albany.
       | albany['\u2019]?s\s+palace\s+(?:theatre|theater)
       | albany\s+palace\s+(?:theatre|theater)
       | palace\s+(?:theatre|theater)\s+(?:albany|in\s+albany)
+      | \bpalace\s+(?:theatre|theater)\b[\s\S]{0,160}\balbany\b
+      | \balbany\b[\s\S]{0,160}\bpalace\s+(?:theatre|theater)\b
       # Curtain Call Theatre (Latham) — often omits ", NY".
       | curtain\s+call\s+(?:theatre|theater)\b
       # Capital Repertory Theatre (Albany) — hashtag #CapitalRep often omits venue cues.
@@ -810,11 +812,18 @@ _STRONG_POSITIVE = re.compile(
       | \bspac\s*['\u2019]?\s*\d{2}\b
       | \bphish\b[\s\S]{0,100}\bspac\b
       | \bspac\b[\s\S]{0,100}\bphish\b
-      # Phish / pre-show dinner copy names Albany without ", NY".
-      | \bin\s+albany\b[\s\S]{0,160}\b(?:pre-?show|phish)\b
-      | \b(?:pre-?show|phish)\b[\s\S]{0,160}\bin\s+albany\b
+      # Phish / TAB / Trey Anastasio / pre-show dinner copy names Albany without ", NY".
+      | \bin\s+albany\b[\s\S]{0,160}\b(?:pre-?show|phish|trey\s+anastasio)\b
+      | \b(?:pre-?show|phish|trey\s+anastasio)\b[\s\S]{0,160}\bin\s+albany\b
       | \bphish\b[\s\S]{0,120}\balbany\b
       | \balbany\b[\s\S]{0,120}\bphish\b
+      | \btrey\s+anastasio\b[\s\S]{0,120}\balbany\b
+      | \balbany\b[\s\S]{0,120}\btrey\s+anastasio\b
+      # Prefer \#TAB / @trey.com — bare "TAB" collides with spreadsheet / UI jargon.
+      | \#tab\b[\s\S]{0,100}\balbany\b
+      | \balbany\b[\s\S]{0,100}\#tab\b
+      | @trey\.com\b[\s\S]{0,100}\balbany\b
+      | \balbany\b[\s\S]{0,100}@trey\.com\b
       # Local crime / community wires often say "Albany community" without ", NY".
       | albany\s+community\b
       # Thruway incident wires for Town of Rotterdam often omit ", NY".
@@ -4747,6 +4756,44 @@ def _times_union_mid_hudson_conflict(haystack: str) -> bool:
     return True
 
 
+# Mid-Hudson stations / counties that list bare Albany as an HV stop.
+# Do not use bare "Hudson Valley" alone — Cap Region tourism often pairs it.
+_MID_HUDSON_ALBANY_REMOTE = re.compile(
+    r"""
+    (?:
+        \bpoughkeepsie\b
+      | \brhinecliff\b
+      | \bnewburgh\b
+      | \bbeacon\b
+      | dutchess\s+county\b
+      | ulster\s+county\b
+      | orange\s+county\b
+      | putnam\s+county\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+
+def _albany_mid_hudson_conflict(haystack: str) -> bool:
+    """True when bare Albany is only a Mid-Hudson station / county stop.
+
+    Transport cards list Albany beside Rhinecliff / Poughkeepsie without Cap
+    Region place news. Formal ``Albany, NY`` / Capital Region / Troy /
+    Schenectady / civic rescues still keep. Bare ``Albany and the Hudson
+    Valley`` tourism without those Mid-Hudson cities stays eligible.
+    """
+    if not re.search(r'\balbany\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not _MID_HUDSON_ALBANY_REMOTE.search(haystack):
+        return False
+    if _TIMES_UNION_CAP_REGION_RESCUE.search(haystack):
+        return False
+    if _ALBANY_LOCAL_RESCUE.search(haystack) or _ALBANY_WIRE_LOCAL_RESCUE.search(haystack):
+        return False
+    return True
+
+
 # Aggregator ``Source: WNYT`` / ``Source: NEWS10 ABC`` (optionally ``… Albany, NY``)
 # under national chamber-control copy. Cap Region body anchors still rescue.
 # Consume the rest of the source line so scrubbing does not leave a bare
@@ -5691,12 +5738,15 @@ def _albany_statehouse_metonym_conflict(haystack: str) -> bool:
     for Long Island / East End legislators, "moved up to Albany" Tammany /
     capital-machine copy, "Albany has a … revenue/budget surplus"
     statehouse-coffers copy, chamber "Albany Dems' … supermajority" wires,
-    statewide "Green Wave to Albany" lawmaker copy, and "Albany … (NY) state
-    politics" / "followers of Albany" statehouse-watcher copy use the capital
-    as metonym without Cap Region place news. Local party organs ("join Albany
-    Democrats at … rally") and civic anchors still rescue. "Rest of Albany
-    County" and bare travel ("headed to Albany this weekend") are Cap Region
-    and do not match.
+    statewide "Green Wave to Albany" lawmaker copy, "Albany … (NY) state
+    politics" / "followers of Albany" statehouse-watcher copy, YIMBY /
+    housing "Bargain Comes to Albany" / "comes to Albany" + state legislature
+    cards, and "Albany bribe" / Speaker Heastie Assembly-suite wires use the
+    capital as metonym without Cap Region place news. Local party organs
+    ("join Albany Democrats at … rally") and civic anchors still rescue.
+    "Rest of Albany County" and bare travel ("headed to Albany this weekend")
+    are Cap Region and do not match. Do not bare-match "comes to Albany" —
+    Phish / TAB concert cards keep via venue cues.
     """
     if not re.search(
         r'\bdysfunctional\s+albany\b|\balbany\s+sent\b|'
@@ -5742,6 +5792,20 @@ def _albany_statehouse_metonym_conflict(haystack: str) -> bool:
         r'\bfollowers?\s+of\s+albany\b|'
         r'\balbany\s+and\s+(?:ny|n\.y\.|new\s+york)\s+state\s+politics\b|'
         r'\balbany\b[\s\S]{0,40}\b(?:ny|n\.y\.|new\s+york)\s+state\s+politics\b|'
+        # YIMBY / housing statehouse destination ("Bargain Comes to Albany").
+        r'\b(?:yimby\s+)?bargain\s+comes\s+to\s+albany\b|'
+        r'\bcomes\s+to\s+albany\b[\s\S]{0,160}\b(?:'
+        r'yimby|state\s+legislature|state\s+legislators?|land-?use|'
+        r'housing\s+supply|new\s+york\s+state\s+legislature'
+        r')\b|'
+        r'\b(?:'
+        r'yimby|state\s+legislature|state\s+legislators?|land-?use|'
+        r'housing\s+supply|new\s+york\s+state\s+legislature'
+        r')\b[\s\S]{0,160}\bcomes\s+to\s+albany\b|'
+        # Statewide Assembly corruption wires ("ALBANY BRIBE" / Heastie suites).
+        r'\balbany\s+bribe\b|'
+        r'\bheastie\b[\s\S]{0,160}\balbany\b|'
+        r'\balbany\b[\s\S]{0,160}\bheastie\b|'
         r'\balbany\s+democrats?\s+(?:did(?:n[\u2019\']t|\s+not)|'
         r'can(?:[\u2019\']t|not)|could(?:n[\u2019\']t|\s+not))\b|'
         r'\balbany\s+democrats?\b[\s\S]{0,100}\b(?:'
@@ -6361,6 +6425,8 @@ def _propose_candidate(
             return MatchResult(False, 'hard_negative:times_union_photo_credit')
         if _times_union_mid_hudson_conflict(haystack):
             return MatchResult(False, 'hard_negative:times_union_mid_hudson')
+        if _albany_mid_hudson_conflict(haystack):
+            return MatchResult(False, 'hard_negative:albany_mid_hudson')
         if _local_tv_albany_national_source_conflict(haystack):
             return MatchResult(False, 'hard_negative:local_tv_albany_national_source')
         if _route_787_md_conflict(haystack, author_handle):
@@ -6546,6 +6612,8 @@ def _propose_candidate(
                 return MatchResult(False, 'hard_negative:albany_operative')
             if _albany_statehouse_metonym_conflict(haystack):
                 return MatchResult(False, 'hard_negative:albany_statehouse_metonym')
+            if _albany_mid_hudson_conflict(haystack):
+                return MatchResult(False, 'hard_negative:albany_mid_hudson')
             if _albany_suny_roster_conflict(haystack):
                 return MatchResult(False, 'hard_negative:albany_suny_roster')
             if _albany_hashtag_geotag_conflict(haystack):
