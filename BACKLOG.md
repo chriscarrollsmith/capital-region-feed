@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-151 — Daily feed audit: YIMBY Comes-to-Albany / Heastie bribe / Mid-Hudson station FPs; Palace Theatre / TAB FNs
-- **Status:** in progress
+- **Status:** done ([#133](https://github.com/chriscarrollsmith/capital-region-feed/pull/133))
 - **Why:** 2026-11-13 audit of last-24h AppView feed (~77 posts) found matcher
   FPs among rematch-keeps: Manhattan Institute ``Bargain Comes to Albany`` /
   YIMBY housing statehouse card, ``ALBANY BRIBE`` / Speaker Heastie Assembly
