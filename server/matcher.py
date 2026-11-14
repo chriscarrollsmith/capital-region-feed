@@ -114,8 +114,10 @@ _STRONG_POSITIVE = re.compile(
       | show\s+(?:in|at)\s+saratoga\s+springs\b
       | saratoga\s+springs\s+show\b
       # Civic / wellness summits and conferences often omit ", NY".
+      # Allow a short hashtag / handle run between the city and the event noun
+      # ("Saratoga Springs #Walk2Connect workshop").
       | (?:summit|conference|workshop|meetup|expo)\s+(?:in|at)\s+saratoga\s+springs\b
-      | saratoga\s+springs\s+(?:summit|conference|workshop|meetup|expo)\b
+      | saratoga\s+springs(?:[\s\#@]+[\w'-]+){0,4}\s+(?:summit|conference|workshop|meetup|expo)\b
       # Distinctive Saratoga Springs venues / companies often omit ", NY".
       | saratoga\s+music\s+hall\b
       | home\s+made\s+theater\b
@@ -791,6 +793,8 @@ _STRONG_POSITIVE = re.compile(
       # Albany International / ICAO KALB flight cards often omit ", NY".
       # Bare KALB is also KALB-TV (Alexandria, LA) and the surname Kalb.
       # ADS-B cards put "Albany → … National run." then "KALB → KDCA" ~42+ chars apart.
+      # Equity-research "Albany International price target" (AIN ticker) is gated
+      # by _albany_international_equity_conflict — airport / KALB rescues keep.
       | albany\s+international(?:\s+airport)?\b
       | \bkalb\b[\s\S]{0,80}\balbany\b
       | \balbany\b[\s\S]{0,80}\bkalb\b
@@ -5859,6 +5863,52 @@ def _albany_hashtag_only(haystack: str) -> bool:
     return leftover is None
 
 
+def _albany_international_equity_conflict(haystack: str) -> bool:
+    """True when Albany International is the AIN materials ticker, not ALB airport.
+
+    Equity-research cards ("Albany International price target raised … at
+    Truist" / TheFly) match the bare ``albany international`` airport cue.
+    Aviation copy (airport / KALB / flight / runway / terminal) still keeps.
+    """
+    if not re.search(r'\balbany\s+international\b', haystack, flags=re.IGNORECASE):
+        return False
+    if re.search(
+        r"""
+        (?:
+            albany\s+international\s+airport\b
+          | \bkalb\b
+          | \b(?:flight|flights|runway|terminal|taxiway|depart(?:ure|ing|ed)?|
+                land(?:ing|ed)?|touched\s+down|gate\s+[a-z]?\d+)\b
+        )
+        """,
+        haystack,
+        flags=re.IGNORECASE | re.VERBOSE,
+    ):
+        return False
+    return (
+        re.search(
+            r"""
+            (?:
+                price\s+target
+              | analyst\s+(?:raises?|cuts?|upgrades?|downgrades?)
+              | (?:raises?|cuts?|upgrades?|downgrades?)\s+(?:.*\s)?price\s+target
+              | \bthefly\b
+              | \btruist\b
+              | \bequity\s+research\b
+              | \b(?:nyse|nasdaq)\b[\s:]*ain\b
+              | \bain\b[\s:]*(?:nyse|nasdaq)\b
+              | \$ain\b
+              | shares?\s+outstanding
+              | earnings\s+(?:call|report|beat|miss)
+            )
+            """,
+            haystack,
+            flags=re.IGNORECASE | re.VERBOSE,
+        )
+        is not None
+    )
+
+
 def _albany_hashtag_geotag_conflict(haystack: str) -> bool:
     """True when ``#albany`` is SEO/geotag spam unlocked only by bare NY context.
 
@@ -6487,6 +6537,8 @@ def _propose_candidate(
             return MatchResult(False, 'hard_negative:christian_brothers_wny')
         if _albany_statehouse_metonym_conflict(haystack):
             return MatchResult(False, 'hard_negative:albany_statehouse_metonym')
+        if _albany_international_equity_conflict(haystack):
+            return MatchResult(False, 'hard_negative:albany_international_equity')
         if _egg_kansas_city_conflict(haystack):
             return MatchResult(False, 'hard_negative:egg_off_region')
         if _saratoga_stakes_away_conflict(haystack):
@@ -6618,6 +6670,8 @@ def _propose_candidate(
                 return MatchResult(False, 'hard_negative:albany_suny_roster')
             if _albany_hashtag_geotag_conflict(haystack):
                 return MatchResult(False, 'hard_negative:albany_hashtag_geotag')
+            if _albany_international_equity_conflict(haystack):
+                return MatchResult(False, 'hard_negative:albany_international_equity')
             if _NY_CONTEXT.search(place_haystack):
                 return MatchResult(True, 'albany_with_ny_context')
             if _STRONG_POSITIVE.search(haystack):
