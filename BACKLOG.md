@@ -538,6 +538,28 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-152 — Daily feed audit: Albany International AIN equity FP; Saratoga Springs Walk2Connect FN
+- **Status:** in progress
+- **Why:** 2026-11-14 audit of last-24h AppView feed (~89 posts) found one new
+  matcher FP among rematch-keeps: Blueresearch ``Albany International price
+  target`` / Truist / TheFly equity card matched the bare ``albany
+  international`` airport cue (AIN materials ticker, not ALB). Yesterday's
+  YIMBY / Heastie / Mid-Hudson FPs rematch-drop under #133. Planned
+  ``fn_search.py`` slate (8) all ran OK; ``Saratoga Springs`` surfaced an
+  America Walks ``#Walk2Connect`` workshop FN (intervening hashtag broke the
+  ``Saratoga Springs workshop`` strong cue). Exploratory ``Walk2Connect``
+  confirmed the same URI. Residual allowlisted News10 / Times Union
+  non-local, NWS Albany / Glens Falls, and ``#capitalregionny`` rescue keeps
+  remain intentional.
+- **Work:**
+  - Gate ``_albany_international_equity_conflict`` for price-target / Truist /
+    TheFly / AIN ticker cards (airport / KALB / flight rescues retained).
+  - Allow short hashtag / handle runs between ``Saratoga Springs`` and
+    workshop/summit/meetup/expo nouns; Utah Saratoga Springs still drops.
+  - Grow eval + fn_search log; remember ``Walk2Connect`` strategy.
+- **Done when:** Audited FP drops; Walk2Connect FN keeps; airport / KALB
+  counterparts hold; eval P/R stay 1.000; unit tests cover the new cues.
+
 ### B-151 — Daily feed audit: YIMBY Comes-to-Albany / Heastie bribe / Mid-Hudson station FPs; Palace Theatre / TAB FNs
 - **Status:** done ([#133](https://github.com/chriscarrollsmith/capital-region-feed/pull/133))
 - **Why:** 2026-11-13 audit of last-24h AppView feed (~77 posts) found matcher

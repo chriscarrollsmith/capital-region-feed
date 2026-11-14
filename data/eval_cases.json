@@ -14347,5 +14347,65 @@
     "split": "dev",
     "regression": true,
     "note": "2026-11-13 audit TN: LA Palace Theatre without Albany must stay out"
+  },
+  {
+    "id": "fp-albany-international-ain-price-target-1114",
+    "text": "Albany International price target raised by $10 at Truist. Reported Friday via TheFly (subscription required).",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-14 audit: AIN equity-research card matched bare albany international airport cue"
+  },
+  {
+    "id": "tp-albany-international-airport-delay-1114",
+    "text": "Delayed at Albany International Airport for two hours after the morning snow band.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-14 audit: Airport counterpart to AIN equity FP"
+  },
+  {
+    "id": "tp-albany-international-kalb-flight-1114",
+    "text": "KALB -> KCVG night flight from Albany International.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-14 audit: KALB flight card still keeps after AIN equity gate"
+  },
+  {
+    "id": "fn-saratoga-springs-walk2connect-workshop-1114",
+    "text": "A recent Saratoga Springs #Walk2Connect workshop focused on the power of social connection and walking together to train walkability advocates.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-14 audit: intervening hashtag broke Saratoga Springs workshop strong cue"
+  },
+  {
+    "id": "tp-saratoga-springs-workshop-plain-1114",
+    "text": "Saratoga Springs workshop on downtown walkability this Saturday.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-14 audit: plain Saratoga Springs workshop counterpart"
+  },
+  {
+    "id": "tn-saratoga-springs-ut-workshop-1114",
+    "text": "Workshop in Saratoga Springs, Utah for walkability advocates.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-14 audit: Utah Saratoga Springs workshop still drops"
   }
 ]
