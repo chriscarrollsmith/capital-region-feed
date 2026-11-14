@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-152 — Daily feed audit: Albany International AIN equity FP; Saratoga Springs Walk2Connect FN
-- **Status:** in progress
+- **Status:** done ([#134](https://github.com/chriscarrollsmith/capital-region-feed/pull/134))
 - **Why:** 2026-11-14 audit of last-24h AppView feed (~89 posts) found one new
   matcher FP among rematch-keeps: Blueresearch ``Albany International price
   target`` / Truist / TheFly equity card matched the bare ``albany
