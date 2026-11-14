@@ -6672,3 +6672,45 @@ def test_palace_theatre_tab_albany_recall() -> None:
     la = match_post('Secret Movie Club Film Festival 2026 at Palace Theatre, dtla. GET TIX.')
     assert la.matched is False
     assert la.reason == 'no_match'
+
+
+def test_albany_international_equity_not_airport() -> None:
+    """AIN equity-research cards drop; Albany International Airport / KALB keep."""
+    equity = match_post(
+        'Albany International price target raised by $10 at Truist. '
+        'Reported Friday via TheFly (subscription required).'
+    )
+    assert equity.matched is False
+    assert equity.reason == 'hard_negative:albany_international_equity'
+
+    airport = match_post('Delayed at Albany International Airport for two hours.')
+    assert airport.matched is True
+    assert airport.reason == 'strong_positive'
+
+    rescued = match_post(
+        'Albany International Airport runway work — not an AIN price target story.'
+    )
+    assert rescued.matched is True
+    assert rescued.reason == 'strong_positive'
+
+    kalb = match_post('KALB -> KCVG night flight from Albany International.')
+    assert kalb.matched is True
+    assert kalb.reason == 'strong_positive'
+
+
+def test_saratoga_springs_hashtag_workshop_recall() -> None:
+    """Saratoga Springs + workshop keeps even with intervening hashtags."""
+    walk = match_post(
+        'A recent Saratoga Springs #Walk2Connect workshop focused on the power '
+        'of social connection and walking together to train walkability advocates.'
+    )
+    assert walk.matched is True
+    assert walk.reason == 'strong_positive'
+
+    plain = match_post('Saratoga Springs workshop on downtown walkability this Saturday.')
+    assert plain.matched is True
+    assert plain.reason == 'strong_positive'
+
+    utah = match_post('Workshop in Saratoga Springs, Utah for walkability advocates.')
+    assert utah.matched is False
+    assert utah.reason == 'hard_negative:saratoga_springs_utah'
