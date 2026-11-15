@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-153 — Daily feed audit: Albany supermajorities / Source: NEWS10 Hochul ground-stop FPs
-- **Status:** in progress
+- **Status:** done ([#135](https://github.com/chriscarrollsmith/capital-region-feed/pull/135))
 - **Why:** 2026-11-15 audit of last-24h AppView feed (~66 posts) found matcher
   FPs among rematch-keeps: Briefly.co ``Democrats' national and Albany
   supermajorities`` + Hochul tax copy (chamber metonym without a ``Dems``
