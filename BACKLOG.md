@@ -538,6 +538,29 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-153 — Daily feed audit: Albany supermajorities / Source: NEWS10 Hochul ground-stop FPs
+- **Status:** in progress
+- **Why:** 2026-11-15 audit of last-24h AppView feed (~66 posts) found matcher
+  FPs among rematch-keeps: Briefly.co ``Democrats' national and Albany
+  supermajorities`` + Hochul tax copy (chamber metonym without a ``Dems``
+  token), and aggregator ``Source: NEWS10 ABC`` under Hochul × Sean Duffy /
+  nationwide ground-stop cards (also Source: + bare short-link with no Cap
+  Region body). Planned ``fn_search.py`` slate (8) all ran OK with no Cap
+  Region FNs (KALB German noise, Helderberg ZA, Halfmoon decorative, empties).
+  Folded unmerged #134 (AIN equity / Walk2Connect). Residual allowlisted
+  News10 / Times Union non-local, NWS Albany / Glens Falls, and soft-prior /
+  resident keeps remain intentional.
+- **Work:**
+  - Extend ``_albany_statehouse_metonym_conflict`` for bare ``Albany
+    supermajority/ies`` (Common Council rescue retained).
+  - Broaden ``_local_tv_albany_national_source_conflict`` for Hochul ×
+    nationwide ground-stop / Duffy resign under Source: TV lines, and for
+    Source: + URL-only cards with no Cap Region body (Lark Street / Rogerson
+    rescues retained).
+  - Fold #134 onto tip; grow eval + fn_search log.
+- **Done when:** Audited FPs drop; folded AIN / Walk2Connect hold; eval P/R
+  stay 1.000; unit tests cover the new gates.
+
 ### B-152 — Daily feed audit: Albany International AIN equity FP; Saratoga Springs Walk2Connect FN
 - **Status:** done ([#134](https://github.com/chriscarrollsmith/capital-region-feed/pull/134))
 - **Why:** 2026-11-14 audit of last-24h AppView feed (~89 posts) found one new
