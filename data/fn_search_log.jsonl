@@ -362,3 +362,14 @@
 {"used_at": "2026-11-15T09:07:59Z", "query": "KALB", "family": "nickname", "status": "ok", "hits": 7, "false_negatives": 0, "false_negative_ids": [], "notes": "German Kalb / Hirschkuh hunting noise"}
 {"used_at": "2026-11-15T09:07:59Z", "query": "Lincoln Park Albany", "family": "neighborhood", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
 {"used_at": "2026-11-15T09:07:59Z", "query": "Helderberg", "family": "neighborhood", "status": "ok", "hits": 2, "false_negatives": 0, "false_negative_ids": [], "notes": "Somerset West ZA Helderberg College Rd hard_negative"}
+{"used_at": "2026-11-16T09:05:56Z", "query": "Saratoga Springs", "family": "bare_place", "status": "ok", "hits": 6, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-11-16T09:05:56Z", "query": "Leandra's Law", "family": "civic", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-11-16T09:05:57Z", "query": "SPAC", "family": "venue", "status": "ok", "hits": 32, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-11-16T09:05:57Z", "query": "Palace Theatre Albany", "family": "venue", "status": "ok", "hits": 2, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-11-16T09:05:57Z", "query": "Marylou Whitney", "family": "event_phrase", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-11-16T09:05:57Z", "query": "KALB", "family": "nickname", "status": "ok", "hits": 5, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-11-16T09:05:57Z", "query": "Nipper statue", "family": "civic", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-11-16T09:05:57Z", "query": "Sarah Rogerson", "family": "civic", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-11-16T09:05:57Z", "query": "Prospect Park Troy", "family": "neighborhood", "status": "ok", "hits": 1, "false_negatives": 1, "false_negative_ids": ["at://did:plc:dnqao6luc4panxs657o4rdz4/app.bsky.feed.post/3n2evypqggk2y"], "notes": ""}
+{"used_at": "2026-11-16T09:05:57Z", "query": "Buy Nothing Albany", "family": "civic", "status": "ok", "hits": 1, "false_negatives": 1, "false_negative_ids": ["at://did:plc:udnikfhc2eg2gc3rncipsks6/app.bsky.feed.post/3n2epm52zek2h"], "notes": ""}
+{"used_at": "2026-11-16T09:05:57Z", "query": "Veterans Miracle Center", "family": "civic", "status": "ok", "hits": 1, "false_negatives": 1, "false_negative_ids": ["at://did:plc:gzdw53g2cycjycnv2xapdvzc/app.bsky.feed.post/3n2fbg5bg7k2q"], "notes": ""}
