@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-154 — Daily feed audit: Prospect Park Troy / Albany Buy Nothing / Veterans Miracle Center FNs
-- **Status:** in progress
+- **Status:** done ([#136](https://github.com/chriscarrollsmith/capital-region-feed/pull/136))
 - **Why:** 2026-11-16 audit of last-24h AppView feed (~38 posts) found no new
   matcher FPs among rematch-keeps (allowlisted News10 / Times Union non-local,
   NWS Albany / Glens Falls, and Cap Region GlobalFoundries / Knickerbocker /
