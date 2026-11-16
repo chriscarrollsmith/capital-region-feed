@@ -3832,6 +3832,27 @@ def test_frear_park_downtown_troy_crossings_colonie_recall() -> None:
     assert match_post('Town of Bethlehem Public Library book sale this weekend.').matched is True
 
 
+def test_prospect_park_troy_buy_nothing_veterans_miracle_center_recall() -> None:
+    prospect = match_post('Great day for disc golf in Prospect Park in Troy')
+    assert prospect.matched is True
+    assert match_post('Prospect Park is beautiful today').matched is False
+    assert match_post('Great day for disc golf in Prospect Park in Brooklyn').matched is False
+
+    buy = match_post(
+        'I posted to the Albany Buy Nothing group and everything has been claimed '
+        'within literal 5 minutes'
+    )
+    assert buy.matched is True
+    assert match_post('posted to the Oakland Buy Nothing group today').matched is False
+
+    miracle = match_post(
+        'Join NYSDVS at the Veterans Miracle Center! Thurs 9 AM–3 PM '
+        'at 10 Interstate Ave. Albany for FreshConnect checks.'
+    )
+    assert miracle.matched is True
+    assert match_post('Meet at 10 Interstate Ave. Albany for the pantry').matched is True
+
+
 def test_bethlehem_holy_land_carol_not_town() -> None:
     carol = match_post(
         "I'm trying to figure out why this morning's earworm is O Little Town Of Bethlehem"
@@ -6091,6 +6112,24 @@ def test_local_tv_albany_national_source_not_local() -> None:
     assert news10.matched is False
     assert news10.reason == 'hard_negative:local_tv_albany_national_source'
 
+    # Hochul × nationwide ground-stop / Duffy resign under Source: NEWS10.
+    hochul = match_post(
+        'Source: NEWS10 ABC share.google/lHe0WFpwY46N...',
+        alt_text=(
+            'Gov. Hochul calls for Sean Duffy to resign after nationwide '
+            'ground stop. New York Governor Kathy Hochul has called for '
+            'U.S. Transportation Secretary Sean Duffy to resign following '
+            'a nationwide ground stop on Friday.'
+        ),
+    )
+    assert hochul.matched is False
+    assert hochul.reason == 'hard_negative:local_tv_albany_national_source'
+
+    # Source: line plus bare short-link with no Cap Region body.
+    url_only = match_post('Source: NEWS10 ABC share.google/lHe0WFpwY46N...')
+    assert url_only.matched is False
+    assert url_only.reason == 'hard_negative:local_tv_albany_national_source'
+
     # Cap Region body after the source line still keeps.
     lark = match_post('Fire on Lark Street. Source: WNYT NewsChannel 13 Albany, NY')
     assert lark.matched is True
@@ -6555,6 +6594,15 @@ def test_albany_dems_supermajority_green_wave_state_politics_precision() -> None
     assert politics.matched is False
     assert politics.reason == 'hard_negative:albany_statehouse_metonym'
 
+    # Bare "Albany supermajorities" chamber shorthand (no "Dems" token).
+    bare_super = match_post(
+        "Democrats' national and Albany supermajorities strengthen their "
+        'ability to pursue progressive tax increases despite Governor '
+        "Kathy Hochul's veto power."
+    )
+    assert bare_super.matched is False
+    assert bare_super.reason == 'hard_negative:albany_statehouse_metonym'
+
     dems_rescued = match_post(
         'Albany, NY Dems celebrate local Common Council supermajority downtown.'
     )
@@ -6672,3 +6720,45 @@ def test_palace_theatre_tab_albany_recall() -> None:
     la = match_post('Secret Movie Club Film Festival 2026 at Palace Theatre, dtla. GET TIX.')
     assert la.matched is False
     assert la.reason == 'no_match'
+
+
+def test_albany_international_equity_not_airport() -> None:
+    """AIN equity-research cards drop; Albany International Airport / KALB keep."""
+    equity = match_post(
+        'Albany International price target raised by $10 at Truist. '
+        'Reported Friday via TheFly (subscription required).'
+    )
+    assert equity.matched is False
+    assert equity.reason == 'hard_negative:albany_international_equity'
+
+    airport = match_post('Delayed at Albany International Airport for two hours.')
+    assert airport.matched is True
+    assert airport.reason == 'strong_positive'
+
+    rescued = match_post(
+        'Albany International Airport runway work — not an AIN price target story.'
+    )
+    assert rescued.matched is True
+    assert rescued.reason == 'strong_positive'
+
+    kalb = match_post('KALB -> KCVG night flight from Albany International.')
+    assert kalb.matched is True
+    assert kalb.reason == 'strong_positive'
+
+
+def test_saratoga_springs_hashtag_workshop_recall() -> None:
+    """Saratoga Springs + workshop keeps even with intervening hashtags."""
+    walk = match_post(
+        'A recent Saratoga Springs #Walk2Connect workshop focused on the power '
+        'of social connection and walking together to train walkability advocates.'
+    )
+    assert walk.matched is True
+    assert walk.reason == 'strong_positive'
+
+    plain = match_post('Saratoga Springs workshop on downtown walkability this Saturday.')
+    assert plain.matched is True
+    assert plain.reason == 'strong_positive'
+
+    utah = match_post('Workshop in Saratoga Springs, Utah for walkability advocates.')
+    assert utah.matched is False
+    assert utah.reason == 'hard_negative:saratoga_springs_utah'
