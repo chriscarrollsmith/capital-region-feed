@@ -6762,3 +6762,73 @@ def test_saratoga_springs_hashtag_workshop_recall() -> None:
     utah = match_post('Workshop in Saratoga Springs, Utah for walkability advocates.')
     assert utah.matched is False
     assert utah.reason == 'hard_negative:saratoga_springs_utah'
+
+
+def test_wamc_springfield_city_hall_not_capital_region() -> None:
+    """WAMC Springfield MA City Hall / Council cards must not keep on bare wamc."""
+    hall = match_post("For @wamc.org: I'm at Springfield City Hall! For a City Council meeting!")
+    assert hall.matched is False
+    assert hall.reason == 'hard_negative:wamc_western_mass'
+
+    council = match_post(
+        'For @wamc.org: After a glut of scams, a crypto ATM ban advances to '
+        'Springfield City Council.'
+    )
+    assert council.matched is False
+    assert council.reason == 'hard_negative:wamc_western_mass'
+
+    assert match_post('For @wamc.org: Albany Common Council votes tonight.').matched is True
+
+
+def test_albany_fixed_statehouse_and_hochul_mta_precision() -> None:
+    """Albany Fixed statewide policy / Hochul×MTA Albany-watchdog cards drop."""
+    fixed = match_post(
+        "Opinion: Albany Fixed Half of New York's Renter Tax Credit. "
+        "Now It's Time to Finish the Job."
+    )
+    assert fixed.matched is False
+    assert fixed.reason == 'hard_negative:albany_statehouse_metonym'
+
+    mta = match_post(
+        'The Hochul administration robbed the MTA of $200 million in bus '
+        'operating funds, a bombshell report from an Albany watchdog group shows.',
+        alt_text='Raid! Hochul Leaves MTA Holding $200M Bag - Streetsblog New York City',
+    )
+    assert mta.matched is False
+    assert mta.reason == 'hard_negative:hochul_albany_nyc_mta'
+
+    rescued_fixed = match_post(
+        'Albany Fixed the Lark Street snow route after Common Council testimony.'
+    )
+    assert rescued_fixed.matched is True
+
+    rescued_hochul = match_post(
+        'Hochul and an Albany watchdog group tour Empire State Plaza transit fixes.'
+    )
+    assert rescued_hochul.matched is True
+
+
+def test_knickerbocker_troy_music_hall_wotkyns_recall() -> None:
+    """Knickerbocker Arena / Troy Music Hall / Wotkyns keep without event cues."""
+    knick = match_post(
+        'Watch Jerry Garcia Band November 1991 at The Knick in Albany. '
+        'Performance at The Knickerbocker Arena.'
+    )
+    assert knick.matched is True
+    assert knick.reason == 'strong_positive'
+
+    hall = match_post(
+        'Don McLean stop at Troy Savings Bank Music Hall Saturday, Nov. 14 was bittersweet.'
+    )
+    assert hall.matched is True
+    assert hall.reason == 'strong_positive'
+
+    wotkyns = match_post(
+        "The SECRET History of Troy's Vail's & Wotkyns' Blocks (Forgotten 1860s SYNAGOGUES)."
+    )
+    assert wotkyns.matched is True
+    assert wotkyns.reason == 'strong_positive'
+
+    # NYC medical drama shorthand without Albany must stay out.
+    bare_knick = match_post('Rewatching The Knick this weekend.')
+    assert bare_knick.matched is False
