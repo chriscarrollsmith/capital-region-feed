@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-155 — Daily feed audit: WAMC Springfield / Albany Fixed / Hochul×MTA FPs; Knickerbocker / Troy Music Hall / Wotkyns FNs
-- **Status:** in progress
+- **Status:** done ([#137](https://github.com/chriscarrollsmith/capital-region-feed/pull/137))
 - **Why:** 2026-11-17 audit of last-24h AppView feed (~67 posts) found matcher
   FPs among rematch-keeps: WAMC ``Springfield City Hall`` / ``Springfield City
   Council`` Western Mass civic cards kept on bare ``wamc``; City Limits
