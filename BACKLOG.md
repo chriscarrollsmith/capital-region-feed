@@ -538,6 +538,32 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-155 — Daily feed audit: WAMC Springfield / Albany Fixed / Hochul×MTA FPs; Knickerbocker / Troy Music Hall / Wotkyns FNs
+- **Status:** in progress
+- **Why:** 2026-11-17 audit of last-24h AppView feed (~67 posts) found matcher
+  FPs among rematch-keeps: WAMC ``Springfield City Hall`` / ``Springfield City
+  Council`` Western Mass civic cards kept on bare ``wamc``; City Limits
+  ``Albany Fixed`` statewide renter-tax copy kept via ``albany_with_ny_context``;
+  Streetsblog Hochul×MTA×``Albany watchdog`` kept via ``hochul…albany`` strong
+  co-occurrence with embed title. Soft-prior / residual floor drops on Cap
+  Region cards: Jerry Garcia Band at ``The Knick`` / ``Knickerbocker Arena``,
+  American Pie at ``Troy Savings Bank Music Hall`` without month/event cue, and
+  Troy ``Wotkyns' Blocks`` history. Planned ``fn_search.py`` slate (8) all ran
+  OK with no Cap Region FNs. Exploratory Knickerbocker / The Knick Albany /
+  Troy Savings Bank Music Hall / Wotkyns confirmed the three FNs. Fold
+  unmerged #136 (Prospect Park / Buy Nothing / Veterans Miracle Center;
+  already includes #134–#135).
+- **Work:**
+  - Extend ``_WAMC_WESTERN_MASS`` for Springfield City Hall / Council.
+  - Gate ``Albany Fixed`` as statehouse metonym; gate Hochul×Albany×MTA /
+    Mamdani / Streetsblog NYC without Cap Region rescue.
+  - Strong ``knickerbocker arena`` / ``the knick``↔Albany; ``troy (savings
+    bank )?music hall``; ``wotkyns``.
+  - Grow eval + fn_search log/strategies; fold #136 onto tip.
+- **Done when:** Audited FPs drop and FNs keep; Cap Region WAMC / Hochul
+  rescues retained; bare The Knick TV stays out; eval P/R stay 1.000; unit
+  tests cover the new gates/cues.
+
 ### B-154 — Daily feed audit: Prospect Park Troy / Albany Buy Nothing / Veterans Miracle Center FNs
 - **Status:** done ([#136](https://github.com/chriscarrollsmith/capital-region-feed/pull/136))
 - **Why:** 2026-11-16 audit of last-24h AppView feed (~38 posts) found no new

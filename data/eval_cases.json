@@ -14518,5 +14518,115 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-11-16 audit TP counterpart: Frear Park Troy park cue retained beside Prospect Park"
+  },
+  {
+    "id": "fp-wamc-springfield-city-hall",
+    "text": "For @wamc.org: I'm at Springfield City Hall! For a City Council meeting! Can you believe it?",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-17 audit FP: WAMC Western Mass Springfield City Hall"
+  },
+  {
+    "id": "fp-wamc-springfield-city-council-crypto",
+    "text": "For @wamc.org: 'Absolutely unacceptable': After glut of scams, crypto ATM ban advances to Springfield City Council",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-17 audit FP: WAMC Springfield City Council Western Mass"
+  },
+  {
+    "id": "tp-wamc-albany-common-council-counterpart",
+    "text": "For @wamc.org: Albany Common Council votes tonight on the downtown snow budget.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-17 counterpart: WAMC Cap Region Common Council"
+  },
+  {
+    "id": "fp-albany-fixed-renter-tax-credit",
+    "text": "Opinion: Albany Fixed Half of New York's Renter Tax Credit. Now It's Time to Finish the Job.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-17 audit FP: Albany Fixed statehouse metonym"
+  },
+  {
+    "id": "tp-albany-fixed-lark-street-rescue",
+    "text": "Albany Fixed the Lark Street snow route after Common Council testimony.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-17 counterpart: Albany Fixed + Lark Street rescue"
+  },
+  {
+    "id": "fp-hochul-albany-mta-streetsblog",
+    "text": "The Hochul administration robbed the MTA of $200 million in bus operating funds, a bombshell report from an Albany watchdog group shows. Raid! Hochul Leaves MTA Holding $200M Bag - Streetsblog New York City",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-17 audit FP: Hochul×Albany×MTA NYC Streetsblog"
+  },
+  {
+    "id": "tp-hochul-albany-empire-state-plaza-rescue",
+    "text": "Hochul and an Albany watchdog group tour Empire State Plaza transit fixes.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-17 counterpart: Hochul×Albany with Empire State Plaza rescue"
+  },
+  {
+    "id": "tp-knickerbocker-arena-jgb",
+    "text": "Watch Jerry Garcia Band November 1991 at The Knick in Albany. Performance at The Knickerbocker Arena.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-17 audit FN: Knickerbocker Arena / The Knick Albany"
+  },
+  {
+    "id": "tn-the-knick-tv-without-albany",
+    "text": "Rewatching The Knick this weekend.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-17 counterpart: bare The Knick TV without Albany"
+  },
+  {
+    "id": "tp-troy-savings-bank-music-hall-american-pie",
+    "text": "Don McLean stop at Troy Savings Bank Music Hall Saturday, Nov. 14 was bittersweet.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-17 audit FN: Troy Savings Bank Music Hall without month/event cue"
+  },
+  {
+    "id": "tp-troy-wotkyns-blocks",
+    "text": "The SECRET History of Troy's Vail's & Wotkyns' Blocks (Forgotten 1860s SYNAGOGUES).",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-17 audit FN: Troy Wotkyns Blocks history"
   }
 ]
