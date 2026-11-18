@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-156 — Daily feed audit: Bethlehem PA Planning Commission FP; Unity House / capital-region URL FNs
-- **Status:** in progress
+- **Status:** done ([#138](https://github.com/chriscarrollsmith/capital-region-feed/pull/138))
 - **Why:** 2026-11-18 audit of last-24h AppView feed (~57 posts) found a matcher
   FP among rematch-keeps: WFMZ Lehigh Valley ``Bethlehem Planning Commission``
   data-center copy kept via bare ``bethlehem … planning`` strong civic cue
