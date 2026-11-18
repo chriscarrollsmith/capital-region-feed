@@ -538,6 +538,31 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-156 — Daily feed audit: Bethlehem PA Planning Commission FP; Unity House / capital-region URL FNs
+- **Status:** in progress
+- **Why:** 2026-11-18 audit of last-24h AppView feed (~57 posts) found a matcher
+  FP among rematch-keeps: WFMZ Lehigh Valley ``Bethlehem Planning Commission``
+  data-center copy kept via bare ``bethlehem … planning`` strong civic cue
+  (PA city commission; NY town uses Planning Board; PA markers lived only in
+  the link path, not embed title/description). Soft-prior / residual floor
+  drops on Cap Region cards: ``Unity House in Troy`` / ``A Nun and Two Friars``
+  teaching-kitchen debut, and a WNYT ``…/capital-region/`` Thanksgiving URL
+  slug with no spaced ``Capital Region`` body text. Planned ``fn_search.py``
+  slate (8) all ran OK with no Cap Region FNs. Exploratory Unity House /
+  A Nun and Two Friars / capital-region confirmed the FNs. Fold unmerged
+  #137 (WAMC Springfield / Albany Fixed / Hochul×MTA; already includes
+  #134–#136).
+- **Work:**
+  - Narrow Bethlehem civic strong cue to board/council/planning board; extend
+    ``_BETHLEHEM_PA`` for planning commission / WFMZ / Lehigh County; apply
+    PA conflict on the strong path.
+  - Strong ``Unity House``↔Troy / ``A Nun and Two Friars``; fold
+    ``capital-region`` / ``capital_region`` URL slugs in ``_normalize``.
+  - Grow eval + fn_search log/strategies; fold #137 onto tip.
+- **Done when:** Audited FP drops and FNs keep; Town of Bethlehem NY Planning
+  Board / library retained; eval P/R stay 1.000; unit tests cover the new
+  gates/cues.
+
 ### B-155 — Daily feed audit: WAMC Springfield / Albany Fixed / Hochul×MTA FPs; Knickerbocker / Troy Music Hall / Wotkyns FNs
 - **Status:** done ([#137](https://github.com/chriscarrollsmith/capital-region-feed/pull/137))
 - **Why:** 2026-11-17 audit of last-24h AppView feed (~67 posts) found matcher
