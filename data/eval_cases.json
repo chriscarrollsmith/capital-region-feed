@@ -14347,5 +14347,466 @@
     "split": "dev",
     "regression": true,
     "note": "2026-11-13 audit TN: LA Palace Theatre without Albany must stay out"
+  },
+  {
+    "id": "fp-albany-international-ain-price-target-1114",
+    "text": "Albany International price target raised by $10 at Truist. Reported Friday via TheFly (subscription required).",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-14 audit: AIN equity-research card matched bare albany international airport cue"
+  },
+  {
+    "id": "tp-albany-international-airport-delay-1114",
+    "text": "Delayed at Albany International Airport for two hours after the morning snow band.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-14 audit: Airport counterpart to AIN equity FP"
+  },
+  {
+    "id": "tp-albany-international-kalb-flight-1114",
+    "text": "KALB -> KCVG night flight from Albany International.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-14 audit: KALB flight card still keeps after AIN equity gate"
+  },
+  {
+    "id": "fn-saratoga-springs-walk2connect-workshop-1114",
+    "text": "A recent Saratoga Springs #Walk2Connect workshop focused on the power of social connection and walking together to train walkability advocates.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-14 audit: intervening hashtag broke Saratoga Springs workshop strong cue"
+  },
+  {
+    "id": "tp-saratoga-springs-workshop-plain-1114",
+    "text": "Saratoga Springs workshop on downtown walkability this Saturday.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-14 audit: plain Saratoga Springs workshop counterpart"
+  },
+  {
+    "id": "tn-saratoga-springs-ut-workshop-1114",
+    "text": "Workshop in Saratoga Springs, Utah for walkability advocates.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-14 audit: Utah Saratoga Springs workshop still drops"
+  },
+  {
+    "id": "fp-albany-supermajorities-hochul-tax-1115",
+    "text": "Democrats' national and Albany supermajorities strengthen their ability to pursue progressive tax increases despite Governor Kathy Hochul's veto power.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-15 audit: bare Albany supermajorities chamber metonym (no Dems token)"
+  },
+  {
+    "id": "tp-albany-common-council-supermajority-1115",
+    "text": "Albany, NY Dems celebrate local Common Council supermajority downtown.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-15 audit: Common Council supermajority counterpart to chamber FP"
+  },
+  {
+    "id": "fp-source-news10-hochul-duffy-ground-stop-1115",
+    "text": "Source: NEWS10 ABC share.google/lHe0WFpwY46N...",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "Gov. Hochul calls for Sean Duffy to resign after nationwide ground stop. New York Governor Kathy Hochul has called for U.S. Transportation Secretary Sean Duffy to resign following a nationwide ground stop on Friday.",
+    "note": "2026-11-15 audit: Source: NEWS10 under Hochul x nationwide ground-stop / Duffy resign"
+  },
+  {
+    "id": "fp-source-news10-url-only-1115",
+    "text": "Source: NEWS10 ABC share.google/lHe0WFpwY46N...",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-15 audit: Source: NEWS10 plus bare short-link with no Cap Region body"
+  },
+  {
+    "id": "tp-source-news10-lark-street-1115",
+    "text": "Fire on Lark Street. Source: NEWS10 ABC",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-15 audit: Cap Region body still keeps under Source: NEWS10"
+  },
+  {
+    "id": "fn-prospect-park-troy-disc-golf",
+    "text": "Great day for disc golf in Prospect Park in Troy",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-16 audit FN: Troy Prospect Park without , NY (Brooklyn Prospect Park stays out)"
+  },
+  {
+    "id": "tn-prospect-park-brooklyn",
+    "text": "Great day for disc golf in Prospect Park in Brooklyn",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-16 audit: Brooklyn Prospect Park must not unlock via Troy Prospect Park cue"
+  },
+  {
+    "id": "fn-albany-buy-nothing-group",
+    "text": "I posted to the Albany Buy Nothing group and everything has been claimed within literal 5 minutes",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-16 audit FN: bare Albany Buy Nothing group without , NY"
+  },
+  {
+    "id": "tn-oakland-buy-nothing-group",
+    "text": "I posted to the Oakland Buy Nothing group and everything went fast",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-16 audit: non-Albany Buy Nothing groups stay out"
+  },
+  {
+    "id": "fn-veterans-miracle-center-interstate-ave",
+    "text": "Join NYSDVS at the Veterans Miracle Center! Thurs 9 AM-3 PM at 10 Interstate Ave. Albany for FreshConnect checks.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-16 audit FN: Veterans Miracle Center / Interstate Ave Albany without , NY"
+  },
+  {
+    "id": "tp-frear-park-troy-counterpart",
+    "text": "Morning walk through Frear Park before the Troy farmers market opens",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-16 audit TP counterpart: Frear Park Troy park cue retained beside Prospect Park"
+  },
+  {
+    "id": "fp-wamc-springfield-city-hall",
+    "text": "For @wamc.org: I'm at Springfield City Hall! For a City Council meeting! Can you believe it?",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-17 audit FP: WAMC Western Mass Springfield City Hall"
+  },
+  {
+    "id": "fp-wamc-springfield-city-council-crypto",
+    "text": "For @wamc.org: 'Absolutely unacceptable': After glut of scams, crypto ATM ban advances to Springfield City Council",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-17 audit FP: WAMC Springfield City Council Western Mass"
+  },
+  {
+    "id": "tp-wamc-albany-common-council-counterpart",
+    "text": "For @wamc.org: Albany Common Council votes tonight on the downtown snow budget.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-17 counterpart: WAMC Cap Region Common Council"
+  },
+  {
+    "id": "fp-albany-fixed-renter-tax-credit",
+    "text": "Opinion: Albany Fixed Half of New York's Renter Tax Credit. Now It's Time to Finish the Job.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-17 audit FP: Albany Fixed statehouse metonym"
+  },
+  {
+    "id": "tp-albany-fixed-lark-street-rescue",
+    "text": "Albany Fixed the Lark Street snow route after Common Council testimony.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-17 counterpart: Albany Fixed + Lark Street rescue"
+  },
+  {
+    "id": "fp-hochul-albany-mta-streetsblog",
+    "text": "The Hochul administration robbed the MTA of $200 million in bus operating funds, a bombshell report from an Albany watchdog group shows. Raid! Hochul Leaves MTA Holding $200M Bag - Streetsblog New York City",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-17 audit FP: Hochul×Albany×MTA NYC Streetsblog"
+  },
+  {
+    "id": "tp-hochul-albany-empire-state-plaza-rescue",
+    "text": "Hochul and an Albany watchdog group tour Empire State Plaza transit fixes.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-17 counterpart: Hochul×Albany with Empire State Plaza rescue"
+  },
+  {
+    "id": "tp-knickerbocker-arena-jgb",
+    "text": "Watch Jerry Garcia Band November 1991 at The Knick in Albany. Performance at The Knickerbocker Arena.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-17 audit FN: Knickerbocker Arena / The Knick Albany"
+  },
+  {
+    "id": "tn-the-knick-tv-without-albany",
+    "text": "Rewatching The Knick this weekend.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-17 counterpart: bare The Knick TV without Albany"
+  },
+  {
+    "id": "tp-troy-savings-bank-music-hall-american-pie",
+    "text": "Don McLean stop at Troy Savings Bank Music Hall Saturday, Nov. 14 was bittersweet.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-17 audit FN: Troy Savings Bank Music Hall without month/event cue"
+  },
+  {
+    "id": "tp-troy-wotkyns-blocks",
+    "text": "The SECRET History of Troy's Vail's & Wotkyns' Blocks (Forgotten 1860s SYNAGOGUES).",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-17 audit FN: Troy Wotkyns Blocks history"
+  },
+  {
+    "id": "fp-bethlehem-pa-planning-commission-wfmz",
+    "text": "Plans for second two-story data center in Bethlehem go under the microscope\n\nLess than a week after plans for a two-story data center were approved by the Bethlehem Planning Commission, the review process is beginning for another double-decker proposal in the city.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-18 audit FP: WFMZ Lehigh Valley Bethlehem Planning Commission (PA city), not Town of Bethlehem NY"
+  },
+  {
+    "id": "fp-bethlehem-pa-planning-commission-lehigh",
+    "text": "Bethlehem Planning Commission approved a data center in the Lehigh Valley.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-18 audit FP counterpart: Bethlehem PA Planning Commission + Lehigh Valley"
+  },
+  {
+    "id": "tp-bethlehem-ny-planning-board",
+    "text": "Bethlehem Planning Board hearing on Delaware Ave tonight.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-18 audit TP: Town of Bethlehem NY Planning Board retained after PA commission gate"
+  },
+  {
+    "id": "tp-bethlehem-ny-town-board-delaware",
+    "text": "Town of Bethlehem board meeting tonight on Delaware Ave.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-18 audit TP: Town of Bethlehem NY board retained"
+  },
+  {
+    "id": "tp-unity-house-troy-nun-friars",
+    "text": "Unity House in Troy is working to open a pizza restaurant called A Nun and Two Friars. It will serve as a teaching kitchen for students.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-18 audit FN: Unity House Troy / A Nun and Two Friars"
+  },
+  {
+    "id": "tp-nun-and-two-friars-unity-house",
+    "text": "A Nun and Two Friars prepares for its debut as a Unity House teaching kitchen.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-18 audit FN counterpart: A Nun and Two Friars brand"
+  },
+  {
+    "id": "tp-capital-region-url-slug-thanksgiving",
+    "text": "National Hunger & Homelessness Awareness Week reminds us of food insecurity. https://wnyt.com/top-stories/where-to-find-help-with-thanksgiving-meals-in-the-capital-region/",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-18 audit FN: hyphenated capital-region URL slug (WNYT)"
+  },
+  {
+    "id": "fp-buffalo-to-albany-syracuse-ice",
+    "text": "An ICE plan to detain women in a tent ignites protest in Syracuse. Democrats from Buffalo to Albany are demanding answers about the planned $17 million facility in Western NY.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-19 audit FP: Buffalo-to-Albany statewide span on Syracuse/Western NY ICE card"
+  },
+  {
+    "id": "fp-buffalo-to-albany-western-ny-democrats",
+    "text": "Democrats from Buffalo to Albany denounce a Western NY detention plan.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-19 audit FP counterpart: Buffalo-to-Albany political span + Western NY"
+  },
+  {
+    "id": "tp-albany-to-buffalo-erie-canal",
+    "text": "Ian Mackay is traveling 351 miles in his wheelchair along the Erie Canal from Albany to Buffalo to highlight accessibility.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-19 audit TP: Albany-to-Buffalo Erie Canal retained after Buffalo-to-Albany gate"
+  },
+  {
+    "id": "tp-buffalo-to-albany-empire-state-plaza",
+    "text": "Driving from Buffalo to Albany for a show at Empire State Plaza.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-19 audit TP: Buffalo-to-Albany travel with Cap Region plaza rescue"
+  },
+  {
+    "id": "fp-albany-services-settlement-alba",
+    "text": "New York. Albany Services Settlement\nAlba Services silenced injured workers, manipulated insurance costs, and failed to address harassment. My office is delivering $1.4 million to workers harmed by Alba.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-19 audit FP: AG Alba Services settlement stamped New York + Albany"
+  },
+  {
+    "id": "fp-albany-services-settlement-bare",
+    "text": "New York. Albany Services Settlement",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-19 audit FP counterpart: bare Albany Services Settlement + New York"
+  },
+  {
+    "id": "tp-albany-services-settlement-common-council",
+    "text": "Albany Common Council reviews Albany Services Settlement funds for downtown nonprofits.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-19 audit TP: Albany Services Settlement with Common Council rescue"
+  },
+  {
+    "id": "tp-saratoga-coworking-palette",
+    "text": "Palette to close Saratoga coworking space. Founder Catherine Hover is transitioning to a regional membership model.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-19 audit FN: Saratoga coworking (Palette) without Springs or NY"
+  },
+  {
+    "id": "tp-saratoga-springs-coworking",
+    "text": "Closing our Saratoga Springs coworking location next month.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-19 audit FN counterpart: Saratoga Springs coworking"
+  },
+  {
+    "id": "tp-wolf-road-colonie-don-tequila",
+    "text": "Status uncertain for Don Tequila Mexican Cantina on Wolf Road\nCOLONIE — The restaurant has been closed for more than three weeks.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-19 audit FN: Wolf Road + Colonie restaurant card without NY"
+  },
+  {
+    "id": "tp-colonie-wolf-road-retail",
+    "text": "New shop opening on Wolf Road in Colonie this spring.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-19 audit FN counterpart: Colonie + Wolf Road"
   }
 ]
