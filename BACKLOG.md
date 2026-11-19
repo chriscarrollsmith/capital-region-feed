@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-157 — Daily feed audit: Buffalo-to-Albany / Albany Services Settlement FPs; Saratoga coworking / Wolf Road Colonie FNs
-- **Status:** in progress
+- **Status:** done ([#139](https://github.com/chriscarrollsmith/capital-region-feed/pull/139))
 - **Why:** 2026-11-19 audit of last-24h AppView feed (~61 posts) found matcher
   FPs among rematch-keeps: Syracuse.com ICE card kept via ``albany_with_ny_context``
   on ``Democrats from Buffalo to Albany`` + Western NY, and an AG
