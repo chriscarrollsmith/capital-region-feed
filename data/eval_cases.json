@@ -14698,5 +14698,115 @@
     "split": "dev",
     "regression": true,
     "note": "2026-11-18 audit FN: hyphenated capital-region URL slug (WNYT)"
+  },
+  {
+    "id": "fp-buffalo-to-albany-syracuse-ice",
+    "text": "An ICE plan to detain women in a tent ignites protest in Syracuse. Democrats from Buffalo to Albany are demanding answers about the planned $17 million facility in Western NY.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-19 audit FP: Buffalo-to-Albany statewide span on Syracuse/Western NY ICE card"
+  },
+  {
+    "id": "fp-buffalo-to-albany-western-ny-democrats",
+    "text": "Democrats from Buffalo to Albany denounce a Western NY detention plan.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-19 audit FP counterpart: Buffalo-to-Albany political span + Western NY"
+  },
+  {
+    "id": "tp-albany-to-buffalo-erie-canal",
+    "text": "Ian Mackay is traveling 351 miles in his wheelchair along the Erie Canal from Albany to Buffalo to highlight accessibility.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-19 audit TP: Albany-to-Buffalo Erie Canal retained after Buffalo-to-Albany gate"
+  },
+  {
+    "id": "tp-buffalo-to-albany-empire-state-plaza",
+    "text": "Driving from Buffalo to Albany for a show at Empire State Plaza.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-19 audit TP: Buffalo-to-Albany travel with Cap Region plaza rescue"
+  },
+  {
+    "id": "fp-albany-services-settlement-alba",
+    "text": "New York. Albany Services Settlement\nAlba Services silenced injured workers, manipulated insurance costs, and failed to address harassment. My office is delivering $1.4 million to workers harmed by Alba.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-19 audit FP: AG Alba Services settlement stamped New York + Albany"
+  },
+  {
+    "id": "fp-albany-services-settlement-bare",
+    "text": "New York. Albany Services Settlement",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-19 audit FP counterpart: bare Albany Services Settlement + New York"
+  },
+  {
+    "id": "tp-albany-services-settlement-common-council",
+    "text": "Albany Common Council reviews Albany Services Settlement funds for downtown nonprofits.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-19 audit TP: Albany Services Settlement with Common Council rescue"
+  },
+  {
+    "id": "tp-saratoga-coworking-palette",
+    "text": "Palette to close Saratoga coworking space. Founder Catherine Hover is transitioning to a regional membership model.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-19 audit FN: Saratoga coworking (Palette) without Springs or NY"
+  },
+  {
+    "id": "tp-saratoga-springs-coworking",
+    "text": "Closing our Saratoga Springs coworking location next month.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-19 audit FN counterpart: Saratoga Springs coworking"
+  },
+  {
+    "id": "tp-wolf-road-colonie-don-tequila",
+    "text": "Status uncertain for Don Tequila Mexican Cantina on Wolf Road\nCOLONIE — The restaurant has been closed for more than three weeks.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-19 audit FN: Wolf Road + Colonie restaurant card without NY"
+  },
+  {
+    "id": "tp-colonie-wolf-road-retail",
+    "text": "New shop opening on Wolf Road in Colonie this spring.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-19 audit FN counterpart: Colonie + Wolf Road"
   }
 ]
