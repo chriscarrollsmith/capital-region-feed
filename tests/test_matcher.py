@@ -6880,3 +6880,75 @@ def test_unity_house_troy_and_capital_region_url_recall() -> None:
     )
     assert url.matched is True
     assert url.reason == 'strong_positive'
+
+
+def test_buffalo_to_albany_remote_and_albany_services_settlement_precision() -> None:
+    """Buffalo-to-Albany WNY/CNY spans and Albany Services/Alba AG cards drop."""
+    syracuse = match_post(
+        'An ICE plan to detain women in a tent ignites protest in Syracuse. '
+        'Democrats from Buffalo to Albany are demanding answers about the '
+        'planned $17 million facility in Western NY.'
+    )
+    assert syracuse.matched is False
+    assert syracuse.reason == 'hard_negative:albany_buffalo_to_albany_remote'
+
+    western = match_post('Democrats from Buffalo to Albany denounce a Western NY detention plan.')
+    assert western.matched is False
+    assert western.reason == 'hard_negative:albany_buffalo_to_albany_remote'
+
+    # Opposite direction (Erie Canal) and Cap Region destination travel keep.
+    erie = match_post(
+        'Ian Mackay is traveling 351 miles in his wheelchair along the Erie Canal '
+        'from Albany to Buffalo to highlight accessibility.'
+    )
+    assert erie.matched is True
+
+    plaza = match_post('Driving from Buffalo to Albany for a show at Empire State Plaza.')
+    assert plaza.matched is True
+
+    alba = match_post(
+        'New York. Albany Services Settlement\n'
+        'Alba Services silenced injured workers, manipulated insurance costs, '
+        'and failed to address harassment. My office is delivering $1.4 million '
+        'to workers harmed by Alba.'
+    )
+    assert alba.matched is False
+    assert alba.reason == 'hard_negative:albany_statehouse_metonym'
+
+    bare = match_post('New York. Albany Services Settlement')
+    assert bare.matched is False
+    assert bare.reason == 'hard_negative:albany_statehouse_metonym'
+
+    rescued = match_post(
+        'Albany Common Council reviews Albany Services Settlement funds for downtown nonprofits.'
+    )
+    assert rescued.matched is True
+
+
+def test_saratoga_coworking_and_wolf_road_colonie_recall() -> None:
+    """Saratoga coworking and Wolf Road×Colonie retail cards keep without ', NY'."""
+    palette = match_post(
+        'Palette to close Saratoga coworking space. Founder Catherine Hover is '
+        'transitioning to a regional membership model.'
+    )
+    assert palette.matched is True
+    assert palette.reason == 'strong_positive'
+
+    springs = match_post('Closing our Saratoga Springs coworking location next month.')
+    assert springs.matched is True
+    assert springs.reason == 'strong_positive'
+
+    # Utah Saratoga Springs must still drop.
+    utah = match_post('Saratoga Springs UT coworking space opens near Utah Lake')
+    assert utah.matched is False
+
+    wolf = match_post(
+        'Status uncertain for Don Tequila Mexican Cantina on Wolf Road\n'
+        'COLONIE — The restaurant has been closed for more than three weeks.'
+    )
+    assert wolf.matched is True
+    assert wolf.reason == 'colonie_local'
+
+    retail = match_post('New shop opening on Wolf Road in Colonie this spring.')
+    assert retail.matched is True
+    assert retail.reason == 'colonie_local'
