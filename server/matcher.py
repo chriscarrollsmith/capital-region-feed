@@ -114,13 +114,18 @@ _STRONG_POSITIVE = re.compile(
       | show\s+(?:in|at)\s+saratoga\s+springs\b
       | saratoga\s+springs\s+show\b
       # Civic / wellness summits and conferences often omit ", NY".
+      # Allow a short hashtag / handle run between the city and the event noun
+      # ("Saratoga Springs #Walk2Connect workshop").
       | (?:summit|conference|workshop|meetup|expo)\s+(?:in|at)\s+saratoga\s+springs\b
-      | saratoga\s+springs\s+(?:summit|conference|workshop|meetup|expo)\b
+      | saratoga\s+springs(?:[\s\#@]+[\w'-]+){0,4}\s+(?:summit|conference|workshop|meetup|expo)\b
       # Distinctive Saratoga Springs venues / companies often omit ", NY".
       | saratoga\s+music\s+hall\b
       | home\s+made\s+theater\b
       | saratoga\s+springs\s+theater\b
       | gideon\s+putnam\b
+      # Palette / coworking cards often say "Saratoga coworking" without Springs or ", NY".
+      | saratoga(?:\s+springs)?\s+coworking\b
+      | coworking[\s\S]{0,48}saratoga(?:\s+springs)?\b
       # Amtrak station code / obstruction copy often omits ", NY".
       | saratoga\s+springs\s*\(\s*sar\s*\)
       | south\s+of\s+saratoga\s+springs\b
@@ -245,8 +250,11 @@ _STRONG_POSITIVE = re.compile(
           )[\s\S]{0,120}globalfoundries
       # Town of Bethlehem NY civic / library copy often omits ", NY".
       # Exclude Christmas carol "little town of Bethlehem".
+      # Require "planning board" — bare "Bethlehem Planning Commission" is
+      # Bethlehem, PA (city commission), not the NY town board.
       | (?<!little\s)town\s+of\s+bethlehem\b
-      | bethlehem\s+(?:town\s+)?(?:board|council|planning)\b
+      | bethlehem\s+(?:town\s+)?(?:board|council)\b
+      | bethlehem\s+(?:town\s+)?planning\s+board\b
       | town\s+board[\s\S]{0,120}\bbethlehem\b
       | \bbethlehem\b[\s\S]{0,120}town\s+board
       | bethlehem\s+public\s+library\b
@@ -299,6 +307,10 @@ _STRONG_POSITIVE = re.compile(
       | \#albanycityalbanycounty\b
       # Cap Region downtown corridor — word-boundary so Clark Street stays out.
       | \blark\s+street\b
+      # Central Ave / Avenue corridor cards often pair with Albany without ", NY".
+      # Do not bare-match Central Ave alone (Hackensack / Long Island FPs).
+      | central\s+ave(?:nue)?[\s\S]{0,60}\balbany\b
+      | \balbany\b[\s\S]{0,60}central\s+ave(?:nue)?
       # State-politics / Albany civic copy often omits ", NY".
       | albany\s+democrats?\b
       | hochul[\s\S]{0,120}\balbany\b
@@ -458,8 +470,9 @@ _STRONG_POSITIVE = re.compile(
       # "Seattle Times union", and "New York Times Union" guild phrasing.
       # "current times" + "Union Busting" alt cards must not glue into Times Union.
       | (?<!york\s)(?<!seattle\s)(?<![\w-])times\s+union(?!\s+busting)\b
-      # Aggregator Source: lines for Cap Region TV (national chamber-control
-      # Source: cards stay gated in _local_tv_albany_national_source_conflict).
+      # Aggregator Source: lines for Cap Region TV (national chamber-control /
+      # Hochul×ground-stop / Source:+URL-only cards stay gated in
+      # _local_tv_albany_national_source_conflict).
       | source:\s*(?:news\s*10|wnyt|wrgb|wten|wxxa|cbs\s*6|newschannel\s*13)\b
       # Cap Region incumbents / nicknames often appear without a place name.
       | \bsarah\s+rogerson\b
@@ -588,6 +601,9 @@ _STRONG_POSITIVE = re.compile(
       | downtown\s+troy\b
       # Troy Frear Park / civic copy often omits ", NY".
       | \bfrear\s+park\b
+      # Troy Prospect Park (not Brooklyn Prospect Park) — require Troy nearby.
+      | \bprospect\s+park\b[\s\S]{0,60}\btroy\b
+      | \btroy\b[\s\S]{0,60}\bprospect\s+park\b
       | troy\s+city\s+(?:officials?|council|hall|school)\b
       # Municipal "City of Troy" — not "ancient city of Troy" (Turkey archaeology).
       # Tartarian myth "city of Troy" is gated in ``_troy_ancient_conflict``.
@@ -616,6 +632,13 @@ _STRONG_POSITIVE = re.compile(
       | albany\s+sheriff(?:['\u2019]?s)?\b
       # Albany Public Library event copy often omits ", NY".
       | albany\s+public\s+library\b
+      # Neighborhood Buy Nothing groups often say bare "Albany Buy Nothing".
+      | albany\s+buy\s+nothing\b
+      | buy\s+nothing\s+group\b[\s\S]{0,40}\balbany\b
+      | \balbany\b[\s\S]{0,40}buy\s+nothing\s+group\b
+      # Veterans Miracle Center (Interstate Ave, Albany) outreach often omits ", NY".
+      | veterans\s+miracle\s+center\b
+      | interstate\s+ave(?:nue)?\.?\s*,?\s*albany\b
       # Cap Region chip / landlord auction wires often omit ", NY".
       | semiconductor[\s\S]{0,120}\balbany\b
       | \balbany\b[\s\S]{0,120}semiconductor
@@ -673,6 +696,19 @@ _STRONG_POSITIVE = re.compile(
       | albany\s+international\s+airport\b
       # MVP Arena (Albany) — venue-only posts often omit event cues / placename.
       | mvp\s+arena\b
+      # Pre-renaming name / short form; require Albany so NYC "The Knick" stays out.
+      | knickerbocker\s+arena\b
+      | \bthe\s+knick\b[\s\S]{0,60}\balbany\b
+      | \balbany\b[\s\S]{0,60}\bthe\s+knick\b
+      # Troy Music Hall — venue-only cards often omit event cues / ", NY".
+      | troy\s+savings\s+bank\s+music\s+hall\b
+      | troy\s+music\s+hall\b
+      # Troy historic block name — distinctive without ", NY".
+      | \bwotkyns?\b
+      # Unity House (Troy nonprofit) / teaching-kitchen brand — often omit ", NY".
+      | unity\s+house[\s\S]{0,80}\btroy\b
+      | \btroy\b[\s\S]{0,80}unity\s+house\b
+      | a\s+nun\s+and\s+two\s+friars\b
       # Downtown Troy BID domain — Chowderfest / event cards may omit "Troy".
       | downtowntroyny\.org
       # Tri-City ValleyCats / Joseph L. Bruno Stadium (Troy).
@@ -791,6 +827,8 @@ _STRONG_POSITIVE = re.compile(
       # Albany International / ICAO KALB flight cards often omit ", NY".
       # Bare KALB is also KALB-TV (Alexandria, LA) and the surname Kalb.
       # ADS-B cards put "Albany → … National run." then "KALB → KDCA" ~42+ chars apart.
+      # Equity-research "Albany International price target" (AIN ticker) is gated
+      # by _albany_international_equity_conflict — airport / KALB rescues keep.
       | albany\s+international(?:\s+airport)?\b
       | \bkalb\b[\s\S]{0,80}\balbany\b
       | \balbany\b[\s\S]{0,80}\bkalb\b
@@ -1906,6 +1944,10 @@ _WAMC_WESTERN_MASS = re.compile(
       # Keep cues paired with Springfield so Cap Region WAMC east-west rail
       # advocacy (Albany terminus) is not dropped.
       | springfield(?:['\u2019]?s)?\s+union\s+station\b
+      # Springfield City Hall / City Council civic copy (Western Mass desk).
+      | springfield(?:['\u2019]?s)?\s+city\s+(?:hall|council)\b
+      | \bspringfield\b[\s\S]{0,100}city\s+(?:hall|council)\b
+      | city\s+(?:hall|council)[\s\S]{0,100}\bspringfield\b
       | \bspringfield\b[\s\S]{0,140}(?:
             \bhealey\b|\bwmass\b|west(?:ern)?\s+mass(?:achusetts)?\b|
             \bmassachusetts\b|\#massachusetts\b|springfield\s*,?\s*ma\b|
@@ -2862,6 +2904,8 @@ _BETHLEHEM_PA = re.compile(
     (?:
         bethlehem\s*,?\s*(?:pa|pennsylvania|md|maryland|nh|n\.h\.|new\s+hampshire)\b
       | bethlehem\s+area\b
+      # City of Bethlehem PA Planning Commission (NY town uses Planning Board).
+      | bethlehem\s+planning\s+commission\b
       | bethlehem[\s\S]{0,160}\b(?:
             pa|pennsylvania|philly|philadelphia|md|maryland|nh|n\.h\.|new\s+hampshire
           )\b
@@ -2870,19 +2914,22 @@ _BETHLEHEM_PA = re.compile(
           )\b[\s\S]{0,160}bethlehem
       # Travel/heritage cards often omit ", PA" (CNN steel town / UNESCO / SteelStacks).
       # Lehigh Valley Morning Call / Allentown–Easton civic copy likewise omits ", PA".
+      # WFMZ / Lehigh County URL cards often put PA cues only in the link path.
       | bethlehem[\s\S]{0,220}(?:
             steel(?:stacks|town|\s+town)?|unesco|lehigh\s+valley|
             christmas\s+spirit|industrial\s+heritage|snow\s+globe|
             \#lehighvalley\b|\#allentown\b|\#easton\b|\#pa07\b|
             mcall\.com|\ballentown\b|\beaston\b|
-            liberty\s+(?:and|&)\s+freedom|freedom\s+high\s+school
+            liberty\s+(?:and|&)\s+freedom|freedom\s+high\s+school|
+            wfmz\.com|lehighvalley|lehigh[\s\-]?county
           )
       | (?:
             steel(?:stacks|town|\s+town)?|unesco|lehigh\s+valley|
             christmas\s+spirit|industrial\s+heritage|
             \#lehighvalley\b|\#allentown\b|\#easton\b|\#pa07\b|
             mcall\.com|\ballentown\b|\beaston\b|
-            liberty\s+(?:and|&)\s+freedom|freedom\s+high\s+school
+            liberty\s+(?:and|&)\s+freedom|freedom\s+high\s+school|
+            wfmz\.com|lehighvalley|lehigh[\s\-]?county
           )[\s\S]{0,220}bethlehem
     )
     """,
@@ -3487,6 +3534,13 @@ _COLONIE_LOCAL = re.compile(
       # Cook Park (Colonie) community events often omit ", NY".
       | cook\s+park[\s\S]{0,60}\bcolonie\b
       | \bcolonie\b[\s\S]{0,60}cook\s+park
+      # Wolf Road retail strip (Colonie) restaurant / shop cards often omit ", NY".
+      | wolf\s+road[\s\S]{0,80}\bcolonie\b
+      | \bcolonie\b[\s\S]{0,80}wolf\s+road
+      # Cap Region business wires ("Colonie company" / "Colonie CEO") omit ", NY".
+      # French "colonie" copy does not use these English business forms.
+      | \bcolonie\s+compan(?:y|ies)\b
+      | \bcolonie\s+ceo\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -3559,7 +3613,8 @@ def _normalize(text: str) -> str:
     ``capitol region/district`` is a frequent misspelling of the NY Capital
     Region; folding it here lets strong positives and off-region conflict
     gates share one spelling. Connecticut's ``capitol planning region`` is
-    unchanged (``planning`` sits between the words).
+    unchanged (``planning`` sits between the words). Hyphen/underscore
+    ``capital-region`` URL paths (WNYT / local news slugs) fold the same way.
     """
     collapsed = re.sub(r'\s+', ' ', text or '').strip()
     collapsed = re.sub(
@@ -3571,6 +3626,12 @@ def _normalize(text: str) -> str:
     collapsed = re.sub(
         r'#capitol(region|district)',
         r'#capital\1',
+        collapsed,
+        flags=re.IGNORECASE,
+    )
+    collapsed = re.sub(
+        r'\bcapital[-_](region|district)\b',
+        r'capital \1',
         collapsed,
         flags=re.IGNORECASE,
     )
@@ -4756,6 +4817,37 @@ def _times_union_mid_hudson_conflict(haystack: str) -> bool:
     return True
 
 
+# Aggregator ``Source: Times Union`` lines (NewsBreak / similar) under statewide
+# or non-local bodies. Cap Region place / civic anchors still rescue.
+_TIMES_UNION_SOURCE = re.compile(
+    r'source:\s*times\s+union\b[^\n]*',
+    re.IGNORECASE,
+)
+
+
+def _times_union_aggregator_source_conflict(haystack: str) -> bool:
+    """True when Times Union is only a Source: line without Cap Region body.
+
+    NewsBreak-style cards append ``Source: Times Union`` under statewide NY
+    electricity / policy copy with no Cap Region place news. Cap Region
+    anchors and other strong positives after scrubbing still rescue. Bare
+    Times Union masthead mentions without a Source: prefix are unchanged.
+    """
+    if not _TIMES_UNION_SOURCE.search(haystack):
+        return False
+    scrubbed = _TIMES_UNION_SOURCE.sub(' ', haystack)
+    scrubbed = _TIMES_UNION_TOKEN.sub(' ', scrubbed)
+    if _TIMES_UNION_CAP_REGION_RESCUE.search(scrubbed):
+        return False
+    if _ALBANY_LOCAL_RESCUE.search(scrubbed) or _ALBANY_WIRE_LOCAL_RESCUE.search(scrubbed):
+        return False
+    if _STRONG_POSITIVE.search(scrubbed):
+        return False
+    if _COLONIE_LOCAL.search(scrubbed):
+        return False
+    return True
+
+
 # Mid-Hudson stations / counties that list bare Albany as an HV stop.
 # Do not use bare "Hudson Valley" alone — Cap Region tourism often pairs it.
 _MID_HUDSON_ALBANY_REMOTE = re.compile(
@@ -4824,9 +4916,25 @@ _NATIONAL_CHAMBER_CONTROL = re.compile(
       | \bnbc\s+projects?\b
       | \bap\s+projects?\b
       | associated\s+press\s+projects?\b
+        # Statewide / USDOT cards under Source: NEWS10 (Hochul × Duffy /
+        # nationwide ground stop) are not Cap Region place news.
+      | \bhochul\b[\s\S]{0,160}\b(?:
+            resign(?:s|ed|ing)?|ground\s+stop|nationwide|
+            duffy|transportation\s+secretary|faa\b
+        )\b
+      | \b(?:
+            resign(?:s|ed|ing)?|ground\s+stop|nationwide|
+            duffy|transportation\s+secretary|faa\b
+        )\b[\s\S]{0,160}\bhochul\b
+      | \bnationwide\s+ground\s+stop\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
+)
+
+_URL_OR_BARE_SHARE = re.compile(
+    r'https?://\S+|share\.google/\S+',
+    re.IGNORECASE,
 )
 
 
@@ -4834,13 +4942,13 @@ def _local_tv_albany_national_source_conflict(haystack: str) -> bool:
     """True when Cap Region TV is only a Source: line under national politics.
 
     NewsBreak-style cards append ``Source: WNYT NewsChannel 13 Albany, NY`` (or
-    WRGB / WTEN / News10 / CBS 6) under Senate/House control projection copy.
-    Local crash / Lark Street bodies still rescue after the source line is
+    WRGB / WTEN / News10 / CBS 6) under Senate/House control projection copy,
+    or under Hochul × nationwide ground-stop / Duffy resign cards. Source:
+    plus bare URL with no other Cap Region body also drops. Local crash /
+    Lark Street / Rogerson bodies still rescue after the source line is
     scrubbed. Wire bylines like ``MALTA, N.Y. (WNYT)`` are not Source: forms.
     """
     if not _LOCAL_TV_ALBANY_SOURCE.search(haystack):
-        return False
-    if not _NATIONAL_CHAMBER_CONTROL.search(haystack):
         return False
     scrubbed = _LOCAL_TV_ALBANY_SOURCE.sub(' ', haystack)
     if _TIMES_UNION_CAP_REGION_RESCUE.search(scrubbed):
@@ -4849,7 +4957,12 @@ def _local_tv_albany_national_source_conflict(haystack: str) -> bool:
         return False
     if _STRONG_POSITIVE.search(scrubbed):
         return False
-    return True
+    if _NATIONAL_CHAMBER_CONTROL.search(haystack):
+        return True
+    # Aggregator cards that are only ``Source: NEWS10`` + a short link.
+    remainder = _URL_OR_BARE_SHARE.sub(' ', scrubbed)
+    remainder = re.sub(r'\W+', ' ', remainder).strip()
+    return not remainder
 
 
 # Maryland Route 787 (Takoma Park / Flower Avenue) — not Interstate 787 Albany.
@@ -5076,7 +5189,8 @@ def _bethlehem_star_of_conflict(haystack: str) -> bool:
         (?:
             bethlehem\s*,?\s*(?:ny|n\.y\.)\b
           | town\s+of\s+bethlehem
-          | bethlehem\s+(?:town\s+)?(?:board|council|planning|public\s+library)
+          | bethlehem\s+(?:town\s+)?(?:board|council|public\s+library)
+          | bethlehem\s+(?:town\s+)?planning\s+board\b
           | town\s+board[\s\S]{0,120}\bbethlehem\b
           | \bbethlehem\b[\s\S]{0,120}town\s+board
         )
@@ -5099,7 +5213,8 @@ def _bethlehem_holy_land_conflict(haystack: str) -> bool:
         (?:
             bethlehem\s*,?\s*(?:ny|n\.y\.)\b
           | (?<!little\s)town\s+of\s+bethlehem
-          | bethlehem\s+(?:town\s+)?(?:board|council|planning|public\s+library)
+          | bethlehem\s+(?:town\s+)?(?:board|council|public\s+library)
+          | bethlehem\s+(?:town\s+)?planning\s+board\b
           | town\s+board[\s\S]{0,120}\bbethlehem\b
           | \bbethlehem\b[\s\S]{0,120}town\s+board
         )
@@ -5122,7 +5237,8 @@ def _bethlehem_other_city_conflict(haystack: str) -> bool:
         (?:
             bethlehem\s*,?\s*(?:ny|n\.y\.)\b
           | (?<!little\s)town\s+of\s+bethlehem
-          | bethlehem\s+(?:town\s+)?(?:board|council|planning|public\s+library)
+          | bethlehem\s+(?:town\s+)?(?:board|council|public\s+library)
+          | bethlehem\s+(?:town\s+)?planning\s+board\b
           | town\s+board[\s\S]{0,120}\bbethlehem\b
           | \bbethlehem\b[\s\S]{0,120}town\s+board
         )
@@ -5738,12 +5854,17 @@ def _albany_statehouse_metonym_conflict(haystack: str) -> bool:
     for Long Island / East End legislators, "moved up to Albany" Tammany /
     capital-machine copy, "Albany has a … revenue/budget surplus"
     statehouse-coffers copy, chamber "Albany Dems' … supermajority" wires,
-    statewide "Green Wave to Albany" lawmaker copy, "Albany … (NY) state
-    politics" / "followers of Albany" statehouse-watcher copy, YIMBY /
-    housing "Bargain Comes to Albany" / "comes to Albany" + state legislature
-    cards, and "Albany bribe" / Speaker Heastie Assembly-suite wires use the
-    capital as metonym without Cap Region place news. Local party organs
-    ("join Albany Democrats at … rally") and civic anchors still rescue.
+    bare "Albany supermajority/ies" chamber-control shorthand (national and
+    Albany supermajorities + Hochul tax copy), statewide "Green Wave to
+    Albany" lawmaker copy, "Albany … (NY) state politics" / "followers of
+    Albany" statehouse-watcher copy, YIMBY / housing "Bargain Comes to
+    Albany" / "comes to Albany" + state legislature cards, "Albany Fixed"
+    legislature-as-actor statewide policy copy (renter tax credit / similar),
+    and "Albany bribe" / Speaker Heastie Assembly-suite wires use the capital
+    as metonym without Cap Region place news, "Albany Services Settlement" /
+    Alba Services AG settlement cards stamp New York + Albany without Cap
+    Region place news. Local party organs ("join Albany Democrats at … rally")
+    and civic anchors still rescue.
     "Rest of Albany County" and bare travel ("headed to Albany this weekend")
     are Cap Region and do not match. Do not bare-match "comes to Albany" —
     Phish / TAB concert cards keep via venue cues.
@@ -5767,6 +5888,8 @@ def _albany_statehouse_metonym_conflict(haystack: str) -> bool:
         r'\balbany\s+was\s+(?:(?:right\s+)+|wrong\s+)to\b|'
         # Legislature-as-actor ("In June, Albany passed A.1755 / S.8026").
         r'\balbany\s+passed\b|'
+        # Legislature-as-actor ("Albany Fixed Half of New York's Renter Tax Credit").
+        r'\balbany\s+fixed\b|'
         # Career-in-capital shorthand ("Jeffries' Albany years" / House leadership).
         r'\balbany\s+years\b|'
         # Statehouse locale metonym ("style in the New York capital").
@@ -5783,9 +5906,11 @@ def _albany_statehouse_metonym_conflict(haystack: str) -> bool:
         # Statehouse coffers ("Albany has a substantial revenue surplus").
         r'\balbany\s+has\b[\s\S]{0,100}\b(?:revenue|budget)\s+surplus\b|'
         r'\b(?:revenue|budget)\s+surplus\b[\s\S]{0,100}\balbany\b|'
-        # Chamber control shorthand ("Albany Dems' New Supermajority").
-        r'\balbany\s+dem(?:ocrat)?s?\b[\s\S]{0,80}\bsupermajority\b|'
-        r'\bsupermajority\b[\s\S]{0,80}\balbany\s+dem(?:ocrat)?s?\b|'
+        # Chamber control shorthand ("Albany Dems' New Supermajority" /
+        # "national and Albany supermajorities" + Hochul tax wires).
+        r'\balbany\s+dem(?:ocrat)?s?\b[\s\S]{0,80}\bsupermajorit(?:y|ies)\b|'
+        r'\bsupermajorit(?:y|ies)\b[\s\S]{0,80}\balbany\s+dem(?:ocrat)?s?\b|'
+        r'\balbany\s+supermajorit(?:y|ies)\b|'
         # Statewide lawmaker destination ("Green Wave to Albany" / "‘Green Wave’ to Albany").
         r'\b(?:green\s+)?wave[\'\u2019\"]?\s+to\s+albany\b|'
         # Statehouse-watcher metonym ("followers of Albany and NY state politics").
@@ -5806,6 +5931,12 @@ def _albany_statehouse_metonym_conflict(haystack: str) -> bool:
         r'\balbany\s+bribe\b|'
         r'\bheastie\b[\s\S]{0,160}\balbany\b|'
         r'\balbany\b[\s\S]{0,160}\bheastie\b|'
+        # AG / statewide "Albany Services Settlement" / Alba Services cards.
+        r'\balbany\s+services\s+settlement\b|'
+        r'\balba\s+services\b[\s\S]{0,220}\balbany\b|'
+        r'\balbany\b[\s\S]{0,220}\balba\s+services\b|'
+        r'\balba\s+settlement\b[\s\S]{0,220}\balbany\b|'
+        r'\balbany\b[\s\S]{0,220}\balba\s+settlement\b|'
         r'\balbany\s+democrats?\s+(?:did(?:n[\u2019\']t|\s+not)|'
         r'can(?:[\u2019\']t|not)|could(?:n[\u2019\']t|\s+not))\b|'
         r'\balbany\s+democrats?\b[\s\S]{0,100}\b(?:'
@@ -5813,6 +5944,64 @@ def _albany_statehouse_metonym_conflict(haystack: str) -> bool:
         r')\b',
         haystack,
         flags=re.IGNORECASE,
+    ):
+        return False
+    if _ALBANY_WIRE_LOCAL_RESCUE.search(haystack) or _ALBANY_LOCAL_RESCUE.search(haystack):
+        return False
+    return True
+
+
+def _albany_buffalo_to_albany_remote_conflict(haystack: str) -> bool:
+    """True when 'Buffalo to Albany' is a statewide span about WNY/CNY news.
+
+    Syracuse / Western NY ICE and similar cards use "Democrats from Buffalo to
+    Albany" as a statewide political span while the story is off Cap Region.
+    Cap Region destination travel and civic rescues still keep; the opposite
+    direction ("from Albany to Buffalo" Erie Canal) does not match.
+    """
+    if not re.search(r'(?:from\s+)?buffalo\s+to\s+albany\b', haystack, flags=re.IGNORECASE):
+        return False
+    political_span = re.search(
+        r'\b(?:democrats?|republicans?|voters?|lawmakers?|officials?|'
+        r'new\s+yorkers?)\s+from\s+buffalo\s+to\s+albany\b',
+        haystack,
+        flags=re.IGNORECASE,
+    )
+    remote = re.search(
+        r'\bsyracuse\b|\bwestern\s+ny\b|\brochester\b|\bniagara\b|\bcanisius\b',
+        haystack,
+        flags=re.IGNORECASE,
+    )
+    if not political_span and not remote:
+        return False
+    if _ALBANY_WIRE_LOCAL_RESCUE.search(haystack) or _ALBANY_LOCAL_RESCUE.search(haystack):
+        return False
+    return True
+
+
+def _hochul_albany_nyc_mta_conflict(haystack: str) -> bool:
+    """True when Hochul×Albany co-occurrence is NYC MTA / mayoral copy.
+
+    Bare ``hochul … albany`` is a strong Cap Region civic cue, but Streetsblog
+    / MTA / Mamdani cards that mention an Albany watchdog while covering NYC
+    bus budgets must drop. Cap Region civic rescues still keep.
+    """
+    if not re.search(r'\bhochul\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not re.search(r'\balbany\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not re.search(
+        r"""
+        (?:
+            \bmta\b
+          | \bmamdani\b
+          | streetsblog\s+new\s+york
+          | bus\s+operating\s+funds?\b
+          | holding\s+(?:the\s+)?(?:\$?\d|\bmta\b)
+        )
+        """,
+        haystack,
+        flags=re.IGNORECASE | re.VERBOSE,
     ):
         return False
     if _ALBANY_WIRE_LOCAL_RESCUE.search(haystack) or _ALBANY_LOCAL_RESCUE.search(haystack):
@@ -5857,6 +6046,52 @@ def _albany_hashtag_only(haystack: str) -> bool:
         flags=re.IGNORECASE,
     )
     return leftover is None
+
+
+def _albany_international_equity_conflict(haystack: str) -> bool:
+    """True when Albany International is the AIN materials ticker, not ALB airport.
+
+    Equity-research cards ("Albany International price target raised … at
+    Truist" / TheFly) match the bare ``albany international`` airport cue.
+    Aviation copy (airport / KALB / flight / runway / terminal) still keeps.
+    """
+    if not re.search(r'\balbany\s+international\b', haystack, flags=re.IGNORECASE):
+        return False
+    if re.search(
+        r"""
+        (?:
+            albany\s+international\s+airport\b
+          | \bkalb\b
+          | \b(?:flight|flights|runway|terminal|taxiway|depart(?:ure|ing|ed)?|
+                land(?:ing|ed)?|touched\s+down|gate\s+[a-z]?\d+)\b
+        )
+        """,
+        haystack,
+        flags=re.IGNORECASE | re.VERBOSE,
+    ):
+        return False
+    return (
+        re.search(
+            r"""
+            (?:
+                price\s+target
+              | analyst\s+(?:raises?|cuts?|upgrades?|downgrades?)
+              | (?:raises?|cuts?|upgrades?|downgrades?)\s+(?:.*\s)?price\s+target
+              | \bthefly\b
+              | \btruist\b
+              | \bequity\s+research\b
+              | \b(?:nyse|nasdaq)\b[\s:]*ain\b
+              | \bain\b[\s:]*(?:nyse|nasdaq)\b
+              | \$ain\b
+              | shares?\s+outstanding
+              | earnings\s+(?:call|report|beat|miss)
+            )
+            """,
+            haystack,
+            flags=re.IGNORECASE | re.VERBOSE,
+        )
+        is not None
+    )
 
 
 def _albany_hashtag_geotag_conflict(haystack: str) -> bool:
@@ -6425,6 +6660,8 @@ def _propose_candidate(
             return MatchResult(False, 'hard_negative:times_union_photo_credit')
         if _times_union_mid_hudson_conflict(haystack):
             return MatchResult(False, 'hard_negative:times_union_mid_hudson')
+        if _times_union_aggregator_source_conflict(haystack):
+            return MatchResult(False, 'hard_negative:times_union_aggregator_source')
         if _albany_mid_hudson_conflict(haystack):
             return MatchResult(False, 'hard_negative:albany_mid_hudson')
         if _local_tv_albany_national_source_conflict(haystack):
@@ -6465,6 +6702,8 @@ def _propose_candidate(
             return MatchResult(False, 'hard_negative:bethlehem_holy_land')
         if _bethlehem_other_city_conflict(haystack):
             return MatchResult(False, 'hard_negative:bethlehem_other_city')
+        if _bethlehem_pa_conflict(haystack):
+            return MatchResult(False, 'hard_negative:bethlehem_pa')
         if _cdta_algeria_conflict(haystack):
             return MatchResult(False, 'hard_negative:cdta_algeria')
         if _cdta_spanish_recipe_conflict(haystack):
@@ -6487,6 +6726,12 @@ def _propose_candidate(
             return MatchResult(False, 'hard_negative:christian_brothers_wny')
         if _albany_statehouse_metonym_conflict(haystack):
             return MatchResult(False, 'hard_negative:albany_statehouse_metonym')
+        if _albany_buffalo_to_albany_remote_conflict(haystack):
+            return MatchResult(False, 'hard_negative:albany_buffalo_to_albany_remote')
+        if _hochul_albany_nyc_mta_conflict(haystack):
+            return MatchResult(False, 'hard_negative:hochul_albany_nyc_mta')
+        if _albany_international_equity_conflict(haystack):
+            return MatchResult(False, 'hard_negative:albany_international_equity')
         if _egg_kansas_city_conflict(haystack):
             return MatchResult(False, 'hard_negative:egg_off_region')
         if _saratoga_stakes_away_conflict(haystack):
@@ -6612,12 +6857,18 @@ def _propose_candidate(
                 return MatchResult(False, 'hard_negative:albany_operative')
             if _albany_statehouse_metonym_conflict(haystack):
                 return MatchResult(False, 'hard_negative:albany_statehouse_metonym')
+            if _albany_buffalo_to_albany_remote_conflict(haystack):
+                return MatchResult(False, 'hard_negative:albany_buffalo_to_albany_remote')
+            if _hochul_albany_nyc_mta_conflict(haystack):
+                return MatchResult(False, 'hard_negative:hochul_albany_nyc_mta')
             if _albany_mid_hudson_conflict(haystack):
                 return MatchResult(False, 'hard_negative:albany_mid_hudson')
             if _albany_suny_roster_conflict(haystack):
                 return MatchResult(False, 'hard_negative:albany_suny_roster')
             if _albany_hashtag_geotag_conflict(haystack):
                 return MatchResult(False, 'hard_negative:albany_hashtag_geotag')
+            if _albany_international_equity_conflict(haystack):
+                return MatchResult(False, 'hard_negative:albany_international_equity')
             if _NY_CONTEXT.search(place_haystack):
                 return MatchResult(True, 'albany_with_ny_context')
             if _STRONG_POSITIVE.search(haystack):

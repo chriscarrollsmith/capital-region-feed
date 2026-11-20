@@ -538,6 +538,167 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-158 — Daily feed audit: Source: Times Union statewide FP; Central Ave Albany / Colonie company FNs
+- **Status:** done ([#140](https://github.com/chriscarrollsmith/capital-region-feed/pull/140))
+- **Why:** 2026-11-20 audit of last-24h AppView feed (~53 posts) found a matcher
+  FP among rematch-keeps: NewsBreak ``Source: Times Union`` under statewide NY
+  electricity shortage copy (bare Times Union strong positive with no Cap Region
+  body). Soft-prior / residual floor drops on Cap Region cards: ``Central Ave in
+  Albany`` road diet (``bare_albany``) and ABR ``Colonie company`` / ``Colonie
+  CEO`` business wire (``bare_colonie``). Planned ``fn_search.py`` slate (8) all
+  ran OK with no Cap Region FNs. Exploratory Central Ave Albany / Colonie
+  company confirmed the two FNs. Fold unmerged #139 (Buffalo-to-Albany / Albany
+  Services / Saratoga coworking / Wolf Road; already includes #134–#138).
+- **Work:**
+  - Gate aggregator ``Source: Times Union`` without Cap Region rescue.
+  - Strong ``Central Ave``/``Central Avenue``↔Albany; ``Colonie company`` /
+    ``Colonie CEO`` in ``_COLONIE_LOCAL``.
+  - Grow eval + fn_search log/strategies; fold #139 onto tip.
+- **Done when:** Audited FP drops and FNs keep; bare Times Union masthead and
+  Lark Street Source: rescues retained; bare Central Avenue without Albany
+  still drops; eval P/R stay 1.000; unit tests cover the new gates/cues.
+
+### B-157 — Daily feed audit: Buffalo-to-Albany / Albany Services Settlement FPs; Saratoga coworking / Wolf Road Colonie FNs
+- **Status:** done ([#139](https://github.com/chriscarrollsmith/capital-region-feed/pull/139))
+- **Why:** 2026-11-19 audit of last-24h AppView feed (~61 posts) found matcher
+  FPs among rematch-keeps: Syracuse.com ICE card kept via ``albany_with_ny_context``
+  on ``Democrats from Buffalo to Albany`` + Western NY, and an AG
+  ``Albany Services Settlement`` / Alba Services card kept via New York + Albany.
+  Soft-prior / residual floor drops on Cap Region cards: Albany Business Review
+  ``Palette … Saratoga coworking`` (ambiguous bare Saratoga) and
+  DiningAndCooking ``Wolf Road`` + ``COLONIE`` restaurant copy (``bare_colonie``).
+  Planned ``fn_search.py`` slate (8) all ran OK with no Cap Region FNs.
+  Exploratory Saratoga coworking / Palette Saratoga / Wolf Road confirmed the
+  two FNs. Fold unmerged #138 (Bethlehem PA / Unity House / capital-region URL;
+  already includes #134–#137).
+- **Work:**
+  - Gate ``Buffalo to Albany`` political/WNY-CNY spans; gate ``Albany Services
+    Settlement`` / Alba Services×Albany as statehouse metonym.
+  - Strong ``Saratoga coworking``; ``Wolf Road``↔Colonie in ``_COLONIE_LOCAL``.
+  - Grow eval + fn_search log/strategies; fold #138 onto tip.
+- **Done when:** Audited FPs drop and FNs keep; Erie Canal Albany→Buffalo and
+  Empire State Plaza rescues retained; Utah Saratoga Springs still drops; eval
+  P/R stay 1.000; unit tests cover the new gates/cues.
+
+### B-156 — Daily feed audit: Bethlehem PA Planning Commission FP; Unity House / capital-region URL FNs
+- **Status:** done ([#138](https://github.com/chriscarrollsmith/capital-region-feed/pull/138))
+- **Why:** 2026-11-18 audit of last-24h AppView feed (~57 posts) found a matcher
+  FP among rematch-keeps: WFMZ Lehigh Valley ``Bethlehem Planning Commission``
+  data-center copy kept via bare ``bethlehem … planning`` strong civic cue
+  (PA city commission; NY town uses Planning Board; PA markers lived only in
+  the link path, not embed title/description). Soft-prior / residual floor
+  drops on Cap Region cards: ``Unity House in Troy`` / ``A Nun and Two Friars``
+  teaching-kitchen debut, and a WNYT ``…/capital-region/`` Thanksgiving URL
+  slug with no spaced ``Capital Region`` body text. Planned ``fn_search.py``
+  slate (8) all ran OK with no Cap Region FNs. Exploratory Unity House /
+  A Nun and Two Friars / capital-region confirmed the FNs. Fold unmerged
+  #137 (WAMC Springfield / Albany Fixed / Hochul×MTA; already includes
+  #134–#136).
+- **Work:**
+  - Narrow Bethlehem civic strong cue to board/council/planning board; extend
+    ``_BETHLEHEM_PA`` for planning commission / WFMZ / Lehigh County; apply
+    PA conflict on the strong path.
+  - Strong ``Unity House``↔Troy / ``A Nun and Two Friars``; fold
+    ``capital-region`` / ``capital_region`` URL slugs in ``_normalize``.
+  - Grow eval + fn_search log/strategies; fold #137 onto tip.
+- **Done when:** Audited FP drops and FNs keep; Town of Bethlehem NY Planning
+  Board / library retained; eval P/R stay 1.000; unit tests cover the new
+  gates/cues.
+
+### B-155 — Daily feed audit: WAMC Springfield / Albany Fixed / Hochul×MTA FPs; Knickerbocker / Troy Music Hall / Wotkyns FNs
+- **Status:** done ([#137](https://github.com/chriscarrollsmith/capital-region-feed/pull/137))
+- **Why:** 2026-11-17 audit of last-24h AppView feed (~67 posts) found matcher
+  FPs among rematch-keeps: WAMC ``Springfield City Hall`` / ``Springfield City
+  Council`` Western Mass civic cards kept on bare ``wamc``; City Limits
+  ``Albany Fixed`` statewide renter-tax copy kept via ``albany_with_ny_context``;
+  Streetsblog Hochul×MTA×``Albany watchdog`` kept via ``hochul…albany`` strong
+  co-occurrence with embed title. Soft-prior / residual floor drops on Cap
+  Region cards: Jerry Garcia Band at ``The Knick`` / ``Knickerbocker Arena``,
+  American Pie at ``Troy Savings Bank Music Hall`` without month/event cue, and
+  Troy ``Wotkyns' Blocks`` history. Planned ``fn_search.py`` slate (8) all ran
+  OK with no Cap Region FNs. Exploratory Knickerbocker / The Knick Albany /
+  Troy Savings Bank Music Hall / Wotkyns confirmed the three FNs. Fold
+  unmerged #136 (Prospect Park / Buy Nothing / Veterans Miracle Center;
+  already includes #134–#135).
+- **Work:**
+  - Extend ``_WAMC_WESTERN_MASS`` for Springfield City Hall / Council.
+  - Gate ``Albany Fixed`` as statehouse metonym; gate Hochul×Albany×MTA /
+    Mamdani / Streetsblog NYC without Cap Region rescue.
+  - Strong ``knickerbocker arena`` / ``the knick``↔Albany; ``troy (savings
+    bank )?music hall``; ``wotkyns``.
+  - Grow eval + fn_search log/strategies; fold #136 onto tip.
+- **Done when:** Audited FPs drop and FNs keep; Cap Region WAMC / Hochul
+  rescues retained; bare The Knick TV stays out; eval P/R stay 1.000; unit
+  tests cover the new gates/cues.
+
+### B-154 — Daily feed audit: Prospect Park Troy / Albany Buy Nothing / Veterans Miracle Center FNs
+- **Status:** done ([#136](https://github.com/chriscarrollsmith/capital-region-feed/pull/136))
+- **Why:** 2026-11-16 audit of last-24h AppView feed (~38 posts) found no new
+  matcher FPs among rematch-keeps (allowlisted News10 / Times Union non-local,
+  NWS Albany / Glens Falls, and Cap Region GlobalFoundries / Knickerbocker /
+  UAlbany cards remain intentional). Soft-prior / residual floor drops on three
+  Cap Region posts the live feed already served: Troy ``Prospect Park`` disc
+  golf (Brooklyn Prospect Park must stay out), bare ``Albany Buy Nothing``
+  group copy, and ``Veterans Miracle Center`` / ``Interstate Ave. Albany``
+  FreshConnect outreach. Planned ``fn_search.py`` slate (8) all ran OK with no
+  Cap Region FNs (SPAC SpaceX/spać noise, KALB German / Arabic, empties).
+  Exploratory ``Prospect Park Troy`` / ``Buy Nothing Albany`` /
+  ``Veterans Miracle Center`` confirmed the three FNs. Fold unmerged #135
+  (supermajorities / NEWS10 ground-stop; already includes #134).
+- **Work:**
+  - Strong ``Prospect Park``↔Troy co-occurrence (bare / Brooklyn Prospect Park
+    stay out).
+  - Strong ``Albany Buy Nothing`` / Buy Nothing group↔Albany; ``Veterans
+    Miracle Center``; ``Interstate Ave. Albany`` address cue.
+  - Grow eval + fn_search log/strategies; fold #135 onto tip.
+- **Done when:** Audited FNs keep; Brooklyn / Oakland counterparts drop;
+  folded #135 gates hold; eval P/R stay 1.000; unit tests cover the new cues.
+
+### B-153 — Daily feed audit: Albany supermajorities / Source: NEWS10 Hochul ground-stop FPs
+- **Status:** done ([#135](https://github.com/chriscarrollsmith/capital-region-feed/pull/135))
+- **Why:** 2026-11-15 audit of last-24h AppView feed (~66 posts) found matcher
+  FPs among rematch-keeps: Briefly.co ``Democrats' national and Albany
+  supermajorities`` + Hochul tax copy (chamber metonym without a ``Dems``
+  token), and aggregator ``Source: NEWS10 ABC`` under Hochul × Sean Duffy /
+  nationwide ground-stop cards (also Source: + bare short-link with no Cap
+  Region body). Planned ``fn_search.py`` slate (8) all ran OK with no Cap
+  Region FNs (KALB German noise, Helderberg ZA, Halfmoon decorative, empties).
+  Folded unmerged #134 (AIN equity / Walk2Connect). Residual allowlisted
+  News10 / Times Union non-local, NWS Albany / Glens Falls, and soft-prior /
+  resident keeps remain intentional.
+- **Work:**
+  - Extend ``_albany_statehouse_metonym_conflict`` for bare ``Albany
+    supermajority/ies`` (Common Council rescue retained).
+  - Broaden ``_local_tv_albany_national_source_conflict`` for Hochul ×
+    nationwide ground-stop / Duffy resign under Source: TV lines, and for
+    Source: + URL-only cards with no Cap Region body (Lark Street / Rogerson
+    rescues retained).
+  - Fold #134 onto tip; grow eval + fn_search log.
+- **Done when:** Audited FPs drop; folded AIN / Walk2Connect hold; eval P/R
+  stay 1.000; unit tests cover the new gates.
+
+### B-152 — Daily feed audit: Albany International AIN equity FP; Saratoga Springs Walk2Connect FN
+- **Status:** done ([#134](https://github.com/chriscarrollsmith/capital-region-feed/pull/134))
+- **Why:** 2026-11-14 audit of last-24h AppView feed (~89 posts) found one new
+  matcher FP among rematch-keeps: Blueresearch ``Albany International price
+  target`` / Truist / TheFly equity card matched the bare ``albany
+  international`` airport cue (AIN materials ticker, not ALB). Yesterday's
+  YIMBY / Heastie / Mid-Hudson FPs rematch-drop under #133. Planned
+  ``fn_search.py`` slate (8) all ran OK; ``Saratoga Springs`` surfaced an
+  America Walks ``#Walk2Connect`` workshop FN (intervening hashtag broke the
+  ``Saratoga Springs workshop`` strong cue). Exploratory ``Walk2Connect``
+  confirmed the same URI. Residual allowlisted News10 / Times Union
+  non-local, NWS Albany / Glens Falls, and ``#capitalregionny`` rescue keeps
+  remain intentional.
+- **Work:**
+  - Gate ``_albany_international_equity_conflict`` for price-target / Truist /
+    TheFly / AIN ticker cards (airport / KALB / flight rescues retained).
+  - Allow short hashtag / handle runs between ``Saratoga Springs`` and
+    workshop/summit/meetup/expo nouns; Utah Saratoga Springs still drops.
+  - Grow eval + fn_search log; remember ``Walk2Connect`` strategy.
+- **Done when:** Audited FP drops; Walk2Connect FN keeps; airport / KALB
+  counterparts hold; eval P/R stay 1.000; unit tests cover the new cues.
+
 ### B-151 — Daily feed audit: YIMBY Comes-to-Albany / Heastie bribe / Mid-Hudson station FPs; Palace Theatre / TAB FNs
 - **Status:** done ([#133](https://github.com/chriscarrollsmith/capital-region-feed/pull/133))
 - **Why:** 2026-11-13 audit of last-24h AppView feed (~77 posts) found matcher

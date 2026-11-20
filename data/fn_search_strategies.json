@@ -56,7 +56,11 @@
         "North Broadway",
         "Caroline Street",
         "Saratoga Lake",
-        "LansingburghNY"
+        "LansingburghNY",
+        "Prospect Park Troy",
+        "Wotkyns",
+        "Wolf Road",
+        "Central Ave Albany"
       ]
     },
     {
@@ -86,7 +90,11 @@
         "Saratoga Polo",
         "Troy Listening Room",
         "Albany Institute",
-        "Palace Theatre"
+        "Palace Theatre",
+        "Knickerbocker Arena",
+        "The Knick Albany",
+        "Troy Savings Bank Music Hall",
+        "Saratoga coworking"
       ]
     },
     {
@@ -106,7 +114,10 @@
         "Chloe Pierce",
         "Paul Tonko",
         "Nipper statue",
-        "Canestrari"
+        "Canestrari",
+        "Buy Nothing Albany",
+        "Veterans Miracle Center",
+        "Colonie company"
       ]
     },
     {
@@ -128,7 +139,8 @@
         "Troy Night Out",
         "Marylou Whitney",
         "Siena hosts",
-        "TAB Albany"
+        "TAB Albany",
+        "Walk2Connect"
       ]
     },
     {
@@ -142,7 +154,8 @@
         "capitalregionny",
         "AlbanyCounty",
         "WaterfordNY",
-        "upstateny"
+        "upstateny",
+        "capital-region"
       ]
     },
     {
@@ -162,7 +175,10 @@
         "Albany College of Pharmacy",
         "GlobalFoundries",
         "Albany Law School",
-        "Price Chopper"
+        "Price Chopper",
+        "Unity House Troy",
+        "A Nun and Two Friars",
+        "Palette Saratoga"
       ]
     }
   ]
