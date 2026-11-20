@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-158 — Daily feed audit: Source: Times Union statewide FP; Central Ave Albany / Colonie company FNs
-- **Status:** in progress
+- **Status:** done ([#140](https://github.com/chriscarrollsmith/capital-region-feed/pull/140))
 - **Why:** 2026-11-20 audit of last-24h AppView feed (~53 posts) found a matcher
   FP among rematch-keeps: NewsBreak ``Source: Times Union`` under statewide NY
   electricity shortage copy (bare Times Union strong positive with no Cap Region
