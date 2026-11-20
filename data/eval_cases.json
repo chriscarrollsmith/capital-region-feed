@@ -14808,5 +14808,65 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-11-19 audit FN counterpart: Colonie + Wolf Road"
+  },
+  {
+    "id": "fp-source-times-union-statewide-electricity-1120",
+    "text": "NY faces statewide electricity shortage and has nation's oldest grid\nSource: Times Union\nshare.newsbreak.com/k7b77kho",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-20 audit FP: NewsBreak Source: Times Union under statewide NY electricity copy"
+  },
+  {
+    "id": "tp-source-times-union-lark-street-1120",
+    "text": "Fire crews on Lark Street overnight.\nSource: Times Union",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-20 TP counterpart: Source: Times Union with Cap Region Lark Street body"
+  },
+  {
+    "id": "tp-central-ave-albany-road-diet-1120",
+    "text": "They're putting a road diet in on Central Ave in Albany!!!! Ahhhh!!!!",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-20 audit FN: Central Ave in Albany road diet was bare_albany"
+  },
+  {
+    "id": "tn-central-ave-hackensack-forum-1120",
+    "text": "Please attend the forum on Thursday at Logan Family Life Center, 274 Central Avenue, Hackensack.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-20 TN counterpart: bare Central Avenue without Albany stays out"
+  },
+  {
+    "id": "tp-colonie-company-acquisition-1120",
+    "text": "It's been a big year for Gabriel Stacy and his Colonie company.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-20 audit FN: Colonie company business wire was bare_colonie"
+  },
+  {
+    "id": "tp-colonie-ceo-acquisition-1120",
+    "text": "Colonie CEO's acquisition strategy: Don't rush. It's been a big year for Gabriel Stacy and his Colonie company.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-20 audit FN: Colonie CEO embed/title form of Colonie company wire"
   }
 ]

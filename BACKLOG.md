@@ -538,6 +538,26 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-158 — Daily feed audit: Source: Times Union statewide FP; Central Ave Albany / Colonie company FNs
+- **Status:** in progress
+- **Why:** 2026-11-20 audit of last-24h AppView feed (~53 posts) found a matcher
+  FP among rematch-keeps: NewsBreak ``Source: Times Union`` under statewide NY
+  electricity shortage copy (bare Times Union strong positive with no Cap Region
+  body). Soft-prior / residual floor drops on Cap Region cards: ``Central Ave in
+  Albany`` road diet (``bare_albany``) and ABR ``Colonie company`` / ``Colonie
+  CEO`` business wire (``bare_colonie``). Planned ``fn_search.py`` slate (8) all
+  ran OK with no Cap Region FNs. Exploratory Central Ave Albany / Colonie
+  company confirmed the two FNs. Fold unmerged #139 (Buffalo-to-Albany / Albany
+  Services / Saratoga coworking / Wolf Road; already includes #134–#138).
+- **Work:**
+  - Gate aggregator ``Source: Times Union`` without Cap Region rescue.
+  - Strong ``Central Ave``/``Central Avenue``↔Albany; ``Colonie company`` /
+    ``Colonie CEO`` in ``_COLONIE_LOCAL``.
+  - Grow eval + fn_search log/strategies; fold #139 onto tip.
+- **Done when:** Audited FP drops and FNs keep; bare Times Union masthead and
+  Lark Street Source: rescues retained; bare Central Avenue without Albany
+  still drops; eval P/R stay 1.000; unit tests cover the new gates/cues.
+
 ### B-157 — Daily feed audit: Buffalo-to-Albany / Albany Services Settlement FPs; Saratoga coworking / Wolf Road Colonie FNs
 - **Status:** done ([#139](https://github.com/chriscarrollsmith/capital-region-feed/pull/139))
 - **Why:** 2026-11-19 audit of last-24h AppView feed (~61 posts) found matcher
