@@ -307,6 +307,10 @@ _STRONG_POSITIVE = re.compile(
       | \#albanycityalbanycounty\b
       # Cap Region downtown corridor — word-boundary so Clark Street stays out.
       | \blark\s+street\b
+      # Central Ave / Avenue corridor cards often pair with Albany without ", NY".
+      # Do not bare-match Central Ave alone (Hackensack / Long Island FPs).
+      | central\s+ave(?:nue)?[\s\S]{0,60}\balbany\b
+      | \balbany\b[\s\S]{0,60}central\s+ave(?:nue)?
       # State-politics / Albany civic copy often omits ", NY".
       | albany\s+democrats?\b
       | hochul[\s\S]{0,120}\balbany\b
@@ -3533,6 +3537,10 @@ _COLONIE_LOCAL = re.compile(
       # Wolf Road retail strip (Colonie) restaurant / shop cards often omit ", NY".
       | wolf\s+road[\s\S]{0,80}\bcolonie\b
       | \bcolonie\b[\s\S]{0,80}wolf\s+road
+      # Cap Region business wires ("Colonie company" / "Colonie CEO") omit ", NY".
+      # French "colonie" copy does not use these English business forms.
+      | \bcolonie\s+compan(?:y|ies)\b
+      | \bcolonie\s+ceo\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -4805,6 +4813,37 @@ def _times_union_mid_hudson_conflict(haystack: str) -> bool:
     if _TIMES_UNION_CAP_REGION_RESCUE.search(scrubbed):
         return False
     if _ALBANY_LOCAL_RESCUE.search(scrubbed) or _ALBANY_WIRE_LOCAL_RESCUE.search(scrubbed):
+        return False
+    return True
+
+
+# Aggregator ``Source: Times Union`` lines (NewsBreak / similar) under statewide
+# or non-local bodies. Cap Region place / civic anchors still rescue.
+_TIMES_UNION_SOURCE = re.compile(
+    r'source:\s*times\s+union\b[^\n]*',
+    re.IGNORECASE,
+)
+
+
+def _times_union_aggregator_source_conflict(haystack: str) -> bool:
+    """True when Times Union is only a Source: line without Cap Region body.
+
+    NewsBreak-style cards append ``Source: Times Union`` under statewide NY
+    electricity / policy copy with no Cap Region place news. Cap Region
+    anchors and other strong positives after scrubbing still rescue. Bare
+    Times Union masthead mentions without a Source: prefix are unchanged.
+    """
+    if not _TIMES_UNION_SOURCE.search(haystack):
+        return False
+    scrubbed = _TIMES_UNION_SOURCE.sub(' ', haystack)
+    scrubbed = _TIMES_UNION_TOKEN.sub(' ', scrubbed)
+    if _TIMES_UNION_CAP_REGION_RESCUE.search(scrubbed):
+        return False
+    if _ALBANY_LOCAL_RESCUE.search(scrubbed) or _ALBANY_WIRE_LOCAL_RESCUE.search(scrubbed):
+        return False
+    if _STRONG_POSITIVE.search(scrubbed):
+        return False
+    if _COLONIE_LOCAL.search(scrubbed):
         return False
     return True
 
@@ -6621,6 +6660,8 @@ def _propose_candidate(
             return MatchResult(False, 'hard_negative:times_union_photo_credit')
         if _times_union_mid_hudson_conflict(haystack):
             return MatchResult(False, 'hard_negative:times_union_mid_hudson')
+        if _times_union_aggregator_source_conflict(haystack):
+            return MatchResult(False, 'hard_negative:times_union_aggregator_source')
         if _albany_mid_hudson_conflict(haystack):
             return MatchResult(False, 'hard_negative:albany_mid_hudson')
         if _local_tv_albany_national_source_conflict(haystack):

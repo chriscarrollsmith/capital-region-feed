@@ -6952,3 +6952,49 @@ def test_saratoga_coworking_and_wolf_road_colonie_recall() -> None:
     retail = match_post('New shop opening on Wolf Road in Colonie this spring.')
     assert retail.matched is True
     assert retail.reason == 'colonie_local'
+
+
+def test_times_union_aggregator_source_not_local() -> None:
+    """Source: Times Union under statewide copy must drop; Cap Region body keeps."""
+    statewide = match_post(
+        "NY faces statewide electricity shortage and has nation's oldest grid\n"
+        'Source: Times Union\n'
+        'share.newsbreak.com/k7b77kho'
+    )
+    assert statewide.matched is False
+    assert statewide.reason == 'hard_negative:times_union_aggregator_source'
+
+    # Cap Region body after the source line still keeps.
+    lark = match_post('Fire crews on Lark Street overnight.\nSource: Times Union')
+    assert lark.matched is True
+    assert lark.reason == 'strong_positive'
+
+    # Bare Times Union masthead without Source: is unchanged.
+    masthead = match_post('Times Union coverage of the weekend storm')
+    assert masthead.matched is True
+    assert masthead.reason == 'strong_positive'
+
+
+def test_central_ave_albany_and_colonie_company_recall() -> None:
+    """Central Ave×Albany and Colonie company/CEO keep; bare Central Ave stays out."""
+    road_diet = match_post("They're putting a road diet in on Central Ave in Albany!!!! Ahhhh!!!!")
+    assert road_diet.matched is True
+    assert road_diet.reason == 'strong_positive'
+
+    company = match_post("It's been a big year for Gabriel Stacy and his Colonie company.")
+    assert company.matched is True
+    assert company.reason == 'colonie_local'
+
+    ceo = match_post(
+        "Colonie CEO's acquisition strategy: Don't rush. "
+        "It's been a big year for Gabriel Stacy and his Colonie company."
+    )
+    assert ceo.matched is True
+    assert ceo.reason == 'colonie_local'
+
+    # Bare Central Avenue without Albany must still drop (Hackensack / LI).
+    bare = match_post(
+        'Please attend the forum on Thursday at Logan Family Life Center, '
+        '274 Central Avenue, Hackensack.'
+    )
+    assert bare.matched is False
