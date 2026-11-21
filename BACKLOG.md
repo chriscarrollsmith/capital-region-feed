@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-159 — Daily feed audit: Albany Charges Bronx broker / Tonko SEEC national FPs
-- **Status:** in progress
+- **Status:** done ([#141](https://github.com/chriscarrollsmith/capital-region-feed/pull/141))
 - **Why:** 2026-11-21 audit of last-24h AppView feed (~69 posts) found matcher
   FPs among rematch-keeps: Mohawk Valley Voice ``Two Albany Charges`` /
   Bronx real-estate-broker license card kept via ``albany_with_ny_context``,
