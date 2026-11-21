@@ -5863,11 +5863,16 @@ def _albany_statehouse_metonym_conflict(haystack: str) -> bool:
     and "Albany bribe" / Speaker Heastie Assembly-suite wires use the capital
     as metonym without Cap Region place news, "Albany Services Settlement" /
     Alba Services AG settlement cards stamp New York + Albany without Cap
-    Region place news. Local party organs ("join Albany Democrats at … rally")
-    and civic anchors still rescue.
+    Region place news, and journalese "Two Albany Charges" / "Brings …
+    Albany Charges" cards for Bronx / real-estate-broker license filings use
+    Albany as the capital court venue without Cap Region place news. Local
+    party organs ("join Albany Democrats at … rally") and civic anchors still
+    rescue.
     "Rest of Albany County" and bare travel ("headed to Albany this weekend")
     are Cap Region and do not match. Do not bare-match "comes to Albany" —
-    Phish / TAB concert cards keep via venue cues.
+    Phish / TAB concert cards keep via venue cues. Do not bare-match
+    "Albany police announce charges" (city-as-actor) without the numbered /
+    "brings" / remote-broker patterns below.
     """
     if not re.search(
         r'\bdysfunctional\s+albany\b|\balbany\s+sent\b|'
@@ -5937,6 +5942,18 @@ def _albany_statehouse_metonym_conflict(haystack: str) -> bool:
         r'\balbany\b[\s\S]{0,220}\balba\s+services\b|'
         r'\balba\s+settlement\b[\s\S]{0,220}\balbany\b|'
         r'\balbany\b[\s\S]{0,220}\balba\s+settlement\b|'
+        # Capital-court venue journalese ("Two Albany Charges" / "Brings …
+        # Albany Charges") for remote broker / borough defendants.
+        r'\b(?:\d+|two|three|four|five|several)\s+albany\s+charges?\b|'
+        r'\bbrings?\b[\s\S]{0,60}\balbany\s+charges?\b|'
+        r'\balbany\s+charges?\b[\s\S]{0,220}\b(?:'
+        r'bronx|brooklyn|queens|manhattan|staten\s+island|'
+        r'real\s+estate\s+broker|broker\s+license'
+        r')\b|'
+        r'\b(?:'
+        r'bronx|brooklyn|queens|manhattan|staten\s+island|'
+        r'real\s+estate\s+broker|broker\s+license'
+        r')\b[\s\S]{0,220}\balbany\s+charges?\b|'
         r'\balbany\s+democrats?\s+(?:did(?:n[\u2019\']t|\s+not)|'
         r'can(?:[\u2019\']t|not)|could(?:n[\u2019\']t|\s+not))\b|'
         r'\balbany\s+democrats?\b[\s\S]{0,100}\b(?:'
@@ -5947,6 +5964,58 @@ def _albany_statehouse_metonym_conflict(haystack: str) -> bool:
     ):
         return False
     if _ALBANY_WIRE_LOCAL_RESCUE.search(haystack) or _ALBANY_LOCAL_RESCUE.search(haystack):
+        return False
+    return True
+
+
+def _tonko_seec_national_conflict(haystack: str) -> bool:
+    """True when Tonko is only a national SEEC co-chair roster name-drop.
+
+    House Sustainable Energy and Environment Coalition press releases list
+    Paul Tonko among co-chairs under a Washington, D.C. dateline while the
+    card is about another member or national legislation. Cap Region place /
+    civic rescues still keep local Tonko appearances.
+    """
+    if not re.search(r'\b(?:paul\s+)?tonko\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not re.search(
+        r'\bseec\b|sustainable\s+energy\s+and\s+environment\s+coalition\b',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    if not re.search(
+        r"""
+        (?:
+            washington,?\s*d\.?c\.?
+          | co-?chairs?\s+reps?\.?
+          | house\s+sustainable\s+energy
+        )
+        """,
+        haystack,
+        flags=re.IGNORECASE | re.VERBOSE,
+    ):
+        return False
+    if _ALBANY_WIRE_LOCAL_RESCUE.search(haystack) or _ALBANY_LOCAL_RESCUE.search(haystack):
+        return False
+    if re.search(
+        r"""
+        (?:
+            \bschenectady\b
+          | \btroy\b
+          | capital\s+(?:region|district)\b
+          | \#albanyny\b
+          | albany\s+common\s+council\b
+          | empire\s+state\s+plaza
+          | \bamsterdam\b
+          | \bscotia\b
+          | \brotterdam\b
+          | \bniskayuna\b
+        )
+        """,
+        haystack,
+        flags=re.IGNORECASE | re.VERBOSE,
+    ):
         return False
     return True
 
@@ -6732,6 +6801,8 @@ def _propose_candidate(
             return MatchResult(False, 'hard_negative:hochul_albany_nyc_mta')
         if _albany_international_equity_conflict(haystack):
             return MatchResult(False, 'hard_negative:albany_international_equity')
+        if _tonko_seec_national_conflict(haystack):
+            return MatchResult(False, 'hard_negative:tonko_seec_national')
         if _egg_kansas_city_conflict(haystack):
             return MatchResult(False, 'hard_negative:egg_off_region')
         if _saratoga_stakes_away_conflict(haystack):

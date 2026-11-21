@@ -6998,3 +6998,51 @@ def test_central_ave_albany_and_colonie_company_recall() -> None:
         '274 Central Avenue, Hackensack.'
     )
     assert bare.matched is False
+
+
+def test_albany_charges_and_tonko_seec_national_precision() -> None:
+    """Capital-court Albany Charges and national SEEC Tonko roster drops."""
+    charges = match_post(
+        'New York Real Estate Broker License Case Brings Two Albany Charges\n\n'
+        'Prosecutors allege the Bronx broker gave false answers on a renewal. '
+        'The charges are separate from earlier cases.'
+    )
+    assert charges.matched is False
+    assert charges.reason == 'hard_negative:albany_statehouse_metonym'
+
+    bare = match_post('New York Real Estate Broker License Case Brings Two Albany Charges')
+    assert bare.matched is False
+    assert bare.reason == 'hard_negative:albany_statehouse_metonym'
+
+    # City-as-actor / Cap Region civic rescues still keep.
+    lark = match_post('Albany police announce charges in Lark Street robbery')
+    assert lark.matched is True
+    assert lark.reason == 'strong_positive'
+
+    rescued = match_post(
+        'Two Albany Charges filed after a Lark Street robbery; Common Council briefed.'
+    )
+    assert rescued.matched is True
+
+    tonko = match_post(
+        'My Representative, Don Beyer, joined this House group, SEEC, in opposing BAAJA.',
+        alt_text=(
+            'SEEC Statement on the Bipartisan American Affordability and Jobs Act '
+            'Washington, D.C. – The leaders of the House Sustainable Energy and '
+            'Environment Coalition (SEEC), including Co-Chairs Reps. Doris Matsui, '
+            'Mike Quigley, and Paul Tonko and Vice Chairs Reps. Don Beyer.'
+        ),
+    )
+    assert tonko.matched is False
+    assert tonko.reason == 'hard_negative:tonko_seec_national'
+
+    # Bare Tonko reelect and Cap Region Tonko still keep.
+    reelect = match_post('We re-elected our house rep, Tonko, by 30 or so points.')
+    assert reelect.matched is True
+    assert reelect.reason == 'strong_positive'
+
+    local = match_post(
+        'Proud to be in Schenectady today with Congressman Paul Tonko '
+        'for the grocery groundbreaking.'
+    )
+    assert local.matched is True
