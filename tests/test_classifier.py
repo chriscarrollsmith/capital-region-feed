@@ -60,8 +60,13 @@ def test_collision_micros_need_cap_region_hint() -> None:
         is False
     )
 
-    # Collision micro still unlocks with an Albany / Cap Region hint.
-    keep = match_post('Crash on Central Avenue in Albany this morning around 8:15am.')
+    # Central Avenue × Albany is a strong corridor cue (not classifier-only).
+    central = match_post('Crash on Central Avenue in Albany this morning around 8:15am.')
+    assert central.matched is True
+    assert central.reason == 'strong_positive'
+
+    # Other collision micros still unlock with an Albany / Cap Region hint.
+    keep = match_post('Crash near Lincoln Park in Albany this morning around 8:15am.')
     assert keep.matched is True
     assert keep.reason.startswith('classifier:')
 

@@ -3832,6 +3832,27 @@ def test_frear_park_downtown_troy_crossings_colonie_recall() -> None:
     assert match_post('Town of Bethlehem Public Library book sale this weekend.').matched is True
 
 
+def test_prospect_park_troy_buy_nothing_veterans_miracle_center_recall() -> None:
+    prospect = match_post('Great day for disc golf in Prospect Park in Troy')
+    assert prospect.matched is True
+    assert match_post('Prospect Park is beautiful today').matched is False
+    assert match_post('Great day for disc golf in Prospect Park in Brooklyn').matched is False
+
+    buy = match_post(
+        'I posted to the Albany Buy Nothing group and everything has been claimed '
+        'within literal 5 minutes'
+    )
+    assert buy.matched is True
+    assert match_post('posted to the Oakland Buy Nothing group today').matched is False
+
+    miracle = match_post(
+        'Join NYSDVS at the Veterans Miracle Center! Thurs 9 AM–3 PM '
+        'at 10 Interstate Ave. Albany for FreshConnect checks.'
+    )
+    assert miracle.matched is True
+    assert match_post('Meet at 10 Interstate Ave. Albany for the pantry').matched is True
+
+
 def test_bethlehem_holy_land_carol_not_town() -> None:
     carol = match_post(
         "I'm trying to figure out why this morning's earworm is O Little Town Of Bethlehem"
@@ -6091,6 +6112,24 @@ def test_local_tv_albany_national_source_not_local() -> None:
     assert news10.matched is False
     assert news10.reason == 'hard_negative:local_tv_albany_national_source'
 
+    # Hochul × nationwide ground-stop / Duffy resign under Source: NEWS10.
+    hochul = match_post(
+        'Source: NEWS10 ABC share.google/lHe0WFpwY46N...',
+        alt_text=(
+            'Gov. Hochul calls for Sean Duffy to resign after nationwide '
+            'ground stop. New York Governor Kathy Hochul has called for '
+            'U.S. Transportation Secretary Sean Duffy to resign following '
+            'a nationwide ground stop on Friday.'
+        ),
+    )
+    assert hochul.matched is False
+    assert hochul.reason == 'hard_negative:local_tv_albany_national_source'
+
+    # Source: line plus bare short-link with no Cap Region body.
+    url_only = match_post('Source: NEWS10 ABC share.google/lHe0WFpwY46N...')
+    assert url_only.matched is False
+    assert url_only.reason == 'hard_negative:local_tv_albany_national_source'
+
     # Cap Region body after the source line still keeps.
     lark = match_post('Fire on Lark Street. Source: WNYT NewsChannel 13 Albany, NY')
     assert lark.matched is True
@@ -6555,6 +6594,15 @@ def test_albany_dems_supermajority_green_wave_state_politics_precision() -> None
     assert politics.matched is False
     assert politics.reason == 'hard_negative:albany_statehouse_metonym'
 
+    # Bare "Albany supermajorities" chamber shorthand (no "Dems" token).
+    bare_super = match_post(
+        "Democrats' national and Albany supermajorities strengthen their "
+        'ability to pursue progressive tax increases despite Governor '
+        "Kathy Hochul's veto power."
+    )
+    assert bare_super.matched is False
+    assert bare_super.reason == 'hard_negative:albany_statehouse_metonym'
+
     dems_rescued = match_post(
         'Albany, NY Dems celebrate local Common Council supermajority downtown.'
     )
@@ -6672,3 +6720,329 @@ def test_palace_theatre_tab_albany_recall() -> None:
     la = match_post('Secret Movie Club Film Festival 2026 at Palace Theatre, dtla. GET TIX.')
     assert la.matched is False
     assert la.reason == 'no_match'
+
+
+def test_albany_international_equity_not_airport() -> None:
+    """AIN equity-research cards drop; Albany International Airport / KALB keep."""
+    equity = match_post(
+        'Albany International price target raised by $10 at Truist. '
+        'Reported Friday via TheFly (subscription required).'
+    )
+    assert equity.matched is False
+    assert equity.reason == 'hard_negative:albany_international_equity'
+
+    airport = match_post('Delayed at Albany International Airport for two hours.')
+    assert airport.matched is True
+    assert airport.reason == 'strong_positive'
+
+    rescued = match_post(
+        'Albany International Airport runway work — not an AIN price target story.'
+    )
+    assert rescued.matched is True
+    assert rescued.reason == 'strong_positive'
+
+    kalb = match_post('KALB -> KCVG night flight from Albany International.')
+    assert kalb.matched is True
+    assert kalb.reason == 'strong_positive'
+
+
+def test_saratoga_springs_hashtag_workshop_recall() -> None:
+    """Saratoga Springs + workshop keeps even with intervening hashtags."""
+    walk = match_post(
+        'A recent Saratoga Springs #Walk2Connect workshop focused on the power '
+        'of social connection and walking together to train walkability advocates.'
+    )
+    assert walk.matched is True
+    assert walk.reason == 'strong_positive'
+
+    plain = match_post('Saratoga Springs workshop on downtown walkability this Saturday.')
+    assert plain.matched is True
+    assert plain.reason == 'strong_positive'
+
+    utah = match_post('Workshop in Saratoga Springs, Utah for walkability advocates.')
+    assert utah.matched is False
+    assert utah.reason == 'hard_negative:saratoga_springs_utah'
+
+
+def test_wamc_springfield_city_hall_not_capital_region() -> None:
+    """WAMC Springfield MA City Hall / Council cards must not keep on bare wamc."""
+    hall = match_post("For @wamc.org: I'm at Springfield City Hall! For a City Council meeting!")
+    assert hall.matched is False
+    assert hall.reason == 'hard_negative:wamc_western_mass'
+
+    council = match_post(
+        'For @wamc.org: After a glut of scams, a crypto ATM ban advances to '
+        'Springfield City Council.'
+    )
+    assert council.matched is False
+    assert council.reason == 'hard_negative:wamc_western_mass'
+
+    assert match_post('For @wamc.org: Albany Common Council votes tonight.').matched is True
+
+
+def test_albany_fixed_statehouse_and_hochul_mta_precision() -> None:
+    """Albany Fixed statewide policy / Hochul×MTA Albany-watchdog cards drop."""
+    fixed = match_post(
+        "Opinion: Albany Fixed Half of New York's Renter Tax Credit. "
+        "Now It's Time to Finish the Job."
+    )
+    assert fixed.matched is False
+    assert fixed.reason == 'hard_negative:albany_statehouse_metonym'
+
+    mta = match_post(
+        'The Hochul administration robbed the MTA of $200 million in bus '
+        'operating funds, a bombshell report from an Albany watchdog group shows.',
+        alt_text='Raid! Hochul Leaves MTA Holding $200M Bag - Streetsblog New York City',
+    )
+    assert mta.matched is False
+    assert mta.reason == 'hard_negative:hochul_albany_nyc_mta'
+
+    rescued_fixed = match_post(
+        'Albany Fixed the Lark Street snow route after Common Council testimony.'
+    )
+    assert rescued_fixed.matched is True
+
+    rescued_hochul = match_post(
+        'Hochul and an Albany watchdog group tour Empire State Plaza transit fixes.'
+    )
+    assert rescued_hochul.matched is True
+
+
+def test_knickerbocker_troy_music_hall_wotkyns_recall() -> None:
+    """Knickerbocker Arena / Troy Music Hall / Wotkyns keep without event cues."""
+    knick = match_post(
+        'Watch Jerry Garcia Band November 1991 at The Knick in Albany. '
+        'Performance at The Knickerbocker Arena.'
+    )
+    assert knick.matched is True
+    assert knick.reason == 'strong_positive'
+
+    hall = match_post(
+        'Don McLean stop at Troy Savings Bank Music Hall Saturday, Nov. 14 was bittersweet.'
+    )
+    assert hall.matched is True
+    assert hall.reason == 'strong_positive'
+
+    wotkyns = match_post(
+        "The SECRET History of Troy's Vail's & Wotkyns' Blocks (Forgotten 1860s SYNAGOGUES)."
+    )
+    assert wotkyns.matched is True
+    assert wotkyns.reason == 'strong_positive'
+
+    # NYC medical drama shorthand without Albany must stay out.
+    bare_knick = match_post('Rewatching The Knick this weekend.')
+    assert bare_knick.matched is False
+
+
+def test_bethlehem_pa_planning_commission_not_town_board() -> None:
+    """Bethlehem PA Planning Commission / WFMZ cards must not keep as NY town civic."""
+    pa = match_post(
+        'Plans for second two-story data center in Bethlehem go under the microscope',
+        alt_text=(
+            'Plans for second two-story data center in Bethlehem go under the microscope '
+            'Less than a week after plans for a two-story data center were approved by the '
+            'Bethlehem Planning Commission, the review process is beginning for another '
+            'double-decker proposal in the city.'
+        ),
+    )
+    assert pa.matched is False
+    assert pa.reason == 'hard_negative:bethlehem_pa'
+
+    lehigh = match_post(
+        'Bethlehem Planning Commission approved a data center in the Lehigh Valley.'
+    )
+    assert lehigh.matched is False
+    assert lehigh.reason == 'hard_negative:bethlehem_pa'
+
+    assert match_post('Town of Bethlehem board meeting tonight on Delaware Ave.').matched is True
+    assert match_post('Bethlehem Planning Board hearing on Delaware Ave tonight.').matched is True
+    assert match_post('Bethlehem Public Library hosts author night.').matched is True
+
+
+def test_unity_house_troy_and_capital_region_url_recall() -> None:
+    """Unity House Troy / teaching kitchen and capital-region URL slugs keep."""
+    unity = match_post(
+        'Unity House in Troy is working to open a pizza restaurant called '
+        'A Nun and Two Friars. It will serve as a teaching kitchen for students.'
+    )
+    assert unity.matched is True
+    assert unity.reason == 'strong_positive'
+
+    friars = match_post(
+        'A Nun and Two Friars prepares for its debut as a Unity House teaching kitchen.'
+    )
+    assert friars.matched is True
+    assert friars.reason == 'strong_positive'
+
+    url = match_post(
+        'National Hunger & Homelessness Awareness Week reminds us of food insecurity. '
+        'https://wnyt.com/top-stories/where-to-find-help-with-thanksgiving-meals-in-the-capital-region/'
+    )
+    assert url.matched is True
+    assert url.reason == 'strong_positive'
+
+
+def test_buffalo_to_albany_remote_and_albany_services_settlement_precision() -> None:
+    """Buffalo-to-Albany WNY/CNY spans and Albany Services/Alba AG cards drop."""
+    syracuse = match_post(
+        'An ICE plan to detain women in a tent ignites protest in Syracuse. '
+        'Democrats from Buffalo to Albany are demanding answers about the '
+        'planned $17 million facility in Western NY.'
+    )
+    assert syracuse.matched is False
+    assert syracuse.reason == 'hard_negative:albany_buffalo_to_albany_remote'
+
+    western = match_post('Democrats from Buffalo to Albany denounce a Western NY detention plan.')
+    assert western.matched is False
+    assert western.reason == 'hard_negative:albany_buffalo_to_albany_remote'
+
+    # Opposite direction (Erie Canal) and Cap Region destination travel keep.
+    erie = match_post(
+        'Ian Mackay is traveling 351 miles in his wheelchair along the Erie Canal '
+        'from Albany to Buffalo to highlight accessibility.'
+    )
+    assert erie.matched is True
+
+    plaza = match_post('Driving from Buffalo to Albany for a show at Empire State Plaza.')
+    assert plaza.matched is True
+
+    alba = match_post(
+        'New York. Albany Services Settlement\n'
+        'Alba Services silenced injured workers, manipulated insurance costs, '
+        'and failed to address harassment. My office is delivering $1.4 million '
+        'to workers harmed by Alba.'
+    )
+    assert alba.matched is False
+    assert alba.reason == 'hard_negative:albany_statehouse_metonym'
+
+    bare = match_post('New York. Albany Services Settlement')
+    assert bare.matched is False
+    assert bare.reason == 'hard_negative:albany_statehouse_metonym'
+
+    rescued = match_post(
+        'Albany Common Council reviews Albany Services Settlement funds for downtown nonprofits.'
+    )
+    assert rescued.matched is True
+
+
+def test_saratoga_coworking_and_wolf_road_colonie_recall() -> None:
+    """Saratoga coworking and Wolf Road×Colonie retail cards keep without ', NY'."""
+    palette = match_post(
+        'Palette to close Saratoga coworking space. Founder Catherine Hover is '
+        'transitioning to a regional membership model.'
+    )
+    assert palette.matched is True
+    assert palette.reason == 'strong_positive'
+
+    springs = match_post('Closing our Saratoga Springs coworking location next month.')
+    assert springs.matched is True
+    assert springs.reason == 'strong_positive'
+
+    # Utah Saratoga Springs must still drop.
+    utah = match_post('Saratoga Springs UT coworking space opens near Utah Lake')
+    assert utah.matched is False
+
+    wolf = match_post(
+        'Status uncertain for Don Tequila Mexican Cantina on Wolf Road\n'
+        'COLONIE — The restaurant has been closed for more than three weeks.'
+    )
+    assert wolf.matched is True
+    assert wolf.reason == 'colonie_local'
+
+    retail = match_post('New shop opening on Wolf Road in Colonie this spring.')
+    assert retail.matched is True
+    assert retail.reason == 'colonie_local'
+
+
+def test_times_union_aggregator_source_not_local() -> None:
+    """Source: Times Union under statewide copy must drop; Cap Region body keeps."""
+    statewide = match_post(
+        "NY faces statewide electricity shortage and has nation's oldest grid\n"
+        'Source: Times Union\n'
+        'share.newsbreak.com/k7b77kho'
+    )
+    assert statewide.matched is False
+    assert statewide.reason == 'hard_negative:times_union_aggregator_source'
+
+    # Cap Region body after the source line still keeps.
+    lark = match_post('Fire crews on Lark Street overnight.\nSource: Times Union')
+    assert lark.matched is True
+    assert lark.reason == 'strong_positive'
+
+    # Bare Times Union masthead without Source: is unchanged.
+    masthead = match_post('Times Union coverage of the weekend storm')
+    assert masthead.matched is True
+    assert masthead.reason == 'strong_positive'
+
+
+def test_central_ave_albany_and_colonie_company_recall() -> None:
+    """Central Ave×Albany and Colonie company/CEO keep; bare Central Ave stays out."""
+    road_diet = match_post("They're putting a road diet in on Central Ave in Albany!!!! Ahhhh!!!!")
+    assert road_diet.matched is True
+    assert road_diet.reason == 'strong_positive'
+
+    company = match_post("It's been a big year for Gabriel Stacy and his Colonie company.")
+    assert company.matched is True
+    assert company.reason == 'colonie_local'
+
+    ceo = match_post(
+        "Colonie CEO's acquisition strategy: Don't rush. "
+        "It's been a big year for Gabriel Stacy and his Colonie company."
+    )
+    assert ceo.matched is True
+    assert ceo.reason == 'colonie_local'
+
+    # Bare Central Avenue without Albany must still drop (Hackensack / LI).
+    bare = match_post(
+        'Please attend the forum on Thursday at Logan Family Life Center, '
+        '274 Central Avenue, Hackensack.'
+    )
+    assert bare.matched is False
+
+
+def test_albany_charges_and_tonko_seec_national_precision() -> None:
+    """Capital-court Albany Charges and national SEEC Tonko roster drops."""
+    charges = match_post(
+        'New York Real Estate Broker License Case Brings Two Albany Charges\n\n'
+        'Prosecutors allege the Bronx broker gave false answers on a renewal. '
+        'The charges are separate from earlier cases.'
+    )
+    assert charges.matched is False
+    assert charges.reason == 'hard_negative:albany_statehouse_metonym'
+
+    bare = match_post('New York Real Estate Broker License Case Brings Two Albany Charges')
+    assert bare.matched is False
+    assert bare.reason == 'hard_negative:albany_statehouse_metonym'
+
+    # City-as-actor / Cap Region civic rescues still keep.
+    lark = match_post('Albany police announce charges in Lark Street robbery')
+    assert lark.matched is True
+    assert lark.reason == 'strong_positive'
+
+    rescued = match_post(
+        'Two Albany Charges filed after a Lark Street robbery; Common Council briefed.'
+    )
+    assert rescued.matched is True
+
+    tonko = match_post(
+        'My Representative, Don Beyer, joined this House group, SEEC, in opposing BAAJA.',
+        alt_text=(
+            'SEEC Statement on the Bipartisan American Affordability and Jobs Act '
+            'Washington, D.C. – The leaders of the House Sustainable Energy and '
+            'Environment Coalition (SEEC), including Co-Chairs Reps. Doris Matsui, '
+            'Mike Quigley, and Paul Tonko and Vice Chairs Reps. Don Beyer.'
+        ),
+    )
+    assert tonko.matched is False
+    assert tonko.reason == 'hard_negative:tonko_seec_national'
+
+    # Bare Tonko reelect and Cap Region Tonko still keep.
+    reelect = match_post('We re-elected our house rep, Tonko, by 30 or so points.')
+    assert reelect.matched is True
+    assert reelect.reason == 'strong_positive'
+
+    local = match_post(
+        'Proud to be in Schenectady today with Congressman Paul Tonko '
+        'for the grocery groundbreaking.'
+    )
+    assert local.matched is True
