@@ -14868,5 +14868,65 @@
     "split": "dev",
     "regression": true,
     "note": "2026-11-20 audit FN: Colonie CEO embed/title form of Colonie company wire"
+  },
+  {
+    "id": "fp-albany-charges-bronx-broker",
+    "text": "New York Real Estate Broker License Case Brings Two Albany Charges\n\nProsecutors allege the Bronx broker gave false answers on a renewal. The charges are separate from earlier cases.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-21 audit: capital-court Albany Charges for Bronx broker license case kept via albany_with_ny_context"
+  },
+  {
+    "id": "fp-albany-charges-brings-two",
+    "text": "New York Real Estate Broker License Case Brings Two Albany Charges",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-21 audit: journalese Two Albany Charges / Brings Albany Charges capital venue"
+  },
+  {
+    "id": "tp-albany-charges-lark-street",
+    "text": "Albany police announce charges in Lark Street robbery",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-21 audit: city-as-actor Albany charges with Lark Street still keep"
+  },
+  {
+    "id": "tp-albany-charges-common-council",
+    "text": "Two Albany Charges filed after a Lark Street robbery; Common Council briefed.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-21 audit: numbered Albany Charges with Cap Region civic rescue still keep"
+  },
+  {
+    "id": "fp-tonko-seec-national-roster",
+    "text": "My Representative, Don Beyer, joined this House group, SEEC, in opposing BAAJA.\n\nSEEC Statement on the Bipartisan American Affordability and Jobs Act Washington, D.C. – The leaders of the House Sustainable Energy and Environment Coalition (SEEC), including Co-Chairs Reps. Doris Matsui, Mike Quigley, and Paul Tonko and Vice Chairs Reps. Don Beyer.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-21 audit: Paul Tonko listed only as SEEC co-chair on national DC press release"
+  },
+  {
+    "id": "tp-tonko-schenectady-groundbreaking",
+    "text": "Proud to be in Schenectady today with Congressman Paul Tonko for the grocery groundbreaking.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-21 audit: Cap Region Tonko appearance still keeps"
   }
 ]
