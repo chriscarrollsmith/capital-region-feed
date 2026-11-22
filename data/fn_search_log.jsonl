@@ -432,3 +432,19 @@
 {"used_at": "2026-11-21T09:07:54Z", "query": "KALB", "family": "nickname", "status": "ok", "hits": 20, "false_negatives": 0, "false_negative_ids": [], "notes": "German Kalb/Alaska whale noise; one Albany airport flight keep"}
 {"used_at": "2026-11-21T09:07:54Z", "query": "Alive at Five", "family": "event_phrase", "status": "ok", "hits": 6, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
 {"used_at": "2026-11-21T09:07:54Z", "query": "TAB Albany", "family": "event_phrase", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-11-22T09:05:50Z", "query": "TAB Albany", "family": "event_phrase", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-11-22T09:05:50Z", "query": "show Saratoga Springs", "family": "event_phrase", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-11-22T09:05:50Z", "query": "Queensbury", "family": "bare_place", "status": "ok", "hits": 1, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-11-22T09:05:50Z", "query": "Marylou Whitney", "family": "event_phrase", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-11-22T09:05:50Z", "query": "Saratoga Springs", "family": "bare_place", "status": "ok", "hits": 7, "false_negatives": 2, "false_negative_ids": ["at://did:plc:jny5wiog5nlprvw4lvqkblng/app.bsky.feed.post/3n2u2czkvrk2i", "at://did:plc:ddcwkfo6ep5kgfld52tpnodt/app.bsky.feed.post/3n2talko6gs2f"], "notes": "farmers market; filming in Saratoga Springs"}
+{"used_at": "2026-11-22T09:05:50Z", "query": "KALB", "family": "nickname", "status": "ok", "hits": 4, "false_negatives": 0, "false_negative_ids": [], "notes": "German/French kalb homographs only"}
+{"used_at": "2026-11-22T09:05:50Z", "query": "North Broadway", "family": "neighborhood", "status": "ok", "hits": 5, "false_negatives": 0, "false_negative_ids": [], "notes": "UK/TLK/NYC Broadway noise"}
+{"used_at": "2026-11-22T09:05:50Z", "query": "Caroline Street", "family": "neighborhood", "status": "ok", "hits": 1, "false_negatives": 0, "false_negative_ids": [], "notes": "UK Shipley roadworks"}
+{"used_at": "2026-11-22T09:05:50Z", "query": "Saratoga farmers market", "family": "neighborhood", "status": "ok", "hits": 1, "false_negatives": 1, "false_negative_ids": ["at://did:plc:jny5wiog5nlprvw4lvqkblng/app.bsky.feed.post/3n2u2czkvrk2i"], "notes": ""}
+{"used_at": "2026-11-22T09:05:50Z", "query": "Saratoga Springs farmers", "family": "neighborhood", "status": "ok", "hits": 1, "false_negatives": 1, "false_negative_ids": ["at://did:plc:jny5wiog5nlprvw4lvqkblng/app.bsky.feed.post/3n2u2czkvrk2i"], "notes": ""}
+{"used_at": "2026-11-22T09:05:50Z", "query": "Shirt Factory Glens Falls", "family": "venue", "status": "ok", "hits": 2, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-11-22T09:05:50Z", "query": "Bounce Arcade", "family": "venue", "status": "ok", "hits": 1, "false_negatives": 0, "false_negative_ids": [], "notes": "Velan soft-prior residual; not counted as matcher FN"}
+{"used_at": "2026-11-22T09:05:50Z", "query": "Applyrs", "family": "civic", "status": "ok", "hits": 3, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-11-22T09:05:50Z", "query": "Schuylerville", "family": "bare_place", "status": "ok", "hits": 5, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-11-22T09:05:51Z", "query": "Malta NY", "family": "bare_place", "status": "ok", "hits": 1, "false_negatives": 0, "false_negative_ids": [], "notes": "Swedish Malta Europe hard-negative"}
+{"used_at": "2026-11-22T09:05:51Z", "query": "Troy Savings Bank", "family": "venue", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}

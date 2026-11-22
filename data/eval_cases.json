@@ -14928,5 +14928,95 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-11-21 audit: Cap Region Tonko appearance still keeps"
+  },
+  {
+    "id": "fp-albany-usny-imprint-flora-1918",
+    "text": "Wild flowers of New York.\nAlbany, University of the State of New York, 1918.\n\n[Source]",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-22 audit: bibliographic Albany imprint under statewide flora plate; not Cap Region news."
+  },
+  {
+    "id": "fp-albany-usny-imprint-bare",
+    "text": "Albany, University of the State of New York, 1918.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-22 audit: bare USNY imprint dateline must drop."
+  },
+  {
+    "id": "tp-albany-usny-imprint-lark-street-rescue",
+    "text": "Albany, University of the State of New York, 1918 exhibit opens on Lark Street this weekend.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-22 audit: Cap Region civic rescue keeps imprint+Lark Street cards."
+  },
+  {
+    "id": "fp-columbia-county-albany-rensselaer-amtrak",
+    "text": "Hudson\nHudson, NY (Columbia County)\nOwner: Amtrak\nTrains Today:\nAmtrak\n1 to Burlington, VT\n7 to Albany-Rensselaer, NY\n13 to New York, NY\nLocal Transit?: Columbia County Public Transit\nElectrified?: No",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-22 audit: Mid-Hudson Hudson station card only citing Albany-Rensselaer as a destination."
+  },
+  {
+    "id": "tp-albany-rensselaer-amtrak-station",
+    "text": "Albany-Rensselaer Amtrak station is busy today ahead of the holiday weekend.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-22 audit: Cap Region Albany-Rensselaer station cards still keep."
+  },
+  {
+    "id": "tp-columbia-county-albany-rensselaer-lark-rescue",
+    "text": "Columbia County tourists rode Albany-Rensselaer then walked Lark Street.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-22 audit: Columbia County + Albany-Rensselaer with Cap Region rescue keeps."
+  },
+  {
+    "id": "tp-saratoga-springs-farmers-market",
+    "text": "I once saw Bill Belichick at the Saratoga Springs farmers' market, but then my husband corrected me that that was Bill Parcells.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-22 audit FN: Saratoga Springs farmers' market without , NY."
+  },
+  {
+    "id": "tp-saratoga-springs-filming-movie",
+    "text": "Back in the 80s. I saw Christy McNichol outside a movie theater waiting for her ride. She was filming a move in Saratoga Springs.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-22 audit FN: filming in Saratoga Springs (typo move) without , NY."
+  },
+  {
+    "id": "tn-saratoga-springs-ut-farmers-market",
+    "text": "Saratoga Springs UT farmers' market near Utah Lake opens Saturday.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-22 audit: Utah Saratoga Springs farmers market still drops."
   }
 ]
