@@ -7000,6 +7000,69 @@ def test_central_ave_albany_and_colonie_company_recall() -> None:
     assert bare.matched is False
 
 
+def test_albany_usny_imprint_and_columbia_county_albany_rensselaer() -> None:
+    """USNY bibliographic imprint and Columbia County×Albany-Rensselaer drop."""
+    imprint = match_post(
+        'Wild flowers of New York.\nAlbany, University of the State of New York, 1918.\n\n[Source]'
+    )
+    assert imprint.matched is False
+    assert imprint.reason == 'hard_negative:albany_usny_imprint'
+
+    bare = match_post('Albany, University of the State of New York, 1918.')
+    assert bare.matched is False
+    assert bare.reason == 'hard_negative:albany_usny_imprint'
+
+    # Cap Region civic rescue still keeps.
+    lark = match_post(
+        'Albany, University of the State of New York, 1918 exhibit opens on Lark Street.'
+    )
+    assert lark.matched is True
+    assert lark.reason == 'strong_positive'
+
+    hudson = match_post(
+        'Hudson\n'
+        'Hudson, NY (Columbia County)\n'
+        'Owner: Amtrak\n'
+        'Trains Today:\n'
+        'Amtrak\n'
+        '7 to Albany-Rensselaer, NY\n'
+        '13 to New York, NY\n'
+        'Local Transit?: Columbia County Public Transit'
+    )
+    assert hudson.matched is False
+    assert hudson.reason == 'hard_negative:columbia_county_albany_rensselaer'
+
+    # Cap Region Albany-Rensselaer station cards still keep.
+    station = match_post('Albany-Rensselaer Amtrak station is busy today.')
+    assert station.matched is True
+    assert station.reason == 'multi_local_places'
+
+    rescued = match_post('Columbia County tourists rode Albany-Rensselaer then walked Lark Street.')
+    assert rescued.matched is True
+    assert rescued.reason == 'strong_positive'
+
+
+def test_saratoga_springs_farmers_market_and_filming_recall() -> None:
+    """Saratoga Springs farmers' market / filming cards keep without ', NY'."""
+    farmers = match_post(
+        "I once saw Bill Belichick at the Saratoga Springs farmers' market, "
+        'but then my husband corrected me that that was Bill Parcells.'
+    )
+    assert farmers.matched is True
+    assert farmers.reason == 'strong_positive'
+
+    filming = match_post(
+        'Back in the 80s. I saw Christy McNichol outside a movie theater '
+        'waiting for her ride. She was filming a move in Saratoga Springs.'
+    )
+    assert filming.matched is True
+    assert filming.reason == 'strong_positive'
+
+    # Utah Saratoga Springs must still drop.
+    utah = match_post("Saratoga Springs UT farmers' market near Utah Lake")
+    assert utah.matched is False
+
+
 def test_albany_charges_and_tonko_seec_national_precision() -> None:
     """Capital-court Albany Charges and national SEEC Tonko roster drops."""
     charges = match_post(

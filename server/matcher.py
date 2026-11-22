@@ -768,6 +768,14 @@ _STRONG_POSITIVE = re.compile(
       # Conversational "in Saratoga Springs with …" travel posts often omit ", NY".
       # Avoid "charged in Saratoga Springs crash" (UT) by requiring "with".
       | \bin\s+saratoga\s+springs\s+with\b
+      # Farmers' market / filming cards often omit ", NY".
+      # Possessive ``farmers' market`` / typoed ``filming a move`` included.
+      | saratoga\s+springs\s+farmers?['\u2019]?\s*markets?\b
+      | farmers?['\u2019]?\s*markets?[\s\S]{0,60}saratoga\s+springs\b
+      | filming\s+(?:a\s+)?(?:mov(?:ie|e)|film)\s+in\s+saratoga\s+springs\b
+      | filming\s+in\s+saratoga\s+springs\b
+      | movie\s+theater[\s\S]{0,100}saratoga\s+springs\b
+      | saratoga\s+springs[\s\S]{0,100}movie\s+theater\b
       # Civic / tourism / bookstore copy often omits ", NY" for Saratoga Springs.
       | \bin\s+saratoga\s+springs\s+to\b
       | (?:was|were)\s+in\s+saratoga\s+springs\b
@@ -6117,6 +6125,62 @@ def _albany_hashtag_only(haystack: str) -> bool:
     return leftover is None
 
 
+def _albany_usny_imprint_conflict(haystack: str) -> bool:
+    """True when Albany is only a bibliographic imprint, not Cap Region news.
+
+    Library / plate cards stamp ``Albany, University of the State of New York,
+    1918`` (publisher place) under statewide flora / archive copy. Cap Region
+    civic / place rescues still keep real Albany news.
+    """
+    if not re.search(
+        r'\balbany\s*[,:]\s*university\s+of\s+the\s+state\s+of\s+new\s+york\b',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    scrubbed = re.sub(
+        r'\balbany\s*[,:]\s*university\s+of\s+the\s+state\s+of\s+new\s+york\b'
+        r'(?:\s*,?\s*\d{4})?',
+        ' ',
+        haystack,
+        flags=re.IGNORECASE,
+    )
+    if _ALBANY_LOCAL_RESCUE.search(scrubbed) or _ALBANY_WIRE_LOCAL_RESCUE.search(scrubbed):
+        return False
+    if _TIMES_UNION_CAP_REGION_RESCUE.search(scrubbed):
+        return False
+    if _STRONG_POSITIVE.search(scrubbed):
+        return False
+    return True
+
+
+def _columbia_county_albany_rensselaer_conflict(haystack: str) -> bool:
+    """True when Columbia County cards only cite Albany-Rensselaer as a stop.
+
+    Mid-Hudson Hudson / Columbia County Amtrak station bots list trains ``to
+    Albany-Rensselaer``; the hyphenated station name unlocks multi_local via
+    albany + rensselaer without Cap Region place news. Cap Region rescues
+    beyond the station destination still keep.
+    """
+    if not re.search(r'\bcolumbia\s+county\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not re.search(r'\balbany[\s\-–—]+rensselaer\b', haystack, flags=re.IGNORECASE):
+        return False
+    scrubbed = re.sub(
+        r'\balbany[\s\-–—]+rensselaer\b',
+        ' ',
+        haystack,
+        flags=re.IGNORECASE,
+    )
+    if _ALBANY_LOCAL_RESCUE.search(scrubbed) or _ALBANY_WIRE_LOCAL_RESCUE.search(scrubbed):
+        return False
+    if _TIMES_UNION_CAP_REGION_RESCUE.search(scrubbed):
+        return False
+    if _STRONG_POSITIVE.search(scrubbed):
+        return False
+    return True
+
+
 def _albany_international_equity_conflict(haystack: str) -> bool:
     """True when Albany International is the AIN materials ticker, not ALB airport.
 
@@ -6803,6 +6867,10 @@ def _propose_candidate(
             return MatchResult(False, 'hard_negative:albany_international_equity')
         if _tonko_seec_national_conflict(haystack):
             return MatchResult(False, 'hard_negative:tonko_seec_national')
+        if _albany_usny_imprint_conflict(haystack):
+            return MatchResult(False, 'hard_negative:albany_usny_imprint')
+        if _columbia_county_albany_rensselaer_conflict(haystack):
+            return MatchResult(False, 'hard_negative:columbia_county_albany_rensselaer')
         if _egg_kansas_city_conflict(haystack):
             return MatchResult(False, 'hard_negative:egg_off_region')
         if _saratoga_stakes_away_conflict(haystack):
@@ -6896,6 +6964,8 @@ def _propose_candidate(
                 return MatchResult(False, 'hard_negative:bethlehem_other_city')
             if _latham_person_name_conflict(haystack) and 'latham' in multi_eligible:
                 return MatchResult(False, 'hard_negative:latham_person_name')
+            if _columbia_county_albany_rensselaer_conflict(haystack):
+                return MatchResult(False, 'hard_negative:columbia_county_albany_rensselaer')
             return MatchResult(True, 'multi_local_places')
 
         # Prefer a non-collision, more-specific token when several ambiguous names
@@ -6940,6 +7010,10 @@ def _propose_candidate(
                 return MatchResult(False, 'hard_negative:albany_hashtag_geotag')
             if _albany_international_equity_conflict(haystack):
                 return MatchResult(False, 'hard_negative:albany_international_equity')
+            if _albany_usny_imprint_conflict(haystack):
+                return MatchResult(False, 'hard_negative:albany_usny_imprint')
+            if _columbia_county_albany_rensselaer_conflict(haystack):
+                return MatchResult(False, 'hard_negative:columbia_county_albany_rensselaer')
             if _NY_CONTEXT.search(place_haystack):
                 return MatchResult(True, 'albany_with_ny_context')
             if _STRONG_POSITIVE.search(haystack):
