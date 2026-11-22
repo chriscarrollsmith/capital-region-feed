@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-160 — Daily feed audit: USNY imprint / Columbia County Amtrak FPs; Saratoga Springs farmers market / filming FNs
-- **Status:** in progress
+- **Status:** done ([#142](https://github.com/chriscarrollsmith/capital-region-feed/pull/142))
 - **Why:** 2026-11-22 audit of last-24h AppView feed (~46 posts) found matcher
   FPs among rematch-keeps: Biodiversity Pics ``Albany, University of the State
   of New York, 1918`` flora-plate imprint kept via ``albany_with_ny_context``,
