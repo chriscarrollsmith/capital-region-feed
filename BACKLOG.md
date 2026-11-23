@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-161 — Daily feed audit: Fingerpaint / Saratoga Cosplay / Rensselaer waterfront / Anglers Queensbury FNs
-- **Status:** in progress
+- **Status:** done ([#143](https://github.com/chriscarrollsmith/capital-region-feed/pull/143))
 - **Why:** 2026-11-23 audit of last-24h AppView feed (~50 posts) found no clear
   matcher FPs among rematch-keeps (allowlisted News10 / Times Union / Casey
   Seiler and NWS/IEMBOT ALY climate were intentional). Soft-prior / search
