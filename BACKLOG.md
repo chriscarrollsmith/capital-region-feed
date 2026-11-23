@@ -538,6 +538,28 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-161 — Daily feed audit: Fingerpaint / Saratoga Cosplay / Rensselaer waterfront / Anglers Queensbury FNs
+- **Status:** in progress
+- **Why:** 2026-11-23 audit of last-24h AppView feed (~50 posts) found no clear
+  matcher FPs among rematch-keeps (allowlisted News10 / Times Union / Casey
+  Seiler and NWS/IEMBOT ALY climate were intentional). Soft-prior / search
+  Cap Region FNs: Fingerpaint marketing agency founded in Saratoga Springs,
+  Saratoga Cosplay Events / Cosplay Night Out, City of Rensselaer waterfront
+  mill apartments, and The Anglers × Queensbury — all omitting ``, NY``.
+  Planned ``fn_search.py`` slate (8) all ran OK; exploratory Fingerpaint /
+  Saratoga Cosplay / Rensselaer waterfront / Anglers Queensbury / Cosplay Night
+  Out / Superfan Health remembered. Fold unmerged #142 (and prior #134–#141
+  stack) onto tip.
+- **Work:**
+  - Strong Fingerpaint / agency-founded × Saratoga Springs cues; Utah gate
+    retained; bare fingerpaint art stays out.
+  - Strong Saratoga Cosplay / Cosplay Night Out cues.
+  - Strong Rensselaer waterfront / mill / apartments cues; Indiana gate retained.
+  - Strong The Anglers × Queensbury cue; West Yorkshire Queensbury UK gate.
+  - Grow eval + fn_search log/strategies; fold #142 onto tip.
+- **Done when:** Audited FNs keep; off-region counterparts drop; eval P/R stay
+  1.000; unit tests cover the new cues.
+
 ### B-160 — Daily feed audit: USNY imprint / Columbia County Amtrak FPs; Saratoga Springs farmers market / filming FNs
 - **Status:** done ([#142](https://github.com/chriscarrollsmith/capital-region-feed/pull/142))
 - **Why:** 2026-11-22 audit of last-24h AppView feed (~46 posts) found matcher

@@ -15018,5 +15018,95 @@
     "split": "dev",
     "regression": true,
     "note": "2026-11-22 audit: Utah Saratoga Springs farmers market still drops."
+  },
+  {
+    "id": "tp-fingerpaint-saratoga-springs-agency",
+    "text": "Ed Mitzen, who founded the marketing agency Fingerpaint in Saratoga Springs, has now Superfan Health, a new agency that helps healthcare brands partner with sports teams and leagues.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-23 audit FN: Fingerpaint / agency founded in Saratoga Springs without , NY."
+  },
+  {
+    "id": "tp-saratoga-cosplay-night-out",
+    "text": "Don't pack up that Comic-Con cosplay just yet! Mark your calendars, because November 30th is Cosplay Night Out hosted by Saratoga Cosplay Events!",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-23 audit FN: Saratoga Cosplay Events / Cosplay Night Out without Springs/, NY."
+  },
+  {
+    "id": "tp-rensselaer-waterfront-mill-apartments",
+    "text": "From the outside, the former run-down mill in Rensselaer appears ready to welcome the first tenants to the 72 market-rate apartments that now fill the complex, but the project still faces a hurdle.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-23 audit FN: City of Rensselaer waterfront mill apartments without , NY."
+  },
+  {
+    "id": "tp-rensselaer-waterfront-apartments-title",
+    "text": "Rensselaer waterfront apartments nearly complete",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-23 audit FN: Rensselaer waterfront apartments headline without , NY."
+  },
+  {
+    "id": "tp-queensbury-the-anglers",
+    "text": "Used to run into him at the anglers In queensbury back in the day he was famous to us for helping out distressed youth as much as countdown",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-23 audit FN: The Anglers restaurant x Queensbury without , NY."
+  },
+  {
+    "id": "tn-fingerpaint-pony-color",
+    "text": "My ponysona has dark blue fingerpaint blue fur with gold highlights.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-23 audit: bare fingerpaint art/color without Saratoga Springs still drops."
+  },
+  {
+    "id": "tn-saratoga-springs-ut-agency-founded",
+    "text": "She founded a marketing agency in Saratoga Springs UT near Utah Lake.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-23 audit: Utah Saratoga Springs agency-founded cards still drop."
+  },
+  {
+    "id": "tn-rensselaer-indiana-mill-apartments",
+    "text": "New mill apartments open in Rensselaer, Indiana downtown.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-23 audit: Rensselaer Indiana mill apartments still drop."
+  },
+  {
+    "id": "tn-queensbury-uk-the-anglers",
+    "text": "Dinner at the anglers in Queensbury, West Yorkshire.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-23 audit: West Yorkshire Queensbury + The Anglers still drops."
   }
 ]
