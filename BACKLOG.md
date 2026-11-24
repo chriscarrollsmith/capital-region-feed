@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-162 — Daily feed audit: Utica/Vincent Price Chopper / culture-of-Albany / Call-on-Albany FPs; Hangar on the Hudson FN
-- **Status:** in progress
+- **Status:** done ([#144](https://github.com/chriscarrollsmith/capital-region-feed/pull/144))
 - **Why:** 2026-11-24 audit of last-24h AppView feed (~52 posts) found matcher
   FPs among rematch-keeps: WKTV South Utica Price Chopper store blotter and a
   Vincent Price Chopper comedy card kept via bare Price Chopper; Hochul
