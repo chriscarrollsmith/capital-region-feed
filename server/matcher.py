@@ -493,8 +493,11 @@ _STRONG_POSITIVE = re.compile(
       # Albany Rowing Center Hudson river club copy often omits ", NY".
       | albany\s+rowing\s+center\b
       # Price Chopper / Market 32 (Golub Cap Region grocery) product wires.
-      | price\s+chopper\b
+      # Negative lookbehind: "Vincent Price Chopper" comedy / handle copy.
+      | (?<!vincent\s)price\s+chopper\b
       | \bmarket\s*32\b
+      # Troy waterfront venue; concert / review cards often omit ", NY".
+      | hangar\s+on\s+the\s+hudson\b
       # Albany Central Warehouse demolition / asbestos wires often omit ", NY".
       | albany['\u2019]?s\s+central\s+warehouse\b
       | central\s+warehouse[\s\S]{0,100}\balbany\b
@@ -5915,11 +5918,14 @@ def _albany_statehouse_metonym_conflict(haystack: str) -> bool:
     and "Albany bribe" / Speaker Heastie Assembly-suite wires use the capital
     as metonym without Cap Region place news, "Albany Services Settlement" /
     Alba Services AG settlement cards stamp New York + Albany without Cap
-    Region place news, and journalese "Two Albany Charges" / "Brings …
+    Region place news, journalese "Two Albany Charges" / "Brings …
     Albany Charges" cards for Bronx / real-estate-broker license filings use
-    Albany as the capital court venue without Cap Region place news. Local
-    party organs ("join Albany Democrats at … rally") and civic anchors still
-    rescue.
+    Albany as the capital court venue without Cap Region place news,
+    "culture of Albany" governor / chamber-culture copy (Hochul×Albany strong
+    cue otherwise), and antipoverty "Call on Albany to …" statewide SNAP /
+    benefits cards use the capital as the state actor without Cap Region place
+    news. Local party organs ("join Albany Democrats at … rally") and civic
+    anchors still rescue.
     "Rest of Albany County" and bare travel ("headed to Albany this weekend")
     are Cap Region and do not match. Do not bare-match "comes to Albany" —
     Phish / TAB concert cards keep via venue cues. Do not bare-match
@@ -6010,12 +6016,69 @@ def _albany_statehouse_metonym_conflict(haystack: str) -> bool:
         r'can(?:[\u2019\']t|not)|could(?:n[\u2019\']t|\s+not))\b|'
         r'\balbany\s+democrats?\b[\s\S]{0,100}\b(?:'
         r'tariffs?|vote\s+in\s+d\.?c\.?|war\s+with\s+iran|blunt\s+a\s+trump'
-        r')\b',
+        r')\b|'
+        # Governor / chamber-culture metonym ("change the culture of Albany").
+        r'\bculture\s+of\s+albany\b|'
+        # Statewide advocacy destination ("Call on Albany to replace SNAP…").
+        r'\bcall(?:s|ed|ing)?\s+on\s+albany\b',
         haystack,
         flags=re.IGNORECASE,
     ):
         return False
     if _ALBANY_WIRE_LOCAL_RESCUE.search(haystack) or _ALBANY_LOCAL_RESCUE.search(haystack):
+        return False
+    return True
+
+
+def _price_chopper_offregion_conflict(haystack: str) -> bool:
+    """True when Price Chopper / Market 32 news is an off-Cap-Region store.
+
+    Golub HQ / circular wires keep via the bare grocery strong positive, but
+    Utica / Syracuse / Buffalo / Rochester store blotters are Central /
+    Western NY. Cap Region place rescues still keep multi-store or HQ cards.
+    """
+    if not re.search(
+        r'(?<!vincent\s)price\s+chopper\b|\bmarket\s*32\b',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    if not re.search(
+        r"""
+        \b(?:
+            utica|syracuse|rochester|buffalo|binghamton|watertown|
+            ithaca|elmira|oswego|jamestown|auburn
+        )\b
+        """,
+        haystack,
+        flags=re.IGNORECASE | re.VERBOSE,
+    ):
+        return False
+    if _ALBANY_WIRE_LOCAL_RESCUE.search(haystack) or _ALBANY_LOCAL_RESCUE.search(haystack):
+        return False
+    if re.search(
+        r"""
+        (?:
+            capital\s+(?:region|district)\b
+          | \bschenectady\b
+          | \bcolonie\b
+          | \bguilderland\b
+          | \bniskayuna\b
+          | \blatham\b
+          | \bcohoes\b
+          | \bwatervliet\b
+          | \btroy\b
+          | clifton\s+park\b
+          | \bmalta\b
+          | \brotterdam\b
+          | east\s+greenbush\b
+          | \bdelmar\b
+          | \#albanyny\b
+        )
+        """,
+        haystack,
+        flags=re.IGNORECASE | re.VERBOSE,
+    ):
         return False
     return True
 
@@ -6919,6 +6982,8 @@ def _propose_candidate(
             return MatchResult(False, 'hard_negative:albany_usny_imprint')
         if _columbia_county_albany_rensselaer_conflict(haystack):
             return MatchResult(False, 'hard_negative:columbia_county_albany_rensselaer')
+        if _price_chopper_offregion_conflict(haystack):
+            return MatchResult(False, 'hard_negative:price_chopper_offregion')
         if _egg_kansas_city_conflict(haystack):
             return MatchResult(False, 'hard_negative:egg_off_region')
         if _saratoga_stakes_away_conflict(haystack):
