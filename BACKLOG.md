@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-163 — Daily feed audit: Edmonton capital region / Hochul×Carnegie / HALT dateline FPs; Saratoga National Park / SUNY Empire / Latham / South Broadway FNs
-- **Status:** in progress
+- **Status:** done ([#145](https://github.com/chriscarrollsmith/capital-region-feed/pull/145))
 - **Why:** 2026-11-25 audit of last-24h AppView feed (~52 posts) found matcher
   FPs among rematch-keeps: CTV Edmonton "capital region" River City Weld Off
   card (handle omitted Alberta), Hochul "leaving Albany behind" Carnegie Hall
