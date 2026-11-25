@@ -538,6 +538,32 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-163 — Daily feed audit: Edmonton capital region / Hochul×Carnegie / HALT dateline FPs; Saratoga National Park / SUNY Empire / Latham / South Broadway FNs
+- **Status:** in progress
+- **Why:** 2026-11-25 audit of last-24h AppView feed (~52 posts) found matcher
+  FPs among rematch-keeps: CTV Edmonton "capital region" River City Weld Off
+  card (handle omitted Alberta), Hochul "leaving Albany behind" Carnegie Hall
+  Manhattan inauguration via Hochul×Albany strong cue, and NEWS10 Albany, N.Y.
+  dateline on statewide HALT Act / solitary confinement wire. Soft-prior /
+  search Cap Region FNs: Saratoga National Park short form (without Historical),
+  SUNY Empire Saratoga Springs food pantry, Latham office building CRE, and
+  South Broadway Saratoga apartment CRE. Planned ``fn_search.py`` slate (8):
+  six OK, ``#518`` / ``#upstateny`` blocked (hashtag 400); exploratory Saratoga
+  National Park / SUNY Empire / South Broadway Saratoga / Latham office
+  remembered. Fold unmerged #144 (and prior #134–#143 stack) onto tip.
+- **Work:**
+  - Alberta capital-region conflict: Edmonton / ``ctvnewsedmonton`` handle +
+    River City Weld Off cue; NY Capital Region welding rescues retained.
+  - Statehouse ``leaving Albany behind`` + Hochul×Carnegie Hall / Manhattan
+    inauguration gate; Lark Street civic rescues retained.
+  - Albany dateline statewide prisons / HALT Act conflict; Empire State Plaza
+    rescues retained.
+  - Strong Saratoga National Park short form, SUNY Empire, Latham office
+    building, South Broadway × Saratoga apartment cues; Utah gate retained.
+  - Grow eval + fn_search log/strategies; fold #144 onto tip.
+- **Done when:** Audited FPs drop and FNs keep; eval P/R stay 1.000; unit tests
+  cover the new gates/cues.
+
 ### B-162 — Daily feed audit: Utica/Vincent Price Chopper / culture-of-Albany / Call-on-Albany FPs; Hangar on the Hudson FN
 - **Status:** done ([#144](https://github.com/chriscarrollsmith/capital-region-feed/pull/144))
 - **Why:** 2026-11-24 audit of last-24h AppView feed (~52 posts) found matcher

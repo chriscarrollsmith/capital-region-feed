@@ -15233,5 +15233,134 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-11-24 counterpart: bare Hangar on the Hudson venue cue"
+  },
+  {
+    "id": "fp-edmonton-capital-region-weld-off",
+    "text": "High schoolers compete in welding competition",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "author_handle": "ctvnewsedmonton.bsky.social",
+    "alt_text": "Students from five school districts in the capital region participated in the fourth annual River City Weld Off on Tuesday at the Boilermakers Union Hall.",
+    "note": "2026-11-25 audit FP: CTV Edmonton capital region / River City Weld Off kept via bare capital region"
+  },
+  {
+    "id": "tp-capital-region-welding-albany",
+    "text": "Capital Region high schoolers compete in a welding contest in Albany.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-25 counterpart: NY Capital Region welding with Albany"
+  },
+  {
+    "id": "fp-hochul-leaving-albany-carnegie-hall",
+    "text": "Hochul plans Jan. 8 inauguration at Carnegie Hall",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "The governor is leaving Albany behind for a two-day, two-event big money fundraising extravaganza in Manhattan to kick off her second full term.",
+    "note": "2026-11-25 audit FP: Hochul leaving Albany behind for Carnegie Hall Manhattan via Hochul×Albany strong cue"
+  },
+  {
+    "id": "tp-hochul-lark-street-inauguration",
+    "text": "Hochul visited Lark Street in Albany ahead of the inauguration.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-25 counterpart: Hochul×Albany with Lark Street civic rescue"
+  },
+  {
+    "id": "fp-albany-dateline-halt-act-statewide",
+    "text": "'Intentional failure': Report suggests NY prisons & jails are violating solitary confinement law",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "ALBANY, N.Y. (WTEN) – A new report from the Cardozo Civil Rights Clinic suggests that New York State prisons and jails are not following the five-year-old HALT Act.",
+    "note": "2026-11-25 audit FP: Albany N.Y. dateline on statewide HALT Act / solitary confinement wire"
+  },
+  {
+    "id": "tp-halt-act-empire-state-plaza",
+    "text": "ALBANY, N.Y. — Advocates rallied at Empire State Plaza over HALT Act enforcement at local facilities.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-25 counterpart: HALT Act with Empire State Plaza civic rescue"
+  },
+  {
+    "id": "tp-saratoga-national-park-short",
+    "text": "This year's final driving trip on the tour road at Saratoga National Park before it closes on 12/1.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-25 audit FN: Saratoga National Park short form (without Historical) dropped as ambiguous saratoga"
+  },
+  {
+    "id": "tp-suny-empire-food-pantry-saratoga",
+    "text": "SUNY Empire offering virtual food pantry to students.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "SUNY Empire offering virtual food pantry to students. SARATOGA SPRINGS — SUNY's online university has just as many hungry students as the brick-and-mortar colleges.",
+    "note": "2026-11-25 audit FN: SUNY Empire Saratoga Springs HQ food pantry dropped as ambiguous saratoga springs"
+  },
+  {
+    "id": "tn-empire-8-suny-poly-utica",
+    "text": "Local Sports: Utica and SUNY Poly Share Empire 8 Hoops Honor",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-25 counterpart: Empire 8 / SUNY Poly Utica must not keep via SUNY Empire cue"
+  },
+  {
+    "id": "tp-latham-office-building-sale",
+    "text": "An office building in Latham will become the new district office for an insurance company.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Latham office building sold for $1.13M An office building in Latham will become the new district office for an insurance company.",
+    "note": "2026-11-25 audit FN: Latham office building CRE card dropped as ambiguous latham"
+  },
+  {
+    "id": "tp-south-broadway-saratoga-apartments",
+    "text": "Said one of the developers of the plan for a site near South Broadway: \"It's a small project, but it would be a good one.\"",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "Developers want to build 12-unit apartment building in Saratoga Said one of the developers of the plan for a site near South Broadway.",
+    "note": "2026-11-25 audit FN: South Broadway Saratoga apartment CRE card dropped as ambiguous saratoga"
+  },
+  {
+    "id": "fp-saratoga-springs-utah-apartments",
+    "text": "Developers want to build a 12-unit apartment building in Saratoga Springs",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "author_handle": "abc4utah.bsky.social",
+    "alt_text": "Saratoga Springs, Utah planning commission near Redwood Road",
+    "note": "2026-11-25 counterpart: Utah Saratoga Springs apartments still drop"
   }
 ]
