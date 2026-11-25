@@ -7239,3 +7239,124 @@ def test_fingerpaint_cosplay_rensselaer_anglers_recall() -> None:
     uk = match_post('Dinner at the anglers in Queensbury, West Yorkshire.')
     assert uk.matched is False
     assert uk.reason == 'hard_negative:queensbury_uk'
+
+
+def test_edmonton_capital_region_weld_off_precision() -> None:
+    """CTV Edmonton capital-region weld-off cards drop; NY Capital Region keeps."""
+    edmonton = match_post(
+        'High schoolers compete in welding competition',
+        alt_text=(
+            'Students from five school districts in the capital region participated '
+            'in the fourth annual River City Weld Off on Tuesday at the '
+            'Boilermakers Union Hall.'
+        ),
+        author_handle='ctvnewsedmonton.bsky.social',
+    )
+    assert edmonton.matched is False
+    assert edmonton.reason == 'hard_negative:alberta_capital_region'
+
+    weld = match_post(
+        'Capital region students compete at River City Weld Off',
+        alt_text='Fourth annual River City Weld Off at the Boilermakers Union Hall.',
+    )
+    assert weld.matched is False
+    assert weld.reason == 'hard_negative:alberta_capital_region'
+
+    ny = match_post('Capital Region high schoolers compete in a welding contest in Albany.')
+    assert ny.matched is True
+
+
+def test_hochul_leaving_albany_carnegie_and_halt_prisons_precision() -> None:
+    """Hochul×Carnegie Hall / HALT Act Albany dateline drop; civic rescues keep."""
+    carnegie = match_post(
+        'Hochul plans Jan. 8 inauguration at Carnegie Hall',
+        alt_text=(
+            'The governor is leaving Albany behind for a two-day, two-event big '
+            'money fundraising extravaganza in Manhattan to kick off her second '
+            'full term.'
+        ),
+    )
+    assert carnegie.matched is False
+    assert carnegie.reason in {
+        'hard_negative:albany_statehouse_metonym',
+        'hard_negative:hochul_albany_nyc_mta',
+    }
+
+    halt = match_post(
+        "'Intentional failure': Report suggests NY prisons & jails are violating "
+        'solitary confinement law',
+        alt_text=(
+            'ALBANY, N.Y. (WTEN) – A new report from the Cardozo Civil Rights '
+            'Clinic suggests that New York State prisons and jails are not '
+            'following the five-year-old HALT Act.'
+        ),
+    )
+    assert halt.matched is False
+    assert halt.reason == 'hard_negative:albany_wire_statewide_prisons'
+
+    rescued = match_post('Hochul visited Lark Street in Albany ahead of the inauguration.')
+    assert rescued.matched is True
+
+    local_halt = match_post(
+        'ALBANY, N.Y. — Advocates rallied at Empire State Plaza over HALT Act '
+        'enforcement at local facilities.'
+    )
+    assert local_halt.matched is True
+
+
+def test_saratoga_park_suny_empire_latham_south_broadway_recall() -> None:
+    """2026-11-25 audit FNs: National Park short form, SUNY Empire, Latham, Broadway."""
+    park = match_post(
+        "This year's final driving trip on the tour road at Saratoga National Park "
+        'before it closes on 12/1.'
+    )
+    assert park.matched is True
+    assert park.reason == 'strong_positive'
+
+    historical = match_post('Walk the ground today at Saratoga National Historical Park.')
+    assert historical.matched is True
+
+    suny = match_post(
+        'SUNY Empire offering virtual food pantry to students.',
+        alt_text=(
+            'SUNY Empire offering virtual food pantry to students. '
+            'SARATOGA SPRINGS — SUNY’s online university has just as many hungry '
+            'students as the brick-and-mortar colleges.'
+        ),
+    )
+    assert suny.matched is True
+    assert suny.reason == 'strong_positive'
+
+    # Empire 8 / SUNY Poly Utica must not keep via the SUNY Empire cue alone.
+    empire8 = match_post('Local Sports: Utica and SUNY Poly Share Empire 8 Hoops Honor')
+    assert empire8.matched is False
+
+    latham = match_post(
+        'An office building in Latham will become the new district office for an '
+        'insurance company.',
+        alt_text=(
+            'Latham office building sold for $1.13M An office building in Latham '
+            'will become the new district office for an insurance company.'
+        ),
+    )
+    assert latham.matched is True
+    assert latham.reason == 'strong_positive'
+
+    broadway = match_post(
+        'Said one of the developers of the plan for a site near South Broadway: '
+        '"It\'s a small project, but it would be a good one."',
+        alt_text=(
+            'Developers want to build 12-unit apartment building in Saratoga '
+            'Said one of the developers of the plan for a site near South Broadway.'
+        ),
+    )
+    assert broadway.matched is True
+    assert broadway.reason == 'strong_positive'
+
+    utah = match_post(
+        'Developers want to build a 12-unit apartment building in Saratoga Springs',
+        alt_text='Saratoga Springs, Utah planning commission near Redwood Road',
+        author_handle='abc4utah.bsky.social',
+    )
+    assert utah.matched is False
+    assert utah.reason == 'hard_negative:saratoga_springs_utah'
