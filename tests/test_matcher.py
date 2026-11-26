@@ -6832,3 +6832,51 @@ def test_knickerbocker_troy_music_hall_wotkyns_recall() -> None:
     # NYC medical drama shorthand without Albany must stay out.
     bare_knick = match_post('Rewatching The Knick this weekend.')
     assert bare_knick.matched is False
+
+
+def test_bethlehem_pa_planning_commission_not_town_board() -> None:
+    """Bethlehem PA Planning Commission / WFMZ cards must not keep as NY town civic."""
+    pa = match_post(
+        'Plans for second two-story data center in Bethlehem go under the microscope',
+        alt_text=(
+            'Plans for second two-story data center in Bethlehem go under the microscope '
+            'Less than a week after plans for a two-story data center were approved by the '
+            'Bethlehem Planning Commission, the review process is beginning for another '
+            'double-decker proposal in the city.'
+        ),
+    )
+    assert pa.matched is False
+    assert pa.reason == 'hard_negative:bethlehem_pa'
+
+    lehigh = match_post(
+        'Bethlehem Planning Commission approved a data center in the Lehigh Valley.'
+    )
+    assert lehigh.matched is False
+    assert lehigh.reason == 'hard_negative:bethlehem_pa'
+
+    assert match_post('Town of Bethlehem board meeting tonight on Delaware Ave.').matched is True
+    assert match_post('Bethlehem Planning Board hearing on Delaware Ave tonight.').matched is True
+    assert match_post('Bethlehem Public Library hosts author night.').matched is True
+
+
+def test_unity_house_troy_and_capital_region_url_recall() -> None:
+    """Unity House Troy / teaching kitchen and capital-region URL slugs keep."""
+    unity = match_post(
+        'Unity House in Troy is working to open a pizza restaurant called '
+        'A Nun and Two Friars. It will serve as a teaching kitchen for students.'
+    )
+    assert unity.matched is True
+    assert unity.reason == 'strong_positive'
+
+    friars = match_post(
+        'A Nun and Two Friars prepares for its debut as a Unity House teaching kitchen.'
+    )
+    assert friars.matched is True
+    assert friars.reason == 'strong_positive'
+
+    url = match_post(
+        'National Hunger & Homelessness Awareness Week reminds us of food insecurity. '
+        'https://wnyt.com/top-stories/where-to-find-help-with-thanksgiving-meals-in-the-capital-region/'
+    )
+    assert url.matched is True
+    assert url.reason == 'strong_positive'

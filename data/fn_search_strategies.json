@@ -150,7 +150,8 @@
         "capitalregionny",
         "AlbanyCounty",
         "WaterfordNY",
-        "upstateny"
+        "upstateny",
+        "capital-region"
       ]
     },
     {
@@ -170,7 +171,9 @@
         "Albany College of Pharmacy",
         "GlobalFoundries",
         "Albany Law School",
-        "Price Chopper"
+        "Price Chopper",
+        "Unity House Troy",
+        "A Nun and Two Friars"
       ]
     }
   ]

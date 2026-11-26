@@ -247,8 +247,11 @@ _STRONG_POSITIVE = re.compile(
           )[\s\S]{0,120}globalfoundries
       # Town of Bethlehem NY civic / library copy often omits ", NY".
       # Exclude Christmas carol "little town of Bethlehem".
+      # Require "planning board" — bare "Bethlehem Planning Commission" is
+      # Bethlehem, PA (city commission), not the NY town board.
       | (?<!little\s)town\s+of\s+bethlehem\b
-      | bethlehem\s+(?:town\s+)?(?:board|council|planning)\b
+      | bethlehem\s+(?:town\s+)?(?:board|council)\b
+      | bethlehem\s+(?:town\s+)?planning\s+board\b
       | town\s+board[\s\S]{0,120}\bbethlehem\b
       | \bbethlehem\b[\s\S]{0,120}town\s+board
       | bethlehem\s+public\s+library\b
@@ -695,6 +698,10 @@ _STRONG_POSITIVE = re.compile(
       | troy\s+music\s+hall\b
       # Troy historic block name — distinctive without ", NY".
       | \bwotkyns?\b
+      # Unity House (Troy nonprofit) / teaching-kitchen brand — often omit ", NY".
+      | unity\s+house[\s\S]{0,80}\btroy\b
+      | \btroy\b[\s\S]{0,80}unity\s+house\b
+      | a\s+nun\s+and\s+two\s+friars\b
       # Downtown Troy BID domain — Chowderfest / event cards may omit "Troy".
       | downtowntroyny\.org
       # Tri-City ValleyCats / Joseph L. Bruno Stadium (Troy).
@@ -2890,6 +2897,8 @@ _BETHLEHEM_PA = re.compile(
     (?:
         bethlehem\s*,?\s*(?:pa|pennsylvania|md|maryland|nh|n\.h\.|new\s+hampshire)\b
       | bethlehem\s+area\b
+      # City of Bethlehem PA Planning Commission (NY town uses Planning Board).
+      | bethlehem\s+planning\s+commission\b
       | bethlehem[\s\S]{0,160}\b(?:
             pa|pennsylvania|philly|philadelphia|md|maryland|nh|n\.h\.|new\s+hampshire
           )\b
@@ -2898,19 +2907,22 @@ _BETHLEHEM_PA = re.compile(
           )\b[\s\S]{0,160}bethlehem
       # Travel/heritage cards often omit ", PA" (CNN steel town / UNESCO / SteelStacks).
       # Lehigh Valley Morning Call / Allentown–Easton civic copy likewise omits ", PA".
+      # WFMZ / Lehigh County URL cards often put PA cues only in the link path.
       | bethlehem[\s\S]{0,220}(?:
             steel(?:stacks|town|\s+town)?|unesco|lehigh\s+valley|
             christmas\s+spirit|industrial\s+heritage|snow\s+globe|
             \#lehighvalley\b|\#allentown\b|\#easton\b|\#pa07\b|
             mcall\.com|\ballentown\b|\beaston\b|
-            liberty\s+(?:and|&)\s+freedom|freedom\s+high\s+school
+            liberty\s+(?:and|&)\s+freedom|freedom\s+high\s+school|
+            wfmz\.com|lehighvalley|lehigh[\s\-]?county
           )
       | (?:
             steel(?:stacks|town|\s+town)?|unesco|lehigh\s+valley|
             christmas\s+spirit|industrial\s+heritage|
             \#lehighvalley\b|\#allentown\b|\#easton\b|\#pa07\b|
             mcall\.com|\ballentown\b|\beaston\b|
-            liberty\s+(?:and|&)\s+freedom|freedom\s+high\s+school
+            liberty\s+(?:and|&)\s+freedom|freedom\s+high\s+school|
+            wfmz\.com|lehighvalley|lehigh[\s\-]?county
           )[\s\S]{0,220}bethlehem
     )
     """,
@@ -3587,7 +3599,8 @@ def _normalize(text: str) -> str:
     ``capitol region/district`` is a frequent misspelling of the NY Capital
     Region; folding it here lets strong positives and off-region conflict
     gates share one spelling. Connecticut's ``capitol planning region`` is
-    unchanged (``planning`` sits between the words).
+    unchanged (``planning`` sits between the words). Hyphen/underscore
+    ``capital-region`` URL paths (WNYT / local news slugs) fold the same way.
     """
     collapsed = re.sub(r'\s+', ' ', text or '').strip()
     collapsed = re.sub(
@@ -3599,6 +3612,12 @@ def _normalize(text: str) -> str:
     collapsed = re.sub(
         r'#capitol(region|district)',
         r'#capital\1',
+        collapsed,
+        flags=re.IGNORECASE,
+    )
+    collapsed = re.sub(
+        r'\bcapital[-_](region|district)\b',
+        r'capital \1',
         collapsed,
         flags=re.IGNORECASE,
     )
@@ -5125,7 +5144,8 @@ def _bethlehem_star_of_conflict(haystack: str) -> bool:
         (?:
             bethlehem\s*,?\s*(?:ny|n\.y\.)\b
           | town\s+of\s+bethlehem
-          | bethlehem\s+(?:town\s+)?(?:board|council|planning|public\s+library)
+          | bethlehem\s+(?:town\s+)?(?:board|council|public\s+library)
+          | bethlehem\s+(?:town\s+)?planning\s+board\b
           | town\s+board[\s\S]{0,120}\bbethlehem\b
           | \bbethlehem\b[\s\S]{0,120}town\s+board
         )
@@ -5148,7 +5168,8 @@ def _bethlehem_holy_land_conflict(haystack: str) -> bool:
         (?:
             bethlehem\s*,?\s*(?:ny|n\.y\.)\b
           | (?<!little\s)town\s+of\s+bethlehem
-          | bethlehem\s+(?:town\s+)?(?:board|council|planning|public\s+library)
+          | bethlehem\s+(?:town\s+)?(?:board|council|public\s+library)
+          | bethlehem\s+(?:town\s+)?planning\s+board\b
           | town\s+board[\s\S]{0,120}\bbethlehem\b
           | \bbethlehem\b[\s\S]{0,120}town\s+board
         )
@@ -5171,7 +5192,8 @@ def _bethlehem_other_city_conflict(haystack: str) -> bool:
         (?:
             bethlehem\s*,?\s*(?:ny|n\.y\.)\b
           | (?<!little\s)town\s+of\s+bethlehem
-          | bethlehem\s+(?:town\s+)?(?:board|council|planning|public\s+library)
+          | bethlehem\s+(?:town\s+)?(?:board|council|public\s+library)
+          | bethlehem\s+(?:town\s+)?planning\s+board\b
           | town\s+board[\s\S]{0,120}\bbethlehem\b
           | \bbethlehem\b[\s\S]{0,120}town\s+board
         )
@@ -6597,6 +6619,8 @@ def _propose_candidate(
             return MatchResult(False, 'hard_negative:bethlehem_holy_land')
         if _bethlehem_other_city_conflict(haystack):
             return MatchResult(False, 'hard_negative:bethlehem_other_city')
+        if _bethlehem_pa_conflict(haystack):
+            return MatchResult(False, 'hard_negative:bethlehem_pa')
         if _cdta_algeria_conflict(haystack):
             return MatchResult(False, 'hard_negative:cdta_algeria')
         if _cdta_spanish_recipe_conflict(haystack):

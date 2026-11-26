@@ -14628,5 +14628,75 @@
     "split": "dev",
     "regression": true,
     "note": "2026-11-17 audit FN: Troy Wotkyns Blocks history"
+  },
+  {
+    "id": "fp-bethlehem-pa-planning-commission-wfmz",
+    "text": "Plans for second two-story data center in Bethlehem go under the microscope\n\nLess than a week after plans for a two-story data center were approved by the Bethlehem Planning Commission, the review process is beginning for another double-decker proposal in the city.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-18 audit FP: WFMZ Lehigh Valley Bethlehem Planning Commission (PA city), not Town of Bethlehem NY"
+  },
+  {
+    "id": "fp-bethlehem-pa-planning-commission-lehigh",
+    "text": "Bethlehem Planning Commission approved a data center in the Lehigh Valley.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-18 audit FP counterpart: Bethlehem PA Planning Commission + Lehigh Valley"
+  },
+  {
+    "id": "tp-bethlehem-ny-planning-board",
+    "text": "Bethlehem Planning Board hearing on Delaware Ave tonight.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-18 audit TP: Town of Bethlehem NY Planning Board retained after PA commission gate"
+  },
+  {
+    "id": "tp-bethlehem-ny-town-board-delaware",
+    "text": "Town of Bethlehem board meeting tonight on Delaware Ave.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-18 audit TP: Town of Bethlehem NY board retained"
+  },
+  {
+    "id": "tp-unity-house-troy-nun-friars",
+    "text": "Unity House in Troy is working to open a pizza restaurant called A Nun and Two Friars. It will serve as a teaching kitchen for students.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-18 audit FN: Unity House Troy / A Nun and Two Friars"
+  },
+  {
+    "id": "tp-nun-and-two-friars-unity-house",
+    "text": "A Nun and Two Friars prepares for its debut as a Unity House teaching kitchen.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-18 audit FN counterpart: A Nun and Two Friars brand"
+  },
+  {
+    "id": "tp-capital-region-url-slug-thanksgiving",
+    "text": "National Hunger & Homelessness Awareness Week reminds us of food insecurity. https://wnyt.com/top-stories/where-to-find-help-with-thanksgiving-meals-in-the-capital-region/",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-18 audit FN: hyphenated capital-region URL slug (WNYT)"
   }
 ]
