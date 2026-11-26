@@ -7111,6 +7111,89 @@ def test_albany_charges_and_tonko_seec_national_precision() -> None:
     assert local.matched is True
 
 
+def test_price_chopper_offregion_and_vincent_precision() -> None:
+    """Utica / Vincent Price Chopper drop; Cap Region Price Chopper / Market 32 keep."""
+    utica = match_post(
+        'A man was arrested after police responded to a shoplifting complaint '
+        'at the South Utica Price Chopper.',
+        alt_text='Shoplifting Complaint in Utica Leads to Arrest',
+    )
+    assert utica.matched is False
+    assert utica.reason == 'hard_negative:price_chopper_offregion'
+
+    syracuse = match_post('Line out the door at the Syracuse Price Chopper this morning.')
+    assert syracuse.matched is False
+    assert syracuse.reason == 'hard_negative:price_chopper_offregion'
+
+    vincent = match_post(
+        '@brianfauteux.bsky.social',
+        alt_text='Vincent Price Chopper (@brianfauteux): "This famously stops after college".',
+    )
+    assert vincent.matched is False
+
+    chain = match_post(
+        'Price Chopper has a ThanksVegan section on its website and three of the '
+        'first ten items listed are various gravies.'
+    )
+    assert chain.matched is True
+    assert chain.reason == 'strong_positive'
+
+    albany = match_post('Stopped at the Price Chopper on Central Ave in Albany.')
+    assert albany.matched is True
+
+    market = match_post('waiting for the bus behind market 32')
+    assert market.matched is True
+    assert market.reason == 'strong_positive'
+
+
+def test_culture_of_albany_and_call_on_albany_statehouse_precision() -> None:
+    """Culture of Albany / Call on Albany statewide metonyms drop; civic rescues keep."""
+    culture = match_post(
+        'This article is hilarious.',
+        alt_text=(
+            'How Kathy Hochul learned to ditch cooperation and embrace power. '
+            'The governor wanted to change the culture of Albany. It changed her instead.'
+        ),
+    )
+    assert culture.matched is False
+    assert culture.reason == 'hard_negative:albany_statehouse_metonym'
+
+    call_on = match_post(
+        'With Thanksgiving Approaching, Antipoverty Groups Call on Albany to '
+        'Replace Stolen SNAP Benefits',
+        alt_text=(
+            'Card fraud leaves New Yorkers high and dry on the grocery line. '
+            'The state has yet to step in since the federal government bowed out.'
+        ),
+    )
+    assert call_on.matched is False
+    assert call_on.reason == 'hard_negative:albany_statehouse_metonym'
+
+    rescued_culture = match_post(
+        'Locals want to change the culture of Albany nightlife on Lark Street.'
+    )
+    assert rescued_culture.matched is True
+
+    rescued_call = match_post(
+        'Neighbors Call on Albany Common Council to fund Lark Street snow routes.'
+    )
+    assert rescued_call.matched is True
+
+
+def test_hangar_on_the_hudson_recall() -> None:
+    """Hangar on the Hudson venue cards keep without Troy / , NY."""
+    hangar = match_post(
+        'radioradiox.com/2026/11/23/s...',
+        alt_text='Staff! @ Hangar on the Hudson, 11/21/2026 | RadioRadioX & The Xperience Monthly',
+    )
+    assert hangar.matched is True
+    assert hangar.reason == 'strong_positive'
+
+    bare = match_post('Show tonight at Hangar on the Hudson')
+    assert bare.matched is True
+    assert bare.reason == 'strong_positive'
+
+
 def test_fingerpaint_cosplay_rensselaer_anglers_recall() -> None:
     """2026-11-23 audit FNs: Spa City agency/cosplay, Rensselaer waterfront, Anglers."""
     fingerpaint = match_post(

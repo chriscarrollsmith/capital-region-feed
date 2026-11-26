@@ -538,6 +538,27 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-162 — Daily feed audit: Utica/Vincent Price Chopper / culture-of-Albany / Call-on-Albany FPs; Hangar on the Hudson FN
+- **Status:** done ([#144](https://github.com/chriscarrollsmith/capital-region-feed/pull/144))
+- **Why:** 2026-11-24 audit of last-24h AppView feed (~52 posts) found matcher
+  FPs among rematch-keeps: WKTV South Utica Price Chopper store blotter and a
+  Vincent Price Chopper comedy card kept via bare Price Chopper; Hochul
+  "culture of Albany" City & State card via Hochul×Albany strong cue; and
+  "Call on Albany" statewide SNAP advocacy via ``albany_with_ny_context``.
+  Soft-prior / search Cap Region FN: Hangar on the Hudson Troy venue embed
+  cards omitting Troy / ``, NY``. Planned ``fn_search.py`` slate (8): six OK,
+  ``#518`` / ``#upstateny`` blocked (hashtag 400); exploratory Hangar on the
+  Hudson remembered. Fold unmerged #143 (and prior #134–#142 stack) onto tip.
+- **Work:**
+  - ``(?<!vincent\s)price\s+chopper`` + off-region store conflict (Utica /
+    Syracuse / …); Cap Region store / circular rescues retained.
+  - Statehouse metonym: ``culture of Albany`` / ``Call on Albany``; Lark Street
+    / Common Council rescues retained.
+  - Strong Hangar on the Hudson venue cue.
+  - Grow eval + fn_search log/strategies; fold #143 onto tip.
+- **Done when:** Audited FPs drop and Hangar FN keeps; eval P/R stay 1.000;
+  unit tests cover the new gates/cues.
+
 ### B-161 — Daily feed audit: Fingerpaint / Saratoga Cosplay / Rensselaer waterfront / Anglers Queensbury FNs
 - **Status:** done ([#143](https://github.com/chriscarrollsmith/capital-region-feed/pull/143))
 - **Why:** 2026-11-23 audit of last-24h AppView feed (~50 posts) found no clear

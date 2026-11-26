@@ -15108,5 +15108,130 @@
     "split": "dev",
     "regression": true,
     "note": "2026-11-23 audit: West Yorkshire Queensbury + The Anglers still drops."
+  },
+  {
+    "id": "fp-utica-price-chopper-store",
+    "text": "A man was arrested after police responded to a shoplifting complaint at the South Utica Price Chopper.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Shoplifting Complaint in Utica Leads to Arrest",
+    "note": "2026-11-24 audit FP: WKTV Utica store blotter kept via bare Price Chopper strong positive"
+  },
+  {
+    "id": "fp-vincent-price-chopper-comedy",
+    "text": "@brianfauteux.bsky.social",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "Vincent Price Chopper (@brianfauteux): \"This famously stops after college\".",
+    "note": "2026-11-24 audit FP: Vincent Price surname + Chopper comedy card matched Price Chopper grocery"
+  },
+  {
+    "id": "tn-syracuse-price-chopper-store",
+    "text": "Line out the door at the Syracuse Price Chopper this morning.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-24 counterpart: Central NY Price Chopper store news"
+  },
+  {
+    "id": "tp-price-chopper-thanksvegan-circular",
+    "text": "Price Chopper has a ThanksVegan section on its website and three of the first ten items listed are various gravies.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-24 counterpart: Golub Cap Region grocery circular still keeps"
+  },
+  {
+    "id": "tp-price-chopper-central-ave-albany",
+    "text": "Stopped at the Price Chopper on Central Ave in Albany.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-24 counterpart: Cap Region Albany Price Chopper store keeps"
+  },
+  {
+    "id": "tp-market-32-local-voice",
+    "text": "waiting for the safari antifa gangstalker to tackle me in the tangled branches of a wooded threshold behind market 32",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-24 intentional keep: Market 32 Cap Region grocery voice"
+  },
+  {
+    "id": "fp-hochul-culture-of-albany",
+    "text": "This article is hilarious.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "How Kathy Hochul learned to ditch cooperation and embrace power. The governor wanted to change the culture of Albany. It changed her instead.",
+    "note": "2026-11-24 audit FP: Hochul×culture of Albany statehouse metonym via cityandstateny card"
+  },
+  {
+    "id": "fp-call-on-albany-snap-statewide",
+    "text": "With Thanksgiving Approaching, Antipoverty Groups Call on Albany to Replace Stolen SNAP Benefits",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "Card fraud leaves New Yorkers high and dry on the grocery line. The state has yet to step in since the federal government bowed out.",
+    "note": "2026-11-24 audit FP: Call on Albany SNAP statewide advocacy kept via albany_with_ny_context"
+  },
+  {
+    "id": "tp-call-on-albany-common-council-lark",
+    "text": "Neighbors Call on Albany Common Council to fund Lark Street snow routes.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-24 counterpart: Call on Albany with Common Council / Lark Street rescue"
+  },
+  {
+    "id": "tp-culture-of-albany-lark-street",
+    "text": "Locals want to change the culture of Albany nightlife on Lark Street.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-24 counterpart: culture of Albany with Lark Street civic rescue"
+  },
+  {
+    "id": "tp-hangar-on-the-hudson-staff-review",
+    "text": "radioradiox.com/2026/11/23/s...",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Staff! @ Hangar on the Hudson, 11/21/2026 | RadioRadioX & The Xperience Monthly",
+    "note": "2026-11-24 audit FN: Hangar on the Hudson Troy venue embed-only card"
+  },
+  {
+    "id": "tp-hangar-on-the-hudson-bare",
+    "text": "Show tonight at Hangar on the Hudson",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-24 counterpart: bare Hangar on the Hudson venue cue"
   }
 ]
