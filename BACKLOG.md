@@ -538,6 +538,28 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-159 — Daily feed audit: Albany Charges Bronx broker / Tonko SEEC national FPs
+- **Status:** done ([#141](https://github.com/chriscarrollsmith/capital-region-feed/pull/141))
+- **Why:** 2026-11-21 audit of last-24h AppView feed (~69 posts) found matcher
+  FPs among rematch-keeps: Mohawk Valley Voice ``Two Albany Charges`` /
+  Bronx real-estate-broker license card kept via ``albany_with_ny_context``,
+  and a national SEEC co-chair roster name-drop for Paul Tonko under a
+  Washington, D.C. dateline kept via bare Tonko strong positive (surfaced
+  during the Paul Tonko ``fn_search`` query; not Cap Region news). Planned
+  ``fn_search.py`` slate (8) all ran OK with no Cap Region FNs. Soft-prior /
+  residual floor drops (rescue dog card, Almanack Ulster trail, St. John's
+  eNews) were not counted as matcher FNs. Fold unmerged #140 (and prior
+  #134–#139 stack) onto tip.
+- **Work:**
+  - Extend Albany statehouse metonym for numbered / ``Brings … Albany Charges``
+    capital-court journalese and Bronx/broker pairings; Cap Region civic
+    rescues retained.
+  - Gate Tonko×SEEC×Washington D.C. / co-chair roster cards without Cap Region
+    rescue; bare Tonko reelect and Schenectady Tonko appearances retained.
+  - Grow eval + fn_search log; fold #140 onto tip.
+- **Done when:** Audited FPs drop; Cap Region Tonko / Lark Street charges
+  rescues keep; eval P/R stay 1.000; unit tests cover the new gates.
+
 ### B-158 — Daily feed audit: Source: Times Union statewide FP; Central Ave Albany / Colonie company FNs
 - **Status:** done ([#140](https://github.com/chriscarrollsmith/capital-region-feed/pull/140))
 - **Why:** 2026-11-20 audit of last-24h AppView feed (~53 posts) found a matcher
