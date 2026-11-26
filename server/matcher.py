@@ -399,8 +399,9 @@ _STRONG_POSITIVE = re.compile(
       | \bstakes\b[\s\S]{0,80}\bat\s+saratoga\b
       | at\s+saratoga\b[\s\S]{0,80}\bstakes\b
       # Battlefield NPS / tourism often omits ", NY".
+      # Short "Saratoga National Park" appears in tour-road photo cards.
       | saratoga\s+battlefield\b
-      | saratoga\s+national\s+historical\s+park\b
+      | saratoga\s+national\s+(?:historical\s+)?park\b
       | \bbemus\s+heights\b
       | \bbemis\s+heights\b
       # Curly apostrophe (Freeman’s) appears in live AppView copy.
@@ -498,6 +499,10 @@ _STRONG_POSITIVE = re.compile(
       | \bmarket\s*32\b
       # Troy waterfront venue; concert / review cards often omit ", NY".
       | hangar\s+on\s+the\s+hudson\b
+      # SUNY Empire (Empire State University / College, Saratoga Springs HQ).
+      # Do not bare-match "Empire 8" athletic conference / SUNY Poly Utica.
+      | \bsuny\s+empire\b
+      | empire\s+state\s+(?:college|university)\b
       # Albany Central Warehouse demolition / asbestos wires often omit ", NY".
       | albany['\u2019]?s\s+central\s+warehouse\b
       | central\s+warehouse[\s\S]{0,100}\balbany\b
@@ -678,6 +683,9 @@ _STRONG_POSITIVE = re.compile(
       # Require "… in Latham" (or Latham regional HQ) — not "Latham & Watkins' … Office".
       | (?:regional\s+)?(?:office|hq)\s+in\s+latham\b
       | \blatham\b(?![\s\S]{0,40}watkins)[\s\S]{0,40}regional\s+(?:office|hq)\b
+      # Sale / CRE cards: "office building in Latham" / "Latham office building".
+      | office\s+building\s+in\s+latham\b
+      | \blatham\s+office\s+building\b
       | \blatham\s+circle\b
       | \blatham\s+farms\b
       # HQ relocation wires often say "from Latham to Glenville" without ", NY".
@@ -809,6 +817,10 @@ _STRONG_POSITIVE = re.compile(
       # use this street name, and Utah tokens still hard-negative first.
       | north\s+broadway[\s\S]{0,80}saratoga\s+springs\b
       | saratoga\s+springs[\s\S]{0,80}north\s+broadway\b
+      # South Broadway CRE / apartment cards often say bare "in Saratoga".
+      | south\s+broadway[\s\S]{0,100}\bsaratoga(?:\s+springs)?\b
+      | \bsaratoga(?:\s+springs)?\b[\s\S]{0,100}south\s+broadway\b
+      | apartment(?:s|\s+building)?\s+in\s+saratoga(?:\s+springs)?\b
       # Caroline Street is Spa City nightlife — UK Caroline Street roadworks stay out
       # without Saratoga Springs; Utah tokens still hard-negative first.
       | caroline\s+street[\s\S]{0,100}saratoga\s+springs\b
@@ -2149,7 +2161,9 @@ _DK_CAPITAL_REGION = re.compile(
 _AB_GEO_CUE = (
     r'\balberta\b|\bedmonton\b|\bcalgary\b|'
     r'\#ab(?:poli|leg)\b|\#cdnpoli\b|\bglubish\b|'
-    r'\bcdnpoli\b|alberta\s+faces\b'
+    r'\bcdnpoli\b|alberta\s+faces\b|'
+    # CTV Edmonton school cards often omit Alberta in short weld-off copy.
+    r'river\s+city\s+weld\s+off\b'
 )
 
 _AB_CAPITAL_REGION = re.compile(
@@ -4553,6 +4567,11 @@ def _alberta_capital_region_conflict(haystack: str, author_handle: str | None = 
         r'capital\s+region\b', haystack, flags=re.IGNORECASE
     ):
         return True
+    # CTV Edmonton / edmonton.* handles omit Alberta on short capital-region cards.
+    if re.search(r'edmonton|ctvnewsedmonton', handle) and re.search(
+        r'capital\s+region\b', haystack, flags=re.IGNORECASE
+    ):
+        return True
     return False
 
 
@@ -5777,6 +5796,41 @@ def _albany_wire_statewide_hospitals_conflict(haystack: str) -> bool:
     return True
 
 
+_ALBANY_WIRE_STATEWIDE_PRISONS = re.compile(
+    r"""
+    (?:
+        \bhalt\s+act\b
+      | solitary\s+confinement\b
+      | new\s+york\s+state\s+prisons?\b
+      | (?:prisons?|jails?)\s+(?:across|throughout)\s+(?:new\s+york|nys|the\s+state)\b
+      | cardozo\s+civil\s+rights\s+clinic\b[\s\S]{0,160}\b(?:prisons?|jails?|halt)\b
+      | (?:prisons?|jails?|halt)\b[\s\S]{0,160}cardozo\s+civil\s+rights\s+clinic\b
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+
+def _albany_wire_statewide_prisons_conflict(haystack: str) -> bool:
+    """True when an Albany dateline fronts statewide prison / HALT Act copy.
+
+    Local-TV / wire cards stamp ALBANY, N.Y. (WTEN) on statewide solitary /
+    HALT Act reports without Cap Region facility news. Cap Region civic /
+    plaza rescues still keep.
+    """
+    if not re.search(
+        r'\balbany,?\s*(?:n\.?\s*y\.?|new\s+york)\b',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    if not _ALBANY_WIRE_STATEWIDE_PRISONS.search(haystack):
+        return False
+    if _ALBANY_WIRE_LOCAL_RESCUE.search(haystack) or _ALBANY_LOCAL_RESCUE.search(haystack):
+        return False
+    return True
+
+
 def _albany_hochul_binghamton_conflict(haystack: str) -> bool:
     """True when Hochul+Albany press copy is about a Binghamton campus launch.
 
@@ -5922,10 +5976,11 @@ def _albany_statehouse_metonym_conflict(haystack: str) -> bool:
     Albany Charges" cards for Bronx / real-estate-broker license filings use
     Albany as the capital court venue without Cap Region place news,
     "culture of Albany" governor / chamber-culture copy (Hochul×Albany strong
-    cue otherwise), and antipoverty "Call on Albany to …" statewide SNAP /
-    benefits cards use the capital as the state actor without Cap Region place
-    news. Local party organs ("join Albany Democrats at … rally") and civic
-    anchors still rescue.
+    cue otherwise), antipoverty "Call on Albany to …" statewide SNAP /
+    benefits cards, and "leaving Albany behind" capital-as-departure copy for
+    Manhattan / Carnegie Hall inauguration fundraisers use the capital as the
+    state actor without Cap Region place news. Local party organs ("join Albany
+    Democrats at … rally") and civic anchors still rescue.
     "Rest of Albany County" and bare travel ("headed to Albany this weekend")
     are Cap Region and do not match. Do not bare-match "comes to Albany" —
     Phish / TAB concert cards keep via venue cues. Do not bare-match
@@ -6020,7 +6075,10 @@ def _albany_statehouse_metonym_conflict(haystack: str) -> bool:
         # Governor / chamber-culture metonym ("change the culture of Albany").
         r'\bculture\s+of\s+albany\b|'
         # Statewide advocacy destination ("Call on Albany to replace SNAP…").
-        r'\bcall(?:s|ed|ing)?\s+on\s+albany\b',
+        r'\bcall(?:s|ed|ing)?\s+on\s+albany\b|'
+        # Capital-as-departure metonym ("leaving Albany behind" for Manhattan /
+        # Carnegie Hall inauguration fundraising — not Cap Region place news).
+        r'\bleaving\s+albany\s+behind\b',
         haystack,
         flags=re.IGNORECASE,
     ):
@@ -6164,11 +6222,13 @@ def _albany_buffalo_to_albany_remote_conflict(haystack: str) -> bool:
 
 
 def _hochul_albany_nyc_mta_conflict(haystack: str) -> bool:
-    """True when Hochul×Albany co-occurrence is NYC MTA / mayoral copy.
+    """True when Hochul×Albany co-occurrence is NYC MTA / mayoral / Manhattan copy.
 
     Bare ``hochul … albany`` is a strong Cap Region civic cue, but Streetsblog
     / MTA / Mamdani cards that mention an Albany watchdog while covering NYC
-    bus budgets must drop. Cap Region civic rescues still keep.
+    bus budgets must drop. Carnegie Hall / Manhattan inauguration fundraisers
+    that only mention leaving Albany behind are likewise NYC-metro. Cap Region
+    civic rescues still keep.
     """
     if not re.search(r'\bhochul\b', haystack, flags=re.IGNORECASE):
         return False
@@ -6182,6 +6242,9 @@ def _hochul_albany_nyc_mta_conflict(haystack: str) -> bool:
           | streetsblog\s+new\s+york
           | bus\s+operating\s+funds?\b
           | holding\s+(?:the\s+)?(?:\$?\d|\bmta\b)
+          | carnegie\s+hall\b
+          | inauguration\b[\s\S]{0,100}\bmanhattan\b
+          | \bmanhattan\b[\s\S]{0,100}inauguration\b
         )
         """,
         haystack,
@@ -6934,6 +6997,8 @@ def _propose_candidate(
             return MatchResult(False, 'hard_negative:albany_wire_remote')
         if _albany_wire_statewide_hospitals_conflict(haystack):
             return MatchResult(False, 'hard_negative:albany_wire_statewide_hospitals')
+        if _albany_wire_statewide_prisons_conflict(haystack):
+            return MatchResult(False, 'hard_negative:albany_wire_statewide_prisons')
         if _albany_hochul_binghamton_conflict(haystack):
             return MatchResult(False, 'hard_negative:albany_hochul_binghamton')
         if _delveinsight_albany_conflict(haystack):
@@ -7101,6 +7166,8 @@ def _propose_candidate(
                 return MatchResult(False, 'hard_negative:albany_wire_remote')
             if _albany_wire_statewide_hospitals_conflict(haystack):
                 return MatchResult(False, 'hard_negative:albany_wire_statewide_hospitals')
+            if _albany_wire_statewide_prisons_conflict(haystack):
+                return MatchResult(False, 'hard_negative:albany_wire_statewide_prisons')
             if _albany_hochul_binghamton_conflict(haystack):
                 return MatchResult(False, 'hard_negative:albany_hochul_binghamton')
             if _albany_bandscan_conflict(haystack):
