@@ -538,6 +538,30 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-160 — Daily feed audit: USNY imprint / Columbia County Amtrak FPs; Saratoga Springs farmers market / filming FNs
+- **Status:** done ([#142](https://github.com/chriscarrollsmith/capital-region-feed/pull/142))
+- **Why:** 2026-11-22 audit of last-24h AppView feed (~46 posts) found matcher
+  FPs among rematch-keeps: Biodiversity Pics ``Albany, University of the State
+  of New York, 1918`` flora-plate imprint kept via ``albany_with_ny_context``,
+  and a Hudson / Columbia County Amtrak station bot listing trains ``to
+  Albany-Rensselaer`` unlocking ``multi_local_places`` via albany+rensselaer.
+  Planned ``fn_search.py`` slate (8) all ran OK; Cap Region FNs from
+  ``Saratoga Springs`` / exploratory farmers-market queries: Spa City
+  farmers' market and filming-in-Saratoga-Springs cards without ``, NY``.
+  Soft-prior residual (Velan Bounce Arcade / Marilyn Merrill cats) and
+  allowlisted News10 / Times Union / Casey Seiler were not counted as matcher
+  FPs/FNs. Fold unmerged #141 (and prior #134–#140 stack) onto tip.
+- **Work:**
+  - Gate bibliographic ``Albany, University of the State of New York`` imprint;
+    Cap Region civic rescues retained.
+  - Gate Columbia County × Albany-Rensselaer destination-only cards; bare
+    Albany-Rensselaer station keeps retained.
+  - Strong ``Saratoga Springs farmers' market`` / filming / movie-theater cues;
+    Utah Saratoga Springs gate retained.
+  - Grow eval + fn_search log/strategies; fold #141 onto tip.
+- **Done when:** Audited FPs drop and FNs keep; eval P/R stay 1.000; unit tests
+  cover the new gates.
+
 ### B-159 — Daily feed audit: Albany Charges Bronx broker / Tonko SEEC national FPs
 - **Status:** done ([#141](https://github.com/chriscarrollsmith/capital-region-feed/pull/141))
 - **Why:** 2026-11-21 audit of last-24h AppView feed (~69 posts) found matcher
