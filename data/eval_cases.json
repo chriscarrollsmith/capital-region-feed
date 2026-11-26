@@ -14458,5 +14458,65 @@
     "split": "dev",
     "regression": true,
     "note": "2026-11-15 audit: Cap Region body still keeps under Source: NEWS10"
+  },
+  {
+    "id": "fn-prospect-park-troy-disc-golf",
+    "text": "Great day for disc golf in Prospect Park in Troy",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-16 audit FN: Troy Prospect Park without , NY (Brooklyn Prospect Park stays out)"
+  },
+  {
+    "id": "tn-prospect-park-brooklyn",
+    "text": "Great day for disc golf in Prospect Park in Brooklyn",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-16 audit: Brooklyn Prospect Park must not unlock via Troy Prospect Park cue"
+  },
+  {
+    "id": "fn-albany-buy-nothing-group",
+    "text": "I posted to the Albany Buy Nothing group and everything has been claimed within literal 5 minutes",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-16 audit FN: bare Albany Buy Nothing group without , NY"
+  },
+  {
+    "id": "tn-oakland-buy-nothing-group",
+    "text": "I posted to the Oakland Buy Nothing group and everything went fast",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-16 audit: non-Albany Buy Nothing groups stay out"
+  },
+  {
+    "id": "fn-veterans-miracle-center-interstate-ave",
+    "text": "Join NYSDVS at the Veterans Miracle Center! Thurs 9 AM-3 PM at 10 Interstate Ave. Albany for FreshConnect checks.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-16 audit FN: Veterans Miracle Center / Interstate Ave Albany without , NY"
+  },
+  {
+    "id": "tp-frear-park-troy-counterpart",
+    "text": "Morning walk through Frear Park before the Troy farmers market opens",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-16 audit TP counterpart: Frear Park Troy park cue retained beside Prospect Park"
   }
 ]

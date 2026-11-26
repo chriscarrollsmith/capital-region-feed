@@ -3832,6 +3832,27 @@ def test_frear_park_downtown_troy_crossings_colonie_recall() -> None:
     assert match_post('Town of Bethlehem Public Library book sale this weekend.').matched is True
 
 
+def test_prospect_park_troy_buy_nothing_veterans_miracle_center_recall() -> None:
+    prospect = match_post('Great day for disc golf in Prospect Park in Troy')
+    assert prospect.matched is True
+    assert match_post('Prospect Park is beautiful today').matched is False
+    assert match_post('Great day for disc golf in Prospect Park in Brooklyn').matched is False
+
+    buy = match_post(
+        'I posted to the Albany Buy Nothing group and everything has been claimed '
+        'within literal 5 minutes'
+    )
+    assert buy.matched is True
+    assert match_post('posted to the Oakland Buy Nothing group today').matched is False
+
+    miracle = match_post(
+        'Join NYSDVS at the Veterans Miracle Center! Thurs 9 AM–3 PM '
+        'at 10 Interstate Ave. Albany for FreshConnect checks.'
+    )
+    assert miracle.matched is True
+    assert match_post('Meet at 10 Interstate Ave. Albany for the pantry').matched is True
+
+
 def test_bethlehem_holy_land_carol_not_town() -> None:
     carol = match_post(
         "I'm trying to figure out why this morning's earworm is O Little Town Of Bethlehem"

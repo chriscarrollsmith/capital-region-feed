@@ -538,6 +538,29 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-154 — Daily feed audit: Prospect Park Troy / Albany Buy Nothing / Veterans Miracle Center FNs
+- **Status:** done ([#136](https://github.com/chriscarrollsmith/capital-region-feed/pull/136))
+- **Why:** 2026-11-16 audit of last-24h AppView feed (~38 posts) found no new
+  matcher FPs among rematch-keeps (allowlisted News10 / Times Union non-local,
+  NWS Albany / Glens Falls, and Cap Region GlobalFoundries / Knickerbocker /
+  UAlbany cards remain intentional). Soft-prior / residual floor drops on three
+  Cap Region posts the live feed already served: Troy ``Prospect Park`` disc
+  golf (Brooklyn Prospect Park must stay out), bare ``Albany Buy Nothing``
+  group copy, and ``Veterans Miracle Center`` / ``Interstate Ave. Albany``
+  FreshConnect outreach. Planned ``fn_search.py`` slate (8) all ran OK with no
+  Cap Region FNs (SPAC SpaceX/spać noise, KALB German / Arabic, empties).
+  Exploratory ``Prospect Park Troy`` / ``Buy Nothing Albany`` /
+  ``Veterans Miracle Center`` confirmed the three FNs. Fold unmerged #135
+  (supermajorities / NEWS10 ground-stop; already includes #134).
+- **Work:**
+  - Strong ``Prospect Park``↔Troy co-occurrence (bare / Brooklyn Prospect Park
+    stay out).
+  - Strong ``Albany Buy Nothing`` / Buy Nothing group↔Albany; ``Veterans
+    Miracle Center``; ``Interstate Ave. Albany`` address cue.
+  - Grow eval + fn_search log/strategies; fold #135 onto tip.
+- **Done when:** Audited FNs keep; Brooklyn / Oakland counterparts drop;
+  folded #135 gates hold; eval P/R stay 1.000; unit tests cover the new cues.
+
 ### B-153 — Daily feed audit: Albany supermajorities / Source: NEWS10 Hochul ground-stop FPs
 - **Status:** done ([#135](https://github.com/chriscarrollsmith/capital-region-feed/pull/135))
 - **Why:** 2026-11-15 audit of last-24h AppView feed (~66 posts) found matcher

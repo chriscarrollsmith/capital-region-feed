@@ -591,6 +591,9 @@ _STRONG_POSITIVE = re.compile(
       | downtown\s+troy\b
       # Troy Frear Park / civic copy often omits ", NY".
       | \bfrear\s+park\b
+      # Troy Prospect Park (not Brooklyn Prospect Park) — require Troy nearby.
+      | \bprospect\s+park\b[\s\S]{0,60}\btroy\b
+      | \btroy\b[\s\S]{0,60}\bprospect\s+park\b
       | troy\s+city\s+(?:officials?|council|hall|school)\b
       # Municipal "City of Troy" — not "ancient city of Troy" (Turkey archaeology).
       # Tartarian myth "city of Troy" is gated in ``_troy_ancient_conflict``.
@@ -619,6 +622,13 @@ _STRONG_POSITIVE = re.compile(
       | albany\s+sheriff(?:['\u2019]?s)?\b
       # Albany Public Library event copy often omits ", NY".
       | albany\s+public\s+library\b
+      # Neighborhood Buy Nothing groups often say bare "Albany Buy Nothing".
+      | albany\s+buy\s+nothing\b
+      | buy\s+nothing\s+group\b[\s\S]{0,40}\balbany\b
+      | \balbany\b[\s\S]{0,40}buy\s+nothing\s+group\b
+      # Veterans Miracle Center (Interstate Ave, Albany) outreach often omits ", NY".
+      | veterans\s+miracle\s+center\b
+      | interstate\s+ave(?:nue)?\.?\s*,?\s*albany\b
       # Cap Region chip / landlord auction wires often omit ", NY".
       | semiconductor[\s\S]{0,120}\balbany\b
       | \balbany\b[\s\S]{0,120}semiconductor
