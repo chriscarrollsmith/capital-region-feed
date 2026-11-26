@@ -123,6 +123,9 @@ _STRONG_POSITIVE = re.compile(
       | home\s+made\s+theater\b
       | saratoga\s+springs\s+theater\b
       | gideon\s+putnam\b
+      # Palette / coworking cards often say "Saratoga coworking" without Springs or ", NY".
+      | saratoga(?:\s+springs)?\s+coworking\b
+      | coworking[\s\S]{0,48}saratoga(?:\s+springs)?\b
       # Amtrak station code / obstruction copy often omits ", NY".
       | saratoga\s+springs\s*\(\s*sar\s*\)
       | south\s+of\s+saratoga\s+springs\b
@@ -3527,6 +3530,9 @@ _COLONIE_LOCAL = re.compile(
       # Cook Park (Colonie) community events often omit ", NY".
       | cook\s+park[\s\S]{0,60}\bcolonie\b
       | \bcolonie\b[\s\S]{0,60}cook\s+park
+      # Wolf Road retail strip (Colonie) restaurant / shop cards often omit ", NY".
+      | wolf\s+road[\s\S]{0,80}\bcolonie\b
+      | \bcolonie\b[\s\S]{0,80}wolf\s+road
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -5816,8 +5822,10 @@ def _albany_statehouse_metonym_conflict(haystack: str) -> bool:
     Albany" / "comes to Albany" + state legislature cards, "Albany Fixed"
     legislature-as-actor statewide policy copy (renter tax credit / similar),
     and "Albany bribe" / Speaker Heastie Assembly-suite wires use the capital
-    as metonym without Cap Region place news. Local party organs ("join Albany
-    Democrats at … rally") and civic anchors still rescue.
+    as metonym without Cap Region place news, "Albany Services Settlement" /
+    Alba Services AG settlement cards stamp New York + Albany without Cap
+    Region place news. Local party organs ("join Albany Democrats at … rally")
+    and civic anchors still rescue.
     "Rest of Albany County" and bare travel ("headed to Albany this weekend")
     are Cap Region and do not match. Do not bare-match "comes to Albany" —
     Phish / TAB concert cards keep via venue cues.
@@ -5884,6 +5892,12 @@ def _albany_statehouse_metonym_conflict(haystack: str) -> bool:
         r'\balbany\s+bribe\b|'
         r'\bheastie\b[\s\S]{0,160}\balbany\b|'
         r'\balbany\b[\s\S]{0,160}\bheastie\b|'
+        # AG / statewide "Albany Services Settlement" / Alba Services cards.
+        r'\balbany\s+services\s+settlement\b|'
+        r'\balba\s+services\b[\s\S]{0,220}\balbany\b|'
+        r'\balbany\b[\s\S]{0,220}\balba\s+services\b|'
+        r'\balba\s+settlement\b[\s\S]{0,220}\balbany\b|'
+        r'\balbany\b[\s\S]{0,220}\balba\s+settlement\b|'
         r'\balbany\s+democrats?\s+(?:did(?:n[\u2019\']t|\s+not)|'
         r'can(?:[\u2019\']t|not)|could(?:n[\u2019\']t|\s+not))\b|'
         r'\balbany\s+democrats?\b[\s\S]{0,100}\b(?:'
@@ -5892,6 +5906,34 @@ def _albany_statehouse_metonym_conflict(haystack: str) -> bool:
         haystack,
         flags=re.IGNORECASE,
     ):
+        return False
+    if _ALBANY_WIRE_LOCAL_RESCUE.search(haystack) or _ALBANY_LOCAL_RESCUE.search(haystack):
+        return False
+    return True
+
+
+def _albany_buffalo_to_albany_remote_conflict(haystack: str) -> bool:
+    """True when 'Buffalo to Albany' is a statewide span about WNY/CNY news.
+
+    Syracuse / Western NY ICE and similar cards use "Democrats from Buffalo to
+    Albany" as a statewide political span while the story is off Cap Region.
+    Cap Region destination travel and civic rescues still keep; the opposite
+    direction ("from Albany to Buffalo" Erie Canal) does not match.
+    """
+    if not re.search(r'(?:from\s+)?buffalo\s+to\s+albany\b', haystack, flags=re.IGNORECASE):
+        return False
+    political_span = re.search(
+        r'\b(?:democrats?|republicans?|voters?|lawmakers?|officials?|'
+        r'new\s+yorkers?)\s+from\s+buffalo\s+to\s+albany\b',
+        haystack,
+        flags=re.IGNORECASE,
+    )
+    remote = re.search(
+        r'\bsyracuse\b|\bwestern\s+ny\b|\brochester\b|\bniagara\b|\bcanisius\b',
+        haystack,
+        flags=re.IGNORECASE,
+    )
+    if not political_span and not remote:
         return False
     if _ALBANY_WIRE_LOCAL_RESCUE.search(haystack) or _ALBANY_LOCAL_RESCUE.search(haystack):
         return False
@@ -6643,6 +6685,8 @@ def _propose_candidate(
             return MatchResult(False, 'hard_negative:christian_brothers_wny')
         if _albany_statehouse_metonym_conflict(haystack):
             return MatchResult(False, 'hard_negative:albany_statehouse_metonym')
+        if _albany_buffalo_to_albany_remote_conflict(haystack):
+            return MatchResult(False, 'hard_negative:albany_buffalo_to_albany_remote')
         if _hochul_albany_nyc_mta_conflict(haystack):
             return MatchResult(False, 'hard_negative:hochul_albany_nyc_mta')
         if _albany_international_equity_conflict(haystack):
@@ -6772,6 +6816,8 @@ def _propose_candidate(
                 return MatchResult(False, 'hard_negative:albany_operative')
             if _albany_statehouse_metonym_conflict(haystack):
                 return MatchResult(False, 'hard_negative:albany_statehouse_metonym')
+            if _albany_buffalo_to_albany_remote_conflict(haystack):
+                return MatchResult(False, 'hard_negative:albany_buffalo_to_albany_remote')
             if _hochul_albany_nyc_mta_conflict(haystack):
                 return MatchResult(False, 'hard_negative:hochul_albany_nyc_mta')
             if _albany_mid_hudson_conflict(haystack):

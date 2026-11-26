@@ -538,6 +538,28 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-157 — Daily feed audit: Buffalo-to-Albany / Albany Services Settlement FPs; Saratoga coworking / Wolf Road Colonie FNs
+- **Status:** done ([#139](https://github.com/chriscarrollsmith/capital-region-feed/pull/139))
+- **Why:** 2026-11-19 audit of last-24h AppView feed (~61 posts) found matcher
+  FPs among rematch-keeps: Syracuse.com ICE card kept via ``albany_with_ny_context``
+  on ``Democrats from Buffalo to Albany`` + Western NY, and an AG
+  ``Albany Services Settlement`` / Alba Services card kept via New York + Albany.
+  Soft-prior / residual floor drops on Cap Region cards: Albany Business Review
+  ``Palette … Saratoga coworking`` (ambiguous bare Saratoga) and
+  DiningAndCooking ``Wolf Road`` + ``COLONIE`` restaurant copy (``bare_colonie``).
+  Planned ``fn_search.py`` slate (8) all ran OK with no Cap Region FNs.
+  Exploratory Saratoga coworking / Palette Saratoga / Wolf Road confirmed the
+  two FNs. Fold unmerged #138 (Bethlehem PA / Unity House / capital-region URL;
+  already includes #134–#137).
+- **Work:**
+  - Gate ``Buffalo to Albany`` political/WNY-CNY spans; gate ``Albany Services
+    Settlement`` / Alba Services×Albany as statehouse metonym.
+  - Strong ``Saratoga coworking``; ``Wolf Road``↔Colonie in ``_COLONIE_LOCAL``.
+  - Grow eval + fn_search log/strategies; fold #138 onto tip.
+- **Done when:** Audited FPs drop and FNs keep; Erie Canal Albany→Buffalo and
+  Empire State Plaza rescues retained; Utah Saratoga Springs still drops; eval
+  P/R stay 1.000; unit tests cover the new gates/cues.
+
 ### B-156 — Daily feed audit: Bethlehem PA Planning Commission FP; Unity House / capital-region URL FNs
 - **Status:** done ([#138](https://github.com/chriscarrollsmith/capital-region-feed/pull/138))
 - **Why:** 2026-11-18 audit of last-24h AppView feed (~57 posts) found a matcher

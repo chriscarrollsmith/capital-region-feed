@@ -396,3 +396,21 @@
 {"used_at": "2026-11-18T09:03:57Z", "query": "Unity House Troy", "family": "institution", "status": "ok", "hits": 1, "false_negatives": 1, "false_negative_ids": ["at://did:plc:777newmi4lyf3edemasdgcl2/app.bsky.feed.post/3n2j6hfoccq2u"], "notes": "2026-11-18 exploratory; Unity House Troy / A Nun and Two Friars FN"}
 {"used_at": "2026-11-18T09:03:57Z", "query": "A Nun and Two Friars", "family": "institution", "status": "ok", "hits": 1, "false_negatives": 1, "false_negative_ids": ["at://did:plc:777newmi4lyf3edemasdgcl2/app.bsky.feed.post/3n2j6hfoccq2u"], "notes": "2026-11-18 exploratory; same Unity House teaching-kitchen FN"}
 {"used_at": "2026-11-18T09:04:05Z", "query": "capital-region", "family": "hashtag", "status": "ok", "hits": 50, "false_negatives": 1, "false_negative_ids": ["at://did:plc:dobgbfufoungwsf3ikhpbg5b/app.bsky.feed.post/3n2jcxhoujt2a"], "notes": "2026-11-18 exploratory; WNYT thanksgiving meals capital-region URL slug FN (mostly National Capital Region noise)"}
+{"used_at": "2026-11-19T09:07:26Z", "query": "GlobalFoundries", "family": "institution", "status": "ok", "hits": 18, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-11-19T09:07:26Z", "query": "Caroline Street", "family": "neighborhood", "status": "ok", "hits": 3, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-11-19T09:07:26Z", "query": "LansingburghNY", "family": "neighborhood", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-11-19T09:07:26Z", "query": "ScotlandShop", "family": "institution", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-11-19T09:07:26Z", "query": "Troy Savings Bank Music Hall", "family": "venue", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-11-19T09:07:26Z", "query": "KALB", "family": "nickname", "status": "ok", "hits": 6, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-11-19T09:07:26Z", "query": "Chloe Pierce", "family": "civic", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-11-19T09:07:26Z", "query": "tonight Troy", "family": "event_phrase", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-11-19T09:07:26Z", "query": "Saratoga coworking", "family": "venue", "status": "ok", "hits": 1, "false_negatives": 1, "false_negative_ids": ["at://did:plc:777newmi4lyf3edemasdgcl2/app.bsky.feed.post/3n2laoezymk2r"], "notes": ""}
+{"used_at": "2026-11-19T09:07:26Z", "query": "Palette Saratoga", "family": "institution", "status": "ok", "hits": 1, "false_negatives": 1, "false_negative_ids": ["at://did:plc:777newmi4lyf3edemasdgcl2/app.bsky.feed.post/3n2laoezymk2r"], "notes": ""}
+{"used_at": "2026-11-19T09:07:26Z", "query": "Wolf Road", "family": "neighborhood", "status": "ok", "hits": 7, "false_negatives": 1, "false_negative_ids": ["at://did:plc:aattexikjlpex2xxdod2el5y/app.bsky.feed.post/3n2lmgdtcgv2x"], "notes": ""}
+{"used_at": "2026-11-19T09:07:26Z", "query": "Albany Distilling", "family": "venue", "status": "ok", "hits": 1, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-11-19T09:07:26Z", "query": "East Greenbush", "family": "bare_place", "status": "ok", "hits": 5, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-11-19T09:07:26Z", "query": "Frear Park", "family": "neighborhood", "status": "ok", "hits": 1, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-11-19T09:07:26Z", "query": "Peebles Island", "family": "neighborhood", "status": "ok", "hits": 1, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-11-19T09:07:26Z", "query": "Albany Capital Center", "family": "venue", "status": "ok", "hits": 1, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-11-19T09:07:26Z", "query": "Waterford New York", "family": "bare_place", "status": "ok", "hits": 1, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-11-19T09:07:26Z", "query": "Fonda-Fultonville", "family": "civic", "status": "ok", "hits": 1, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
