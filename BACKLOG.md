@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-164 — Daily feed audit: holding-Albany-accountable / Third Department FPs; Galleria 7 / Dotty Lou / Saratoga Comic Con FNs
-- **Status:** in progress
+- **Status:** done ([#146](https://github.com/chriscarrollsmith/capital-region-feed/pull/146))
 - **Why:** 2026-11-26 audit of last-24h AppView feed (~54 posts) found matcher
   FPs among rematch-keeps: NYS Focus "holding Albany accountable" statewide
   newsroom tagline (bare nysfocus.com link and statewide AI-in-schools event)
