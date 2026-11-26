@@ -7360,3 +7360,68 @@ def test_saratoga_park_suny_empire_latham_south_broadway_recall() -> None:
     )
     assert utah.matched is False
     assert utah.reason == 'hard_negative:saratoga_springs_utah'
+
+
+def test_holding_albany_accountable_and_third_department_precision() -> None:
+    """2026-11-26 audit FPs: NYS Focus tagline and Third Department venue wires."""
+    nysfocus = match_post(
+        'nysfocus.com',
+        alt_text=(
+            "New York Focus New York's only statewide nonprofit newsroom "
+            'dedicated to holding Albany accountable.'
+        ),
+    )
+    assert nysfocus.matched is False
+    assert nysfocus.reason == 'hard_negative:albany_statehouse_metonym'
+
+    ai_event = match_post(
+        'Tech Lessons: AI in Schools — a timely discussion with the NYS Senate.',
+        alt_text=(
+            "Tech Lessons: AI in Schools New York's only statewide nonprofit "
+            'newsroom dedicated to holding Albany accountable.'
+        ),
+    )
+    assert ai_event.matched is False
+    assert ai_event.reason == 'hard_negative:albany_statehouse_metonym'
+
+    third = match_post(
+        'Favored Trump prosecutor out of options with court as he loses bid to hide misconduct',
+        alt_text=(
+            "John Sarcone, President Donald Trump's choice to run federal "
+            'prosecutions in upstate New York, lost his last two requests to a '
+            'state appeals court. Appellate Division, Third Department in Albany '
+            'denied Sarcone permission to appeal.'
+        ),
+    )
+    assert third.matched is False
+    assert third.reason == 'hard_negative:albany_statehouse_metonym'
+
+    rescued = match_post('Holding Albany accountable starts with a rally on Lark Street tonight.')
+    assert rescued.matched is True
+
+
+def test_galleria7_dotty_lou_saratoga_comic_con_recall() -> None:
+    """2026-11-26 audit FNs: Galleria 7 / Dotty Lou's BBQ Latham, Saratoga Comic Con."""
+    dotty = match_post(
+        "Dotty Lou's BBQ has opened a full restaurant in Latham, just across the "
+        'lot from Galleria 7, where it has been operating since 2024.',
+        alt_text="Dotty Lou's BBQ opens restaurant in Latham",
+    )
+    assert dotty.matched is True
+    assert dotty.reason == 'strong_positive'
+
+    galleria = match_post('Grab lunch at Galleria 7 before the evening show.')
+    assert galleria.matched is True
+    assert galleria.reason == 'strong_positive'
+
+    comic = match_post(
+        'At the VERY end of the LAST day of Saratoga Comic Con, I was holding ten autographed DVDs.'
+    )
+    assert comic.matched is True
+    assert comic.reason == 'strong_positive'
+
+    # Off-region Latham & Watkins must not keep via the new Latham retail cues.
+    watkins = match_post(
+        "Leading Capital Markets and M&A Partners Strengthen Latham & Watkins' Hong Kong Office"
+    )
+    assert watkins.matched is False
