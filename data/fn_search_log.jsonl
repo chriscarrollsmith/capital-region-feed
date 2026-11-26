@@ -354,3 +354,11 @@
 {"used_at": "2026-11-14T09:07:01Z", "query": "Caroline Street", "family": "neighborhood", "status": "ok", "hits": 1, "false_negatives": 0, "false_negative_ids": [], "notes": "UK Shipley roadworks"}
 {"used_at": "2026-11-14T09:07:01Z", "query": "Saratoga Lake", "family": "neighborhood", "status": "ok", "hits": 1, "false_negatives": 0, "false_negative_ids": [], "notes": "Porter Corners snow already kept"}
 {"used_at": "2026-11-14T09:07:02Z", "query": "Walk2Connect", "family": "event_phrase", "status": "ok", "hits": 1, "false_negatives": 1, "false_negative_ids": ["at://did:plc:cpa6igxznywr32qhtdxnf5kw/app.bsky.feed.post/3n27ocmcgil2c"], "notes": "same Saratoga Springs workshop FN as planned Saratoga Springs query"}
+{"used_at": "2026-11-15T09:07:59Z", "query": "capitalregionny", "family": "hashtag", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-11-15T09:07:59Z", "query": "show Saratoga Springs", "family": "event_phrase", "status": "ok", "hits": 1, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-11-15T09:07:59Z", "query": "Albany Institute", "family": "venue", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-11-15T09:07:59Z", "query": "Halfmoon", "family": "bare_place", "status": "ok", "hits": 3, "false_negatives": 0, "false_negative_ids": [], "notes": "JP halfmoon noise / decorative unicode; no Cap Region FN"}
+{"used_at": "2026-11-15T09:07:59Z", "query": "Queensbury", "family": "bare_place", "status": "ok", "hits": 5, "false_negatives": 0, "false_negative_ids": [], "notes": "Queensbury HS XC keeps; #skpoli Saskatchewan noise"}
+{"used_at": "2026-11-15T09:07:59Z", "query": "KALB", "family": "nickname", "status": "ok", "hits": 7, "false_negatives": 0, "false_negative_ids": [], "notes": "German Kalb / Hirschkuh hunting noise"}
+{"used_at": "2026-11-15T09:07:59Z", "query": "Lincoln Park Albany", "family": "neighborhood", "status": "ok", "hits": 0, "false_negatives": 0, "false_negative_ids": [], "notes": ""}
+{"used_at": "2026-11-15T09:07:59Z", "query": "Helderberg", "family": "neighborhood", "status": "ok", "hits": 2, "false_negatives": 0, "false_negative_ids": [], "notes": "Somerset West ZA Helderberg College Rd hard_negative"}

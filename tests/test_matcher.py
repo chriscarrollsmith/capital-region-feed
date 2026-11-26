@@ -6091,6 +6091,24 @@ def test_local_tv_albany_national_source_not_local() -> None:
     assert news10.matched is False
     assert news10.reason == 'hard_negative:local_tv_albany_national_source'
 
+    # Hochul × nationwide ground-stop / Duffy resign under Source: NEWS10.
+    hochul = match_post(
+        'Source: NEWS10 ABC share.google/lHe0WFpwY46N...',
+        alt_text=(
+            'Gov. Hochul calls for Sean Duffy to resign after nationwide '
+            'ground stop. New York Governor Kathy Hochul has called for '
+            'U.S. Transportation Secretary Sean Duffy to resign following '
+            'a nationwide ground stop on Friday.'
+        ),
+    )
+    assert hochul.matched is False
+    assert hochul.reason == 'hard_negative:local_tv_albany_national_source'
+
+    # Source: line plus bare short-link with no Cap Region body.
+    url_only = match_post('Source: NEWS10 ABC share.google/lHe0WFpwY46N...')
+    assert url_only.matched is False
+    assert url_only.reason == 'hard_negative:local_tv_albany_national_source'
+
     # Cap Region body after the source line still keeps.
     lark = match_post('Fire on Lark Street. Source: WNYT NewsChannel 13 Albany, NY')
     assert lark.matched is True
@@ -6554,6 +6572,15 @@ def test_albany_dems_supermajority_green_wave_state_politics_precision() -> None
     )
     assert politics.matched is False
     assert politics.reason == 'hard_negative:albany_statehouse_metonym'
+
+    # Bare "Albany supermajorities" chamber shorthand (no "Dems" token).
+    bare_super = match_post(
+        "Democrats' national and Albany supermajorities strengthen their "
+        'ability to pursue progressive tax increases despite Governor '
+        "Kathy Hochul's veto power."
+    )
+    assert bare_super.matched is False
+    assert bare_super.reason == 'hard_negative:albany_statehouse_metonym'
 
     dems_rescued = match_post(
         'Albany, NY Dems celebrate local Common Council supermajority downtown.'

@@ -460,8 +460,9 @@ _STRONG_POSITIVE = re.compile(
       # "Seattle Times union", and "New York Times Union" guild phrasing.
       # "current times" + "Union Busting" alt cards must not glue into Times Union.
       | (?<!york\s)(?<!seattle\s)(?<![\w-])times\s+union(?!\s+busting)\b
-      # Aggregator Source: lines for Cap Region TV (national chamber-control
-      # Source: cards stay gated in _local_tv_albany_national_source_conflict).
+      # Aggregator Source: lines for Cap Region TV (national chamber-control /
+      # Hochul×ground-stop / Source:+URL-only cards stay gated in
+      # _local_tv_albany_national_source_conflict).
       | source:\s*(?:news\s*10|wnyt|wrgb|wten|wxxa|cbs\s*6|newschannel\s*13)\b
       # Cap Region incumbents / nicknames often appear without a place name.
       | \bsarah\s+rogerson\b
@@ -4828,9 +4829,25 @@ _NATIONAL_CHAMBER_CONTROL = re.compile(
       | \bnbc\s+projects?\b
       | \bap\s+projects?\b
       | associated\s+press\s+projects?\b
+        # Statewide / USDOT cards under Source: NEWS10 (Hochul × Duffy /
+        # nationwide ground stop) are not Cap Region place news.
+      | \bhochul\b[\s\S]{0,160}\b(?:
+            resign(?:s|ed|ing)?|ground\s+stop|nationwide|
+            duffy|transportation\s+secretary|faa\b
+        )\b
+      | \b(?:
+            resign(?:s|ed|ing)?|ground\s+stop|nationwide|
+            duffy|transportation\s+secretary|faa\b
+        )\b[\s\S]{0,160}\bhochul\b
+      | \bnationwide\s+ground\s+stop\b
     )
     """,
     re.IGNORECASE | re.VERBOSE,
+)
+
+_URL_OR_BARE_SHARE = re.compile(
+    r'https?://\S+|share\.google/\S+',
+    re.IGNORECASE,
 )
 
 
@@ -4838,13 +4855,13 @@ def _local_tv_albany_national_source_conflict(haystack: str) -> bool:
     """True when Cap Region TV is only a Source: line under national politics.
 
     NewsBreak-style cards append ``Source: WNYT NewsChannel 13 Albany, NY`` (or
-    WRGB / WTEN / News10 / CBS 6) under Senate/House control projection copy.
-    Local crash / Lark Street bodies still rescue after the source line is
+    WRGB / WTEN / News10 / CBS 6) under Senate/House control projection copy,
+    or under Hochul × nationwide ground-stop / Duffy resign cards. Source:
+    plus bare URL with no other Cap Region body also drops. Local crash /
+    Lark Street / Rogerson bodies still rescue after the source line is
     scrubbed. Wire bylines like ``MALTA, N.Y. (WNYT)`` are not Source: forms.
     """
     if not _LOCAL_TV_ALBANY_SOURCE.search(haystack):
-        return False
-    if not _NATIONAL_CHAMBER_CONTROL.search(haystack):
         return False
     scrubbed = _LOCAL_TV_ALBANY_SOURCE.sub(' ', haystack)
     if _TIMES_UNION_CAP_REGION_RESCUE.search(scrubbed):
@@ -4853,7 +4870,12 @@ def _local_tv_albany_national_source_conflict(haystack: str) -> bool:
         return False
     if _STRONG_POSITIVE.search(scrubbed):
         return False
-    return True
+    if _NATIONAL_CHAMBER_CONTROL.search(haystack):
+        return True
+    # Aggregator cards that are only ``Source: NEWS10`` + a short link.
+    remainder = _URL_OR_BARE_SHARE.sub(' ', scrubbed)
+    remainder = re.sub(r'\W+', ' ', remainder).strip()
+    return not remainder
 
 
 # Maryland Route 787 (Takoma Park / Flower Avenue) — not Interstate 787 Albany.
@@ -5742,12 +5764,14 @@ def _albany_statehouse_metonym_conflict(haystack: str) -> bool:
     for Long Island / East End legislators, "moved up to Albany" Tammany /
     capital-machine copy, "Albany has a … revenue/budget surplus"
     statehouse-coffers copy, chamber "Albany Dems' … supermajority" wires,
-    statewide "Green Wave to Albany" lawmaker copy, "Albany … (NY) state
-    politics" / "followers of Albany" statehouse-watcher copy, YIMBY /
-    housing "Bargain Comes to Albany" / "comes to Albany" + state legislature
-    cards, and "Albany bribe" / Speaker Heastie Assembly-suite wires use the
-    capital as metonym without Cap Region place news. Local party organs
-    ("join Albany Democrats at … rally") and civic anchors still rescue.
+    bare "Albany supermajority/ies" chamber-control shorthand (national and
+    Albany supermajorities + Hochul tax copy), statewide "Green Wave to
+    Albany" lawmaker copy, "Albany … (NY) state politics" / "followers of
+    Albany" statehouse-watcher copy, YIMBY / housing "Bargain Comes to
+    Albany" / "comes to Albany" + state legislature cards, and "Albany bribe"
+    / Speaker Heastie Assembly-suite wires use the capital as metonym without
+    Cap Region place news. Local party organs ("join Albany Democrats at …
+    rally") and civic anchors still rescue.
     "Rest of Albany County" and bare travel ("headed to Albany this weekend")
     are Cap Region and do not match. Do not bare-match "comes to Albany" —
     Phish / TAB concert cards keep via venue cues.
@@ -5787,9 +5811,11 @@ def _albany_statehouse_metonym_conflict(haystack: str) -> bool:
         # Statehouse coffers ("Albany has a substantial revenue surplus").
         r'\balbany\s+has\b[\s\S]{0,100}\b(?:revenue|budget)\s+surplus\b|'
         r'\b(?:revenue|budget)\s+surplus\b[\s\S]{0,100}\balbany\b|'
-        # Chamber control shorthand ("Albany Dems' New Supermajority").
-        r'\balbany\s+dem(?:ocrat)?s?\b[\s\S]{0,80}\bsupermajority\b|'
-        r'\bsupermajority\b[\s\S]{0,80}\balbany\s+dem(?:ocrat)?s?\b|'
+        # Chamber control shorthand ("Albany Dems' New Supermajority" /
+        # "national and Albany supermajorities" + Hochul tax wires).
+        r'\balbany\s+dem(?:ocrat)?s?\b[\s\S]{0,80}\bsupermajorit(?:y|ies)\b|'
+        r'\bsupermajorit(?:y|ies)\b[\s\S]{0,80}\balbany\s+dem(?:ocrat)?s?\b|'
+        r'\balbany\s+supermajorit(?:y|ies)\b|'
         # Statewide lawmaker destination ("Green Wave to Albany" / "‘Green Wave’ to Albany").
         r'\b(?:green\s+)?wave[\'\u2019\"]?\s+to\s+albany\b|'
         # Statehouse-watcher metonym ("followers of Albany and NY state politics").
