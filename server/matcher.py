@@ -533,6 +533,11 @@ _STRONG_POSITIVE = re.compile(
       | queensbury\s+board\b
       # Supervisor / Supervisor at Large race cards often omit ", NY".
       | queensbury\s+supervisor\b
+      # The Anglers (Queensbury / Glens Falls market) restaurant cards omit ", NY".
+      # Require the restaurant determiner so bare "anglers" fishing / UK Queensbury
+      # stay out; Queensbury Rules boxing stays gated.
+      | the\s+anglers[\s\S]{0,40}\bqueensbury\b
+      | \bqueensbury\b[\s\S]{0,40}the\s+anglers\b
       # Albany music venue — title case only so "fungal empire underground"
       # (Mycelium Empire game copy) does not keep. Tour posters use Empire Underground.
       | (?-i:\bEmpire\s+Underground\b)
@@ -776,6 +781,17 @@ _STRONG_POSITIVE = re.compile(
       | filming\s+in\s+saratoga\s+springs\b
       | movie\s+theater[\s\S]{0,100}saratoga\s+springs\b
       | saratoga\s+springs[\s\S]{0,100}movie\s+theater\b
+      # Fingerpaint (Spa City marketing agency) / agency-founded cards omit ", NY".
+      # Bare fingerpaint art / pony-color posts stay out without Saratoga Springs.
+      | \bfingerpaint\b[\s\S]{0,80}saratoga\s+springs\b
+      | saratoga\s+springs[\s\S]{0,80}\bfingerpaint\b
+      | marketing\s+agency\s+fingerpaint\b
+      | (?:marketing\s+)?agency[\s\S]{0,60}in\s+saratoga\s+springs\b
+      | founded[\s\S]{0,100}in\s+saratoga\s+springs\b
+      # Saratoga Cosplay Events / Cosplay Night Out often omit Springs / ", NY".
+      | saratoga\s+cosplay\b
+      | cosplay\s+night\s+out[\s\S]{0,80}\bsaratoga\b
+      | \bsaratoga\b[\s\S]{0,80}cosplay\s+night\s+out\b
       # Civic / tourism / bookstore copy often omits ", NY" for Saratoga Springs.
       | \bin\s+saratoga\s+springs\s+to\b
       | (?:was|were)\s+in\s+saratoga\s+springs\b
@@ -813,6 +829,12 @@ _STRONG_POSITIVE = re.compile(
       | (?:mineral\s+baths?|spa\s+weekend|spa\s+hotels?)[\s\S]{0,100}saratoga\s+springs
       # City of Rensselaer shopping plaza — job cards often omit ", NY".
       | van\s+rensselaer\s+square\b
+      # Waterfront mill / apartment redevelopment wires often omit ", NY".
+      # Indiana Rensselaer still hard-negatives first.
+      | rensselaer\s+waterfront\b
+      | waterfront[\s\S]{0,60}\brensselaer\b
+      | \brensselaer\b[\s\S]{0,80}(?:waterfront|apartments?)\b
+      | (?:waterfront|apartments?|mill)[\s\S]{0,80}\brensselaer\b
       # Crime / civic wire cards often say "in Saratoga Springs" without ", NY".
       | (?:
             arrested|attacked|slashing|coworker|driving\s+in|according\s+to\s+police|
@@ -4361,6 +4383,27 @@ def _albany_suny_roster_conflict(haystack: str) -> bool:
     return True
 
 
+def _queensbury_ny_rescue(haystack: str) -> bool:
+    """True when Queensbury copy still carries Cap Region / Warren County cues."""
+    return bool(
+        re.search(
+            r"""
+            (?:
+                queensbury\s*,?\s*(?:ny|n\.y\.|new\s+york)\b
+              | \#queensbury(?:ny|_ny)\b
+              | \#warrencountyny\b
+              | aviation\s+mall\b
+              | \bglens\s+falls\b
+              | \#glensfalls\b
+              | warren\s+county\b
+            )
+            """,
+            haystack,
+            flags=re.IGNORECASE | re.VERBOSE,
+        )
+    )
+
+
 def _queensbury_rules_conflict(haystack: str) -> bool:
     """True when Queensbury refers to boxing Queensbury/Queensberry rules."""
     if not re.search(r'\bqueensbury\b', haystack, flags=re.IGNORECASE):
@@ -4371,21 +4414,22 @@ def _queensbury_rules_conflict(haystack: str) -> bool:
         flags=re.IGNORECASE,
     ):
         return False
-    if re.search(
-        r"""
-        (?:
-            queensbury\s*,?\s*(?:ny|n\.y\.|new\s+york)\b
-          | \#queensbury(?:ny|_ny)\b
-          | \#warrencountyny\b
-          | aviation\s+mall\b
-          | \bglens\s+falls\b
-          | \#glensfalls\b
-          | warren\s+county\b
-        )
-        """,
+    if _queensbury_ny_rescue(haystack):
+        return False
+    return True
+
+
+def _queensbury_uk_conflict(haystack: str) -> bool:
+    """True when Queensbury refers to the West Yorkshire town, not Warren County NY."""
+    if not re.search(r'\bqueensbury\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not re.search(
+        r'west\s+yorkshire|queensbury\s+tunnel|\bhalifax\b|\byorkshire\b',
         haystack,
-        flags=re.IGNORECASE | re.VERBOSE,
+        flags=re.IGNORECASE,
     ):
+        return False
+    if _queensbury_ny_rescue(haystack):
         return False
     return True
 
@@ -6855,6 +6899,10 @@ def _propose_candidate(
             return MatchResult(False, 'hard_negative:disney_saratoga')
         if _saratoga_springs_utah_conflict(haystack, author_handle):
             return MatchResult(False, 'hard_negative:saratoga_springs_utah')
+        if _queensbury_uk_conflict(haystack):
+            return MatchResult(False, 'hard_negative:queensbury_uk')
+        if _queensbury_rules_conflict(haystack):
+            return MatchResult(False, 'hard_negative:queensbury_rules')
         if _christian_brothers_wny_conflict(haystack):
             return MatchResult(False, 'hard_negative:christian_brothers_wny')
         if _albany_statehouse_metonym_conflict(haystack):
@@ -7039,6 +7087,8 @@ def _propose_candidate(
 
         if term == 'queensbury' and _queensbury_rules_conflict(haystack):
             return MatchResult(False, 'hard_negative:queensbury_rules')
+        if term == 'queensbury' and _queensbury_uk_conflict(haystack):
+            return MatchResult(False, 'hard_negative:queensbury_uk')
 
         if term == 'scotia' and _scotia_montreal_conflict(haystack):
             return MatchResult(False, 'hard_negative:scotia_montreal')

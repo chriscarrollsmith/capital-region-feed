@@ -5871,7 +5871,7 @@ def test_troy_night_out_whitney_estate_queensbury_board_recall() -> None:
 
     tunnel = match_post('LONG overdue. Fingers crossed for the Queensbury Tunnel.')
     assert tunnel.matched is False
-    assert tunnel.reason == 'ambiguous_no_context:queensbury'
+    assert tunnel.reason == 'hard_negative:queensbury_uk'
 
 
 def test_downtown_in_requires_saratoga_springs() -> None:
@@ -7109,3 +7109,50 @@ def test_albany_charges_and_tonko_seec_national_precision() -> None:
         'for the grocery groundbreaking.'
     )
     assert local.matched is True
+
+
+def test_fingerpaint_cosplay_rensselaer_anglers_recall() -> None:
+    """2026-11-23 audit FNs: Spa City agency/cosplay, Rensselaer waterfront, Anglers."""
+    fingerpaint = match_post(
+        'Ed Mitzen, who founded the marketing agency Fingerpaint in Saratoga Springs, '
+        'has now Superfan Health, a new agency that helps healthcare brands partner '
+        'with sports teams and leagues.'
+    )
+    assert fingerpaint.matched is True
+    assert fingerpaint.reason == 'strong_positive'
+
+    cosplay = match_post(
+        "Don't pack up that Comic-Con cosplay just yet! Mark your calendars, because "
+        'November 30th is Cosplay Night Out hosted by Saratoga Cosplay Events!'
+    )
+    assert cosplay.matched is True
+    assert cosplay.reason == 'strong_positive'
+
+    rensselaer = match_post(
+        'From the outside, the former run-down mill in Rensselaer appears ready to '
+        'welcome the first tenants to the 72 market-rate apartments that now fill '
+        'the complex, but the project still faces a hurdle.'
+    )
+    assert rensselaer.matched is True
+    assert rensselaer.reason == 'strong_positive'
+
+    waterfront = match_post('Rensselaer waterfront apartments nearly complete')
+    assert waterfront.matched is True
+    assert waterfront.reason == 'strong_positive'
+
+    anglers = match_post(
+        'Used to run into him at the anglers In queensbury back in the day '
+        'he was famous to us for helping out distressed youth as much as countdown'
+    )
+    assert anglers.matched is True
+    assert anglers.reason == 'strong_positive'
+
+    # Off-region counterparts still drop.
+    assert match_post('My ponysona has dark blue fingerpaint blue fur.').matched is False
+    utah = match_post('She founded a marketing agency in Saratoga Springs UT near Utah Lake.')
+    assert utah.matched is False
+    indiana = match_post('New mill apartments open in Rensselaer, Indiana downtown.')
+    assert indiana.matched is False
+    uk = match_post('Dinner at the anglers in Queensbury, West Yorkshire.')
+    assert uk.matched is False
+    assert uk.reason == 'hard_negative:queensbury_uk'
