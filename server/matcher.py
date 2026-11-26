@@ -202,6 +202,9 @@ _STRONG_POSITIVE = re.compile(
       | saratoga(?:\s+springs)?\s+performing\s+arts\s+center
       # Fan / guest cards often omit ", NY" for the annual Albany Comic Con.
       | albany\s+comic\s+con\b
+      # Saratoga Springs city-center con cards often say "Saratoga Comic Con"
+      # without "Springs" / ", NY".
+      | saratoga\s+comic\s+con\b
       # Saratoga Race Course training facility (tourism / race-day copy).
       | oklahoma\s+training\s+track
       | national\s+museum\s+of\s+racing
@@ -708,6 +711,16 @@ _STRONG_POSITIVE = re.compile(
       | albany\s+region\b
       # Crossgates Mall / Commons (Guilderland) — often omit ", NY".
       | crossgates\s+(?:commons|mall)\b
+      # Galleria 7 food hall (Latham / Airport Area) — biz cards often omit ", NY".
+      | galleria\s*7\b
+      # Dotty Lou's BBQ (Latham) — restaurant cards often omit ", NY".
+      | dotty\s+lou['\u2019]?s(?:\s+bbq)?\b
+      # Retail / restaurant openers in Town of Latham often omit ", NY".
+      # Require open/restaurant phrasing so Latham & Watkins / surname stays out.
+      | (?:restaurant|cafe|shop(?:pe)?|bakery|bbq)\s+in\s+latham\b
+      | (?:opens?|opened|opening)\s+(?:a\s+)?(?:full\s+)?
+        (?:restaurant|cafe|shop(?:pe)?)\s+in\s+latham\b
+      | (?:shop(?:pe)?|restaurant|cafe)\s+(?:now\s+)?open(?:s|ed)?\s+in\s+latham\b
       # Albany International Airport (ALB) — often omit ", NY"; not bare Albany.
       | albany\s+international\s+airport\b
       # MVP Arena (Albany) — venue-only posts often omit event cues / placename.
@@ -5977,9 +5990,12 @@ def _albany_statehouse_metonym_conflict(haystack: str) -> bool:
     Albany as the capital court venue without Cap Region place news,
     "culture of Albany" governor / chamber-culture copy (Hochul×Albany strong
     cue otherwise), antipoverty "Call on Albany to …" statewide SNAP /
-    benefits cards, and "leaving Albany behind" capital-as-departure copy for
-    Manhattan / Carnegie Hall inauguration fundraisers use the capital as the
-    state actor without Cap Region place news. Local party organs ("join Albany
+    benefits cards, "leaving Albany behind" capital-as-departure copy for
+    Manhattan / Carnegie Hall inauguration fundraisers, statewide nonprofit
+    "holding Albany accountable" newsroom taglines (NYS Focus cards), and
+    "Third Department in Albany" / Appellate Division capital-court venue
+    copy for remote / upstate ethics wires use the capital as the state actor
+    without Cap Region place news. Local party organs ("join Albany
     Democrats at … rally") and civic anchors still rescue.
     "Rest of Albany County" and bare travel ("headed to Albany this weekend")
     are Cap Region and do not match. Do not bare-match "comes to Albany" —
@@ -6078,7 +6094,13 @@ def _albany_statehouse_metonym_conflict(haystack: str) -> bool:
         r'\bcall(?:s|ed|ing)?\s+on\s+albany\b|'
         # Capital-as-departure metonym ("leaving Albany behind" for Manhattan /
         # Carnegie Hall inauguration fundraising — not Cap Region place news).
-        r'\bleaving\s+albany\s+behind\b',
+        r'\bleaving\s+albany\s+behind\b|'
+        # Statewide newsroom tagline ("holding Albany accountable" / NYS Focus).
+        r'\bholding\s+albany\s+accountable\b|'
+        # Capital-court venue ("Appellate Division, Third Department in Albany")
+        # for remote / upstate ethics wires — Cap Region civic rescues still keep.
+        r'\bthird\s+department\s+in\s+albany\b|'
+        r'\bappellate\s+division\b[\s\S]{0,80}\bin\s+albany\b',
         haystack,
         flags=re.IGNORECASE,
     ):
