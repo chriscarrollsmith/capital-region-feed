@@ -538,6 +538,28 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-164 — Daily feed audit: holding-Albany-accountable / Third Department FPs; Galleria 7 / Dotty Lou / Saratoga Comic Con FNs
+- **Status:** done ([#146](https://github.com/chriscarrollsmith/capital-region-feed/pull/146))
+- **Why:** 2026-11-26 audit of last-24h AppView feed (~54 posts) found matcher
+  FPs among rematch-keeps: NYS Focus "holding Albany accountable" statewide
+  newsroom tagline (bare nysfocus.com link and statewide AI-in-schools event)
+  via ``albany_with_ny_context``, and Raw Story Sarcone ethics wire kept via
+  "Appellate Division, Third Department in Albany" capital-court venue + NY
+  context. Already-fixed index residuals (Hochul leaving Albany behind) not
+  re-counted. Soft-prior / search Cap Region FNs: Dotty Lou's BBQ / Galleria 7
+  Latham restaurant card (ambiguous Latham), and Saratoga Comic Con guest cards
+  omitting Springs / ``, NY``. Planned ``fn_search.py`` slate (8) all OK
+  (hashtags returned results today); exploratory Galleria 7 / Dotty Lou's BBQ /
+  Latham restaurant / Saratoga Comic Con remembered.
+- **Work:**
+  - Statehouse ``holding Albany accountable`` + Third Department / Appellate
+    Division capital-court venue gate; Lark Street civic rescues retained.
+  - Strong Galleria 7, Dotty Lou's BBQ, Latham restaurant/shop-open, and
+    Saratoga Comic Con cues; Latham & Watkins hard-negative retained.
+  - Grow eval + fn_search log/strategies.
+- **Done when:** Audited FPs drop and FNs keep; eval P/R stay 1.000; unit tests
+  cover the new gates/cues.
+
 ### B-163 — Daily feed audit: Edmonton capital region / Hochul×Carnegie / HALT dateline FPs; Saratoga National Park / SUNY Empire / Latham / South Broadway FNs
 - **Status:** done ([#145](https://github.com/chriscarrollsmith/capital-region-feed/pull/145))
 - **Why:** 2026-11-25 audit of last-24h AppView feed (~52 posts) found matcher
