@@ -5789,6 +5789,39 @@ def test_phish_saratoga_spac_albany_recall() -> None:
     )
     assert blank_check.matched is False
 
+    # AppView paste often uses U+2018 left single quote before the year.
+    spac_left_quote = match_post(
+        'His first Dead show was SPAC \u201885, and she still has the ticket stub.'
+    )
+    assert spac_left_quote.matched is True
+    assert spac_left_quote.reason in {'strong_positive', 'event_local_venue'}
+
+
+def test_albany_oregon_public_library_not_cap_region_apl() -> None:
+    """Oregon Albany Public Library drops; Cap Region APL keeps."""
+    oregon = match_post(
+        'Our next monthly meeting is December 3rd at 6:00 p.m. at the Albany '
+        "public library. Can't be there in person? Please go to linncodems.org "
+        'and sign up for the Zoom.',
+        author_handle='linncodemsoregon.bsky.social',
+    )
+    assert oregon.matched is False
+    assert oregon.reason == 'hard_negative:albany_oregon_public_library'
+
+    oregon_body = match_post(
+        'Town hall tonight at the Albany public library in Linn County, Oregon.'
+    )
+    assert oregon_body.matched is False
+    assert oregon_body.reason == 'hard_negative:albany_oregon_public_library'
+
+    ny_apl = match_post('Storytime at the Albany Public Library this Saturday morning.')
+    assert ny_apl.matched is True
+    assert ny_apl.reason == 'strong_positive'
+
+    washington = match_post('Albany Public Library on Washington Ave hosts a reading tonight.')
+    assert washington.matched is True
+    assert washington.reason == 'strong_positive'
+
 
 def test_capitol_region_misspelling_and_albany_comic_con() -> None:
     """Capitol Region misspelling and Albany Comic Con keep; MD capitol still drops."""
@@ -7360,3 +7393,68 @@ def test_saratoga_park_suny_empire_latham_south_broadway_recall() -> None:
     )
     assert utah.matched is False
     assert utah.reason == 'hard_negative:saratoga_springs_utah'
+
+
+def test_holding_albany_accountable_and_third_department_precision() -> None:
+    """2026-11-26 audit FPs: NYS Focus tagline and Third Department venue wires."""
+    nysfocus = match_post(
+        'nysfocus.com',
+        alt_text=(
+            "New York Focus New York's only statewide nonprofit newsroom "
+            'dedicated to holding Albany accountable.'
+        ),
+    )
+    assert nysfocus.matched is False
+    assert nysfocus.reason == 'hard_negative:albany_statehouse_metonym'
+
+    ai_event = match_post(
+        'Tech Lessons: AI in Schools — a timely discussion with the NYS Senate.',
+        alt_text=(
+            "Tech Lessons: AI in Schools New York's only statewide nonprofit "
+            'newsroom dedicated to holding Albany accountable.'
+        ),
+    )
+    assert ai_event.matched is False
+    assert ai_event.reason == 'hard_negative:albany_statehouse_metonym'
+
+    third = match_post(
+        'Favored Trump prosecutor out of options with court as he loses bid to hide misconduct',
+        alt_text=(
+            "John Sarcone, President Donald Trump's choice to run federal "
+            'prosecutions in upstate New York, lost his last two requests to a '
+            'state appeals court. Appellate Division, Third Department in Albany '
+            'denied Sarcone permission to appeal.'
+        ),
+    )
+    assert third.matched is False
+    assert third.reason == 'hard_negative:albany_statehouse_metonym'
+
+    rescued = match_post('Holding Albany accountable starts with a rally on Lark Street tonight.')
+    assert rescued.matched is True
+
+
+def test_galleria7_dotty_lou_saratoga_comic_con_recall() -> None:
+    """2026-11-26 audit FNs: Galleria 7 / Dotty Lou's BBQ Latham, Saratoga Comic Con."""
+    dotty = match_post(
+        "Dotty Lou's BBQ has opened a full restaurant in Latham, just across the "
+        'lot from Galleria 7, where it has been operating since 2024.',
+        alt_text="Dotty Lou's BBQ opens restaurant in Latham",
+    )
+    assert dotty.matched is True
+    assert dotty.reason == 'strong_positive'
+
+    galleria = match_post('Grab lunch at Galleria 7 before the evening show.')
+    assert galleria.matched is True
+    assert galleria.reason == 'strong_positive'
+
+    comic = match_post(
+        'At the VERY end of the LAST day of Saratoga Comic Con, I was holding ten autographed DVDs.'
+    )
+    assert comic.matched is True
+    assert comic.reason == 'strong_positive'
+
+    # Off-region Latham & Watkins must not keep via the new Latham retail cues.
+    watkins = match_post(
+        "Leading Capital Markets and M&A Partners Strengthen Latham & Watkins' Hong Kong Office"
+    )
+    assert watkins.matched is False

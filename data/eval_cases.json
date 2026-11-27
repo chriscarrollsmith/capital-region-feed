@@ -15362,5 +15362,161 @@
     "author_handle": "abc4utah.bsky.social",
     "alt_text": "Saratoga Springs, Utah planning commission near Redwood Road",
     "note": "2026-11-25 counterpart: Utah Saratoga Springs apartments still drop"
+  },
+  {
+    "id": "fp-holding-albany-accountable-nysfocus",
+    "text": "nysfocus.com",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "New York Focus New York's only statewide nonprofit newsroom dedicated to holding Albany accountable.",
+    "note": "2026-11-26 FP: NYS Focus tagline holding Albany accountable"
+  },
+  {
+    "id": "fp-holding-albany-accountable-ai-schools",
+    "text": "Tech Lessons: AI in Schools — a timely discussion with the NYS Senate.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "Tech Lessons: AI in Schools New York's only statewide nonprofit newsroom dedicated to holding Albany accountable.",
+    "note": "2026-11-26 FP: statewide AI event via NYS Focus tagline"
+  },
+  {
+    "id": "fp-third-department-albany-sarcone",
+    "text": "Favored Trump prosecutor out of options with court as he loses bid to hide misconduct",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "John Sarcone, President Donald Trump's choice to run federal prosecutions in upstate New York, lost his last two requests. Appellate Division, Third Department in Albany denied Sarcone permission to appeal.",
+    "note": "2026-11-26 FP: Third Department capital-court venue for upstate ethics wire"
+  },
+  {
+    "id": "tp-holding-albany-lark-street-rescue",
+    "text": "Holding Albany accountable starts with a rally on Lark Street tonight.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-26 counterpart: Lark Street civic rescue keeps"
+  },
+  {
+    "id": "tp-dotty-lou-bbq-latham-galleria7",
+    "text": "Dotty Lou's BBQ has opened a full restaurant in Latham, just across the lot from Galleria 7, where it has been operating since 2024.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "Dotty Lou's BBQ opens restaurant in Latham",
+    "note": "2026-11-26 FN: Dotty Lou's BBQ / Galleria 7 Latham restaurant card"
+  },
+  {
+    "id": "tp-galleria-7-lunch",
+    "text": "Grab lunch at Galleria 7 before the evening show.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-26 FN counterpart: bare Galleria 7 venue"
+  },
+  {
+    "id": "tp-saratoga-comic-con-autographs",
+    "text": "At the VERY end of the LAST day of Saratoga Comic Con, I was holding ten autographed DVDs.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-26 FN: Saratoga Comic Con without Springs / , NY"
+  },
+  {
+    "id": "tp-saratoga-comic-con-voice-actor",
+    "text": "Emilia met Sean Chiplock, the English voice of Subaru Natsuki, at Saratoga Comic Con!",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-26 FN: Saratoga Comic Con guest card"
+  },
+  {
+    "id": "tn-latham-watkins-hong-kong-office",
+    "text": "Leading Capital Markets and M&A Partners Strengthen Latham & Watkins' Hong Kong Office",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-26 counterpart: Latham & Watkins must not keep via Latham retail cues"
+  },
+  {
+    "id": "fp-albany-oregon-public-library-linnco",
+    "text": "Our next monthly meeting is December 3rd at 6:00 p.m. at the Albany public library. Can't be there in person? Please go to linncodems.org and sign up for the Zoom.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "author_handle": "linncodemsoregon.bsky.social",
+    "note": "2026-11-27 audit: Linn County OR Dems Albany public library via strong albany public library"
+  },
+  {
+    "id": "tp-albany-public-library-storytime",
+    "text": "Storytime at the Albany Public Library this Saturday morning. Bring the kids downtown.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-27 audit: Cap Region APL counterpart to Oregon gate"
+  },
+  {
+    "id": "fp-center-square-beige-frame-alt",
+    "text": "Happy Thanksgiving from Freel Library! The MCLA Freel Library is closed today. Thursday, November 26th.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "A white frame with a light beige center square. There is a stack of books with a pumpkin on top with leaves around it. The text says, \"Happy Thanksgiving. Freel Library is closed today.\"",
+    "note": "2026-11-27 audit: decorative beige center square alt unlocked classifier:local_micro"
+  },
+  {
+    "id": "tp-center-square-porchfest-1127",
+    "text": "Center Square Porchfest is this weekend. Maps at noon on Lark.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-27 audit: Albany Center Square counterpart to beige-frame FP"
+  },
+  {
+    "id": "fn-spac-left-single-quote-year",
+    "text": "His first Dead show was SPAC ‘85, and she still has the ticket stub from that summer.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-27 audit: SPAC year card with U+2018 left single quote"
+  },
+  {
+    "id": "tn-spac-blank-check-merger-1127",
+    "text": "The blank-check SPAC merger closed this week after the shareholder vote.",
+    "expected": false,
+    "signal": "event",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-27 audit: corporate SPAC acronym counterpart to Dead year FN"
   }
 ]

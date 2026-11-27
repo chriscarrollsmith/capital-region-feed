@@ -538,6 +538,51 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-165 — Daily feed audit: Oregon Albany Public Library / beige center-square FPs; SPAC U+2018 year FN
+- **Status:** done ([#147](https://github.com/chriscarrollsmith/capital-region-feed/pull/147))
+- **Why:** 2026-11-27 audit of last-24h AppView feed (~60 posts) found matcher
+  FPs among rematch-keeps: Linn County Oregon Dems "Albany public library"
+  meeting via the Cap Region APL strong positive (handle ``*oregon*`` /
+  linncodems.org), and MCLA Freel Library (North Adams) holiday card kept via
+  decorative alt text "light beige center square" unlocking
+  ``classifier:local_micro``. Soft-prior / search Cap Region FN: Grateful Dead
+  "SPAC ‘85" year card using U+2018 left single quote (ASCII / U+2019 already
+  kept). Planned ``fn_search.py`` slate (8) all OK; SpaceX / Samsung / Polish
+  spać noise ignored. Not counted: allowlisted Times Union / NEWS10 /
+  officials; NWS Albany CWA; Capital Region lobbying / DiNapoli Capital Region
+  funds cards; soft-prior residuals.
+- **Work:**
+  - Oregon Albany Public Library conflict (handle / Linn County / Oregon cues);
+    Cap Region APL and Washington Ave rescues retained.
+  - Scrub decorative beige/frame "center square" alt text in classifier micros;
+    Center Square Porchfest keeps.
+  - Accept U+2018 in ``SPAC ‘YY`` year cues; blank-check SPAC still drops.
+  - Grow eval + fn_search log (fold unmerged #146).
+- **Done when:** Audited FPs drop and FN keeps; eval P/R stay 1.000; unit tests
+  cover the new gates/cues.
+
+### B-164 — Daily feed audit: holding-Albany-accountable / Third Department FPs; Galleria 7 / Dotty Lou / Saratoga Comic Con FNs
+- **Status:** done ([#146](https://github.com/chriscarrollsmith/capital-region-feed/pull/146))
+- **Why:** 2026-11-26 audit of last-24h AppView feed (~54 posts) found matcher
+  FPs among rematch-keeps: NYS Focus "holding Albany accountable" statewide
+  newsroom tagline (bare nysfocus.com link and statewide AI-in-schools event)
+  via ``albany_with_ny_context``, and Raw Story Sarcone ethics wire kept via
+  "Appellate Division, Third Department in Albany" capital-court venue + NY
+  context. Already-fixed index residuals (Hochul leaving Albany behind) not
+  re-counted. Soft-prior / search Cap Region FNs: Dotty Lou's BBQ / Galleria 7
+  Latham restaurant card (ambiguous Latham), and Saratoga Comic Con guest cards
+  omitting Springs / ``, NY``. Planned ``fn_search.py`` slate (8) all OK
+  (hashtags returned results today); exploratory Galleria 7 / Dotty Lou's BBQ /
+  Latham restaurant / Saratoga Comic Con remembered.
+- **Work:**
+  - Statehouse ``holding Albany accountable`` + Third Department / Appellate
+    Division capital-court venue gate; Lark Street civic rescues retained.
+  - Strong Galleria 7, Dotty Lou's BBQ, Latham restaurant/shop-open, and
+    Saratoga Comic Con cues; Latham & Watkins hard-negative retained.
+  - Grow eval + fn_search log/strategies.
+- **Done when:** Audited FPs drop and FNs keep; eval P/R stay 1.000; unit tests
+  cover the new gates/cues.
+
 ### B-163 — Daily feed audit: Edmonton capital region / Hochul×Carnegie / HALT dateline FPs; Saratoga National Park / SUNY Empire / Latham / South Broadway FNs
 - **Status:** done ([#145](https://github.com/chriscarrollsmith/capital-region-feed/pull/145))
 - **Why:** 2026-11-25 audit of last-24h AppView feed (~52 posts) found matcher
