@@ -905,7 +905,8 @@ _STRONG_POSITIVE = re.compile(
       | near\s+\#?spac\b[\s\S]{0,100}(?:hotels?|inns?|concert)
       | (?:hotels?|inns?)[\s\S]{0,100}near\s+\#?spac\b
       # Dead/Phish tape talk: "SPAC '85" / "spac 25" without Saratoga token.
-      | \bspac\s*['\u2019]?\s*\d{2}\b
+      # Include U+2018 left single quote (common in AppView paste) plus ASCII / U+2019.
+      | \bspac\s*['\u2018\u2019]?\s*\d{2}\b
       | \bphish\b[\s\S]{0,100}\bspac\b
       | \bspac\b[\s\S]{0,100}\bphish\b
       # Phish / TAB / Trey Anastasio / pre-show dinner copy names Albany without ", NY".
@@ -3636,7 +3637,7 @@ _LOCAL_EVENT_VENUE = re.compile(
       | saratoga(?:\s+springs)?\s+performing\s+arts\s+center
       | \bat\s+spac\b
       | \bspac\s+(?:season|lawn|amphitheatre|amphitheater|presents|tickets?|pavilion)
-      | \bspac\s*['\u2019]?\s*\d{2}\b
+      | \bspac\s*['\u2018\u2019]?\s*\d{2}\b
       | national\s+museum\s+of\s+racing
       | mvp\s+arena
       | music\s+haven
@@ -6110,6 +6111,53 @@ def _albany_statehouse_metonym_conflict(haystack: str) -> bool:
     return True
 
 
+def _albany_oregon_public_library_conflict(haystack: str, author_handle: str | None = None) -> bool:
+    """True when Albany Public Library refers to Oregon's Albany, not Cap Region.
+
+    Cap Region APL event copy often omits ``, NY``, so the strong positive stays.
+    Oregon civic handles (``*oregon*`` / Linn County Dems) and Oregon place /
+    domain cues drop the Oregon namesake without weakening NY APL keeps.
+    """
+    if not re.search(r'albany\s+public\s+library\b', haystack, flags=re.IGNORECASE):
+        return False
+    # Explicit Cap Region / NY rescue (street, city qualifier, Cap Region cues).
+    if re.search(
+        r"""
+        (?:
+            albany\s+public\s+library[\s\S]{0,40},\s*(?:ny|n\.y\.)\b
+          | albany\s+public\s+library[\s\S]{0,80}(?:
+                washington\s+ave|pine\s+hills|delaware\s+ave|\#albanyny\b|
+                capital\s+(?:region|district)\b
+              )
+          | (?:
+                washington\s+ave|pine\s+hills|delaware\s+ave|\#albanyny\b|
+                capital\s+(?:region|district)\b|albany,\s*ny\b
+              )[\s\S]{0,80}albany\s+public\s+library
+        )
+        """,
+        haystack,
+        flags=re.IGNORECASE | re.VERBOSE,
+    ):
+        return False
+    handle = (author_handle or '').strip().lower()
+    if re.search(r'oregon|linnco|linncounty|\.or\b', handle):
+        return True
+    if re.search(
+        r"""
+        (?:
+            \boregon\b|\#oregon\b|\#or\b|\(\s*or\s*\)|
+            albany\s*,\s*or\b|albany\s+oregon\b|
+            linn\s+county|linncodems|\.oregonlive\.|
+            mid[- ]?willamette|corvallis|greater\s+albany
+        )
+        """,
+        haystack,
+        flags=re.IGNORECASE | re.VERBOSE,
+    ):
+        return True
+    return False
+
+
 def _price_chopper_offregion_conflict(haystack: str) -> bool:
     """True when Price Chopper / Market 32 news is an off-Cap-Region store.
 
@@ -7075,6 +7123,8 @@ def _propose_candidate(
             return MatchResult(False, 'hard_negative:egg_off_region')
         if _saratoga_stakes_away_conflict(haystack):
             return MatchResult(False, 'hard_negative:saratoga_stakes_away')
+        if _albany_oregon_public_library_conflict(haystack, author_handle):
+            return MatchResult(False, 'hard_negative:albany_oregon_public_library')
         return MatchResult(True, 'strong_positive')
 
     if _COLONIE_LOCAL.search(haystack):

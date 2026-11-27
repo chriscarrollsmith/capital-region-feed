@@ -5789,6 +5789,39 @@ def test_phish_saratoga_spac_albany_recall() -> None:
     )
     assert blank_check.matched is False
 
+    # AppView paste often uses U+2018 left single quote before the year.
+    spac_left_quote = match_post(
+        'His first Dead show was SPAC \u201885, and she still has the ticket stub.'
+    )
+    assert spac_left_quote.matched is True
+    assert spac_left_quote.reason in {'strong_positive', 'event_local_venue'}
+
+
+def test_albany_oregon_public_library_not_cap_region_apl() -> None:
+    """Oregon Albany Public Library drops; Cap Region APL keeps."""
+    oregon = match_post(
+        'Our next monthly meeting is December 3rd at 6:00 p.m. at the Albany '
+        "public library. Can't be there in person? Please go to linncodems.org "
+        'and sign up for the Zoom.',
+        author_handle='linncodemsoregon.bsky.social',
+    )
+    assert oregon.matched is False
+    assert oregon.reason == 'hard_negative:albany_oregon_public_library'
+
+    oregon_body = match_post(
+        'Town hall tonight at the Albany public library in Linn County, Oregon.'
+    )
+    assert oregon_body.matched is False
+    assert oregon_body.reason == 'hard_negative:albany_oregon_public_library'
+
+    ny_apl = match_post('Storytime at the Albany Public Library this Saturday morning.')
+    assert ny_apl.matched is True
+    assert ny_apl.reason == 'strong_positive'
+
+    washington = match_post('Albany Public Library on Washington Ave hosts a reading tonight.')
+    assert washington.matched is True
+    assert washington.reason == 'strong_positive'
+
 
 def test_capitol_region_misspelling_and_albany_comic_con() -> None:
     """Capitol Region misspelling and Albany Comic Con keep; MD capitol still drops."""

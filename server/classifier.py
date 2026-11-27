@@ -121,6 +121,8 @@ _CENTER_SQUARE_WIRE = re.compile(
 # Hollywood Squares / Paul Lynde "center square" — not the Albany neighborhood.
 # "Center Square Rd/Road/St" is a street name elsewhere (e.g. Gloucester Co, NJ).
 # Plural "center squares" appears in bread-scoring / quilt-pattern bake alt text.
+# Decorative graphic alt text ("light beige center square" frame) is not the
+# neighborhood either — common on library / holiday image cards.
 _HOLLYWOOD_CENTER_SQUARE = re.compile(
     r"""
     (?:
@@ -132,6 +134,12 @@ _HOLLYWOOD_CENTER_SQUARE = re.compile(
       | center\s+square\s+(?:rd|road|st|street)\b
       | (?:four\s+)?center\s+squares\b
       | quilt\s+pattern\s+scoring
+      | (?:
+            light\s+(?:beige|gray|grey|tan|cream)|beige|gray|grey|tan|cream|
+            white\s+frame|frame\s+with
+          )\s+(?:a\s+)?(?:light\s+)?(?:beige\s+|gray\s+|grey\s+|tan\s+|cream\s+)?
+          center\s+square\b
+      | center\s+square\b[\s\S]{0,40}(?:frame|border|background)
     )
     """,
     re.IGNORECASE | re.VERBOSE,
