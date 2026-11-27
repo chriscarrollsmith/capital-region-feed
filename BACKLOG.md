@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-165 — Daily feed audit: Oregon Albany Public Library / beige center-square FPs; SPAC U+2018 year FN
-- **Status:** in progress
+- **Status:** done ([#147](https://github.com/chriscarrollsmith/capital-region-feed/pull/147))
 - **Why:** 2026-11-27 audit of last-24h AppView feed (~60 posts) found matcher
   FPs among rematch-keeps: Linn County Oregon Dems "Albany public library"
   meeting via the Cap Region APL strong positive (handle ``*oregon*`` /
