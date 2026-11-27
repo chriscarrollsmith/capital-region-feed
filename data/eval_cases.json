@@ -15456,5 +15456,67 @@
     "split": "dev",
     "regression": true,
     "note": "2026-11-26 counterpart: Latham & Watkins must not keep via Latham retail cues"
+  },
+  {
+    "id": "fp-albany-oregon-public-library-linnco",
+    "text": "Our next monthly meeting is December 3rd at 6:00 p.m. at the Albany public library. Can't be there in person? Please go to linncodems.org and sign up for the Zoom.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "author_handle": "linncodemsoregon.bsky.social",
+    "note": "2026-11-27 audit: Linn County OR Dems Albany public library via strong albany public library"
+  },
+  {
+    "id": "tp-albany-public-library-storytime",
+    "text": "Storytime at the Albany Public Library this Saturday morning. Bring the kids downtown.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-27 audit: Cap Region APL counterpart to Oregon gate"
+  },
+  {
+    "id": "fp-center-square-beige-frame-alt",
+    "text": "Happy Thanksgiving from Freel Library! The MCLA Freel Library is closed today. Thursday, November 26th.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "dev",
+    "regression": true,
+    "alt_text": "A white frame with a light beige center square. There is a stack of books with a pumpkin on top with leaves around it. The text says, \"Happy Thanksgiving. Freel Library is closed today.\"",
+    "note": "2026-11-27 audit: decorative beige center square alt unlocked classifier:local_micro"
+  },
+  {
+    "id": "tp-center-square-porchfest-1127",
+    "text": "Center Square Porchfest is this weekend. Maps at noon on Lark.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "ambiguous_classifier",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-27 audit: Albany Center Square counterpart to beige-frame FP"
+  },
+  {
+    "id": "fn-spac-left-single-quote-year",
+    "text": "His first Dead show was SPAC ‘85, and she still has the ticket stub from that summer.",
+    "expected": true,
+    "signal": "event",
+    "bucket": "regional_event",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-27 audit: SPAC year card with U+2018 left single quote"
+  },
+  {
+    "id": "tn-spac-blank-check-merger-1127",
+    "text": "The blank-check SPAC merger closed this week after the shareholder vote.",
+    "expected": false,
+    "signal": "event",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-27 audit: corporate SPAC acronym counterpart to Dead year FN"
   }
 ]
