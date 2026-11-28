@@ -7458,3 +7458,76 @@ def test_galleria7_dotty_lou_saratoga_comic_con_recall() -> None:
         "Leading Capital Markets and M&A Partners Strengthen Latham & Watkins' Hong Kong Office"
     )
     assert watkins.matched is False
+
+
+def test_stewart_cousins_albany_statehouse_and_price_chopper_kc_precision() -> None:
+    """2026-11-28 audit FPs: Stewart-Cousins capital-venue wires; Price Chopper KC."""
+    barriers = match_post(
+        "New York's political landscape is shifting after the death of Senate "
+        'Majority Leader Andrea Stewart-Cousins, a trailblazing lawmaker who '
+        'broke barriers in Albany and led Democrats through years of sweeping '
+        'legislative change.'
+    )
+    assert barriers.matched is False
+    assert barriers.reason in {
+        'hard_negative:albany_wire_stewart_cousins',
+        'hard_negative:albany_statehouse_metonym',
+    }
+
+    conference = match_post(
+        'State Senate Majority Leader Andrea Stewart-Cousins has died - Gothamist',
+        alt_text=('She was the first Black woman to lead a legislative conference in Albany.'),
+    )
+    assert conference.matched is False
+    assert conference.reason in {
+        'hard_negative:albany_wire_stewart_cousins',
+        'hard_negative:albany_statehouse_metonym',
+    }
+
+    chamber = match_post(
+        'New York Senate Majority Leader Andrea Stewart-Cousins Dies at 76\n\n'
+        'Andrea Stewart-Cousins in the Senate chamber in Albany, January 6, 2021.'
+    )
+    assert chamber.matched is False
+    assert chamber.reason in {
+        'hard_negative:albany_wire_stewart_cousins',
+        'hard_negative:albany_statehouse_metonym',
+    }
+
+    ap_wire = match_post(
+        'ALBANY, New York — Democratic state Senate Majority Leader Andrea '
+        'Stewart-Cousins, one of the highest-ranking Black women in New York '
+        'state history, died Thursday evening, state officials announced Friday.'
+    )
+    assert ap_wire.matched is False
+    assert ap_wire.reason == 'hard_negative:albany_wire_stewart_cousins'
+
+    # Cap Region paper masthead / plaza rescues still keep.
+    times_union = match_post(
+        'N.Y. Senate Majority Leader Andrea Stewart-Cousins dies at 76, weeks '
+        'after reelection - Times Union'
+    )
+    assert times_union.matched is True
+    assert times_union.reason == 'strong_positive'
+
+    plaza = match_post(
+        'ALBANY, N.Y. — Mourners gathered at Empire State Plaza after Andrea Stewart-Cousins died.'
+    )
+    assert plaza.matched is True
+
+    lark = match_post('Neighbors broke barriers in Albany nightlife on Lark Street.')
+    assert lark.matched is True
+
+    kc = match_post(
+        'Price Chopper(KC area) has a deal through Sunday where you can purchase '
+        '$100 gift card for $85.'
+    )
+    assert kc.matched is False
+    assert kc.reason == 'hard_negative:price_chopper_offregion'
+
+    local_pc = match_post(
+        'I need to call price chopper pharmacy to leave a compliment because a '
+        'concerned pharmacist solved my insulin issue.'
+    )
+    assert local_pc.matched is True
+    assert local_pc.reason == 'strong_positive'

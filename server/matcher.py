@@ -5993,11 +5993,14 @@ def _albany_statehouse_metonym_conflict(haystack: str) -> bool:
     cue otherwise), antipoverty "Call on Albany to …" statewide SNAP /
     benefits cards, "leaving Albany behind" capital-as-departure copy for
     Manhattan / Carnegie Hall inauguration fundraisers, statewide nonprofit
-    "holding Albany accountable" newsroom taglines (NYS Focus cards), and
+    "holding Albany accountable" newsroom taglines (NYS Focus cards),
     "Third Department in Albany" / Appellate Division capital-court venue
-    copy for remote / upstate ethics wires use the capital as the state actor
-    without Cap Region place news. Local party organs ("join Albany
-    Democrats at … rally") and civic anchors still rescue.
+    copy for remote / upstate ethics wires, out-of-market "broke barriers in
+    Albany" career-in-capital obituaries, "legislative conference in Albany"
+    statewide leadership copy, and "Senate chamber in Albany" capital-venue
+    photo captions use the capital as the state actor without Cap Region place
+    news. Local party organs ("join Albany Democrats at … rally") and civic
+    anchors still rescue.
     "Rest of Albany County" and bare travel ("headed to Albany this weekend")
     are Cap Region and do not match. Do not bare-match "comes to Albany" —
     Phish / TAB concert cards keep via venue cues. Do not bare-match
@@ -6101,12 +6104,57 @@ def _albany_statehouse_metonym_conflict(haystack: str) -> bool:
         # Capital-court venue ("Appellate Division, Third Department in Albany")
         # for remote / upstate ethics wires — Cap Region civic rescues still keep.
         r'\bthird\s+department\s+in\s+albany\b|'
-        r'\bappellate\s+division\b[\s\S]{0,80}\bin\s+albany\b',
+        r'\bappellate\s+division\b[\s\S]{0,80}\bin\s+albany\b|'
+        # Out-of-market / statewide career-in-capital obituaries.
+        r'\bbroke\s+barriers\s+in\s+albany\b|'
+        # Statewide chamber leadership locale ("legislative conference in Albany").
+        r'\blegislative\s+conference\s+in\s+albany\b|'
+        # Capital-venue photo captions ("Senate chamber in Albany").
+        r'\bsenate\s+chamber\s+in\s+albany\b',
         haystack,
         flags=re.IGNORECASE,
     ):
         return False
     if _ALBANY_WIRE_LOCAL_RESCUE.search(haystack) or _ALBANY_LOCAL_RESCUE.search(haystack):
+        return False
+    return True
+
+
+def _albany_wire_stewart_cousins_conflict(haystack: str) -> bool:
+    """True when Albany is only capital venue for Stewart-Cousins death wires.
+
+    Out-of-market / AP cards stamp ALBANY, N.Y. (or bare Albany) on statewide
+    Senate Majority Leader obituaries without Cap Region place news. Times
+    Union / NEWS10 / plaza / Lark Street rescues still keep local coverage.
+    """
+    if not re.search(r'\balbany\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not re.search(r'\bstewart-?cousins\b', haystack, flags=re.IGNORECASE):
+        return False
+    if not re.search(
+        r'\b(?:dies?|died|dead|death|obituar|rest\s+in\s+(?:power|peace)|rip)\b',
+        haystack,
+        flags=re.IGNORECASE,
+    ):
+        return False
+    if _ALBANY_WIRE_LOCAL_RESCUE.search(haystack):
+        return False
+    if re.search(
+        r"""
+        (?:
+            times\s+union\b
+          | \bnews10\b
+          | \bwten\b
+          | \bwrgb\b
+          | capital\s+(?:region|district)\b
+          | \#albanyny\b
+          | albany\s+common\s+council\b
+          | albany\s+mayor\b
+        )
+        """,
+        haystack,
+        flags=re.IGNORECASE | re.VERBOSE,
+    ):
         return False
     return True
 
@@ -6163,7 +6211,8 @@ def _price_chopper_offregion_conflict(haystack: str) -> bool:
 
     Golub HQ / circular wires keep via the bare grocery strong positive, but
     Utica / Syracuse / Buffalo / Rochester store blotters are Central /
-    Western NY. Cap Region place rescues still keep multi-store or HQ cards.
+    Western NY, and Kansas City (KC area) Price Chopper gift-card blotters are
+    Midwest. Cap Region place rescues still keep multi-store or HQ cards.
     """
     if not re.search(
         r'(?<!vincent\s)price\s+chopper\b|\bmarket\s*32\b',
@@ -6175,7 +6224,8 @@ def _price_chopper_offregion_conflict(haystack: str) -> bool:
         r"""
         \b(?:
             utica|syracuse|rochester|buffalo|binghamton|watertown|
-            ithaca|elmira|oswego|jamestown|auburn
+            ithaca|elmira|oswego|jamestown|auburn|
+            kansas\s+city|kc\s+area
         )\b
         """,
         haystack,
@@ -7069,6 +7119,8 @@ def _propose_candidate(
             return MatchResult(False, 'hard_negative:albany_wire_statewide_hospitals')
         if _albany_wire_statewide_prisons_conflict(haystack):
             return MatchResult(False, 'hard_negative:albany_wire_statewide_prisons')
+        if _albany_wire_stewart_cousins_conflict(haystack):
+            return MatchResult(False, 'hard_negative:albany_wire_stewart_cousins')
         if _albany_hochul_binghamton_conflict(haystack):
             return MatchResult(False, 'hard_negative:albany_hochul_binghamton')
         if _delveinsight_albany_conflict(haystack):
@@ -7240,6 +7292,8 @@ def _propose_candidate(
                 return MatchResult(False, 'hard_negative:albany_wire_statewide_hospitals')
             if _albany_wire_statewide_prisons_conflict(haystack):
                 return MatchResult(False, 'hard_negative:albany_wire_statewide_prisons')
+            if _albany_wire_stewart_cousins_conflict(haystack):
+                return MatchResult(False, 'hard_negative:albany_wire_stewart_cousins')
             if _albany_hochul_binghamton_conflict(haystack):
                 return MatchResult(False, 'hard_negative:albany_hochul_binghamton')
             if _albany_bandscan_conflict(haystack):
