@@ -539,7 +539,7 @@ Status: `todo` · `in progress` · `done` · `blocked`
   unit tests cover the new gates.
 
 ### B-166 — Daily feed audit: Stewart-Cousins capital-venue / Price Chopper KC FPs
-- **Status:** in progress
+- **Status:** done ([#148](https://github.com/chriscarrollsmith/capital-region-feed/pull/148))
 - **Why:** 2026-11-28 audit of last-24h AppView feed (~61 posts) found matcher
   FPs among rematch-keeps: out-of-market AP/syndication cards using
   "broke barriers in Albany", "legislative conference in Albany", and
