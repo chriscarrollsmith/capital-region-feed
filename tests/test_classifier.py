@@ -197,6 +197,17 @@ def test_center_square_wire_byline_is_not_local_micro() -> None:
     )
     assert bake.matched is False
 
+    # Decorative graphic alt text "light beige center square" is not the neighborhood.
+    frame = match_post(
+        'Happy Thanksgiving from Freel Library! The MCLA Freel Library is closed today.',
+        alt_text=(
+            'A white frame with a light beige center square. There is a stack of books '
+            'with a pumpkin on top with leaves around it. The text says, '
+            '"Happy Thanksgiving. Freel Library is closed today."'
+        ),
+    )
+    assert frame.matched is False
+
     # Prose attribution "The Center Square reports …" (no paren/dash byline).
     reports = match_post(
         'Dem AGs Planned Trump Lawsuits Months Before Election — Now They’re Fighting '
