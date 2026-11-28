@@ -15518,5 +15518,86 @@
     "split": "holdout",
     "regression": true,
     "note": "2026-11-27 audit: corporate SPAC acronym counterpart to Dead year FN"
+  },
+  {
+    "id": "fp-broke-barriers-in-albany-obit",
+    "text": "New York's political landscape is shifting after the death of Senate Majority Leader Andrea Stewart-Cousins, a trailblazing lawmaker who broke barriers in Albany and led Democrats through years of sweeping legislative change.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-28 audit FP: out-of-market broke barriers in Albany obituary"
+  },
+  {
+    "id": "fp-legislative-conference-in-albany",
+    "text": "State Senate Majority Leader Andrea Stewart-Cousins has died - Gothamist",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "alt_text": "She was the first Black woman to lead a legislative conference in Albany.",
+    "note": "2026-11-28 audit FP: legislative conference in Albany statewide leadership locale"
+  },
+  {
+    "id": "fp-senate-chamber-in-albany-obit",
+    "text": "New York Senate Majority Leader Andrea Stewart-Cousins Dies at 76\n\nAndrea Stewart-Cousins in the Senate chamber in Albany, January 6, 2021.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-28 audit FP: Senate chamber in Albany capital-venue photo caption"
+  },
+  {
+    "id": "fp-albany-dateline-stewart-cousins-obit",
+    "text": "ALBANY, New York — Democratic state Senate Majority Leader Andrea Stewart-Cousins, one of the highest-ranking Black women in New York state history, died Thursday evening, state officials announced Friday.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "precision_gate",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-28 audit FP: Albany dateline Stewart-Cousins death wire without Cap Region rescue"
+  },
+  {
+    "id": "fp-price-chopper-kc-area",
+    "text": "Price Chopper(KC area) has a deal through Sunday where you can purchase $100 gift card for $85.",
+    "expected": false,
+    "signal": "text",
+    "bucket": "skyfeed_fp",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-28 audit FP: Kansas City area Price Chopper gift-card blotter"
+  },
+  {
+    "id": "tp-times-union-stewart-cousins-obit",
+    "text": "N.Y. Senate Majority Leader Andrea Stewart-Cousins dies at 76, weeks after reelection - Times Union",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-28 intentional keep: Times Union masthead Stewart-Cousins coverage"
+  },
+  {
+    "id": "tp-broke-barriers-lark-street",
+    "text": "Neighbors broke barriers in Albany nightlife on Lark Street.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "dev",
+    "regression": true,
+    "note": "2026-11-28 counterpart: Lark Street rescues broke-barriers phrasing"
+  },
+  {
+    "id": "tp-price-chopper-pharmacy-compliment",
+    "text": "I need to call price chopper pharmacy to leave a compliment because a concerned pharmacist solved my insulin issue.",
+    "expected": true,
+    "signal": "text",
+    "bucket": "strong_local",
+    "split": "holdout",
+    "regression": true,
+    "note": "2026-11-28 counterpart: Cap Region Price Chopper pharmacy keep"
   }
 ]

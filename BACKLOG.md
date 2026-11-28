@@ -538,6 +538,30 @@ Status: `todo` · `in progress` · `done` · `blocked`
 - **Done when:** Audited FPs drop; Cap Region counterparts keep; eval P/R stay 1.000;
   unit tests cover the new gates.
 
+### B-166 — Daily feed audit: Stewart-Cousins capital-venue / Price Chopper KC FPs
+- **Status:** in progress
+- **Why:** 2026-11-28 audit of last-24h AppView feed (~61 posts) found matcher
+  FPs among rematch-keeps: out-of-market AP/syndication cards using
+  "broke barriers in Albany", "legislative conference in Albany", and
+  "Senate chamber in Albany" capital-venue phrasing on Andrea Stewart-Cousins
+  death wires (Oklahoma City / South Bend / Gothamist / similar), plus Albany
+  dateline obituaries without Cap Region place rescue. FN AppView slate (8)
+  found no Cap Region false negatives (hashtags `#upstateny` / `#518`
+  recorded blocked). Price Chopper `(KC area)` gift-card blotter surfaced in
+  search as an off-region keep bug and is gated with the grocery off-region
+  list. Not counted: allowlisted Times Union / NEWS10 / officials; NWS Albany
+  CWA; Times Union masthead Stewart-Cousins shares; soft-prior residuals
+  (Traveling Tails adoption card with no placename).
+- **Work:**
+  - Statehouse metonym: broke barriers / legislative conference / Senate
+    chamber in Albany; Cap Region Lark Street / plaza rescues retained.
+  - Albany wire Stewart-Cousins death conflict; Times Union / NEWS10 / plaza
+    rescues retained.
+  - Price Chopper off-region: Kansas City / KC area.
+  - Grow eval + fn_search log (fold unmerged #147 / #146).
+- **Done when:** Audited FPs drop; eval P/R stay 1.000; unit tests cover the
+  new gates.
+
 ### B-165 — Daily feed audit: Oregon Albany Public Library / beige center-square FPs; SPAC U+2018 year FN
 - **Status:** done ([#147](https://github.com/chriscarrollsmith/capital-region-feed/pull/147))
 - **Why:** 2026-11-27 audit of last-24h AppView feed (~60 posts) found matcher
